@@ -142,7 +142,7 @@ packages:
     source: hosted
     version: "0.11.3+2"
   matcher:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: matcher
       url: "https://pub.dartlang.org"
