@@ -12,7 +12,11 @@ import 'supporting_files/worlds/custom_world.world.dart';
 Future<void> main() {
   final config = TestConfiguration()
     ..features = [Glob(r"features/**.feature")]
-    ..reporters = [StdoutReporter(MessageLevel.error), ProgressReporter(), TestRunSummaryReporter()]
+    ..reporters = [
+      StdoutReporter(MessageLevel.error),
+      ProgressReporter(),
+      TestRunSummaryReporter()
+    ]
     ..hooks = [HookExample()]
     ..customStepParameterDefinitions = [PowerOfTwoParameter()]
     ..createWorld = (TestConfiguration config) {
