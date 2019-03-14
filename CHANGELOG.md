@@ -1,3 +1,6 @@
+## [0.0.3] - 15/03/2019
+* Fixed up more issues with pubspec.yaml
+
 ## [0.0.2] - 15/03/2019
 * Fixed up issues with pubspec.yaml
 
