@@ -1,4 +1,4 @@
-# flutter_gherkin
+# dart_gherkin
 
 A fully featured Gherkin parser and test runner.  Works with Flutter and Dart 2.
 
