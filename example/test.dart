@@ -15,7 +15,8 @@ Future<void> main() {
     ..reporters = [
       StdoutReporter(MessageLevel.error),
       ProgressReporter(),
-      TestRunSummaryReporter()
+      TestRunSummaryReporter(),
+      JsonReporter()
     ]
     ..hooks = [HookExample()]
     ..customStepParameterDefinitions = [PowerOfTwoParameter()]

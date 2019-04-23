@@ -4,6 +4,7 @@ export "src/test_runner.dart";
 export "src/configuration.dart";
 export "src/gherkin/steps/world.dart";
 export "src/gherkin/steps/step_definition.dart";
+export "src/gherkin/steps/step_definition_implementations.dart";
 export "src/gherkin/steps/step_configuration.dart";
 export "src/gherkin/steps/given.dart";
 export "src/gherkin/steps/then.dart";
@@ -13,7 +14,7 @@ export "src/gherkin/steps/but.dart";
 export "src/gherkin/steps/step_run_result.dart";
 export "src/gherkin/parameters/custom_parameter.dart";
 
-//models
+// Models
 export "src/gherkin/models/table.dart";
 export "src/gherkin/models/table_row.dart";
 
@@ -24,7 +25,11 @@ export "src/reporters/messages.dart";
 export "src/reporters/stdout_reporter.dart";
 export "src/reporters/progress_reporter.dart";
 export "src/reporters/test_run_summary_reporter.dart";
+export "src/reporters/json/json_reporter.dart";
 
 // Hooks
 export "src/hooks/hook.dart";
 export "src/hooks/aggregated_hook.dart";
+
+// Process Handler
+export "src/processes/process_handler.dart";

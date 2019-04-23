@@ -187,7 +187,7 @@ class FeatureFileRunner {
 
       ---------------------------------------------
 
-      You must implement the step:
+      You must implement the step like below and add the class to the 'stepDefinitions' property in your configuration:
 
       /// The 'Given' class can be replaced with 'Then', 'When' 'And' or 'But'
       /// All classes can take up to 5 input parameters anymore and you should probably us a table

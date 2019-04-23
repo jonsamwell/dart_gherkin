@@ -38,7 +38,7 @@ void main() {
                 e is GherkinStepParameterMismatchException &&
                 e.message ==
                     "StepDefinitionMock parameter count mismatch. Expect 2 parameters but got 0. "
-                    "Ensure you are extending the correct step class which would be Given"));
+                        "Ensure you are extending the correct step class which would be Given"));
         expect(step.invocationCount, 0);
       });
 
@@ -53,7 +53,7 @@ void main() {
                 e is GherkinStepParameterMismatchException &&
                 e.message ==
                     "StepDefinitionMock parameter count mismatch. Expect 2 parameters but got 1. "
-                    "Ensure you are extending the correct step class which would be Given1<TInputType0>"));
+                        "Ensure you are extending the correct step class which would be Given1<TInputType0>"));
         expect(step.invocationCount, 0);
       });
 

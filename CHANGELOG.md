@@ -1,3 +1,7 @@
+## [0.0.4] - 23/04/2019
+* Exported missing step and process classes
+* Added JSON reporter that can be use to generate HTML reports (PR from @Holloweye)
+
 ## [0.0.3] - 15/03/2019
 * Fixed up more issues with pubspec.yaml
 
