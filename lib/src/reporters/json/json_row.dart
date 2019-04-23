@@ -5,7 +5,7 @@ class JsonRow {
 
   Map<String, dynamic> toJson() {
     return {
-      "cells": cells,
+      'cells': cells,
     };
   }
 }

@@ -15,7 +15,7 @@ class JsonStep {
   static JsonStep from(StepStartedMessage message) {
     final step = JsonStep();
 
-    final index = message.name.indexOf(" ");
+    final index = message.name.indexOf(' ');
     final keyword = message.name.substring(0, index + 1);
     final name = message.name.substring(index + 1, message.name.length);
 
@@ -38,13 +38,13 @@ class JsonStep {
 
     switch (message.result.result) {
       case StepExecutionResult.pass:
-        status = "passed";
+        status = 'passed';
         break;
       case StepExecutionResult.skipped:
-        status = "skipped";
+        status = 'skipped';
         break;
       default:
-        status = "failed";
+        status = 'failed';
     }
 
     _trackError(message.result.resultReason);
@@ -56,27 +56,27 @@ class JsonStep {
 
   void _trackError(String error) {
     if (this.error == null && (error?.length ?? 0) > 0) {
-      this.error = "$file:$line\n$keyword$name\n\n$error";
+      this.error = '$file:$line\n$keyword$name\n\n$error';
     }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> result = {
-      "keyword": keyword,
-      "name": name,
-      "line": line,
-      "result": {
-        "status": status,
-        "duration": duration,
+      'keyword': keyword,
+      'name': name,
+      'line': line,
+      'result': {
+        'status': status,
+        'duration': duration,
       },
     };
 
     if (rows.isNotEmpty) {
-      result["rows"] = rows.map((row) => row.toJson()).toList();
+      result['rows'] = rows.map((row) => row.toJson()).toList();
     }
 
     if (error != null) {
-      result["result"]["error_message"] = error;
+      result['result']['error_message'] = error;
     }
 
     return result;

@@ -14,7 +14,7 @@ class JsonFeature {
     feature.uri = message.context.filePath;
     feature.id = message.name.toLowerCase();
     feature.name = message.name;
-    feature.description = "";
+    feature.description = '';
     feature.line = message.context.lineNumber;
     return feature;
   }
@@ -30,16 +30,16 @@ class JsonFeature {
 
   Map<String, dynamic> toJson() {
     final result = {
-      "keyword": "Feature",
-      "uri": uri,
-      "id": id,
-      "name": name,
-      "description": description,
-      "line": line,
+      'keyword': 'Feature',
+      'uri': uri,
+      'id': id,
+      'name': name,
+      'description': description,
+      'line': line,
     };
 
     if (scenarios.isNotEmpty) {
-      result["elements"] =
+      result['elements'] =
           scenarios.map((scenario) => scenario.toJson()).toList();
     }
 

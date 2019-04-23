@@ -12,7 +12,7 @@ class JsonScenario {
   static JsonScenario from(StartedMessage message) {
     final scenario = JsonScenario();
     scenario.name = message.name;
-    scenario.description = "";
+    scenario.description = '';
     scenario.line = message.context.lineNumber;
     return scenario;
   }
@@ -26,21 +26,21 @@ class JsonScenario {
   }
 
   String id() {
-    return "${feature.id};${name.toLowerCase()}";
+    return '${feature.id};${name.toLowerCase()}';
   }
 
   Map<String, dynamic> toJson() {
     final result = {
-      "keyword": "Scenario",
-      "type": "scenario",
-      "id": id(),
-      "name": name,
-      "description": description,
-      "line": line,
+      'keyword': 'Scenario',
+      'type': 'scenario',
+      'id': id(),
+      'name': name,
+      'description': description,
+      'line': line,
     };
 
     if (steps.isNotEmpty) {
-      result["steps"] = steps.map((step) => step.toJson()).toList();
+      result['steps'] = steps.map((step) => step.toJson()).toList();
     }
 
     return result;

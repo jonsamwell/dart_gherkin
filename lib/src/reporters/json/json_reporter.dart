@@ -10,7 +10,7 @@ class JsonReporter extends Reporter {
   String path;
   List<JsonFeature> _features = [];
 
-  JsonReporter({this.path = "./report.json"});
+  JsonReporter({this.path = './report.json'});
 
   @override
   Future<void> onFeatureStarted(StartedMessage message) async {
@@ -52,7 +52,7 @@ class JsonReporter extends Reporter {
           json.encode(_features.map((feature) => feature.toJson()).toList());
       await file.writeAsString(result);
     } catch (e) {
-      print("Failed to generate json report: $e");
+      print('Failed to generate json report: $e');
     }
   }
 }

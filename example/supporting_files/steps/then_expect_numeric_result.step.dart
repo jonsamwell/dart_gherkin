@@ -9,5 +9,5 @@ class ThenExpectNumericResult extends Then1WithWorld<num, CalculatorWorld> {
   }
 
   @override
-  RegExp get pattern => RegExp(r"expected result is {num}");
+  RegExp get pattern => RegExp(r"the expected result is {num}");
 }
