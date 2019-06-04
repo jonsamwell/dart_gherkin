@@ -104,6 +104,38 @@ void main() {
       expect(stepDefinitonTwo.runCount, 0);
     });
 
+    test("Unchecked errors are handled gracefully", () async {
+      final stepTextOne = "Given I do a";
+      final stepTextTwo = "Given I do b";
+      final stepDefiniton = MockStepDefinition((_) => throw TypeError());
+      final stepDefinitonTwo = MockStepDefinition();
+      final executableStep = ExectuableStep(
+          MockGherkinExpression((s) => s == stepTextOne), stepDefiniton);
+      final executableStepTwo = ExectuableStep(
+          MockGherkinExpression((s) => s == stepTextTwo), stepDefinitonTwo);
+      final runner = FeatureFileRunner(
+          TestConfiguration(),
+          MockTagExpressionEvaluator(),
+          [executableStep, executableStepTwo],
+          ReporterMock(),
+          HookMock());
+
+      final step =
+          StepRunnable("Step 1", RunnableDebugInformation("", 0, stepTextOne));
+      final stepTwo =
+          StepRunnable("Step 2", RunnableDebugInformation("", 0, stepTextTwo));
+      final scenario = ScenarioRunnable("Scenario: 1", emptyDebuggable)
+        ..steps.add(step)
+        ..steps.add(stepTwo);
+      final feature = FeatureRunnable("1", emptyDebuggable)
+        ..scenarios.add(scenario);
+      final featureFile = FeatureFile(emptyDebuggable)..features.add(feature);
+      await runner.run(featureFile);
+      expect(stepDefiniton.hasRun, true);
+      expect(stepDefiniton.runCount, 1);
+      expect(stepDefinitonTwo.runCount, 0);
+    });
+
     group("step matching", () {
       test("exception throw when matching step definition not found", () async {
         final stepDefiniton = MockStepDefinition();

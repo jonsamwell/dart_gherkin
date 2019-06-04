@@ -25,9 +25,10 @@ class StepRunnable extends RunnableBlock {
             .add((child as MultilineStringRunnable).lines.join("\n"));
         break;
       case TableRunnable:
-        if (table != null)
+        if (table != null) {
           throw GherkinSyntaxException(
               "Only a single table can be added to the step '$name'");
+        }
 
         table = (child as TableRunnable).toTable();
         break;

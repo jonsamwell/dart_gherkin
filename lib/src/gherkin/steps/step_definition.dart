@@ -41,6 +41,9 @@ abstract class StepDefinitionGeneric<TWorld extends World> {
     } on TimeoutException catch (te, st) {
       return ErroredStepResult(
           elapsedMilliseconds, StepExecutionResult.timeout, te, st);
+    } on Error catch (e, st) {
+      return ErroredStepResult(elapsedMilliseconds, StepExecutionResult.error,
+          new Exception(e.toString()), st);
     } catch (e, st) {
       return ErroredStepResult(
           elapsedMilliseconds, StepExecutionResult.error, e, st);
@@ -52,8 +55,9 @@ abstract class StepDefinitionGeneric<TWorld extends World> {
   Future<void> onRun(Iterable<dynamic> parameters);
 
   void _ensureParameterCount(int actual, int expected) {
-    if (actual != expected)
+    if (actual != expected) {
       throw GherkinStepParameterMismatchException(
           runtimeType, expected, actual);
+    }
   }
 }

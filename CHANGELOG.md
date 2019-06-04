@@ -1,3 +1,8 @@
+## [1.0.0] - 04/06/2019
+* Fixed throw Error sub types not getting handle properly and halting test execution fixes https://github.com/jonsamwell/dart_gherkin/issues/2
+* Fixed linter warnings
+* Made v1 release as api's are stable
+
 ## [0.0.4] - 23/04/2019
 * Exported missing step and process classes
 * Added JSON reporter that can be use to generate HTML reports (PR from @Holloweye)

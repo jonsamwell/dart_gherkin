@@ -47,6 +47,12 @@ class FeatureFileRunner {
           haveAllScenariosPassed &=
               await _runScenario(scenario, feature.background);
         }
+      } on Error catch (err) {
+        await _log(
+            "Fatal error encountered while running feature '${feature.name}'\n$err",
+            feature.debug,
+            MessageLevel.error);
+        rethrow;
       } catch (e, stacktrace) {
         await _log("Error while running feature '${feature.name}'\n$e",
             feature.debug, MessageLevel.error);

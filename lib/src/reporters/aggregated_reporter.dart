@@ -66,9 +66,7 @@ class AggregatedReporter extends Reporter {
   Future<void> _invokeReporters(Future<void> invoke(Reporter r)) async {
     if (_reporters != null && _reporters.isNotEmpty) {
       for (var reporter in _reporters) {
-        try {
-          await invoke(reporter);
-        } catch (e) {}
+        await invoke(reporter);
       }
     }
   }
