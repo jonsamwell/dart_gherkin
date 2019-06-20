@@ -1,3 +1,9 @@
+## [1.0.3] - 20/06/2019
+* Fix dependencies conflict with flutter_test and flutter_driver
+
+## [1.0.2] - 20/06/2019
+* Updated dependencies
+
 ## [1.0.1] - 20/06/2019
 * Added the ability to add attachments which gives the ability to set screenshots or other data against the scenerio
 * Added before & after hooks for step execution
