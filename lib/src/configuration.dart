@@ -5,7 +5,11 @@ import './hooks/hook.dart';
 import './reporters/reporter.dart';
 import 'package:glob/glob.dart';
 
+import 'gherkin/attachments/attachment_manager.dart';
+
 typedef Future<World> CreateWorld(TestConfiguration config);
+typedef Future<AttachmentManager> CreateAttachmentManager(
+    TestConfiguration config);
 
 enum ExecutionOrder { sequential, random }
 
@@ -50,4 +54,8 @@ class TestConfiguration {
 
   /// used to allow for custom configuration to ensure framework specific congfiguration is in place
   void prepare() {}
+
+  /// used to get a new instance of an attachment manager class that is passed to the World context
+  CreateAttachmentManager getAttachmentManager =
+      (_) => Future.value(AttachmentManager());
 }

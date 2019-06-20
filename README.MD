@@ -37,9 +37,6 @@ Available as a Flutter specific package https://pub.dartlang.org/packages/flutte
     - [reporters](#reporters)
     - [createWorld](#createworld)
     - [exitAfterTestRun](#exitaftertestrun)
-  - [Flutter specific configuration options](#flutter-specific-configuration-options)
-    - [restartAppBetweenScenarios](#restartappbetweenscenarios)
-    - [targetAppPath](#targetapppath)
 - [Features Files](#features-files)
   - [Steps Definitions](#steps-definitions)
     - [Given](#given)
@@ -54,6 +51,7 @@ Available as a Flutter specific package https://pub.dartlang.org/packages/flutte
     - [Assertions](#assertions)
   - [Tags](#tags)
 - [Hooks](#hooks)
+- [Attachments](#attachments)
 - [Reporting](#reporting)
 - [Flutter](#flutter)
   - [Restarting the app before each test](#restarting-the-app-before-each-test)
@@ -253,11 +251,35 @@ Future<void> main() {
 
 #### hooks
 
-Hooks are custom bits of code that can be run at certain points with the test run such as before or after a scenario.  Place instances of any custom `Hook` class instance in this collection.  They will then be run at the defined points with the test run. See [Hooks](#hooks).
+Hooks are custom bits of code that can be run at certain points with the test run such as before or after a scenario.  Place instances of any custom `Hook` class instance in this collection.  They will then be run at the defined points with the test run.
+
+#### attachments
+
+Attachment are pieces of data you can attach to a running scenario.  This could be simple bits of textual data or even image like a screenshot.  These attachments can then be used by reporters to provide more contextual information.  For example when a step fails a screenshot could be taken and attached to the scenario which is then used by a reporter to display why the step failed.
+
+Attachments would typically be attached via a `Hook` for example `onAfterStep`.
+
+```
+import 'package:gherkin/gherkin.dart';
+
+class AttachScreenhotOnFailedStepHook extends Hook {
+  /// Run after a step has executed
+  @override
+  Future<void> onAfterStep(World world, String step, StepResult stepResult) async {
+    if (stepResult.result == StepExecutionResult.fail) {
+      final screenshotData = await _takeScreenshot();
+      world.attach(screenshotData, 'image/png', step);
+    }
+  }
+
+  Future<String> _takeScreenshot() async {
+    // logic to take screenshot
+  }
+}
+
+```
 
 #### reporters
-
-*Required*
 
 Reporters are classes that are able to report on the status of the test run.  This could be a simple as merely logging scenario result to the console.  There are a number of built-in reporter:
 

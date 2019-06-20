@@ -27,6 +27,10 @@ export "src/reporters/progress_reporter.dart";
 export "src/reporters/test_run_summary_reporter.dart";
 export "src/reporters/json/json_reporter.dart";
 
+// Attachments
+export "src/gherkin/attachments/attachment.dart";
+export "src/gherkin/attachments/attachment_manager.dart";
+
 // Hooks
 export "src/hooks/hook.dart";
 export "src/hooks/aggregated_hook.dart";

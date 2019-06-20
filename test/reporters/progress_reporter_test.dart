@@ -18,7 +18,8 @@ void main() {
       await reporter.onStepFinished(StepFinishedMessage(
           "Step 1",
           RunnableDebugInformation("filePath", 1, "line 1"),
-          StepResult(0, StepExecutionResult.pass)));
+          StepResult(0, StepExecutionResult.pass),
+          [Attachment('A string', 'text/plain')]));
       await reporter.onStepFinished(StepFinishedMessage(
           "Step 2",
           RunnableDebugInformation("filePath", 2, "line 2"),
@@ -38,6 +39,7 @@ void main() {
 
       expect(reporter.output, [
         "   √ Step 1 # filePath:1 took 0ms",
+        "     Attachment (text/plain): A string",
         "   × Step 2 # filePath:2 took 0ms \n      Failed Reason",
         "   - Step 3 # filePath:3 took 0ms",
         "   × Step 4 # filePath:4 took 0ms",

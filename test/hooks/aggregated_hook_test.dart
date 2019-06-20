@@ -33,16 +33,21 @@ void main() {
       expect(hookTwo.onBeforeScenarioInvocationCount, 1);
       expect(hookThree.onBeforeScenarioInvocationCount, 1);
       expect(hookFour.onBeforeScenarioInvocationCount, 1);
+      await aggregatedHook.onBeforeStep(null, null);
+      expect(hookOne.onBeforeStepInvocationCount, 1);
+      expect(hookTwo.onBeforeStepInvocationCount, 1);
+      expect(hookThree.onBeforeStepInvocationCount, 1);
+      expect(hookFour.onBeforeStepInvocationCount, 1);
       await aggregatedHook.onAfterScenarioWorldCreated(null, null);
       expect(hookOne.onAfterScenarioWorldCreatedInvocationCount, 1);
       expect(hookTwo.onAfterScenarioWorldCreatedInvocationCount, 1);
       expect(hookThree.onAfterScenarioWorldCreatedInvocationCount, 1);
       expect(hookFour.onAfterScenarioWorldCreatedInvocationCount, 1);
-      await aggregatedHook.onAfterScenario(null, null);
-      expect(hookOne.onAfterScenarioInvocationCount, 1);
-      expect(hookTwo.onAfterScenarioInvocationCount, 1);
-      expect(hookThree.onAfterScenarioInvocationCount, 1);
-      expect(hookFour.onAfterScenarioInvocationCount, 1);
+      await aggregatedHook.onAfterStep(null, null, null);
+      expect(hookOne.onAfterStepInvocationCount, 1);
+      expect(hookTwo.onAfterStepInvocationCount, 1);
+      expect(hookThree.onAfterStepInvocationCount, 1);
+      expect(hookFour.onAfterStepInvocationCount, 1);
     });
   });
 }

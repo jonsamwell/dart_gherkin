@@ -1,3 +1,7 @@
+## [1.0.1] - 20/06/2019
+* Added the ability to add attachments which gives the ability to set screenshots or other data against the scenerio
+* Added before & after hooks for step execution
+
 ## [1.0.0] - 04/06/2019
 * Fixed throw Error sub types not getting handle properly and halting test execution fixes https://github.com/jonsamwell/dart_gherkin/issues/2
 * Fixed linter warnings

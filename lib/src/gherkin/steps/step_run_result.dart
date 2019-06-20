@@ -6,6 +6,7 @@ class StepResult {
 
   /// the result of executing the step
   final StepExecutionResult result;
+
   // a reason for the result.  This would be a failure message if the result failed.  This field can be null
   final String resultReason;
 

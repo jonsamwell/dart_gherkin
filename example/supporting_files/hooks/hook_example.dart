@@ -31,4 +31,20 @@ class HookExample extends Hook {
       TestConfiguration config, String scenario) async {
     print("running hook after scenario '$scenario'");
   }
+
+  /// Run before a step is executed
+  @override
+  Future<void> onBeforeStep(World world, String step) async {
+    print("running hook before step '$step'");
+  }
+
+  /// Run after a step has executed
+  @override
+  Future<void> onAfterStep(
+      World world, String step, StepResult stepResult) async {
+    print("running hook after step '$step'");
+
+    // example of how to add a simple attachment (text, json, image) to a step that a reporter can use
+    world.attach('attachment data', 'text/plain', step);
+  }
 }

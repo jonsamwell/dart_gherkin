@@ -1,3 +1,4 @@
+import '../gherkin/steps/step_run_result.dart';
 import '../gherkin/steps/world.dart';
 import '../configuration.dart';
 import './hook.dart';
@@ -34,6 +35,16 @@ class AggregatedHook extends Hook {
   Future<void> onAfterScenario(
           TestConfiguration config, String scenario) async =>
       await _invokeHooks((h) => h.onAfterScenario(config, scenario));
+
+  /// Run before a step is executed
+  @override
+  Future<void> onBeforeStep(World world, String step) async =>
+      await _invokeHooks((h) => h.onBeforeStep(world, step));
+
+  /// Run after a step has executed
+  @override
+  Future<void> onAfterStep(World world, String step, StepResult result) async =>
+      await _invokeHooks((h) => h.onAfterStep(world, step, result));
 
   Future<void> _invokeHooks(Future<void> invoke(Hook h)) async {
     if (_orderedHooks != null && _orderedHooks.isNotEmpty) {

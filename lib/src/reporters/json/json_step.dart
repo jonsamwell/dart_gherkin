@@ -1,3 +1,4 @@
+import 'json_embedding.dart';
 import 'json_row.dart';
 import '../messages.dart';
 import '../../gherkin/steps/step_run_result.dart';
@@ -11,6 +12,7 @@ class JsonStep {
   String error;
   int duration;
   List<JsonRow> rows = [];
+  List<JsonEmbedding> embeddings = [];
 
   static JsonStep from(StepStartedMessage message) {
     final step = JsonStep();
@@ -47,6 +49,14 @@ class JsonStep {
         status = 'failed';
     }
 
+    if (message.attachments.isNotEmpty) {
+      embeddings = message.attachments
+          .map((attachment) => JsonEmbedding()
+            ..data = attachment.data
+            ..mimeType = attachment.mimeType)
+          .toList();
+    }
+
     _trackError(message.result.resultReason);
   }
 
@@ -68,15 +78,20 @@ class JsonStep {
       'result': {
         'status': status,
         'duration': duration,
-      },
+      }
     };
+
+    if (error != null) {
+      result['result']['error_message'] = error;
+    }
 
     if (rows.isNotEmpty) {
       result['rows'] = rows.map((row) => row.toJson()).toList();
     }
 
-    if (error != null) {
-      result['result']['error_message'] = error;
+    if (embeddings.isNotEmpty) {
+      result['embeddings'] =
+          embeddings.map((embedding) => embedding.toJson()).toList();
     }
 
     return result;

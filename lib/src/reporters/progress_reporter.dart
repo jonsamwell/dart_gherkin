@@ -31,6 +31,18 @@ class ProgressReporter extends StdoutReporter {
           _getErrorMessage(message.result)
         ].join((" ")).trimRight(),
         _getMessageColour(message.result.result));
+
+    if (message.attachments.isNotEmpty) {
+      message.attachments.forEach((attachment) {
+        printMessageLine(
+            [
+              "    ",
+              "Attachment",
+              "(${attachment.mimeType})${attachment.mimeType == 'text/plain' ? ': ${attachment.data}' : ''}"
+            ].join((" ")).trimRight(),
+            StdoutReporter.RESET_COLOR);
+      });
+    }
   }
 
   @override

@@ -1,3 +1,4 @@
+import '../gherkin/steps/step_run_result.dart';
 import '../gherkin/steps/world.dart';
 import '../configuration.dart';
 
@@ -25,5 +26,12 @@ abstract class Hook {
 
   /// Run after a scenario has executed
   Future<void> onAfterScenario(TestConfiguration config, String scenario) =>
+      Future.value(null);
+
+  /// Run before a step is executed
+  Future<void> onBeforeStep(World world, String step) => Future.value(null);
+
+  /// Run after a step has executed
+  Future<void> onAfterStep(World world, String step, StepResult stepResult) =>
       Future.value(null);
 }

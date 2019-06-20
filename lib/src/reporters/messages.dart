@@ -1,3 +1,5 @@
+import 'package:gherkin/src/gherkin/attachments/attachment.dart';
+
 import '../gherkin/models/table.dart';
 import '../gherkin/runnables/debug_information.dart';
 import '../gherkin/steps/step_run_result.dart';
@@ -30,9 +32,11 @@ class StepStartedMessage extends StartedMessage {
 
 class StepFinishedMessage extends FinishedMessage {
   final StepResult result;
+  final Iterable<Attachment> attachments;
 
   StepFinishedMessage(
-      String name, RunnableDebugInformation context, this.result)
+      String name, RunnableDebugInformation context, this.result,
+      [this.attachments = const Iterable<Attachment>.empty()])
       : super(Target.step, name, context);
 }
 

@@ -15,6 +15,7 @@ import './gherkin/steps/exectuable_step.dart';
 import './gherkin/steps/step_run_result.dart';
 import './gherkin/steps/world.dart';
 import './reporters/messages.dart';
+import './gherkin/attachments/attachment_manager.dart';
 
 class FeatureFileRunner {
   final TestConfiguration _config;
@@ -82,6 +83,7 @@ class FeatureFileRunner {
 
   Future<bool> _runScenario(
       ScenarioRunnable scenario, BackgroundRunnable background) async {
+    final attachmentManager = await _config.getAttachmentManager(_config);
     World world;
     bool scenarioPassed = true;
     await _hook.onBeforeScenario(_config, scenario.name);
@@ -90,6 +92,7 @@ class FeatureFileRunner {
       await _log("Creating new world for scenerio '${scenario.name}'",
           scenario.debug, MessageLevel.debug);
       world = await _config.createWorld(_config);
+      world.setAttachmentManager(attachmentManager);
       await _hook.onAfterScenarioWorldCreated(world, scenario.name);
     }
 
@@ -99,7 +102,8 @@ class FeatureFileRunner {
       await _log("Running background steps for scenerio '${scenario.name}'",
           scenario.debug, MessageLevel.info);
       for (var step in background.steps) {
-        final result = await _runStep(step, world, !scenarioPassed);
+        final result =
+            await _runStep(step, world, attachmentManager, !scenarioPassed);
         scenarioPassed = result.result == StepExecutionResult.pass;
         if (!_canContinueScenario(result)) {
           scenarioPassed = false;
@@ -112,7 +116,8 @@ class FeatureFileRunner {
     }
 
     for (var step in scenario.steps) {
-      final result = await _runStep(step, world, !scenarioPassed);
+      final result =
+          await _runStep(step, world, attachmentManager, !scenarioPassed);
       scenarioPassed = result.result == StepExecutionResult.pass;
       if (!_canContinueScenario(result)) {
         scenarioPassed = false;
@@ -135,14 +140,15 @@ class FeatureFileRunner {
     return stepResult.result == StepExecutionResult.pass;
   }
 
-  Future<StepResult> _runStep(
-      StepRunnable step, World world, bool skipExecution) async {
+  Future<StepResult> _runStep(StepRunnable step, World world,
+      AttachmentManager attachmentManager, bool skipExecution) async {
     StepResult result;
     final ExectuableStep code = _matchStepToExectuableStep(step);
     final Iterable<dynamic> parameters = _getStepParameters(step, code);
 
     await _log(
         "Attempting to run step '${step.name}'", step.debug, MessageLevel.info);
+    await _hook.onBeforeStep(world, step.name);
     await _reporter.onStepStarted(
         StepStartedMessage(Target.step, step.name, step.debug, step.table));
     if (skipExecution) {
@@ -153,8 +159,11 @@ class FeatureFileRunner {
           () async => code.step
               .run(world, _reporter, _config.defaultTimeout, parameters));
     }
-    await _reporter
-        .onStepFinished(StepFinishedMessage(step.name, step.debug, result));
+
+    await _hook.onAfterStep(world, step.name, result);
+    await _reporter.onStepFinished(StepFinishedMessage(step.name, step.debug,
+        result, attachmentManager?.getAttachementsForContext(step.name)));
+
     return result;
   }
 
@@ -175,6 +184,7 @@ class FeatureFileRunner {
     } catch (e) {
       completer.completeError(e);
     }
+
     return completer.future;
   }
 
