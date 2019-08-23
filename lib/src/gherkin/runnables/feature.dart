@@ -55,7 +55,7 @@ class FeatureRunnable extends RunnableBlock {
         break;
       default:
         throw Exception(
-            "Unknown runnable child given to Feature '${child.runtimeType}'");
+            "Unknown runnable child given to Feature '${child.runtimeType}' - Line#${child.debug.lineText}: '${child.debug.lineText}'");
     }
   }
 }

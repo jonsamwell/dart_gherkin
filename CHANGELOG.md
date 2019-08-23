@@ -1,3 +1,7 @@
+## [1.0.4] - 23/08/2019
+* Fixed complex co-variant issue with step code definitions
+* Fixed parsing issue when Background block has no name
+
 ## [1.0.3] - 20/06/2019
 * Fix dependencies conflict with flutter_test and flutter_driver
 

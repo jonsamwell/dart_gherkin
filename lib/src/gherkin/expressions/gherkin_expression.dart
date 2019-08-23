@@ -26,6 +26,8 @@ class GherkinExpression {
             RegExp(_escapeIdentifier(p.identifier),
                 caseSensitive: true, multiLine: true), (m) {
           _sortedParameterPositions.add(_SortedParameterPosition(m.start, p));
+
+          return m.input;
         });
         pattern = pattern.replaceAllMapped(
             RegExp(_escapeIdentifier(p.identifier),

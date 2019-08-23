@@ -8,12 +8,15 @@ void main() {
   group("isMatch", () {
     test('matches correctly', () {
       final syntax = BackgroundSyntax();
+      expect(syntax.isMatch("Background: "), true);
+      expect(syntax.isMatch("Background: "), true);
       expect(syntax.isMatch("Background: something"), true);
       expect(syntax.isMatch(" Background:   something"), true);
     });
 
     test('does not match', () {
       final syntax = BackgroundSyntax();
+      expect(syntax.isMatch("Background"), false);
       expect(syntax.isMatch("Background something"), false);
       expect(syntax.isMatch("#Background: something"), false);
     });
@@ -27,6 +30,24 @@ void main() {
       expect(runnable, isNotNull);
       expect(runnable, predicate((x) => x is BackgroundRunnable));
       expect(runnable.name, equals("A backgroun 123"));
+    });
+
+    test('creates BackgroundRunnable with empty name', () {
+      final syntax = BackgroundSyntax();
+      final Runnable runnable = syntax.toRunnable(
+          "Background:   ", RunnableDebugInformation(null, 0, null));
+      expect(runnable, isNotNull);
+      expect(runnable, predicate((x) => x is BackgroundRunnable));
+      expect(runnable.name, equals(""));
+    });
+
+    test('creates BackgroundRunnable with no name', () {
+      final syntax = BackgroundSyntax();
+      final Runnable runnable = syntax.toRunnable(
+          "Background:", RunnableDebugInformation(null, 0, null));
+      expect(runnable, isNotNull);
+      expect(runnable, predicate((x) => x is BackgroundRunnable));
+      expect(runnable.name, equals(""));
     });
   });
 }
