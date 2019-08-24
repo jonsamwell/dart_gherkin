@@ -17,6 +17,7 @@ void main() {
       final parameter = NumParameterLower();
       expect(parameter.transformer("12.243"), equals(12.243));
       expect(parameter.transformer("3"), equals(3));
+      expect(parameter.transformer("-1.321"), equals(-1.321));
     });
 
     test("{Num} parsed correctly", () {
@@ -28,10 +29,13 @@ void main() {
     test("{Num} pattern matches correctly", () {
       final parameter = NumParameterCamel();
       expect(parameter.pattern.hasMatch("12"), true);
+      expect(parameter.pattern.hasMatch("-12"), true);
       expect(parameter.pattern.hasMatch("12.0"), true);
+      expect(parameter.pattern.hasMatch("-12.0"), true);
       expect(parameter.pattern.hasMatch("12.00"), true);
       expect(parameter.pattern.hasMatch("12.000"), true);
       expect(parameter.pattern.hasMatch("12.000000"), true);
+      expect(parameter.pattern.hasMatch("-12.000000"), true);
       expect(parameter.pattern.hasMatch("12.0000.00"), false);
     });
   });

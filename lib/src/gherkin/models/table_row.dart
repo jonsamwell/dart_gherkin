@@ -1,7 +1,15 @@
 class TableRow {
   final bool isHeaderRow;
   final int rowIndex;
-  final Iterable<String> columns;
+  Iterable<String> _columns;
+  Iterable<String> get columns => _columns;
 
-  TableRow(this.columns, this.rowIndex, this.isHeaderRow);
+  TableRow(this._columns, this.rowIndex, this.isHeaderRow);
+
+  void setStepParameter(String parameterName, String value) {
+    _columns = _columns.map((c) => c.replaceAll('<$parameterName>', value));
+  }
+
+  TableRow clone() =>
+      TableRow(_columns.map((c) => c).toList(), rowIndex, isHeaderRow);
 }

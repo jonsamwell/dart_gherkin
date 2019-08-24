@@ -6,6 +6,7 @@ import './empty_line.dart';
 import './runnable.dart';
 import './runnable_block.dart';
 import './scenario.dart';
+import './scenario_outline.dart';
 import './tags.dart';
 import './text_line.dart';
 
@@ -36,10 +37,16 @@ class FeatureRunnable extends RunnableBlock {
             child.debug.lineNumber, () => (child as TagsRunnable).tags);
         break;
       case ScenarioRunnable:
-        scenarios.add(child);
+      case ScenarioOutlineRunnable:
         if (_tagMap.containsKey(child.debug.lineNumber - 1)) {
           (child as ScenarioRunnable).addChild(
               TagsRunnable(null)..tags = _tagMap[child.debug.lineNumber - 1]);
+        }
+
+        if (child is ScenarioOutlineRunnable) {
+          scenarios.addAll(child.expandOutlinesIntoScenarios());
+        } else {
+          scenarios.add(child);
         }
         break;
       case BackgroundRunnable:

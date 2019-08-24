@@ -37,4 +37,19 @@ class StepRunnable extends RunnableBlock {
             "Unknown runnable child given to Step '${child.runtimeType}'");
     }
   }
+
+  void setStepParameter(String parameterName, String value) {
+    _name = _name.replaceAll('<$parameterName>', value);
+    table?.setStepParameter(parameterName, value);
+    updateDebugInformation(debug.copyWith(debug.lineNumber,
+        debug.lineText.replaceAll('<$parameterName>', value)));
+  }
+
+  StepRunnable clone() {
+    StepRunnable cloned = StepRunnable(_name, debug);
+    cloned.multilineStrings = multilineStrings.map((s) => s).toList();
+    cloned.table = table?.clone();
+
+    return cloned;
+  }
 }

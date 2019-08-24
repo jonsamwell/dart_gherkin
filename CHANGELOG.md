@@ -1,3 +1,7 @@
+## [1.0.6] - 25/08/2019
+* Added 'Scenario Outline' and 'Example' functionality (see: example/features/calculator_scenerio_outline_example.feature)
+* Fixed issue with parsing a negative number when using the '{num}' parameter in a step
+
 ## [1.0.5] - 23/08/2019
 * Fixed complex co-variant issue with step code definitions
 * Fixed parsing issue when Background block has no name

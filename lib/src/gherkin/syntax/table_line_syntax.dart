@@ -18,6 +18,7 @@ class TableLineSyntax extends RegExMatchedGherkinSyntax {
     if (syntax is TableLineSyntax || syntax is CommentSyntax) {
       return false;
     }
+
     return true;
   }
 

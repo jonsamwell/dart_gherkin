@@ -10,6 +10,7 @@ import './syntax/feature_syntax.dart';
 import './syntax/language_syntax.dart';
 import './syntax/multiline_string_syntax.dart';
 import './syntax/scenario_syntax.dart';
+import './syntax/scenario_outline_syntax.dart';
 import './syntax/step_syntax.dart';
 import './syntax/syntax_matcher.dart';
 import './syntax/table_line_syntax.dart';
@@ -17,6 +18,7 @@ import './syntax/tag_syntax.dart';
 import './syntax/text_line_syntax.dart';
 import '../reporters/message_level.dart';
 import '../reporters/reporter.dart';
+import './syntax/example_syntax.dart';
 
 class GherkinParser {
   final Iterable<SyntaxMatcher> syntaxMatchers = [
@@ -25,12 +27,14 @@ class GherkinParser {
     FeatureSyntax(),
     BackgroundSyntax(),
     TagSyntax(),
+    ScenarioOutlineSyntax(),
     ScenarioSyntax(),
     StepSyntax(),
     MultilineStringSyntax(),
     EmptyLineSyntax(),
     TableLineSyntax(),
-    TextLineSyntax()
+    ExampleSyntax(),
+    TextLineSyntax(),
   ];
 
   Future<FeatureFile> parseFeatureFile(
@@ -46,6 +50,7 @@ class GherkinParser {
           "Error while parsing feature file: '$path'\n$e", MessageLevel.error);
       rethrow;
     }
+
     return featureFile;
   }
 

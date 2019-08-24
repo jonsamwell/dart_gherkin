@@ -64,6 +64,7 @@ void main() {
       expect(commentStep.multilineStrings.length, 1);
       expect(commentStep.multilineStrings.elementAt(0), "A mutliline\ncomment");
     });
+
     test('parses single scenario with no names', () async {
       final parser = GherkinParser();
       final featureContents = """
@@ -122,6 +123,64 @@ void main() {
       final commentStep = steps.elementAt(2);
       expect(commentStep.multilineStrings.length, 1);
       expect(commentStep.multilineStrings.elementAt(0), "A mutliline\ncomment");
+    });
+
+    test('parses single scenario outline with examples', () async {
+      final parser = GherkinParser();
+      final featureContents = """
+      Feature: The name of the feature
+        Background: Setup
+          Given I setup 1
+          And I setup 2
+
+        @smoke
+        Scenario Outline: Eating
+          Given there are <start> cucumbers
+          When I eat <eat> cucumbers
+          Then I should have <left> cucumbers
+
+          Examples:
+            | start | eat | left |
+            |    12 |   5 |    7 |
+            |    20 |   9 |   11 |
+      """;
+      final FeatureFile featureFile =
+          await parser.parseFeatureFile(featureContents, "", ReporterMock());
+      expect(featureFile, isNot(null));
+      expect(featureFile.langauge, equals("en"));
+      expect(featureFile.features.length, 1);
+
+      final feature = featureFile.features.elementAt(0);
+      expect(feature.name, "The name of the feature");
+      expect(feature.tags, ["smoke"]);
+      expect(feature.scenarios.length, 2);
+
+      final background = featureFile.features.elementAt(0).background;
+      expect(background.name, "Setup");
+      expect(background.steps.length, 2);
+      expect(background.steps.elementAt(0).name, "Given I setup 1");
+      expect(background.steps.elementAt(1).name, "And I setup 2");
+
+      final scenario = featureFile.features.elementAt(0).scenarios.elementAt(0);
+      expect(scenario.name, "Eating (Example 1)");
+      expect(scenario.tags, ["smoke"]);
+      expect(scenario.steps.length, 3);
+
+      final scenario2 =
+          featureFile.features.elementAt(0).scenarios.elementAt(1);
+      expect(scenario2.name, "Eating (Example 2)");
+      expect(scenario2.tags, ["smoke"]);
+      expect(scenario2.steps.length, 3);
+
+      expect(scenario.steps.elementAt(0).name, "Given there are 12 cucumbers");
+      expect(scenario.steps.elementAt(1).name, "When I eat 5 cucumbers");
+      expect(
+          scenario.steps.elementAt(2).name, "Then I should have 7 cucumbers");
+
+      expect(scenario2.steps.elementAt(0).name, "Given there are 20 cucumbers");
+      expect(scenario2.steps.elementAt(1).name, "When I eat 9 cucumbers");
+      expect(
+          scenario2.steps.elementAt(2).name, "Then I should have 11 cucumbers");
     });
 
     test('parses complex multi-scenario correctly', () async {

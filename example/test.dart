@@ -29,6 +29,7 @@ Future<void> main() {
       WhenTheStoredNumbersAreAdded(),
       ThenExpectNumericResult()
     ]
+    // ..tagExpression = '@debug'
     ..exitAfterTestRun = true;
 
   return GherkinRunner().execute(config);
