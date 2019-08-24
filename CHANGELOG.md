@@ -1,3 +1,6 @@
+## [1.0.7] - 25/08/2019
+* Fix path dependency resolution
+
 ## [1.0.6] - 25/08/2019
 * Added 'Scenario Outline' and 'Example' functionality (see: example/features/calculator_scenerio_outline_example.feature)
 * Fixed issue with parsing a negative number when using the '{num}' parameter in a step
