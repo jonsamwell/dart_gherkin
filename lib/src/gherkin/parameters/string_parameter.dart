@@ -2,7 +2,8 @@ import './custom_parameter.dart';
 
 class StringParameterBase extends CustomParameter<String> {
   StringParameterBase(String name)
-      : super(name, RegExp("['|\"](.*)['|\"]"), (String input) => input);
+      : super(name, RegExp("['\"](.*)['\"]", dotAll: true),
+            (String input) => input);
 }
 
 class StringParameterLower extends StringParameterBase {

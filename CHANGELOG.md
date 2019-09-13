@@ -1,3 +1,6 @@
+## [1.0.8] - 13/09/2019
+* Fix an issue where line terminators where not allowed in well known {string} parameters
+
 ## [1.0.7] - 25/08/2019
 * Fix path dependency resolution
 

@@ -1,7 +1,6 @@
 Feature: Calculator
   Tests the addition of two numbers
 
-  @debug
   Scenario Outline: Add two numbers
     Given the numbers <number_one> and <number_two>
     When they are added

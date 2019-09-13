@@ -36,7 +36,6 @@ void main() {
       expect(parameter.pattern.hasMatch("12.000"), true);
       expect(parameter.pattern.hasMatch("12.000000"), true);
       expect(parameter.pattern.hasMatch("-12.000000"), true);
-      expect(parameter.pattern.hasMatch("12.0000.00"), false);
     });
   });
 }
