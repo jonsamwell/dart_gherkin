@@ -1,4 +1,5 @@
-Feature: Calculator
+@a
+Feature: Calculator can work with strings
   Tests that the calculator can count the total value of the character code units in a string
 
   @debug

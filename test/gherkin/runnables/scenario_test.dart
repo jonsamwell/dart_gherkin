@@ -2,7 +2,6 @@ import 'package:gherkin/src/gherkin/runnables/debug_information.dart';
 import 'package:gherkin/src/gherkin/runnables/empty_line.dart';
 import 'package:gherkin/src/gherkin/runnables/scenario.dart';
 import 'package:gherkin/src/gherkin/runnables/step.dart';
-import 'package:gherkin/src/gherkin/runnables/tags.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -21,12 +20,6 @@ void main() {
       expect(runnable.steps.elementAt(0).name, "1");
       expect(runnable.steps.elementAt(1).name, "2");
       expect(runnable.steps.elementAt(2).name, "3");
-    });
-    test('can add TagsRunnable', () {
-      final runnable = ScenarioRunnable("", debugInfo);
-      runnable.addChild(TagsRunnable(debugInfo)..tags = ["one", "two"]);
-      runnable.addChild(TagsRunnable(debugInfo)..tags = ["three"]);
-      expect(runnable.tags, ["one", "two", "three"]);
     });
   });
 }

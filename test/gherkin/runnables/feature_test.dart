@@ -8,6 +8,14 @@ import 'package:gherkin/src/gherkin/runnables/tags.dart';
 import 'package:gherkin/src/gherkin/runnables/text_line.dart';
 import 'package:test/test.dart';
 
+Iterable<String> tagsToList(Iterable<TagsRunnable> tags) sync* {
+  for (var tgs in tags) {
+    for (var tag in tgs.tags) {
+      yield tag;
+    }
+  }
+}
+
 void main() {
   final debugInfo = RunnableDebugInformation(null, 0, null);
   group("addChild", () {
@@ -17,11 +25,14 @@ void main() {
       runnable.addChild(TextLineRunnable(debugInfo)..text = "text line two");
       expect(runnable.description, "text\ntext line two");
     });
-    test('can add TagsRunnable', () {
+    test('can add TagsRunnable which are given to taggable the tagable child',
+        () {
       final runnable = FeatureRunnable("", debugInfo);
       runnable.addChild(TagsRunnable(debugInfo)..tags = ["one", "two"]);
       runnable.addChild(TagsRunnable(debugInfo)..tags = ["three"]);
-      expect(runnable.tags, ["one", "two", "three"]);
+      final scenario = ScenarioRunnable("", debugInfo);
+      runnable.addChild(scenario);
+      expect(tagsToList(scenario.tags), ["one", "two", "three"]);
     });
     test('can add EmptyLineRunnable', () {
       final runnable = FeatureRunnable("", debugInfo);

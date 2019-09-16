@@ -86,12 +86,11 @@ class JsonStep {
     }
 
     if (rows.isNotEmpty) {
-      result['rows'] = rows.map((row) => row.toJson()).toList();
+      result['rows'] = rows.toList();
     }
 
     if (embeddings.isNotEmpty) {
-      result['embeddings'] =
-          embeddings.map((embedding) => embedding.toJson()).toList();
+      result['embeddings'] = embeddings.toList();
     }
 
     return result;

@@ -40,7 +40,7 @@ class JsonScenario {
     };
 
     if (steps.isNotEmpty) {
-      result['steps'] = steps.map((step) => step.toJson()).toList();
+      result['steps'] = steps.toList();
     }
 
     return result;

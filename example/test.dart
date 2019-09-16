@@ -33,7 +33,7 @@ Future<void> main() {
       WhenTheCharactersAreCounted(),
       ThenExpectNumericResult()
     ]
-    ..tagExpression = '@debug'
+    // ..tagExpression = '@debug'
     ..exitAfterTestRun = true;
 
   return GherkinRunner().execute(config);

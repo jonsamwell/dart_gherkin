@@ -48,8 +48,7 @@ class JsonReporter extends Reporter {
   Future<void> _generateReport(String path, List<JsonFeature> features) async {
     try {
       final file = File(path);
-      final result =
-          json.encode(_features.map((feature) => feature.toJson()).toList());
+      final result = json.encode(_features.toList());
       await file.writeAsString(result);
     } catch (e) {
       print('Failed to generate json report: $e');

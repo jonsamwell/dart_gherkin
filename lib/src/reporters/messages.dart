@@ -6,12 +6,25 @@ import '../gherkin/steps/step_run_result.dart';
 
 enum Target { run, feature, scenario, step }
 
+class Tag {
+  final String name;
+  final int lineNumber;
+
+  Tag(this.name, this.lineNumber);
+}
+
 class StartedMessage {
   final Target target;
   final String name;
   final RunnableDebugInformation context;
+  final Iterable<Tag> tags;
 
-  StartedMessage(this.target, this.name, this.context);
+  StartedMessage(
+    this.target,
+    this.name,
+    this.context,
+    this.tags,
+  );
 }
 
 class FinishedMessage {
@@ -26,8 +39,16 @@ class StepStartedMessage extends StartedMessage {
   final Table table;
 
   StepStartedMessage(
-      Target target, String name, RunnableDebugInformation context, this.table)
-      : super(target, name, context);
+    Target target,
+    String name,
+    RunnableDebugInformation context,
+    this.table,
+  ) : super(
+          target,
+          name,
+          context,
+          Iterable.empty(),
+        );
 }
 
 class StepFinishedMessage extends FinishedMessage {

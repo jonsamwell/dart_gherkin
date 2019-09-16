@@ -26,11 +26,13 @@ void main() {
       expect(runnable.steps.elementAt(2).name, "3");
     });
 
-    test('can add TagsRunnable', () {
+    test('can add TagsRunnable which are give to the example', () {
       final runnable = ScenarioOutlineRunnable("", debugInfo);
-      runnable.addChild(TagsRunnable(debugInfo)..tags = ["one", "two"]);
-      runnable.addChild(TagsRunnable(debugInfo)..tags = ["three"]);
-      expect(runnable.tags, ["one", "two", "three"]);
+      final example = ExampleRunnable("", debugInfo);
+      runnable.addChild(example);
+      runnable.addTag(TagsRunnable(debugInfo)..tags = ["one"]);
+      expect(example.tags.first.tags.first, "one");
+      expect(example.tags.first.isInherited, true);
     });
 
     test('can add ExamplesRunnable', () {
