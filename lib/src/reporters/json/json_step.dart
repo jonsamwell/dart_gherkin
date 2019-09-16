@@ -10,6 +10,7 @@ class JsonStep {
   String file;
   String status;
   String error;
+  String docString;
   int duration;
   List<JsonRow> rows = [];
   List<JsonEmbedding> embeddings = [];
@@ -25,6 +26,7 @@ class JsonStep {
     step.name = name;
     step.line = message.context.lineNumber;
     step.file = message.context.filePath;
+    step.docString = message.multilineString;
 
     if ((message.table?.rows?.length ?? 0) > 0) {
       step.rows =
@@ -75,11 +77,26 @@ class JsonStep {
       'keyword': keyword,
       'name': name,
       'line': line,
+      'match': {
+        'location': '$file:$line',
+      },
       'result': {
         'status': status,
         'duration': duration,
       }
     };
+
+    if (docString != null && docString.isNotEmpty) {
+      result['docString'] = {
+        'content_type': '',
+        'value': docString,
+        'line': line + 1,
+      };
+    }
+
+    if (embeddings.isNotEmpty) {
+      result['embeddings'] = embeddings.toList();
+    }
 
     if (error != null) {
       result['result']['error_message'] = error;
@@ -87,10 +104,6 @@ class JsonStep {
 
     if (rows.isNotEmpty) {
       result['rows'] = rows.toList();
-    }
-
-    if (embeddings.isNotEmpty) {
-      result['embeddings'] = embeddings.toList();
     }
 
     return result;

@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:gherkin/src/gherkin/runnables/scenario_type_enum.dart';
+
 import './reporters/message_level.dart';
 import './hooks/hook.dart';
 import './reporters/reporter.dart';
@@ -43,7 +45,13 @@ class FeatureFileRunner {
         Target.feature,
         feature.name,
         feature.debug,
-        feature.tags.map((t) => Tag(t.name, t.debug.lineNumber)).toList(),
+        feature.tags
+            .map((t) => Tag(
+                  t.name,
+                  t.debug.lineNumber,
+                  t.isInherited,
+                ))
+            .toList(),
       ));
       await _log("Attempting to running feature '${feature.name}'",
           feature.debug, MessageLevel.info);
@@ -109,10 +117,19 @@ class FeatureFileRunner {
     }
 
     await _reporter.onScenarioStarted(StartedMessage(
-      Target.scenario,
+      scenario.scenarioType == ScenarioType.scenario_outline
+          ? Target.scenario_outline
+          : Target.scenario,
       scenario.name,
       scenario.debug,
-      scenario.tags.map((t) => Tag(t.name, t.debug.lineNumber)).toList(),
+      scenario.tags.isNotEmpty
+          ? scenario.tags
+              .map((t) => t.tags
+                  .map((tag) => Tag(tag, t.debug.lineNumber, t.isInherited))
+                  .toList())
+              .reduce((a, b) => a..addAll(b))
+              .toList()
+          : Iterable<Tag>.empty().toList(),
     ));
     if (background != null) {
       await _log("Running background steps for scenerio '${scenario.name}'",
@@ -166,10 +183,11 @@ class FeatureFileRunner {
         "Attempting to run step '${step.name}'", step.debug, MessageLevel.info);
     await _hook.onBeforeStep(world, step.name);
     await _reporter.onStepStarted(StepStartedMessage(
-      Target.step,
       step.name,
       step.debug,
-      step.table,
+      table: step.table,
+      multilineString:
+          step.multilineStrings.isNotEmpty ? step.multilineStrings.first : null,
     ));
     if (skipExecution) {
       result = StepResult(0, StepExecutionResult.skipped);

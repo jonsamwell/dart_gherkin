@@ -63,22 +63,11 @@ class FeatureRunnable extends TaggableRunnableBlock {
         throw Exception(
             "Unknown runnable child given to Feature '${child.runtimeType}' - Line#${child.debug.lineText}: '${child.debug.lineText}'");
     }
-
-    // if (child is TaggableRunnableBlock && !(child is BackgroundRunnable)) {
-    //   if (tags.isNotEmpty) {
-    //     tags.forEach((t) => child.addTag(t));
-    //   }
-
-    //   if (_tagsPendingAssignmentToChild.isNotEmpty) {
-    //     _tagsPendingAssignmentToChild.forEach((t) => child.addTag(t));
-    //     _tagsPendingAssignmentToChild.clear();
-    //   }
-    // }
   }
 
   void onTagAdded(TagsRunnable tag) {
     for (var scenario in scenarios) {
-      scenario.addTag(tag.clone(isInheritedTag: true));
+      scenario.addTag(tag.clone(inherited: true));
     }
   }
 }

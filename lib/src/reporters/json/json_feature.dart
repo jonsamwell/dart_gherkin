@@ -42,12 +42,12 @@ class JsonFeature {
       'uri': uri,
     };
 
-    if (scenarios.isNotEmpty) {
-      result['elements'] = scenarios.toList();
-    }
-
     if (tags.isNotEmpty) {
       result['tags'] = tags.toList();
+    }
+
+    if (scenarios.isNotEmpty) {
+      result['elements'] = scenarios.toList();
     }
 
     return result;

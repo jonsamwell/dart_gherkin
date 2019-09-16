@@ -3,7 +3,7 @@ import './runnable.dart';
 
 class TagsRunnable extends Runnable {
   Iterable<String> tags;
-  bool isInherited;
+  bool isInherited = false;
 
   @override
   String get name => "Tags";
@@ -11,10 +11,10 @@ class TagsRunnable extends Runnable {
   TagsRunnable(RunnableDebugInformation debug) : super(debug);
 
   TagsRunnable clone({
-    bool isInheritedTag = false,
+    bool inherited = false,
   }) {
     return TagsRunnable(debug)
       ..tags = tags.map((t) => t).toList()
-      ..isInherited = isInheritedTag;
+      ..isInherited = inherited;
   }
 }

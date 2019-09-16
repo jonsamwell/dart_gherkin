@@ -1,0 +1,46 @@
+[
+  {
+    "description": "",
+    "id": "feature 1",
+    "keyword": "Feature",
+    "line": 2,
+    "name": "Feature 1",
+    "uri": "filepath",
+    "tags": [
+      {
+        "line": 1,
+        "name": "tag1"
+      }
+    ],
+    "elements": [
+      {
+        "keyword": "Scenario",
+        "type": "scenario",
+        "id": "feature 1;scenario 1",
+        "name": "Scenario 1",
+        "description": "",
+        "line": 4,
+        "tags": [
+          {
+            "line": 3,
+            "name": "tag2"
+          }
+        ],
+        "steps": [
+          {
+            "keyword": "Step ",
+            "name": "1",
+            "line": 5,
+            "match": {
+              "location": "filepath:5"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 100000000
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

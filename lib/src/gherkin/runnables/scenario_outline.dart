@@ -30,7 +30,7 @@ class ScenarioOutlineRunnable extends ScenarioRunnable {
   }
 
   void onTagAdded(TagsRunnable tag) {
-    examples?.addTag(tag.clone(isInheritedTag: true));
+    examples?.addTag(tag.clone(inherited: true));
   }
 
   Iterable<ScenarioRunnable> expandOutlinesIntoScenarios() {
