@@ -11,7 +11,7 @@ import '../exceptions/syntax_error.dart';
 ///
 /// We can tackle these infix expressions with good old reverse polish notation
 /// which incidently was one of the first algorithms I coded when I got my first
-/// programing job.
+/// programming job.
 class TagExpressionEvaluator {
   static const String openingBracket = "(";
   static const String closingBracket = ")";
@@ -26,6 +26,7 @@ class TagExpressionEvaluator {
     bool match = true;
     final rpn = _convertInfixToPostfixExpression(tagExpression);
     match = _evaluateRpn(rpn, tags);
+
     return match;
   }
 
@@ -33,7 +34,7 @@ class TagExpressionEvaluator {
     final Queue<bool> stack = Queue<bool>();
     for (var token in rpn) {
       if (_isTag(token)) {
-        stack.addFirst(tags.contains(token.replaceFirst(RegExp("@"), "")));
+        stack.addFirst(tags.contains(token));
       } else {
         switch (token) {
           case "and":

@@ -1,6 +1,6 @@
 ## [1.0.9] - 16/09/2019
 * Fixed issue where tags were not allowed on features
-* Refactor of the way tags are handled so they are not inherited by children if requried (see https://cucumber.io/docs/cucumber/api/#tag-inheritance)
+* Refactor of the way tags are handled so they are inherited by children if requried (see https://cucumber.io/docs/cucumber/api/#tag-inheritance)
 * Fixed the JSON reporter so that is adheres to to the cucumber json reporter spec.
 
 ## [1.0.8] - 13/09/2019

@@ -17,10 +17,10 @@ class JsonScenario {
     scenario.target = message.target;
     scenario.name = message.name;
     scenario.description = '';
-    scenario.line = message.context.lineNumber;
+    scenario.line = message.context.nonZeroAdjustedLineNumber;
     scenario.tags = message.tags
         .where((t) => !t.isInherited)
-        .map((t) => JsonTag(t.name, t.lineNumber))
+        .map((t) => JsonTag(t.name, t.nonZeroAdjustedLineNumber))
         .toList();
 
     return scenario;

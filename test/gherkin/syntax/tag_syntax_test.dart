@@ -25,7 +25,7 @@ void main() {
           "@tag1 @tag2   @tag3@tag_4", RunnableDebugInformation(null, 0, null));
       expect(runnable, isNotNull);
       expect(runnable, predicate((x) => x is TagsRunnable));
-      expect(runnable.tags, equals(["tag1", "tag2", "tag3", "tag_4"]));
+      expect(runnable.tags, equals(["@tag1", "@tag2", "@tag3", "@tag_4"]));
     });
   });
 }

@@ -37,16 +37,31 @@ abstract class StepDefinitionGeneric<TWorld extends World> {
       }, (ms) => elapsedMilliseconds = ms);
     } on TestFailure catch (tf) {
       return StepResult(
-          elapsedMilliseconds, StepExecutionResult.fail, tf.message);
+        elapsedMilliseconds,
+        StepExecutionResult.fail,
+        tf.message,
+      );
     } on TimeoutException catch (te, st) {
       return ErroredStepResult(
-          elapsedMilliseconds, StepExecutionResult.timeout, te, st);
+        elapsedMilliseconds,
+        StepExecutionResult.timeout,
+        te,
+        st,
+      );
     } on Error catch (e, st) {
-      return ErroredStepResult(elapsedMilliseconds, StepExecutionResult.error,
-          new Exception(e.toString()), st);
+      return ErroredStepResult(
+        elapsedMilliseconds,
+        StepExecutionResult.error,
+        Exception(e.toString()),
+        st,
+      );
     } catch (e, st) {
       return ErroredStepResult(
-          elapsedMilliseconds, StepExecutionResult.error, e, st);
+        elapsedMilliseconds,
+        StepExecutionResult.error,
+        e,
+        st,
+      );
     }
 
     return StepResult(elapsedMilliseconds, StepExecutionResult.pass);

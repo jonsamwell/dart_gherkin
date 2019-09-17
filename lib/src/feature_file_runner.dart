@@ -45,13 +45,14 @@ class FeatureFileRunner {
         Target.feature,
         feature.name,
         feature.debug,
-        feature.tags
-            .map((t) => Tag(
-                  t.name,
-                  t.debug.lineNumber,
-                  t.isInherited,
-                ))
-            .toList(),
+        feature.tags.isNotEmpty
+            ? feature.tags
+                .map((t) => t.tags
+                    .map((c) => Tag(c, t.debug.lineNumber, t.isInherited))
+                    .toList())
+                .reduce((a, b) => a..addAll(b))
+                .toList()
+            : Iterable<Tag>.empty().toList(),
       ));
       await _log("Attempting to running feature '${feature.name}'",
           feature.debug, MessageLevel.info);
@@ -176,8 +177,6 @@ class FeatureFileRunner {
   Future<StepResult> _runStep(StepRunnable step, World world,
       AttachmentManager attachmentManager, bool skipExecution) async {
     StepResult result;
-    final ExectuableStep code = _matchStepToExectuableStep(step);
-    final Iterable<dynamic> parameters = _getStepParameters(step, code);
 
     await _log(
         "Attempting to run step '${step.name}'", step.debug, MessageLevel.info);
@@ -189,9 +188,12 @@ class FeatureFileRunner {
       multilineString:
           step.multilineStrings.isNotEmpty ? step.multilineStrings.first : null,
     ));
+
     if (skipExecution) {
       result = StepResult(0, StepExecutionResult.skipped);
     } else {
+      final ExectuableStep code = _matchStepToExectuableStep(step);
+      final Iterable<dynamic> parameters = _getStepParameters(step, code);
       result = await _runWithinTest<StepResult>(
           step.name,
           () async => code.step

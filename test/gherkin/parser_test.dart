@@ -53,7 +53,7 @@ void main() {
       expect(feature.description,
           "A multiine line description\nLine two\nLine three");
       expect(tagsToList(feature.tags),
-          <String>["primary_tag_one", "primary_tag_two"]);
+          <String>["@primary_tag_one", "@primary_tag_two"]);
       expect(feature.scenarios.length, 1);
 
       final background = featureFile.features.elementAt(0).background;
@@ -64,10 +64,10 @@ void main() {
 
       final scenario = featureFile.features.elementAt(0).scenarios.elementAt(0);
       expect(tagsToList(scenario.tags), <String>[
-        "primary_tag_one",
-        "primary_tag_two",
-        "smoke",
-        "some_another_tag"
+        "@primary_tag_one",
+        "@primary_tag_two",
+        "@smoke",
+        "@some_another_tag"
       ]);
       expect(scenario.name, "When the user does some steps they see 'd'");
       expect(scenario.steps.length, 5);
@@ -128,7 +128,7 @@ void main() {
       expect(background.steps.elementAt(1).name, "And I setup 2");
 
       final scenario = featureFile.features.elementAt(0).scenarios.elementAt(0);
-      expect(tagsToList(scenario.tags), ["smoke"]);
+      expect(tagsToList(scenario.tags), ["@smoke"]);
       expect(scenario.name, "When the user does some steps they see 'd'");
       expect(scenario.steps.length, 5);
 
@@ -181,13 +181,13 @@ void main() {
 
       final scenario = featureFile.features.elementAt(0).scenarios.elementAt(0);
       expect(scenario.name, "Eating (Example 1)");
-      expect(tagsToList(scenario.tags), ["smoke"]);
+      expect(tagsToList(scenario.tags), ["@smoke"]);
       expect(scenario.steps.length, 3);
 
       final scenario2 =
           featureFile.features.elementAt(0).scenarios.elementAt(1);
       expect(scenario2.name, "Eating (Example 2)");
-      expect(tagsToList(scenario2.tags), ["smoke"]);
+      expect(tagsToList(scenario2.tags), ["@smoke"]);
       expect(scenario2.steps.length, 3);
 
       expect(scenario.steps.elementAt(0).name, "Given there are 12 cucumbers");
@@ -253,7 +253,7 @@ void main() {
 
       final scenario = featureFile.features.elementAt(0).scenarios.elementAt(0);
       expect(scenario.name, "When the user does some steps they see 'd'");
-      expect(tagsToList(scenario.tags), ["smoke"]);
+      expect(tagsToList(scenario.tags), ["@smoke"]);
       expect(scenario.steps.length, 6);
 
       final steps = scenario.steps;

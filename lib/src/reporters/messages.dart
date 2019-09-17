@@ -11,6 +11,8 @@ class Tag {
   final int lineNumber;
   final bool isInherited;
 
+  int get nonZeroAdjustedLineNumber => lineNumber + 1;
+
   Tag(
     this.name,
     this.lineNumber, [

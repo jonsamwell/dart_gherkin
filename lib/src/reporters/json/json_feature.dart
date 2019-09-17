@@ -17,8 +17,9 @@ class JsonFeature {
     feature.id = message.name.toLowerCase();
     feature.name = message.name;
     feature.description = '';
-    feature.line = message.context.lineNumber;
-    feature.tags = message.tags.map((t) => JsonTag(t.name, t.lineNumber));
+    feature.line = message.context.nonZeroAdjustedLineNumber;
+    feature.tags =
+        message.tags.map((t) => JsonTag(t.name, t.nonZeroAdjustedLineNumber));
 
     return feature;
   }
