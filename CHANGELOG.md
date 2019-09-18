@@ -1,3 +1,6 @@
+## [1.0.10] - 18/09/2019
+* Updated test dependency
+
 ## [1.0.9] - 16/09/2019
 * Fixed issue where tags were not allowed on features
 * Refactor of the way tags are handled so they are inherited by children if requried (see https://cucumber.io/docs/cucumber/api/#tag-inheritance)
