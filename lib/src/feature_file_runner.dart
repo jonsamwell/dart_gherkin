@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:gherkin/src/gherkin/runnables/scenario_type_enum.dart';
+
 import './reporters/message_level.dart';
 import './hooks/hook.dart';
 import './reporters/reporter.dart';
@@ -38,47 +40,66 @@ class FeatureFileRunner {
 
   Future<bool> _runFeature(FeatureRunnable feature) async {
     bool haveAllScenariosPassed = true;
-    if (_canRunFeature(_config.tagExpression, feature)) {
-      try {
-        await _reporter.onFeatureStarted(
-            StartedMessage(Target.feature, feature.name, feature.debug));
-        await _log("Attempting to running feature '${feature.name}'",
-            feature.debug, MessageLevel.info);
-        for (final scenario in feature.scenarios) {
+    try {
+      await _reporter.onFeatureStarted(StartedMessage(
+        Target.feature,
+        feature.name,
+        feature.debug,
+        feature.tags.isNotEmpty
+            ? feature.tags
+                .map((t) => t.tags
+                    .map((c) => Tag(c, t.debug.lineNumber, t.isInherited))
+                    .toList())
+                .reduce((a, b) => a..addAll(b))
+                .toList()
+            : Iterable<Tag>.empty().toList(),
+      ));
+      await _log("Attempting to running feature '${feature.name}'",
+          feature.debug, MessageLevel.info);
+      for (final scenario in feature.scenarios) {
+        if (_canRunScenario(_config.tagExpression, scenario)) {
           haveAllScenariosPassed &=
               await _runScenario(scenario, feature.background);
+        } else {
+          await _log(
+              "Ignoring scenario '${scenario.name}' as tag expression '${_config.tagExpression}' not satified",
+              feature.debug,
+              MessageLevel.info);
         }
-      } on Error catch (err) {
-        await _log(
-            "Fatal error encountered while running feature '${feature.name}'\n$err",
-            feature.debug,
-            MessageLevel.error);
-        rethrow;
-      } catch (e, stacktrace) {
-        await _log("Error while running feature '${feature.name}'\n$e",
-            feature.debug, MessageLevel.error);
-        await _reporter.onException(e, stacktrace);
-        rethrow;
-      } finally {
-        await _reporter.onFeatureFinished(
-            FinishedMessage(Target.feature, feature.name, feature.debug));
-        await _log("Finished running feature '${feature.name}'", feature.debug,
-            MessageLevel.info);
       }
-    } else {
+    } on Error catch (err) {
       await _log(
-          "Ignoring feature '${feature.name}' as tag expression not satified for feature",
+          "Fatal error encountered while running feature '${feature.name}'\n$err",
           feature.debug,
+          MessageLevel.error);
+      rethrow;
+    } catch (e, stacktrace) {
+      await _log("Error while running feature '${feature.name}'\n$e",
+          feature.debug, MessageLevel.error);
+      await _reporter.onException(e, stacktrace);
+      rethrow;
+    } finally {
+      await _reporter.onFeatureFinished(
+          FinishedMessage(Target.feature, feature.name, feature.debug));
+      await _log("Finished running feature '${feature.name}'", feature.debug,
           MessageLevel.info);
     }
 
     return haveAllScenariosPassed;
   }
 
-  bool _canRunFeature(String tagExpression, FeatureRunnable feature) {
+  bool _canRunScenario(String tagExpression, ScenarioRunnable scenario) {
     return tagExpression == null
         ? true
-        : _tagExpressionEvaluator.evaluate(tagExpression, feature.tags);
+        : _tagExpressionEvaluator.evaluate(
+            tagExpression,
+            scenario.tags.isNotEmpty
+                ? scenario.tags
+                    .map((t) => t.tags.toList())
+                    .reduce((a, b) => a..addAll(b))
+                    .toList()
+                : Iterable<String>.empty().toList(),
+          );
   }
 
   Future<bool> _runScenario(
@@ -96,8 +117,21 @@ class FeatureFileRunner {
       await _hook.onAfterScenarioWorldCreated(world, scenario.name);
     }
 
-    await _reporter.onScenarioStarted(
-        StartedMessage(Target.scenario, scenario.name, scenario.debug));
+    await _reporter.onScenarioStarted(StartedMessage(
+      scenario.scenarioType == ScenarioType.scenario_outline
+          ? Target.scenario_outline
+          : Target.scenario,
+      scenario.name,
+      scenario.debug,
+      scenario.tags.isNotEmpty
+          ? scenario.tags
+              .map((t) => t.tags
+                  .map((tag) => Tag(tag, t.debug.lineNumber, t.isInherited))
+                  .toList())
+              .reduce((a, b) => a..addAll(b))
+              .toList()
+          : Iterable<Tag>.empty().toList(),
+    ));
     if (background != null) {
       await _log("Running background steps for scenerio '${scenario.name}'",
           scenario.debug, MessageLevel.info);
@@ -143,17 +177,23 @@ class FeatureFileRunner {
   Future<StepResult> _runStep(StepRunnable step, World world,
       AttachmentManager attachmentManager, bool skipExecution) async {
     StepResult result;
-    final ExectuableStep code = _matchStepToExectuableStep(step);
-    final Iterable<dynamic> parameters = _getStepParameters(step, code);
 
     await _log(
         "Attempting to run step '${step.name}'", step.debug, MessageLevel.info);
     await _hook.onBeforeStep(world, step.name);
-    await _reporter.onStepStarted(
-        StepStartedMessage(Target.step, step.name, step.debug, step.table));
+    await _reporter.onStepStarted(StepStartedMessage(
+      step.name,
+      step.debug,
+      table: step.table,
+      multilineString:
+          step.multilineStrings.isNotEmpty ? step.multilineStrings.first : null,
+    ));
+
     if (skipExecution) {
       result = StepResult(0, StepExecutionResult.skipped);
     } else {
+      final ExectuableStep code = _matchStepToExectuableStep(step);
+      final Iterable<dynamic> parameters = _getStepParameters(step, code);
       result = await _runWithinTest<StepResult>(
           step.name,
           () async => code.step

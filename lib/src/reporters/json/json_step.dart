@@ -6,11 +6,12 @@ import '../../gherkin/steps/step_run_result.dart';
 class JsonStep {
   String keyword;
   String name;
-  int line;
   String file;
-  String status;
   String error;
-  int duration;
+  String docString;
+  String status = 'failed';
+  int duration = 0;
+  int line;
   List<JsonRow> rows = [];
   List<JsonEmbedding> embeddings = [];
 
@@ -23,8 +24,9 @@ class JsonStep {
 
     step.keyword = keyword;
     step.name = name;
-    step.line = message.context.lineNumber;
+    step.line = message.context.nonZeroAdjustedLineNumber;
     step.file = message.context.filePath;
+    step.docString = message.multilineString;
 
     if ((message.table?.rows?.length ?? 0) > 0) {
       step.rows =
@@ -46,7 +48,7 @@ class JsonStep {
         status = 'skipped';
         break;
       default:
-        status = 'failed';
+        break;
     }
 
     if (message.attachments.isNotEmpty) {
@@ -61,12 +63,13 @@ class JsonStep {
   }
 
   void onException(Exception exception, StackTrace stackTrace) {
-    _trackError(exception.toString());
+    _trackError(exception.toString(), stackTrace.toString());
   }
 
-  void _trackError(String error) {
+  void _trackError(String error, [String stacktrace]) {
     if (this.error == null && (error?.length ?? 0) > 0) {
-      this.error = '$file:$line\n$keyword$name\n\n$error';
+      this.error =
+          '$error${stacktrace != null ? '\n\n$stacktrace' : ''}'.trim();
     }
   }
 
@@ -75,23 +78,33 @@ class JsonStep {
       'keyword': keyword,
       'name': name,
       'line': line,
+      'match': {
+        'location': '$file:$line',
+      },
       'result': {
         'status': status,
         'duration': duration,
       }
     };
 
+    if (docString != null && docString.isNotEmpty) {
+      result['docString'] = {
+        'content_type': '',
+        'value': docString,
+        'line': line + 1,
+      };
+    }
+
+    if (embeddings.isNotEmpty) {
+      result['embeddings'] = embeddings.toList();
+    }
+
     if (error != null) {
       result['result']['error_message'] = error;
     }
 
     if (rows.isNotEmpty) {
-      result['rows'] = rows.map((row) => row.toJson()).toList();
-    }
-
-    if (embeddings.isNotEmpty) {
-      result['embeddings'] =
-          embeddings.map((embedding) => embedding.toJson()).toList();
+      result['rows'] = rows.toList();
     }
 
     return result;

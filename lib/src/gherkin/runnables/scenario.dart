@@ -2,14 +2,15 @@ import './comment_line.dart';
 import './debug_information.dart';
 import './empty_line.dart';
 import './runnable.dart';
-import './runnable_block.dart';
 import './step.dart';
-import './tags.dart';
+import 'scenario_type_enum.dart';
+import 'taggable_runnable_block.dart';
 
-class ScenarioRunnable extends RunnableBlock {
+class ScenarioRunnable extends TaggableRunnableBlock {
   String _name;
-  List<String> tags = <String>[];
   List<StepRunnable> steps = <StepRunnable>[];
+
+  ScenarioType get scenarioType => ScenarioType.scenerio;
 
   ScenarioRunnable(this._name, RunnableDebugInformation debug) : super(debug);
 
@@ -21,9 +22,6 @@ class ScenarioRunnable extends RunnableBlock {
     switch (child.runtimeType) {
       case StepRunnable:
         steps.add(child);
-        break;
-      case TagsRunnable:
-        tags.addAll((child as TagsRunnable).tags);
         break;
       case CommentLineRunnable:
       case EmptyLineRunnable:

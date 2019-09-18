@@ -13,8 +13,9 @@ class TagSyntax extends RegExMatchedGherkinSyntax {
     runnable.tags = line
         .trim()
         .split(RegExp("@"))
-        .map((t) => t.trim())
-        .where((t) => t != null && t.isNotEmpty);
+        .where((t) => t != null && t.isNotEmpty)
+        .map((t) => '@${t.trim()}')
+        .toList();
     return runnable;
   }
 }

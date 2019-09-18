@@ -1,3 +1,6 @@
+import 'package:gherkin/src/gherkin/runnables/scenario_expanded_from_outline_example.dart';
+import 'package:gherkin/src/gherkin/runnables/tags.dart';
+
 import '../exceptions/syntax_error.dart';
 import '../runnables/example.dart';
 import '../runnables/scenario.dart';
@@ -26,6 +29,10 @@ class ScenarioOutlineRunnable extends ScenarioRunnable {
     }
   }
 
+  void onTagAdded(TagsRunnable tag) {
+    examples?.addTag(tag.clone(inherited: true));
+  }
+
   Iterable<ScenarioRunnable> expandOutlinesIntoScenarios() {
     if (examples == null) {
       throw new GherkinSyntaxException(
@@ -38,10 +45,10 @@ class ScenarioOutlineRunnable extends ScenarioRunnable {
         exampleIndex < examples.table.rows.length;
         exampleIndex += 1) {
       final exampleRow = examples.table.rows.elementAt(exampleIndex);
-      final scenarioRunnable = ScenarioRunnable(
+      final scenarioRunnable = ScenarioExpandedFromOutlineExampleRunnable(
           '$name (Example ${exampleIndex + 1})'.trim(), this.debug);
       if (tags.isNotEmpty) {
-        scenarioRunnable.tags = tags.map((t) => t).toList();
+        tags.map((t) => scenarioRunnable.addTag(t.clone()));
       }
 
       final clonedSteps = this.steps.map((step) => step.clone()).toList();

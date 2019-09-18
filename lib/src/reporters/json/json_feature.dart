@@ -1,5 +1,6 @@
 import '../messages.dart';
 import 'json_scenario.dart';
+import 'json_tag.dart';
 
 class JsonFeature {
   String uri;
@@ -7,6 +8,7 @@ class JsonFeature {
   String name;
   String description;
   int line;
+  Iterable<JsonTag> tags;
   List<JsonScenario> scenarios = [];
 
   static JsonFeature from(StartedMessage message) {
@@ -15,7 +17,10 @@ class JsonFeature {
     feature.id = message.name.toLowerCase();
     feature.name = message.name;
     feature.description = '';
-    feature.line = message.context.lineNumber;
+    feature.line = message.context.nonZeroAdjustedLineNumber;
+    feature.tags =
+        message.tags.map((t) => JsonTag(t.name, t.nonZeroAdjustedLineNumber));
+
     return feature;
   }
 
@@ -30,17 +35,20 @@ class JsonFeature {
 
   Map<String, dynamic> toJson() {
     final result = {
-      'keyword': 'Feature',
-      'uri': uri,
-      'id': id,
-      'name': name,
       'description': description,
+      'id': id,
+      'keyword': 'Feature',
       'line': line,
+      'name': name,
+      'uri': uri,
     };
 
+    if (tags.isNotEmpty) {
+      result['tags'] = tags.toList();
+    }
+
     if (scenarios.isNotEmpty) {
-      result['elements'] =
-          scenarios.map((scenario) => scenario.toJson()).toList();
+      result['elements'] = scenarios.toList();
     }
 
     return result;

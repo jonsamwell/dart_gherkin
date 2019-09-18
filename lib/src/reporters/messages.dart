@@ -4,14 +4,34 @@ import '../gherkin/models/table.dart';
 import '../gherkin/runnables/debug_information.dart';
 import '../gherkin/steps/step_run_result.dart';
 
-enum Target { run, feature, scenario, step }
+enum Target { run, feature, scenario, scenario_outline, step }
+
+class Tag {
+  final String name;
+  final int lineNumber;
+  final bool isInherited;
+
+  int get nonZeroAdjustedLineNumber => lineNumber + 1;
+
+  Tag(
+    this.name,
+    this.lineNumber, [
+    this.isInherited = false,
+  ]);
+}
 
 class StartedMessage {
   final Target target;
   final String name;
   final RunnableDebugInformation context;
+  final Iterable<Tag> tags;
 
-  StartedMessage(this.target, this.name, this.context);
+  StartedMessage(
+    this.target,
+    this.name,
+    this.context,
+    this.tags,
+  );
 }
 
 class FinishedMessage {
@@ -24,10 +44,19 @@ class FinishedMessage {
 
 class StepStartedMessage extends StartedMessage {
   final Table table;
+  final String multilineString;
 
   StepStartedMessage(
-      Target target, String name, RunnableDebugInformation context, this.table)
-      : super(target, name, context);
+    String name,
+    RunnableDebugInformation context, {
+    this.table,
+    this.multilineString,
+  }) : super(
+          Target.step,
+          name,
+          context,
+          Iterable.empty(),
+        );
 }
 
 class StepFinishedMessage extends FinishedMessage {

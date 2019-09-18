@@ -1,7 +1,16 @@
 import 'package:gherkin/src/gherkin/parser.dart';
 import 'package:gherkin/src/gherkin/runnables/feature_file.dart';
+import 'package:gherkin/src/gherkin/runnables/tags.dart';
 import 'package:test/test.dart';
 import '../mocks/reporter_mock.dart';
+
+Iterable<String> tagsToList(Iterable<TagsRunnable> tags) sync* {
+  for (var tgs in tags) {
+    for (var tag in tgs.tags) {
+      yield tag;
+    }
+  }
+}
 
 void main() {
   group("parse", () {
@@ -9,6 +18,8 @@ void main() {
       final parser = GherkinParser();
       final featureContents = """
       # language: en
+      @primary_tag_one
+      @primary_tag_two
       Feature: The name of the feature
         A multiine line description
         Line two
@@ -19,6 +30,7 @@ void main() {
           And I setup 2
 
         @smoke
+        @some_another_tag
         Scenario: When the user does some steps they see 'd'
           Given I do step a
           And I do step b
@@ -40,7 +52,8 @@ void main() {
       expect(feature.name, "The name of the feature");
       expect(feature.description,
           "A multiine line description\nLine two\nLine three");
-      expect(feature.tags, ["smoke"]);
+      expect(tagsToList(feature.tags),
+          <String>["@primary_tag_one", "@primary_tag_two"]);
       expect(feature.scenarios.length, 1);
 
       final background = featureFile.features.elementAt(0).background;
@@ -50,6 +63,12 @@ void main() {
       expect(background.steps.elementAt(1).name, "And I setup 2");
 
       final scenario = featureFile.features.elementAt(0).scenarios.elementAt(0);
+      expect(tagsToList(scenario.tags), <String>[
+        "@primary_tag_one",
+        "@primary_tag_two",
+        "@smoke",
+        "@some_another_tag"
+      ]);
       expect(scenario.name, "When the user does some steps they see 'd'");
       expect(scenario.steps.length, 5);
 
@@ -100,7 +119,6 @@ void main() {
       expect(feature.name, "The name of the feature");
       expect(feature.description,
           "A multiine line description\nLine two\nLine three");
-      expect(feature.tags, ["smoke"]);
       expect(feature.scenarios.length, 1);
 
       final background = featureFile.features.elementAt(0).background;
@@ -110,6 +128,7 @@ void main() {
       expect(background.steps.elementAt(1).name, "And I setup 2");
 
       final scenario = featureFile.features.elementAt(0).scenarios.elementAt(0);
+      expect(tagsToList(scenario.tags), ["@smoke"]);
       expect(scenario.name, "When the user does some steps they see 'd'");
       expect(scenario.steps.length, 5);
 
@@ -152,7 +171,6 @@ void main() {
 
       final feature = featureFile.features.elementAt(0);
       expect(feature.name, "The name of the feature");
-      expect(feature.tags, ["smoke"]);
       expect(feature.scenarios.length, 2);
 
       final background = featureFile.features.elementAt(0).background;
@@ -163,13 +181,13 @@ void main() {
 
       final scenario = featureFile.features.elementAt(0).scenarios.elementAt(0);
       expect(scenario.name, "Eating (Example 1)");
-      expect(scenario.tags, ["smoke"]);
+      expect(tagsToList(scenario.tags), ["@smoke"]);
       expect(scenario.steps.length, 3);
 
       final scenario2 =
           featureFile.features.elementAt(0).scenarios.elementAt(1);
       expect(scenario2.name, "Eating (Example 2)");
-      expect(scenario2.tags, ["smoke"]);
+      expect(tagsToList(scenario2.tags), ["@smoke"]);
       expect(scenario2.steps.length, 3);
 
       expect(scenario.steps.elementAt(0).name, "Given there are 12 cucumbers");
@@ -225,7 +243,6 @@ void main() {
       expect(feature.name, "The name of the feature");
       expect(feature.description,
           "A multiine line description\nLine two\nLine three");
-      expect(feature.tags, ["smoke"]);
       expect(feature.scenarios.length, 1);
 
       final background = featureFile.features.elementAt(0).background;
@@ -236,7 +253,7 @@ void main() {
 
       final scenario = featureFile.features.elementAt(0).scenarios.elementAt(0);
       expect(scenario.name, "When the user does some steps they see 'd'");
-      expect(scenario.tags, ["smoke"]);
+      expect(tagsToList(scenario.tags), ["@smoke"]);
       expect(scenario.steps.length, 6);
 
       final steps = scenario.steps;
