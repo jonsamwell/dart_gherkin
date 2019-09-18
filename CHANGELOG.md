@@ -1,3 +1,6 @@
+## [1.0.11] - 18/09/2019
+* Fixed path dependency to be backwards compatible with flutter_driver
+
 ## [1.0.10] - 18/09/2019
 * Updated test dependency
 
