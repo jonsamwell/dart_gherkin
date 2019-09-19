@@ -14,6 +14,8 @@ class GherkinDialect {
   Iterable<String> and;
   Iterable<String> but;
 
+  Set<String> stepKeywords;
+
   static GherkinDialect fromJSON(Map<String, dynamic> map) {
     final dialect = GherkinDialect();
     dialect.name = map['name'];
@@ -30,6 +32,14 @@ class GherkinDialect {
     dialect.then = (map['then'] as List)?.map((e) => e as String);
     dialect.and = (map['and'] as List)?.map((e) => e as String);
     dialect.but = (map['but'] as List)?.map((e) => e as String);
+
+    dialect.stepKeywords = (<String>[]
+          ..addAll(dialect.given)
+          ..addAll(dialect.when)
+          ..addAll(dialect.then)
+          ..addAll(dialect.and)
+          ..addAll(dialect.but))
+        .toSet();
 
     return dialect;
   }

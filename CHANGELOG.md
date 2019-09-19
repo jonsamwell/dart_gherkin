@@ -1,4 +1,4 @@
-## [1.1.0] - 19/09/2019
+## [1.1.0] - 20/09/2019
 * Implemented langauges - features can now be written in different languages / dialects! See https://cucumber.io/docs/gherkin/reference/#overview for supported dialects.
 
 ## [1.0.12] - 18/09/2019
