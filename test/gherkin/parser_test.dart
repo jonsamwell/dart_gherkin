@@ -2,6 +2,7 @@ import 'package:gherkin/src/gherkin/parser.dart';
 import 'package:gherkin/src/gherkin/runnables/feature_file.dart';
 import 'package:gherkin/src/gherkin/runnables/tags.dart';
 import 'package:test/test.dart';
+import '../mocks/language_service_mock.dart';
 import '../mocks/reporter_mock.dart';
 
 Iterable<String> tagsToList(Iterable<TagsRunnable> tags) sync* {
@@ -42,8 +43,12 @@ void main() {
           When I do step c
           Then I expect to see d
       """;
-      final FeatureFile featureFile =
-          await parser.parseFeatureFile(featureContents, "", ReporterMock());
+      final FeatureFile featureFile = await parser.parseFeatureFile(
+        featureContents,
+        "",
+        ReporterMock(),
+        LanguageServiceMock(),
+      );
       expect(featureFile, isNot(null));
       expect(featureFile.langauge, equals("en"));
       expect(featureFile.features.length, 1);
@@ -109,8 +114,12 @@ void main() {
           When I do step c
           Then I expect to see d
       """;
-      final FeatureFile featureFile =
-          await parser.parseFeatureFile(featureContents, "", ReporterMock());
+      final FeatureFile featureFile = await parser.parseFeatureFile(
+        featureContents,
+        "",
+        ReporterMock(),
+        LanguageServiceMock(),
+      );
       expect(featureFile, isNot(null));
       expect(featureFile.langauge, equals("en"));
       expect(featureFile.features.length, 1);
@@ -163,8 +172,12 @@ void main() {
             |    12 |   5 |    7 |
             |    20 |   9 |   11 |
       """;
-      final FeatureFile featureFile =
-          await parser.parseFeatureFile(featureContents, "", ReporterMock());
+      final FeatureFile featureFile = await parser.parseFeatureFile(
+        featureContents,
+        "",
+        ReporterMock(),
+        LanguageServiceMock(),
+      );
       expect(featureFile, isNot(null));
       expect(featureFile.langauge, equals("en"));
       expect(featureFile.features.length, 1);
@@ -233,8 +246,12 @@ void main() {
           # When I do step c.1
           Then I expect to see d
       """;
-      final FeatureFile featureFile =
-          await parser.parseFeatureFile(featureContents, "", ReporterMock());
+      final FeatureFile featureFile = await parser.parseFeatureFile(
+        featureContents,
+        "",
+        ReporterMock(),
+        LanguageServiceMock(),
+      );
       expect(featureFile, isNot(null));
       expect(featureFile.langauge, equals("en"));
       expect(featureFile.features.length, 1);

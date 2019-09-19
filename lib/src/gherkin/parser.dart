@@ -1,3 +1,6 @@
+import 'package:gherkin/src/gherkin/langauges/language_service.dart';
+import 'package:gherkin/src/gherkin/runnables/dialect_block.dart';
+
 import './exceptions/syntax_error.dart';
 import './runnables/debug_information.dart';
 import './runnables/feature_file.dart';
@@ -19,6 +22,7 @@ import './syntax/text_line_syntax.dart';
 import '../reporters/message_level.dart';
 import '../reporters/reporter.dart';
 import './syntax/example_syntax.dart';
+import './langauges/dialect.dart';
 
 class GherkinParser {
   final Iterable<SyntaxMatcher> syntaxMatchers = [
@@ -38,13 +42,25 @@ class GherkinParser {
   ];
 
   Future<FeatureFile> parseFeatureFile(
-      String contents, String path, Reporter reporter) async {
+    String contents,
+    String path,
+    Reporter reporter,
+    LanguageService langaugeService,
+  ) async {
     final featureFile = FeatureFile(RunnableDebugInformation(path, 0, null));
     await reporter.message("Parsing feature file: '$path'", MessageLevel.debug);
     final lines =
         contents.trim().split(RegExp(r"(\r\n|\r|\n)", multiLine: true));
     try {
-      _parseBlock(FeatureFileSyntax(), featureFile, lines, 0, 0);
+      _parseBlock(
+        langaugeService,
+        langaugeService.getDialect(),
+        FeatureFileSyntax(),
+        featureFile,
+        lines,
+        0,
+        0,
+      );
     } catch (e) {
       await reporter.message(
           "Error while parsing feature file: '$path'\n$e", MessageLevel.error);
@@ -54,13 +70,20 @@ class GherkinParser {
     return featureFile;
   }
 
-  num _parseBlock(SyntaxMatcher parentSyntaxBlock, RunnableBlock parentBlock,
-      Iterable<String> lines, int lineNumber, int depth) {
+  num _parseBlock(
+      LanguageService langaugeService,
+      GherkinDialect dialect,
+      SyntaxMatcher parentSyntaxBlock,
+      RunnableBlock parentBlock,
+      Iterable<String> lines,
+      int lineNumber,
+      int depth) {
     for (int i = lineNumber; i < lines.length; i += 1) {
       final line = lines.elementAt(i).trim();
       // print("$depth - $line");
-      final matcher = syntaxMatchers
-          .firstWhere((matcher) => matcher.isMatch(line), orElse: () => null);
+      final matcher = syntaxMatchers.firstWhere(
+          (matcher) => matcher.isMatch(line, dialect),
+          orElse: () => null);
       if (matcher != null) {
         if (parentSyntaxBlock.hasBlockEnded(matcher)) {
           switch (parentSyntaxBlock.endBlockHandling(matcher)) {
@@ -71,10 +94,26 @@ class GherkinParser {
           }
         }
 
-        final runnable =
-            matcher.toRunnable(line, parentBlock.debug.copyWith(i, line));
+        final runnable = matcher.toRunnable(
+          line,
+          parentBlock.debug.copyWith(i, line),
+          dialect,
+        );
+
+        if (runnable is DialectBlock) {
+          dialect = runnable.getDialect(langaugeService);
+        }
+
         if (runnable is RunnableBlock) {
-          i = _parseBlock(matcher, runnable, lines, i + 1, depth + 1);
+          i = _parseBlock(
+            langaugeService,
+            dialect,
+            matcher,
+            runnable,
+            lines,
+            i + 1,
+            depth + 1,
+          );
         }
 
         parentBlock.addChild(runnable);

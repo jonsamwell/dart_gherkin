@@ -1,3 +1,5 @@
+import 'package:gherkin/src/gherkin/langauges/dialect.dart';
+
 import '../runnables/debug_information.dart';
 import '../runnables/runnable.dart';
 import '../runnables/tags.dart';
@@ -5,10 +7,15 @@ import './regex_matched_syntax.dart';
 
 class TagSyntax extends RegExMatchedGherkinSyntax {
   @override
-  final RegExp pattern = RegExp("^@", multiLine: false, caseSensitive: false);
+  RegExp pattern(GherkinDialect dialect) =>
+      RegExp("^@", multiLine: false, caseSensitive: false);
 
   @override
-  Runnable toRunnable(String line, RunnableDebugInformation debug) {
+  Runnable toRunnable(
+    String line,
+    RunnableDebugInformation debug,
+    GherkinDialect dialect,
+  ) {
     final runnable = TagsRunnable(debug);
     runnable.tags = line
         .trim()

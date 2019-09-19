@@ -1,3 +1,5 @@
+import 'package:gherkin/src/gherkin/langauges/dialect.dart';
+
 import '../syntax/syntax_matcher.dart';
 
 class FeatureFileSyntax extends SyntaxMatcher {
@@ -8,7 +10,7 @@ class FeatureFileSyntax extends SyntaxMatcher {
   bool hasBlockEnded(SyntaxMatcher syntax) => false;
 
   @override
-  bool isMatch(String line) {
+  bool isMatch(String line, GherkinDialect dialect) {
     return false;
   }
 }

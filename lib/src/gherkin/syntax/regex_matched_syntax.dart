@@ -1,11 +1,17 @@
+import 'package:gherkin/src/gherkin/langauges/dialect.dart';
+
 import './syntax_matcher.dart';
 
 abstract class RegExMatchedGherkinSyntax extends SyntaxMatcher {
-  RegExp get pattern;
+  RegExp pattern(GherkinDialect dialect);
 
   @override
-  bool isMatch(String line) {
-    final match = pattern.hasMatch(line);
+  bool isMatch(String line, GherkinDialect dialect) {
+    final match = pattern(dialect).hasMatch(line);
+
     return match;
   }
+
+  String getMultiDialectRegexPattern(Iterable<String> dialectVariants) =>
+      dialectVariants.map((s) => s.trim()).where((s) => s != "*").join("|");
 }

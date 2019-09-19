@@ -1,3 +1,5 @@
+import 'package:gherkin/src/gherkin/langauges/dialect.dart';
+
 import '../runnables/debug_information.dart';
 import '../runnables/runnable.dart';
 import '../runnables/scenario.dart';
@@ -7,8 +9,11 @@ import './tag_syntax.dart';
 
 class ScenarioSyntax extends RegExMatchedGherkinSyntax {
   @override
-  final RegExp pattern = RegExp(r"^\s*Scenario:\s*(.+)\s*$",
-      multiLine: false, caseSensitive: false);
+  RegExp pattern(GherkinDialect dialect) => RegExp(
+        "^\\s*(?:${getMultiDialectRegexPattern(dialect.scenario)}):\\s*(.+)\\s*\$",
+        multiLine: false,
+        caseSensitive: false,
+      );
 
   @override
   bool get isBlockSyntax => true;
@@ -18,8 +23,9 @@ class ScenarioSyntax extends RegExMatchedGherkinSyntax {
       syntax is ScenarioSyntax || syntax is TagSyntax;
 
   @override
-  Runnable toRunnable(String line, RunnableDebugInformation debug) {
-    final name = pattern.firstMatch(line).group(1);
+  Runnable toRunnable(
+      String line, RunnableDebugInformation debug, GherkinDialect dialect) {
+    final name = pattern(dialect).firstMatch(line).group(1);
     final runnable = ScenarioRunnable(name, debug);
     return runnable;
   }

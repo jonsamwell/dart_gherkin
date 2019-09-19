@@ -5,23 +5,70 @@ import 'package:gherkin/src/gherkin/syntax/multiline_string_syntax.dart';
 import 'package:gherkin/src/gherkin/syntax/text_line_syntax.dart';
 import 'package:test/test.dart';
 
+import '../../mocks/en_dialect_mock.dart';
+
 void main() {
   group("isMatch", () {
     test('matches correctly', () {
       final syntax = MultilineStringSyntax();
-      expect(syntax.isMatch('"""'), true);
-      expect(syntax.isMatch('```'), true);
-      expect(syntax.isMatch("'''"), true);
+      expect(
+          syntax.isMatch(
+            '"""',
+            EnDialectMock(),
+          ),
+          true);
+      expect(
+          syntax.isMatch(
+            '```',
+            EnDialectMock(),
+          ),
+          true);
+      expect(
+          syntax.isMatch(
+            "'''",
+            EnDialectMock(),
+          ),
+          true);
     });
 
     test('does not match', () {
       final syntax = MultilineStringSyntax();
-      expect(syntax.isMatch('#"""'), false);
-      expect(syntax.isMatch('#```'), false);
-      expect(syntax.isMatch("#'''"), false);
-      expect(syntax.isMatch('"'), false);
-      expect(syntax.isMatch('`'), false);
-      expect(syntax.isMatch("'"), false);
+      expect(
+          syntax.isMatch(
+            '#"""',
+            EnDialectMock(),
+          ),
+          false);
+      expect(
+          syntax.isMatch(
+            '#```',
+            EnDialectMock(),
+          ),
+          false);
+      expect(
+          syntax.isMatch(
+            "#'''",
+            EnDialectMock(),
+          ),
+          false);
+      expect(
+          syntax.isMatch(
+            '"',
+            EnDialectMock(),
+          ),
+          false);
+      expect(
+          syntax.isMatch(
+            '`',
+            EnDialectMock(),
+          ),
+          false);
+      expect(
+          syntax.isMatch(
+            "'",
+            EnDialectMock(),
+          ),
+          false);
     });
   });
   group("block", () {
@@ -49,8 +96,11 @@ void main() {
   group("toRunnable", () {
     test('creates TextLineRunnable', () {
       final syntax = MultilineStringSyntax();
-      final MultilineStringRunnable runnable =
-          syntax.toRunnable("'''", RunnableDebugInformation(null, 0, null));
+      final MultilineStringRunnable runnable = syntax.toRunnable(
+        "'''",
+        RunnableDebugInformation(null, 0, null),
+        EnDialectMock(),
+      );
       expect(runnable, isNotNull);
       expect(runnable, predicate((x) => x is MultilineStringRunnable));
       expect(runnable.lines.length, 0);

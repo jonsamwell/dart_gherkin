@@ -1,3 +1,5 @@
+import 'package:gherkin/src/gherkin/langauges/dialect.dart';
+
 import '../runnables/debug_information.dart';
 import '../runnables/runnable.dart';
 import '../runnables/step.dart';
@@ -8,8 +10,19 @@ import './table_line_syntax.dart';
 
 class StepSyntax extends RegExMatchedGherkinSyntax {
   @override
-  final RegExp pattern = RegExp(r"^(given|then|when|and|but)\s.*",
-      multiLine: false, caseSensitive: false);
+  RegExp pattern(GherkinDialect dialect) {
+    final stepKeywordPattern = getMultiDialectRegexPattern([]
+      ..addAll(dialect.given)
+      ..addAll(dialect.when)
+      ..addAll(dialect.then)
+      ..addAll(dialect.and)
+      ..addAll(dialect.but));
+    return RegExp(
+      "^($stepKeywordPattern)\\s.*",
+      multiLine: false,
+      caseSensitive: false,
+    );
+  }
 
   @override
   bool get isBlockSyntax => true;
@@ -19,7 +32,11 @@ class StepSyntax extends RegExMatchedGherkinSyntax {
       !(syntax is MultilineStringSyntax || syntax is TableLineSyntax);
 
   @override
-  Runnable toRunnable(String line, RunnableDebugInformation debug) {
+  Runnable toRunnable(
+    String line,
+    RunnableDebugInformation debug,
+    GherkinDialect dialect,
+  ) {
     final runnable = StepRunnable(line, debug);
     return runnable;
   }

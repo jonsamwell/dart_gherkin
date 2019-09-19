@@ -1,3 +1,5 @@
+import 'package:gherkin/src/gherkin/langauges/dialect.dart';
+
 import '../runnables/example.dart';
 import '../runnables/debug_information.dart';
 import '../runnables/runnable.dart';
@@ -7,8 +9,11 @@ import './table_line_syntax.dart';
 
 class ExampleSyntax extends RegExMatchedGherkinSyntax {
   @override
-  final RegExp pattern = RegExp(r"^\s*Example[s]?:(\s*(.+)\s*)?$",
-      multiLine: false, caseSensitive: false);
+  RegExp pattern(GherkinDialect dialect) => RegExp(
+        "^\\s*(?:${getMultiDialectRegexPattern(dialect.examples)}):(\\s*(.+)\\s*)?\$",
+        multiLine: false,
+        caseSensitive: false,
+      );
 
   @override
   bool get isBlockSyntax => true;
@@ -17,8 +22,12 @@ class ExampleSyntax extends RegExMatchedGherkinSyntax {
   bool hasBlockEnded(SyntaxMatcher syntax) => !(syntax is TableLineSyntax);
 
   @override
-  Runnable toRunnable(String line, RunnableDebugInformation debug) {
-    final name = (pattern.firstMatch(line).group(1) ?? "").trim();
+  Runnable toRunnable(
+    String line,
+    RunnableDebugInformation debug,
+    GherkinDialect dialect,
+  ) {
+    final name = (pattern(dialect).firstMatch(line).group(1) ?? "").trim();
     final runnable = ExampleRunnable(name, debug);
 
     return runnable;

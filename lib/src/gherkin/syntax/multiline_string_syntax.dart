@@ -1,3 +1,5 @@
+import 'package:gherkin/src/gherkin/langauges/dialect.dart';
+
 import '../runnables/debug_information.dart';
 import '../runnables/multi_line_string.dart';
 import '../runnables/runnable.dart';
@@ -9,12 +11,13 @@ import './text_line_syntax.dart';
 
 class MultilineStringSyntax extends RegExMatchedGherkinSyntax {
   @override
-  final RegExp pattern = RegExp(
-      r"^\s*("
-      '"""'
-      r"|'''|```)\s*$",
-      multiLine: false,
-      caseSensitive: false);
+  RegExp pattern(GherkinDialect dialect) => RegExp(
+        r"^\s*("
+        '"""'
+        r"|'''|```)\s*$",
+        multiLine: false,
+        caseSensitive: false,
+      );
 
   @override
   bool get isBlockSyntax => true;
@@ -31,10 +34,12 @@ class MultilineStringSyntax extends RegExMatchedGherkinSyntax {
   }
 
   @override
-  Runnable toRunnable(String line, RunnableDebugInformation debug) {
-    final runnable = MultilineStringRunnable(debug);
-    return runnable;
-  }
+  Runnable toRunnable(
+    String line,
+    RunnableDebugInformation debug,
+    GherkinDialect dialect,
+  ) =>
+      MultilineStringRunnable(debug);
 
   @override
   EndBlockHandling endBlockHandling(SyntaxMatcher syntax) =>
