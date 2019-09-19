@@ -6,20 +6,52 @@ import 'package:gherkin/src/gherkin/syntax/step_syntax.dart';
 import 'package:gherkin/src/gherkin/syntax/table_line_syntax.dart';
 import 'package:test/test.dart';
 
+import '../../mocks/en_dialect_mock.dart';
+
 void main() {
   group("isMatch", () {
     test('matches correctly', () {
       final syntax = TableLineSyntax();
-      expect(syntax.isMatch('||'), true);
-      expect(syntax.isMatch(' | | '), true);
-      expect(syntax.isMatch("  |a|b|c| "), true);
+      expect(
+          syntax.isMatch(
+            '||',
+            EnDialectMock(),
+          ),
+          true);
+      expect(
+          syntax.isMatch(
+            ' | | ',
+            EnDialectMock(),
+          ),
+          true);
+      expect(
+          syntax.isMatch(
+            "  |a|b|c| ",
+            EnDialectMock(),
+          ),
+          true);
     });
 
     test('does not match', () {
       final syntax = TableLineSyntax();
-      expect(syntax.isMatch('#||'), false);
-      expect(syntax.isMatch(' |  '), false);
-      expect(syntax.isMatch("  |a|b|c "), false);
+      expect(
+          syntax.isMatch(
+            '#||',
+            EnDialectMock(),
+          ),
+          false);
+      expect(
+          syntax.isMatch(
+            ' |  ',
+            EnDialectMock(),
+          ),
+          false);
+      expect(
+          syntax.isMatch(
+            "  |a|b|c ",
+            EnDialectMock(),
+          ),
+          false);
     });
   });
 
@@ -76,7 +108,10 @@ void main() {
     test('creates TableRunnable', () {
       final syntax = TableLineSyntax();
       final TableRunnable runnable = syntax.toRunnable(
-          " | Row One | Row Two | ", RunnableDebugInformation(null, 0, null));
+        " | Row One | Row Two | ",
+        RunnableDebugInformation(null, 0, null),
+        EnDialectMock(),
+      );
       expect(runnable, isNotNull);
       expect(runnable, predicate((x) => x is TableRunnable));
       expect(runnable.rows.elementAt(0), "| Row One | Row Two |");

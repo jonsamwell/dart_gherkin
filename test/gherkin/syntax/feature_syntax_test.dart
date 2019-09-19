@@ -4,18 +4,40 @@ import 'package:gherkin/src/gherkin/runnables/runnable.dart';
 import 'package:gherkin/src/gherkin/syntax/feature_syntax.dart';
 import 'package:test/test.dart';
 
+import '../../mocks/en_dialect_mock.dart';
+
 void main() {
   group("isMatch", () {
     test('matches correctly', () {
       final keyword = FeatureSyntax();
-      expect(keyword.isMatch("Feature: one"), true);
-      expect(keyword.isMatch("Feature:one"), true);
+      expect(
+          keyword.isMatch(
+            "Feature: one",
+            EnDialectMock(),
+          ),
+          true);
+      expect(
+          keyword.isMatch(
+            "Feature:one",
+            EnDialectMock(),
+          ),
+          true);
     });
 
     test('does not match', () {
       final keyword = FeatureSyntax();
-      expect(keyword.isMatch("#Feature: no"), false);
-      expect(keyword.isMatch("# Feature no"), false);
+      expect(
+          keyword.isMatch(
+            "#Feature: no",
+            EnDialectMock(),
+          ),
+          false);
+      expect(
+          keyword.isMatch(
+            "# Feature no",
+            EnDialectMock(),
+          ),
+          false);
     });
   });
 
@@ -23,7 +45,10 @@ void main() {
     test('creates FeatureRunnable', () {
       final keyword = FeatureSyntax();
       final Runnable runnable = keyword.toRunnable(
-          "Feature: A feature 123", RunnableDebugInformation(null, 0, null));
+        "Feature: A feature 123",
+        RunnableDebugInformation(null, 0, null),
+        EnDialectMock(),
+      );
       expect(runnable, isNotNull);
       expect(runnable, predicate((x) => x is FeatureRunnable));
       expect(runnable.name, equals("A feature 123"));

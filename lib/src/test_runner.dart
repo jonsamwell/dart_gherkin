@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:gherkin/src/gherkin/langauges/language_service.dart';
+
 import './configuration.dart';
 import './feature_file_runner.dart';
 import './gherkin/expressions/gherkin_expression.dart';
@@ -23,6 +25,7 @@ class GherkinRunner {
   final _reporter = AggregatedReporter();
   final _hook = AggregatedHook();
   final _parser = GherkinParser();
+  final _langaugeService = LanguageService();
   final _tagExpressionEvaluator = TagExpressionEvaluator();
   final List<ExectuableStep> _executableSteps = <ExectuableStep>[];
   final List<CustomParameter> _customParameters = <CustomParameter>[];
@@ -33,6 +36,7 @@ class GherkinRunner {
     _registerHooks(config.hooks);
     _registerCustomParameters(config.customStepParameterDefinitions);
     _registerStepDefinitions(config.stepDefinitions);
+    _langaugeService.initialise(config.featureDefaultLanguage);
 
     List<FeatureFile> featureFiles = <FeatureFile>[];
     for (var glob in config.features) {
@@ -40,8 +44,8 @@ class GherkinRunner {
         await _reporter.message(
             "Found feature file '${entity.path}'", MessageLevel.verbose);
         final contents = File(entity.path).readAsStringSync();
-        final featureFile =
-            await _parser.parseFeatureFile(contents, entity.path, _reporter);
+        final featureFile = await _parser.parseFeatureFile(
+            contents, entity.path, _reporter, _langaugeService);
         featureFiles.add(featureFile);
       }
     }

@@ -31,6 +31,7 @@ Available as a Flutter specific package https://pub.dartlang.org/packages/flutte
     - [features](#features)
     - [tagExpression](#tagexpression)
     - [order](#order)
+    - [featureDefaultLanguage](#defaultLanguage)
     - [stepDefinitions](#stepdefinitions)
     - [customStepParameterDefinitions](#customstepparameterdefinitions)
     - [hooks](#hooks)
@@ -50,6 +51,7 @@ Available as a Flutter specific package https://pub.dartlang.org/packages/flutte
     - [World Context (per test scenario shared state)](#world-context-per-test-scenario-shared-state)
     - [Assertions](#assertions)
   - [Tags](#tags)
+  - [Languages](#languages)
 - [Hooks](#hooks)
 - [Attachments](#attachments)
 - [Reporting](#reporting)
@@ -179,6 +181,12 @@ An infix boolean expression which defines the features and scenarios to run base
 Defaults to `ExecutionOrder.random`
 
 The order by which scenarios will be run. Running an a random order may highlight any inter-test dependencies that should be fixed.
+
+#### defaultLanguage
+
+Defaults to `en`
+
+This specifies the default langauge the feature files are written in.  See https://cucumber.io/docs/gherkin/reference/#overview for supported languages.
 
 #### stepDefinitions
 
@@ -605,6 +613,53 @@ You can even us brackets to ensure the order of precedence
 You can use the usual boolean statement "and", "or", "not"
 
 Also see <https://docs.cucumber.io/cucumber/api/#tags>
+
+### Languages
+
+In order to allow features to be written in a number of languages, you can now write the keywords in languages other than English. To improve readability and flow, some languages may have more than one translation for any given keyword. See https://cucumber.io/docs/gherkin/reference/#overview for a list of supported langauges.
+
+You can set the default language of feature files in your project via the configuration setting see [featureDefaultLanguage](#defaultLanguage)
+
+For example these two features are the same the keywords are just written in different languages. Note the ```# language: de``` on the second feature.  English is the default language.
+
+```
+Feature: Calculator
+  Tests the addition of two numbers
+
+  Scenario Outline: Add two numbers
+    Given the numbers <number_one> and <number_two>
+    When they are added
+    Then the expected result is <result>
+
+    Examples:
+      | number_one | number_two | result |
+      | 12         | 5          | 17     |
+      | 20         | 5          | 25     |
+      | 20937      | 1          | 20938  |
+      | 20.937     | -1.937     | 19     |
+
+```
+
+```
+# language: de
+Funktionalität: Calculator
+  Tests the addition of two numbers
+
+  Szenariogrundriss: Add two numbers
+    Gegeben sei the numbers <number_one> and <number_two>
+    Wenn they are added
+    Dann the expected result is <result>
+
+    Beispiele:
+      | number_one | number_two | result |
+      | 12         | 5          | 17     |
+      | 20         | 5          | 25     |
+      | 20937      | 1          | 20938  |
+      | 20.937     | -1.937     | 19     |
+
+```
+
+Please note the language data is take and attributed to the cucumber project https://github.com/cucumber/cucumber/blob/master/gherkin/gherkin-languages.json
 
 ## Hooks
 
