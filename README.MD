@@ -618,9 +618,9 @@ Also see <https://docs.cucumber.io/cucumber/api/#tags>
 
 In order to allow features to be written in a number of languages, you can now write the keywords in languages other than English. To improve readability and flow, some languages may have more than one translation for any given keyword. See https://cucumber.io/docs/gherkin/reference/#overview for a list of supported langauges.
 
-You can set the default language of feature files in your project via the configuration setting see #defaultLanguage
+You can set the default language of feature files in your project via the configuration setting see [featureDefaultLanguage](#defaultLanguage)
 
-For example these two features are the same they are just written in different languages. Note the ```# language: de``` on the second feature.  English is the default language.
+For example these two features are the same the keywords are just written in different languages. Note the ```# language: de``` on the second feature.  English is the default language.
 
 ```
 Feature: Calculator
@@ -658,6 +658,8 @@ Funktionalität: Calculator
       | 20.937     | -1.937     | 19     |
 
 ```
+
+Please note the language data is take and attributed to the cucumber project https://github.com/cucumber/cucumber/blob/master/gherkin/gherkin-languages.json
 
 ## Hooks
 
