@@ -33,6 +33,15 @@ void main() {
       expect(table.rows.first.columns, ["one", "two", "three"]);
     });
 
+    test("single row table as map", () async {
+      final runnable = TableRunnable(debugInfo);
+      runnable.addChild(
+          TableRunnable(debugInfo)..rows.add("| one | two | three |"));
+      final maps = runnable.toTable().asMap();
+      expect(maps.length, 1);
+      expect(maps.elementAt(0), {"0": "one", "1": "two", "2": "three"});
+    });
+
     test("two row table has header row", () async {
       final runnable = TableRunnable(debugInfo);
       runnable.addChild(TableRunnable(debugInfo)
@@ -45,6 +54,18 @@ void main() {
           table.header.columns, ["header one", "header two", "header three"]);
       expect(table.rows.length, 1);
       expect(table.rows.elementAt(0).columns, ["one", "two", "three"]);
+    });
+
+    test("two row table as map", () async {
+      final runnable = TableRunnable(debugInfo);
+      runnable.addChild(TableRunnable(debugInfo)
+        ..rows.add("| header one | header two | header three |"));
+      runnable.addChild(
+          TableRunnable(debugInfo)..rows.add("| one | two | three |"));
+      final maps = runnable.toTable().asMap();
+      expect(maps.length, 1);
+      expect(maps.elementAt(0),
+          {"header one": "one", "header two": "two", "header three": "three"});
     });
 
     test("three row table has header row and correct rows", () async {
@@ -64,6 +85,22 @@ void main() {
       expect(table.rows.elementAt(1).columns, ["four", "five", "six"]);
     });
 
+    test("three row table as map", () async {
+      final runnable = TableRunnable(debugInfo);
+      runnable.addChild(TableRunnable(debugInfo)
+        ..rows.add("| header one | header two | header three |"));
+      runnable.addChild(
+          TableRunnable(debugInfo)..rows.add("| one | two | three |"));
+      runnable.addChild(
+          TableRunnable(debugInfo)..rows.add("| four | five | six |"));
+      final maps = runnable.toTable().asMap();
+      expect(maps.length, 2);
+      expect(maps.elementAt(0),
+          {"header one": "one", "header two": "two", "header three": "three"});
+      expect(maps.elementAt(1),
+          {"header one": "four", "header two": "five", "header three": "six"});
+    });
+
     test("table removes columns leading and trailing spaces", () async {
       final runnable = TableRunnable(debugInfo);
       runnable.addChild(TableRunnable(debugInfo)
@@ -79,6 +116,24 @@ void main() {
       expect(table.rows.length, 2);
       expect(table.rows.elementAt(0).columns, ["one", "two", "three"]);
       expect(table.rows.elementAt(1).columns, ["four", "five", "six"]);
+    });
+
+    test(
+        "table removes columns leading and trailing spaces when converted to map",
+        () async {
+      final runnable = TableRunnable(debugInfo);
+      runnable.addChild(TableRunnable(debugInfo)
+        ..rows.add("| header one | header two | header three |"));
+      runnable.addChild(TableRunnable(debugInfo)
+        ..rows.add("|   one |    two    |       three          |"));
+      runnable.addChild(
+          TableRunnable(debugInfo)..rows.add("|four    |     five    |six|"));
+      final maps = runnable.toTable().asMap();
+      expect(maps.length, 2);
+      expect(maps.elementAt(0),
+          {"header one": "one", "header two": "two", "header three": "three"});
+      expect(maps.elementAt(1),
+          {"header one": "four", "header two": "five", "header three": "six"});
     });
   });
 }

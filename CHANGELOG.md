@@ -1,3 +1,6 @@
+## [1.1.1] - 22/09/2019
+- Added `asMap` helper method to a table so a table can be represented as a map to help with serialisation to types
+
 ## [1.1.0] - 20/09/2019
 * Implemented langauges - features can now be written in different languages / dialects! See https://cucumber.io/docs/gherkin/reference/#overview for supported dialects.
 

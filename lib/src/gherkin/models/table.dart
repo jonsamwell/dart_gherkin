@@ -12,5 +12,25 @@ class Table {
     });
   }
 
+  /// Returns the table as a interable of maps.  With a single map representing a row in the table
+  /// keyed by the column name if a header row is present else the column index (as a string)
+  Iterable<Map<String, String>> asMap() {
+    return List<Map<String, String>>()
+      ..addAll(rows.map((row) {
+        final map = <String, String>{};
+        if (header != null) {
+          for (var i = 0; i < header.columns.length; i += 1) {
+            map[header.columns.elementAt(i)] = row.columns.elementAt(i);
+          }
+        } else {
+          for (var i = 0; i < row.columns.length; i += 1) {
+            map[i.toString()] = row.columns.elementAt(i);
+          }
+        }
+
+        return map;
+      }));
+  }
+
   Table clone() => Table(rows.map((r) => r.clone()).toList(), header.clone());
 }
