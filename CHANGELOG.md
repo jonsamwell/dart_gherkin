@@ -1,3 +1,6 @@
+## [1.1.2] - 22/09/2019
+- Fixed issue with scenerio outline name being reported incorrectly
+
 ## [1.1.1] - 22/09/2019
 - Added `asMap` helper method to a table so a table can be represented as a map to help with serialisation to types
 
