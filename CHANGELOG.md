@@ -1,3 +1,6 @@
+## [1.1.3] - 22/09/2019
+- Relaxed constraint on the test lib
+
 ## [1.1.2] - 22/09/2019
 - Fixed issue with scenerio outline name being reported incorrectly
 
