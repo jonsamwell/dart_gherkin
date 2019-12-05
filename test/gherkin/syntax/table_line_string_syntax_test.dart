@@ -32,6 +32,31 @@ void main() {
           true);
     });
 
+    test('allows trailing comment', () {
+      final syntax = TableLineSyntax();
+
+      expect(
+          syntax.isMatch(
+            "  |a|b|c| #comment",
+            EnDialectMock(),
+          ),
+          true);
+
+      expect(
+          syntax.isMatch(
+            "  |a|b|c|#comment with spaces",
+            EnDialectMock(),
+          ),
+          true);
+
+      expect(
+          syntax.isMatch(
+            "  |a|b|c| # comment with spaces",
+            EnDialectMock(),
+          ),
+          true);
+    });
+
     test('does not match', () {
       final syntax = TableLineSyntax();
       expect(
@@ -108,13 +133,27 @@ void main() {
     test('creates TableRunnable', () {
       final syntax = TableLineSyntax();
       final TableRunnable runnable = syntax.toRunnable(
-        " | Row One | Row Two | ",
+        " | Column One | Column Two | ",
         RunnableDebugInformation(null, 0, null),
         EnDialectMock(),
       );
       expect(runnable, isNotNull);
       expect(runnable, predicate((x) => x is TableRunnable));
-      expect(runnable.rows.elementAt(0), "| Row One | Row Two |");
+      expect(runnable.rows.elementAt(0), "| Column One | Column Two |");
+      expect(runnable.rows.length, 1);
+    });
+
+    test('creates TableRunnable from line with trailing comment', () {
+      final syntax = TableLineSyntax();
+      final TableRunnable runnable = syntax.toRunnable(
+        " | Column One | Column Two | Column Three | # comment with spaces",
+        RunnableDebugInformation(null, 0, null),
+        EnDialectMock(),
+      );
+      expect(runnable, isNotNull);
+      expect(runnable, predicate((x) => x is TableRunnable));
+      expect(runnable.rows.elementAt(0),
+          "| Column One | Column Two | Column Three |");
       expect(runnable.rows.length, 1);
     });
   });

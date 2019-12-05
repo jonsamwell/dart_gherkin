@@ -103,19 +103,25 @@ class FeatureFileRunner {
   }
 
   Future<bool> _runScenario(
-      ScenarioRunnable scenario, BackgroundRunnable background) async {
+    ScenarioRunnable scenario,
+    BackgroundRunnable background,
+  ) async {
     final attachmentManager = await _config.getAttachmentManager(_config);
     World world;
     bool scenarioPassed = true;
-    await _hook.onBeforeScenario(_config, scenario.name);
 
     if (_config.createWorld != null) {
-      await _log("Creating new world for scenerio '${scenario.name}'",
-          scenario.debug, MessageLevel.debug);
+      await _log(
+        "Creating new world for scenerio '${scenario.name}'",
+        scenario.debug,
+        MessageLevel.debug,
+      );
       world = await _config.createWorld(_config);
       world.setAttachmentManager(attachmentManager);
       await _hook.onAfterScenarioWorldCreated(world, scenario.name);
     }
+
+    await _hook.onBeforeScenario(_config, scenario.name);
 
     await _reporter.onScenarioStarted(StartedMessage(
       scenario.scenarioType == ScenarioType.scenario_outline
@@ -132,9 +138,13 @@ class FeatureFileRunner {
               .toList()
           : Iterable<Tag>.empty().toList(),
     ));
+
     if (background != null) {
-      await _log("Running background steps for scenerio '${scenario.name}'",
-          scenario.debug, MessageLevel.info);
+      await _log(
+        "Running background steps for scenerio '${scenario.name}'",
+        scenario.debug,
+        MessageLevel.info,
+      );
       for (var step in background.steps) {
         final result =
             await _runStep(step, world, attachmentManager, !scenarioPassed);

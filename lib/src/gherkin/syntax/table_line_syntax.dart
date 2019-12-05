@@ -9,8 +9,11 @@ import './syntax_matcher.dart';
 
 class TableLineSyntax extends RegExMatchedGherkinSyntax {
   @override
-  RegExp pattern(GherkinDialect dialect) =>
-      RegExp(r"^\s*\|.*\|\s*$", multiLine: false, caseSensitive: false);
+  RegExp pattern(GherkinDialect dialect) => RegExp(
+        r"^\s*(\|.*\|)\s*(?:\s*#\s*.*)?$",
+        multiLine: false,
+        caseSensitive: false,
+      );
 
   @override
   bool get isBlockSyntax => true;
@@ -31,7 +34,8 @@ class TableLineSyntax extends RegExMatchedGherkinSyntax {
     GherkinDialect dialect,
   ) {
     final runnable = TableRunnable(debug);
-    runnable.rows.add(line.trim());
+    runnable.rows
+        .add(pattern(dialect).firstMatch(line.trim()).group(1).trim() ?? "");
     return runnable;
   }
 }

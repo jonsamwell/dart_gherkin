@@ -1,3 +1,7 @@
+## [1.1.4] - 05/12/2019
+- Allowed comments at the end of a table line
+- Moved `onBeforeScenario` hook to run after the scenerio world has been created to allow the hook to access the world
+
 ## [1.1.3] - 27/09/2019
 - Relaxed constraint on the test lib
 
