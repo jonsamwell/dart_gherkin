@@ -13,7 +13,7 @@ class LanguageService {
     final code = langaugeCode ?? _defaultLangauge;
 
     if (_dialects[code] == null) {
-      throw new GherkinDialogNotSupportedException(code);
+      throw GherkinDialogNotSupportedException(code);
     }
 
     return _dialects[code];

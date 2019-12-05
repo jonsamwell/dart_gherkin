@@ -18,7 +18,7 @@ class ScenarioOutlineRunnable extends ScenarioRunnable {
     switch (child.runtimeType) {
       case ExampleRunnable:
         if (examples != null) {
-          throw new GherkinSyntaxException(
+          throw GherkinSyntaxException(
               'Scenerio outline `$name` already contains an example block');
         }
 
@@ -35,7 +35,7 @@ class ScenarioOutlineRunnable extends ScenarioRunnable {
 
   Iterable<ScenarioRunnable> expandOutlinesIntoScenarios() {
     if (examples == null) {
-      throw new GherkinSyntaxException(
+      throw GherkinSyntaxException(
           'Scenerio outline `$name` does not contains an example block.');
     }
 
