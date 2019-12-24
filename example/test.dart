@@ -13,7 +13,7 @@ import 'supporting_files/worlds/custom_world.world.dart';
 
 Future<void> main() {
   final config = TestConfiguration()
-    ..features = [Glob(r"features/**.feature")]
+    ..features = [Glob(r'features/**.feature')]
     ..reporters = [
       StdoutReporter(MessageLevel.error),
       ProgressReporter(),

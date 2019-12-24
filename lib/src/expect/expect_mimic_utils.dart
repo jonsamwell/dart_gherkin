@@ -22,7 +22,7 @@ String formatFailure(Matcher expected, actual, String which, {String reason}) {
 /// [size] defaults to `first.length`. Otherwise, [size] defaults to 2.
 String indent(String string, {int size, String first}) {
   size ??= first == null ? 2 : first.length;
-  return prefixLines(string, " " * size, first: first);
+  return prefixLines(string, ' ' * size, first: first);
 }
 
 /// Prepends each line in [text] with [prefix].
@@ -38,14 +38,14 @@ String prefixLines(String text, String prefix,
   single ??= first ?? last ?? prefix;
 
   final lines = text.split('\n');
-  if (lines.length == 1) return "$single$text";
+  if (lines.length == 1) return '$single$text';
 
-  final buffer = StringBuffer("$first${lines.first}\n");
+  final buffer = StringBuffer('$first${lines.first}\n');
 
   // Write out all but the first and last lines with [prefix].
   for (final line in lines.skip(1).take(lines.length - 2)) {
-    buffer.writeln("$prefix$line");
+    buffer.writeln('$prefix$line');
   }
-  buffer.write("$last${lines.last}");
+  buffer.write('$last${lines.last}');
   return buffer.toString();
 }

@@ -8,18 +8,18 @@ import 'package:test/test.dart';
 import '../../mocks/en_dialect_mock.dart';
 
 void main() {
-  group("isMatch", () {
+  group('isMatch', () {
     test('matches given correctly', () {
       final syntax = StepSyntax();
       expect(
           syntax.isMatch(
-            "Given a step",
+            'Given a step',
             EnDialectMock(),
           ),
           true);
       expect(
           syntax.isMatch(
-            "given a step",
+            'given a step',
             EnDialectMock(),
           ),
           true);
@@ -29,13 +29,13 @@ void main() {
       final syntax = StepSyntax();
       expect(
           syntax.isMatch(
-            "Then a step",
+            'Then a step',
             EnDialectMock(),
           ),
           true);
       expect(
           syntax.isMatch(
-            "then a step",
+            'then a step',
             EnDialectMock(),
           ),
           true);
@@ -45,13 +45,13 @@ void main() {
       final syntax = StepSyntax();
       expect(
           syntax.isMatch(
-            "When I do something",
+            'When I do something',
             EnDialectMock(),
           ),
           true);
       expect(
           syntax.isMatch(
-            "when I do something",
+            'when I do something',
             EnDialectMock(),
           ),
           true);
@@ -61,13 +61,13 @@ void main() {
       final syntax = StepSyntax();
       expect(
           syntax.isMatch(
-            "And something",
+            'And something',
             EnDialectMock(),
           ),
           true);
       expect(
           syntax.isMatch(
-            "and something",
+            'and something',
             EnDialectMock(),
           ),
           true);
@@ -77,13 +77,13 @@ void main() {
       final syntax = StepSyntax();
       expect(
           syntax.isMatch(
-            "but something",
+            'but something',
             EnDialectMock(),
           ),
           true);
       expect(
           syntax.isMatch(
-            "but something",
+            'but something',
             EnDialectMock(),
           ),
           true);
@@ -93,46 +93,46 @@ void main() {
       final syntax = StepSyntax();
       expect(
           syntax.isMatch(
-            "#given something",
+            '#given something',
             EnDialectMock(),
           ),
           false);
     });
   });
 
-  group("block", () {
-    test("is block", () {
+  group('block', () {
+    test('is block', () {
       final syntax = StepSyntax();
       expect(syntax.isBlockSyntax, true);
     });
 
-    test("continue block if multiline string", () {
+    test('continue block if multiline string', () {
       final syntax = StepSyntax();
       expect(syntax.hasBlockEnded(MultilineStringSyntax()), false);
     });
 
-    test("continue block if table", () {
+    test('continue block if table', () {
       final syntax = StepSyntax();
       expect(syntax.hasBlockEnded(TableLineSyntax()), false);
     });
 
-    test("end block if not multiline string or table", () {
+    test('end block if not multiline string or table', () {
       final syntax = StepSyntax();
       expect(syntax.hasBlockEnded(StepSyntax()), true);
     });
   });
 
-  group("toRunnable", () {
+  group('toRunnable', () {
     test('creates StepRunnable', () {
       final syntax = StepSyntax();
       final StepRunnable runnable = syntax.toRunnable(
-        "Given I do something",
+        'Given I do something',
         RunnableDebugInformation(null, 0, null),
         EnDialectMock(),
       );
       expect(runnable, isNotNull);
       expect(runnable, predicate((x) => x is StepRunnable));
-      expect(runnable.name, equals("Given I do something"));
+      expect(runnable.name, equals('Given I do something'));
     });
   });
 }

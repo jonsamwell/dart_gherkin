@@ -7,9 +7,9 @@ class StringParameterBase extends CustomParameter<String> {
 }
 
 class StringParameterLower extends StringParameterBase {
-  StringParameterLower() : super("string");
+  StringParameterLower() : super('string');
 }
 
 class StringParameterCamel extends StringParameterBase {
-  StringParameterCamel() : super("String");
+  StringParameterCamel() : super('String');
 }

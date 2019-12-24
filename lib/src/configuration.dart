@@ -7,9 +7,10 @@ import 'package:glob/glob.dart';
 
 import 'gherkin/attachments/attachment_manager.dart';
 
-typedef Future<World> CreateWorld(TestConfiguration config);
-typedef Future<AttachmentManager> CreateAttachmentManager(
-    TestConfiguration config);
+typedef CreateWorld = Future<World> Function(TestConfiguration config);
+typedef CreateAttachmentManager = Future<AttachmentManager> Function(
+  TestConfiguration config,
+);
 
 enum ExecutionOrder { sequential, random }
 
@@ -18,7 +19,7 @@ class TestConfiguration {
   Iterable<Glob> features;
 
   /// The default feature language
-  String featureDefaultLanguage = "en";
+  String featureDefaultLanguage = 'en';
 
   /// a filter to limit the features that are run based on tags
   /// see https://docs.cucumber.io/cucumber/tag-expressions/ for expression syntax

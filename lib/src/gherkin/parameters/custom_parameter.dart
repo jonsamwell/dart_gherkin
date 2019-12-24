@@ -1,4 +1,4 @@
-typedef TValue Transformer<TValue>(String value);
+typedef Transformer<TValue> = TValue Function(String value);
 
 /// A class used to define and parse custom parameters in step definitions
 /// see https://docs.cucumber.io/cucumber/cucumber-expressions/#custom-parameter-types
@@ -27,10 +27,14 @@ abstract class CustomParameter<T> {
   /// If this parameter should be included in the list of step arguments.  Defaults to true.
   final bool includeInParameterList;
 
-  String get identifier => "$identifierPrefix$name$identifierSuffix";
+  String get identifier => '$identifierPrefix$name$identifierSuffix';
 
-  CustomParameter(this.name, this.pattern, this.transformer,
-      {this.identifierPrefix = "{",
-      this.identifierSuffix = "}",
-      this.includeInParameterList = true});
+  CustomParameter(
+    this.name,
+    this.pattern,
+    this.transformer, {
+    this.identifierPrefix = '{',
+    this.identifierSuffix = '}',
+    this.includeInParameterList = true,
+  });
 }

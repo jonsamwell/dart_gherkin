@@ -9,5 +9,5 @@ class GivenTheNumbers extends Given2WithWorld<num, num, CalculatorWorld> {
   }
 
   @override
-  RegExp get pattern => RegExp(r"the numbers {num} and {num}");
+  RegExp get pattern => RegExp(r'the numbers {num} and {num}');
 }

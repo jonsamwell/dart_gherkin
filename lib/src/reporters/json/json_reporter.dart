@@ -7,10 +7,12 @@ import 'json_scenario.dart';
 import 'json_step.dart';
 
 class JsonReporter extends Reporter {
-  String path;
-  List<JsonFeature> _features = [];
+  final List<JsonFeature> _features = [];
+  final String path;
 
-  JsonReporter({this.path = './report.json'});
+  JsonReporter({
+    this.path = './report.json',
+  });
 
   @override
   Future<void> onFeatureStarted(StartedMessage message) async {

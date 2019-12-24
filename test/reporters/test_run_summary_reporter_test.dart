@@ -11,41 +11,41 @@ class TestableTestRunSummaryReporter extends TestRunSummaryReporter {
 }
 
 void main() {
-  group("report", () {
-    test("provides correct output", () async {
+  group('report', () {
+    test('provides correct output', () async {
       final reporter = TestableTestRunSummaryReporter();
 
       await reporter.onStepFinished(StepFinishedMessage(
-          "", null, StepResult(0, StepExecutionResult.pass)));
+          '', null, StepResult(0, StepExecutionResult.pass)));
       await reporter.onStepFinished(StepFinishedMessage(
-          "", null, StepResult(0, StepExecutionResult.fail)));
+          '', null, StepResult(0, StepExecutionResult.fail)));
       await reporter.onStepFinished(StepFinishedMessage(
-          "", null, StepResult(0, StepExecutionResult.skipped)));
+          '', null, StepResult(0, StepExecutionResult.skipped)));
       await reporter.onStepFinished(StepFinishedMessage(
-          "", null, StepResult(0, StepExecutionResult.skipped)));
+          '', null, StepResult(0, StepExecutionResult.skipped)));
       await reporter.onStepFinished(StepFinishedMessage(
-          "", null, StepResult(0, StepExecutionResult.pass)));
+          '', null, StepResult(0, StepExecutionResult.pass)));
       await reporter.onStepFinished(StepFinishedMessage(
-          "", null, StepResult(0, StepExecutionResult.error)));
+          '', null, StepResult(0, StepExecutionResult.error)));
       await reporter.onStepFinished(StepFinishedMessage(
-          "", null, StepResult(0, StepExecutionResult.pass)));
+          '', null, StepResult(0, StepExecutionResult.pass)));
       await reporter.onStepFinished(StepFinishedMessage(
-          "", null, StepResult(0, StepExecutionResult.timeout)));
+          '', null, StepResult(0, StepExecutionResult.timeout)));
 
       await reporter
-          .onScenarioFinished(ScenarioFinishedMessage("", null, true));
+          .onScenarioFinished(ScenarioFinishedMessage('', null, true));
       await reporter
-          .onScenarioFinished(ScenarioFinishedMessage("", null, false));
+          .onScenarioFinished(ScenarioFinishedMessage('', null, false));
       await reporter
-          .onScenarioFinished(ScenarioFinishedMessage("", null, false));
+          .onScenarioFinished(ScenarioFinishedMessage('', null, false));
       await reporter
-          .onScenarioFinished(ScenarioFinishedMessage("", null, true));
+          .onScenarioFinished(ScenarioFinishedMessage('', null, true));
 
       await reporter.onTestRunFinished();
       expect(reporter.output, [
-        "4 scenarios (\x1B[33;32m2 passed\x1B[33;0m, \x1B[33;31m2 failed\x1B[33;0m)",
-        "8 steps (\x1B[33;32m3 passed\x1B[33;0m, \x1B[33;10m2 skipped\x1B[33;0m, \x1B[33;31m3 failed\x1B[33;0m)",
-        "0:00:00.000000"
+        '4 scenarios (\x1B[33;32m2 passed\x1B[33;0m, \x1B[33;31m2 failed\x1B[33;0m)',
+        '8 steps (\x1B[33;32m3 passed\x1B[33;0m, \x1B[33;10m2 skipped\x1B[33;0m, \x1B[33;31m3 failed\x1B[33;0m)',
+        '0:00:00.000000'
       ]);
     });
   });

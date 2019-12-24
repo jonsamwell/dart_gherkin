@@ -1,6 +1,6 @@
 import 'package:gherkin/gherkin.dart';
 
-typedef void OnBeforeRunCode();
+typedef OnBeforeRunCode = void Function();
 
 class HookMock extends Hook {
   int onBeforeRunInvocationCount = 0;

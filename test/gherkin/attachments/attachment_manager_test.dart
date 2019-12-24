@@ -2,7 +2,7 @@ import 'package:gherkin/gherkin.dart';
 import 'package:test/test.dart';
 
 void main() {
-  group("attach", () {
+  group('attach', () {
     test('saves attachment', () async {
       final manager = AttachmentManager();
       final data = 'data';

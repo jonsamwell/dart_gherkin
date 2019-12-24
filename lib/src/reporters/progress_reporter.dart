@@ -8,7 +8,7 @@ class ProgressReporter extends StdoutReporter {
   @override
   Future<void> onScenarioStarted(StartedMessage message) async {
     printMessageLine(
-        "Running scenario: ${_getNameAndContext(message.name, message.context)}",
+        'Running scenario: ${_getNameAndContext(message.name, message.context)}',
         StdoutReporter.WARN_COLOR);
   }
 
@@ -23,23 +23,24 @@ class ProgressReporter extends StdoutReporter {
   Future<void> onStepFinished(StepFinishedMessage message) async {
     printMessageLine(
         [
-          "  ",
+          '  ',
           _getStatePrefixIcon(message.result.result),
           _getNameAndContext(message.name, message.context),
           _getExecutionDuration(message.result),
           _getReasonMessage(message.result),
           _getErrorMessage(message.result)
-        ].join((" ")).trimRight(),
+        ].join((' ')).trimRight(),
         _getMessageColour(message.result.result));
 
     if (message.attachments.isNotEmpty) {
       message.attachments.forEach((attachment) {
+        var attachment2 = attachment;
         printMessageLine(
             [
-              "    ",
-              "Attachment",
-              "(${attachment.mimeType})${attachment.mimeType == 'text/plain' ? ': ${attachment.data}' : ''}"
-            ].join((" ")).trimRight(),
+              '    ',
+              'Attachment',
+              "(${attachment2.mimeType})${attachment.mimeType == 'text/plain' ? ': ${attachment.data}' : ''}"
+            ].join((' ')).trimRight(),
             StdoutReporter.RESET_COLOR);
       });
     }
@@ -52,17 +53,17 @@ class ProgressReporter extends StdoutReporter {
 
   String _getReasonMessage(StepResult stepResult) {
     if (stepResult.resultReason != null && stepResult.resultReason.isNotEmpty) {
-      return "\n      ${stepResult.resultReason}";
+      return '\n      ${stepResult.resultReason}';
     } else {
-      return "";
+      return '';
     }
   }
 
   String _getErrorMessage(StepResult stepResult) {
     if (stepResult is ErroredStepResult) {
-      return "\n${stepResult.exception}\n${stepResult.stackTrace}";
+      return '\n${stepResult.exception}\n${stepResult.stackTrace}';
     } else {
-      return "";
+      return '';
     }
   }
 
@@ -71,22 +72,22 @@ class ProgressReporter extends StdoutReporter {
   }
 
   String _getExecutionDuration(StepResult stepResult) {
-    return "took ${stepResult.elapsedMilliseconds}ms";
+    return 'took ${stepResult.elapsedMilliseconds}ms';
   }
 
   String _getStatePrefixIcon(StepExecutionResult result) {
     switch (result) {
       case StepExecutionResult.pass:
-        return "√";
+        return '√';
       case StepExecutionResult.error:
       case StepExecutionResult.fail:
       case StepExecutionResult.timeout:
-        return "×";
+        return '×';
       case StepExecutionResult.skipped:
-        return "-";
+        return '-';
     }
 
-    return "";
+    return '';
   }
 
   String _getMessageColour(StepExecutionResult result) {

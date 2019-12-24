@@ -5,7 +5,7 @@ import 'langauges.dart';
 
 class LanguageService {
   String _defaultLangauge = 'en';
-  Map<String, GherkinDialect> _dialects = {};
+  final Map<String, GherkinDialect> _dialects = {};
 
   String get defaultLanguage => _defaultLangauge;
 

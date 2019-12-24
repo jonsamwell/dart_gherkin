@@ -3,8 +3,12 @@ class GherkinStepNotDefinedException implements Exception {
 
   GherkinStepNotDefinedException(this.message);
 
+  @override
   String toString() {
-    if (message == null) return "GherkinStepNotDefinedException";
-    return "GherkinStepNotDefinedException: $message";
+    if (message == null) {
+      return 'GherkinStepNotDefinedException';
+    }
+
+    return 'GherkinStepNotDefinedException: $message';
   }
 }

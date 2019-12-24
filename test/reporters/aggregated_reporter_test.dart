@@ -5,8 +5,8 @@ import 'package:test/test.dart';
 import '../mocks/reporter_mock.dart';
 
 void main() {
-  group("reporters", () {
-    test("invokes all child reporters", () async {
+  group('reporters', () {
+    test('invokes all child reporters', () async {
       final reporter1 = ReporterMock();
       final reporter2 = ReporterMock();
 
@@ -14,7 +14,7 @@ void main() {
       aggregatedReporter.addReporter(reporter1);
       aggregatedReporter.addReporter(reporter2);
 
-      await aggregatedReporter.message("", MessageLevel.info);
+      await aggregatedReporter.message('', MessageLevel.info);
       expect(reporter1.messageInvocationCount, 1);
       expect(reporter2.messageInvocationCount, 1);
 

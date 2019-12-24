@@ -33,13 +33,13 @@ class GherkinDialect {
     dialect.and = (map['and'] as List)?.map((e) => e as String);
     dialect.but = (map['but'] as List)?.map((e) => e as String);
 
-    dialect.stepKeywords = (<String>[]
-          ..addAll(dialect.given)
-          ..addAll(dialect.when)
-          ..addAll(dialect.then)
-          ..addAll(dialect.and)
-          ..addAll(dialect.but))
-        .toSet();
+    dialect.stepKeywords = (<String>[
+      ...dialect.given,
+      ...dialect.when,
+      ...dialect.then,
+      ...dialect.and,
+      ...dialect.but
+    ]).toSet();
 
     return dialect;
   }

@@ -22,7 +22,7 @@ class StepRunnable extends RunnableBlock {
     switch (child.runtimeType) {
       case MultilineStringRunnable:
         multilineStrings
-            .add((child as MultilineStringRunnable).lines.join("\n"));
+            .add((child as MultilineStringRunnable).lines.join('\n'));
         break;
       case TableRunnable:
         if (table != null) {
@@ -46,7 +46,7 @@ class StepRunnable extends RunnableBlock {
   }
 
   StepRunnable clone() {
-    StepRunnable cloned = StepRunnable(_name, debug);
+    final cloned = StepRunnable(_name, debug);
     cloned.multilineStrings = multilineStrings.map((s) => s).toList();
     cloned.table = table?.clone();
 

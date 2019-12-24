@@ -10,7 +10,7 @@ import './table_line_syntax.dart';
 class ExampleSyntax extends RegExMatchedGherkinSyntax {
   @override
   RegExp pattern(GherkinDialect dialect) => RegExp(
-        "^\\s*(?:${getMultiDialectRegexPattern(dialect.examples)}):(\\s*(.+)\\s*)?\$",
+        '^\\s*(?:${getMultiDialectRegexPattern(dialect.examples)}):(\\s*(.+)\\s*)?\$',
         multiLine: false,
         caseSensitive: false,
       );
@@ -27,7 +27,7 @@ class ExampleSyntax extends RegExMatchedGherkinSyntax {
     RunnableDebugInformation debug,
     GherkinDialect dialect,
   ) {
-    final name = (pattern(dialect).firstMatch(line).group(1) ?? "").trim();
+    final name = (pattern(dialect).firstMatch(line).group(1) ?? '').trim();
     final runnable = ExampleRunnable(name, debug);
 
     return runnable;

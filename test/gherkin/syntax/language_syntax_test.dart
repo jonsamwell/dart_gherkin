@@ -6,24 +6,24 @@ import 'package:test/test.dart';
 import '../../mocks/en_dialect_mock.dart';
 
 void main() {
-  group("isMatch", () {
+  group('isMatch', () {
     test('matches correctly', () {
       final keyword = LanguageSyntax();
       expect(
           keyword.isMatch(
-            "# language: en",
+            '# language: en',
             EnDialectMock(),
           ),
           true);
       expect(
           keyword.isMatch(
-            "#language: fr",
+            '#language: fr',
             EnDialectMock(),
           ),
           true);
       expect(
           keyword.isMatch(
-            "#language:de",
+            '#language:de',
             EnDialectMock(),
           ),
           true);
@@ -33,30 +33,30 @@ void main() {
       final keyword = LanguageSyntax();
       expect(
           keyword.isMatch(
-            "#language no",
+            '#language no',
             EnDialectMock(),
           ),
           false);
       expect(
           keyword.isMatch(
-            "# language comment",
+            '# language comment',
             EnDialectMock(),
           ),
           false);
     });
   });
 
-  group("toRunnable", () {
+  group('toRunnable', () {
     test('creates LanguageRunnable', () {
       final keyword = LanguageSyntax();
       final LanguageRunnable runnable = keyword.toRunnable(
-        "# language: de",
+        '# language: de',
         RunnableDebugInformation(null, 0, null),
         EnDialectMock(),
       );
       expect(runnable, isNotNull);
       expect(runnable, predicate((x) => x is LanguageRunnable));
-      expect(runnable.language, equals("de"));
+      expect(runnable.language, equals('de'));
     });
   });
 }

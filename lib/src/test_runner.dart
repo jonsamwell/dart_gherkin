@@ -38,7 +38,7 @@ class GherkinRunner {
     _registerStepDefinitions(config.stepDefinitions);
     _langaugeService.initialise(config.featureDefaultLanguage);
 
-    List<FeatureFile> featureFiles = <FeatureFile>[];
+    var featureFiles = <FeatureFile>[];
     for (var glob in config.features) {
       for (var entity in glob.listSync()) {
         await _reporter.message(
@@ -50,20 +50,20 @@ class GherkinRunner {
       }
     }
 
-    bool allFeaturesPassed = true;
+    var allFeaturesPassed = true;
 
     if (featureFiles.isEmpty) {
       await _reporter.message(
-          "No feature files found to run, exitting without running any scenarios",
+          'No feature files found to run, exitting without running any scenarios',
           MessageLevel.warning);
     } else {
       await _reporter.message(
-          "Found ${featureFiles.length} feature file(s) to run",
+          'Found ${featureFiles.length} feature file(s) to run',
           MessageLevel.info);
 
       if (config.order == ExecutionOrder.random) {
         await _reporter.message(
-            "Executing features in random order", MessageLevel.info);
+            'Executing features in random order', MessageLevel.info);
         featureFiles = featureFiles.toList()..shuffle();
       }
 

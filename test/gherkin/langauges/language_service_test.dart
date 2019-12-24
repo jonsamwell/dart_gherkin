@@ -2,7 +2,7 @@ import 'package:gherkin/src/gherkin/langauges/language_service.dart';
 import 'package:test/test.dart';
 
 void main() {
-  group("service", () {
+  group('service', () {
     test('can parse langauage json file', () async {
       final service = LanguageService();
       service.initialise();

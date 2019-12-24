@@ -1,3 +1,7 @@
+## [1.1.5+1] - 24/12/2019
+- Require Dart 2.3.0 or greater
+- Fixed various analysis errors
+
 ## [1.1.5] - 05/12/2019
 - Fixed lint errors
 

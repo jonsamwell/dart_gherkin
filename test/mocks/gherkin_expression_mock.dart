@@ -1,6 +1,6 @@
 import 'package:gherkin/src/gherkin/expressions/gherkin_expression.dart';
 
-typedef bool IsMatchFn(String input);
+typedef IsMatchFn = bool Function(String input);
 
 class MockGherkinExpression implements GherkinExpression {
   final IsMatchFn isMatchFn;

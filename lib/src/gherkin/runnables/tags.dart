@@ -6,7 +6,7 @@ class TagsRunnable extends Runnable {
   bool isInherited = false;
 
   @override
-  String get name => "Tags";
+  String get name => 'Tags';
 
   TagsRunnable(RunnableDebugInformation debug) : super(debug);
 

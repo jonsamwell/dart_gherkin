@@ -4,12 +4,12 @@ import './reporter.dart';
 
 class StdoutReporter extends Reporter {
   final MessageLevel _logLevel;
-  static const String NEUTRAL_COLOR = "\u001b[33;34m"; // blue
-  static const String DEBUG_COLOR = "\u001b[1;30m"; // gray
-  static const String FAIL_COLOR = "\u001b[33;31m"; // red
-  static const String WARN_COLOR = "\u001b[33;10m"; // yellow
-  static const String RESET_COLOR = "\u001b[33;0m";
-  static const String PASS_COLOR = "\u001b[33;32m"; // green
+  static const String NEUTRAL_COLOR = '\u001b[33;34m'; // blue
+  static const String DEBUG_COLOR = '\u001b[1;30m'; // gray
+  static const String FAIL_COLOR = '\u001b[33;31m'; // red
+  static const String WARN_COLOR = '\u001b[33;10m'; // yellow
+  static const String RESET_COLOR = '\u001b[33;0m';
+  static const String PASS_COLOR = '\u001b[33;32m'; // green
 
   StdoutReporter([this._logLevel = MessageLevel.verbose]);
 
@@ -36,12 +36,10 @@ class StdoutReporter extends Reporter {
   }
 
   void printMessageLine(String message, [String colour]) {
-    stdout.writeln(
-        "${colour == null ? RESET_COLOR : colour}$message$RESET_COLOR");
+    stdout.writeln('${colour ?? RESET_COLOR}$message$RESET_COLOR');
   }
 
   void printMessage(String message, [String colour]) {
-    stdout
-        .write("${colour == null ? RESET_COLOR : colour}$message$RESET_COLOR");
+    stdout.write('${colour ?? RESET_COLOR}$message$RESET_COLOR');
   }
 }

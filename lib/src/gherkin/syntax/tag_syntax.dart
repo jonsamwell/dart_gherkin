@@ -8,7 +8,7 @@ import './regex_matched_syntax.dart';
 class TagSyntax extends RegExMatchedGherkinSyntax {
   @override
   RegExp pattern(GherkinDialect dialect) =>
-      RegExp("^@", multiLine: false, caseSensitive: false);
+      RegExp('^@', multiLine: false, caseSensitive: false);
 
   @override
   Runnable toRunnable(
@@ -19,7 +19,7 @@ class TagSyntax extends RegExMatchedGherkinSyntax {
     final runnable = TagsRunnable(debug);
     runnable.tags = line
         .trim()
-        .split(RegExp("@"))
+        .split(RegExp('@'))
         .where((t) => t != null && t.isNotEmpty)
         .map((t) => '@${t.trim()}')
         .toList();

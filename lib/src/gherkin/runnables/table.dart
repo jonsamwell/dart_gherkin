@@ -9,7 +9,7 @@ class TableRunnable extends RunnableBlock {
   final List<String> rows = <String>[];
 
   @override
-  String get name => "Table";
+  String get name => 'Table';
 
   TableRunnable(RunnableDebugInformation debug) : super(debug);
 
@@ -29,7 +29,7 @@ class TableRunnable extends RunnableBlock {
 
   Table toTable() {
     TableRow header;
-    final List<TableRow> tableRows = <TableRow>[];
+    final tableRows = <TableRow>[];
     if (rows.length > 1) {
       header = _toRow(rows.first, 0, true);
     }
@@ -44,7 +44,7 @@ class TableRunnable extends RunnableBlock {
   TableRow _toRow(String raw, int rowIndex, [isHeaderRow = false]) {
     return TableRow(
         raw
-            .split(RegExp(r"\|"))
+            .split(RegExp(r'\|'))
             .map((c) => c.trim())
             .where((c) => c.isNotEmpty),
         rowIndex,

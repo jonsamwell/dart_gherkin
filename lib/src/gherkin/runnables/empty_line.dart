@@ -3,7 +3,7 @@ import './runnable.dart';
 
 class EmptyLineRunnable extends Runnable {
   @override
-  String get name => "Empty Line";
+  String get name => 'Empty Line';
 
   EmptyLineRunnable(RunnableDebugInformation debug) : super(debug);
 }

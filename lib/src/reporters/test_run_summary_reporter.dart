@@ -36,7 +36,7 @@ class TestRunSummaryReporter extends StdoutReporter {
         "${_ranScenarios.length} scenario${_ranScenarios.length > 1 ? "s" : ""} (${_collectScenarioSummary(_ranScenarios)})");
     printMessageLine(
         "${_ranSteps.length} step${_ranSteps.length > 1 ? "s" : ""} (${_collectStepSummary(_ranSteps)})");
-    printMessageLine("${Duration(milliseconds: _timer.elapsedMilliseconds)}");
+    printMessageLine('${Duration(milliseconds: _timer.elapsedMilliseconds)}');
   }
 
   @override
@@ -47,22 +47,22 @@ class TestRunSummaryReporter extends StdoutReporter {
   }
 
   String _collectScenarioSummary(Iterable<ScenarioFinishedMessage> scenarios) {
-    final List<String> summaries = <String>[];
+    final summaries = <String>[];
     if (scenarios.any((s) => s.passed)) {
       summaries.add(
-          "${StdoutReporter.PASS_COLOR}${scenarios.where((s) => s.passed).length} passed${StdoutReporter.RESET_COLOR}");
+          '${StdoutReporter.PASS_COLOR}${scenarios.where((s) => s.passed).length} passed${StdoutReporter.RESET_COLOR}');
     }
 
     if (scenarios.any((s) => !s.passed)) {
       summaries.add(
-          "${StdoutReporter.FAIL_COLOR}${scenarios.where((s) => !s.passed).length} failed${StdoutReporter.RESET_COLOR}");
+          '${StdoutReporter.FAIL_COLOR}${scenarios.where((s) => !s.passed).length} failed${StdoutReporter.RESET_COLOR}');
     }
 
-    return summaries.join(", ");
+    return summaries.join(', ');
   }
 
   String _collectStepSummary(Iterable<StepFinishedMessage> steps) {
-    final List<String> summaries = <String>[];
+    final summaries = <String>[];
     final passed =
         steps.where((s) => s.result.result == StepExecutionResult.pass);
     final skipped =
@@ -73,19 +73,19 @@ class TestRunSummaryReporter extends StdoutReporter {
         s.result.result == StepExecutionResult.timeout);
     if (passed.isNotEmpty) {
       summaries.add(
-          "${StdoutReporter.PASS_COLOR}${passed.length} passed${StdoutReporter.RESET_COLOR}");
+          '${StdoutReporter.PASS_COLOR}${passed.length} passed${StdoutReporter.RESET_COLOR}');
     }
 
     if (skipped.isNotEmpty) {
       summaries.add(
-          "${StdoutReporter.WARN_COLOR}${skipped.length} skipped${StdoutReporter.RESET_COLOR}");
+          '${StdoutReporter.WARN_COLOR}${skipped.length} skipped${StdoutReporter.RESET_COLOR}');
     }
 
     if (failed.isNotEmpty) {
       summaries.add(
-          "${StdoutReporter.FAIL_COLOR}${failed.length} failed${StdoutReporter.RESET_COLOR}");
+          '${StdoutReporter.FAIL_COLOR}${failed.length} failed${StdoutReporter.RESET_COLOR}');
     }
 
-    return summaries.join(", ");
+    return summaries.join(', ');
   }
 }

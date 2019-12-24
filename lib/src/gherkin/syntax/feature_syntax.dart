@@ -26,7 +26,7 @@ class FeatureSyntax extends RegExMatchedGherkinSyntax {
 
   @override
   RegExp pattern(GherkinDialect dialect) => RegExp(
-        "^(?:${getMultiDialectRegexPattern(dialect.feature)}):\\s*(.+)\\s*",
+        '^(?:${getMultiDialectRegexPattern(dialect.feature)}):\\s*(.+)\\s*',
         multiLine: false,
         caseSensitive: false,
       );

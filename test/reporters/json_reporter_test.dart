@@ -3,11 +3,12 @@ import 'dart:io';
 
 import 'package:gherkin/gherkin.dart';
 import 'package:gherkin/src/gherkin/runnables/debug_information.dart';
-import "package:test/test.dart";
+import 'package:test/test.dart';
 
 class TestableJsonReporter extends JsonReporter {
   String report;
 
+  @override
   Future<void> onSaveReport(String jsonReport) async {
     report = jsonReport;
     return Future.value(null);
@@ -19,8 +20,8 @@ String minimiseJson(String jsonReport) {
 }
 
 void main() {
-  group("report", () {
-    test("correct report with one passing step", () async {
+  group('report', () {
+    test('correct report with one passing step', () async {
       final reporter = TestableJsonReporter();
       await reporter.onFeatureStarted(StartedMessage(
         Target.feature,
@@ -70,7 +71,7 @@ void main() {
       );
     });
 
-    test("correct report with one passing step with doc string", () async {
+    test('correct report with one passing step with doc string', () async {
       final reporter = TestableJsonReporter();
       await reporter.onFeatureStarted(StartedMessage(
         Target.feature,
@@ -89,7 +90,7 @@ void main() {
       await reporter.onStepStarted(StepStartedMessage(
         'Step 1',
         RunnableDebugInformation('filepath', 5, 'linetext5'),
-        multilineString: "a\nb\nc",
+        multilineString: 'a\nb\nc',
       ));
 
       await reporter.onStepFinished(StepFinishedMessage(
@@ -121,7 +122,7 @@ void main() {
       );
     });
 
-    test("correct report with one passing and one failing step", () async {
+    test('correct report with one passing and one failing step', () async {
       final reporter = TestableJsonReporter();
       await reporter.onFeatureStarted(StartedMessage(
         Target.feature,
@@ -182,7 +183,7 @@ void main() {
       );
     });
 
-    test("correct report with one passing, one failing and one skipped step",
+    test('correct report with one passing, one failing and one skipped step',
         () async {
       final reporter = TestableJsonReporter();
       await reporter.onFeatureStarted(StartedMessage(
@@ -255,7 +256,7 @@ void main() {
       );
     });
 
-    test("correct report with one passing and one failing step with attachment",
+    test('correct report with one passing and one failing step with attachment',
         () async {
       final reporter = TestableJsonReporter();
       await reporter.onFeatureStarted(StartedMessage(
@@ -318,7 +319,7 @@ void main() {
       );
     });
 
-    test("correct report with scenario outlines", () async {
+    test('correct report with scenario outlines', () async {
       final reporter = TestableJsonReporter();
       await reporter.onFeatureStarted(StartedMessage(
         Target.feature,

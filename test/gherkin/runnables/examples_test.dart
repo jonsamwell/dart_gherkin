@@ -6,9 +6,9 @@ import 'package:test/test.dart';
 
 void main() {
   final debugInfo = RunnableDebugInformation(null, 0, null);
-  group("addChild", () {
+  group('addChild', () {
     test('can add TableRunnable', () {
-      final runnable = ExampleRunnable("", debugInfo);
+      final runnable = ExampleRunnable('', debugInfo);
       runnable.addChild(TableRunnable(debugInfo));
     });
 

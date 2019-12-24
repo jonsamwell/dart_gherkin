@@ -13,17 +13,17 @@ import '../exceptions/syntax_error.dart';
 /// which incidently was one of the first algorithms I coded when I got my first
 /// programming job.
 class TagExpressionEvaluator {
-  static const String openingBracket = "(";
-  static const String closingBracket = ")";
+  static const String openingBracket = '(';
+  static const String closingBracket = ')';
   static final Map<String, int> _operatorPrededence = {
-    "not": 4,
-    "or": 2,
-    "and": 2,
-    "(": 0,
+    'not': 4,
+    'or': 2,
+    'and': 2,
+    '(': 0,
   };
 
   bool evaluate(String tagExpression, List<String> tags) {
-    bool match = true;
+    var match = true;
     final rpn = _convertInfixToPostfixExpression(tagExpression);
     match = _evaluateRpn(rpn, tags);
 
@@ -31,27 +31,27 @@ class TagExpressionEvaluator {
   }
 
   bool _evaluateRpn(Queue<String> rpn, List<String> tags) {
-    final Queue<bool> stack = Queue<bool>();
+    final stack = Queue<bool>();
     for (var token in rpn) {
       if (_isTag(token)) {
         stack.addFirst(tags.contains(token));
       } else {
         switch (token) {
-          case "and":
+          case 'and':
             {
               final a = stack.removeFirst();
               final b = stack.removeFirst();
               stack.addFirst(a && b);
               break;
             }
-          case "or":
+          case 'or':
             {
               final a = stack.removeFirst();
               final b = stack.removeFirst();
               stack.addFirst(a || b);
               break;
             }
-          case "not":
+          case 'not':
             {
               final a = stack.removeFirst();
               stack.addFirst(!a);
@@ -66,7 +66,7 @@ class TagExpressionEvaluator {
 
   Queue<String> _convertInfixToPostfixExpression(String infixExpression) {
     final expressionParts = RegExp(
-            r"(\()|(or)|(and)|(not)|(@{1}\w{1}[^\s&\)]*)|(\))",
+            r'(\()|(or)|(and)|(not)|(@{1}\w{1}[^\s&\)]*)|(\))',
             caseSensitive: false)
         .allMatches(infixExpression)
         .map((m) => m.group(0));
@@ -106,13 +106,13 @@ class TagExpressionEvaluator {
   }
 
   bool _isTag(String token) =>
-      RegExp(r"^@\w{1}.*", caseSensitive: false).hasMatch(token);
+      RegExp(r'^@\w{1}.*', caseSensitive: false).hasMatch(token);
 
   bool _isOperator(String token) {
     switch (token.toLowerCase()) {
-      case "and":
-      case "or":
-      case "not":
+      case 'and':
+      case 'or':
+      case 'not':
       case openingBracket:
         return true;
       default:

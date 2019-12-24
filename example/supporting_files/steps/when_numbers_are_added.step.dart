@@ -8,5 +8,5 @@ class WhenTheStoredNumbersAreAdded extends WhenWithWorld<CalculatorWorld> {
   }
 
   @override
-  RegExp get pattern => RegExp(r"they are added");
+  RegExp get pattern => RegExp(r'they are added');
 }

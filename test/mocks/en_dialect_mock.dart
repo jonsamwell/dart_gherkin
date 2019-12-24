@@ -16,12 +16,12 @@ class EnDialectMock extends GherkinDialect {
     and = ['And'];
     but = ['But'];
 
-    stepKeywords = (<String>[]
-          ..addAll(given)
-          ..addAll(when)
-          ..addAll(then)
-          ..addAll(and)
-          ..addAll(but))
-        .toSet();
+    stepKeywords = (<String>[
+      ...given,
+      ...when,
+      ...then,
+      ...and,
+      ...but,
+    ]).toSet();
   }
 }

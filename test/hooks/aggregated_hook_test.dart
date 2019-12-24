@@ -3,8 +3,8 @@ import 'package:test/test.dart';
 import '../mocks/hook_mock.dart';
 
 void main() {
-  group("orders hooks", () {
-    test("executes hooks in correct order", () async {
+  group('orders hooks', () {
+    test('executes hooks in correct order', () async {
       final executionOrder = <int>[];
       final hookOne = HookMock(
           providedPriority: 0, onBeforeRunCode: () => executionOrder.add(3));

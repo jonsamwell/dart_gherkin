@@ -8,7 +8,7 @@ class LanguageRunnable extends DialectBlock {
   String language;
 
   @override
-  String get name => "Language";
+  String get name => 'Language';
 
   LanguageRunnable(RunnableDebugInformation debug) : super(debug);
 

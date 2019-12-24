@@ -46,7 +46,7 @@ class AggregatedHook extends Hook {
   Future<void> onAfterStep(World world, String step, StepResult result) async =>
       await _invokeHooks((h) => h.onAfterStep(world, step, result));
 
-  Future<void> _invokeHooks(Future<void> invoke(Hook h)) async {
+  Future<void> _invokeHooks(Future<void> Function(Hook h) invoke) async {
     if (_orderedHooks != null && _orderedHooks.isNotEmpty) {
       for (var hook in _orderedHooks) {
         await invoke(hook);

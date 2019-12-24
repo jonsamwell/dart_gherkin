@@ -27,9 +27,9 @@ class StepDefinitionMock extends StepDefinitionGeneric<World> {
 }
 
 void main() {
-  group("onRun", () {
-    group("parameter gaurd", () {
-      test("throws exception when parameter counts mismatch", () async {
+  group('onRun', () {
+    group('parameter gaurd', () {
+      test('throws exception when parameter counts mismatch', () async {
         final step = StepDefinitionMock(StepDefinitionConfiguration(), 2);
         expect(
             () async => await step.run(
@@ -37,13 +37,13 @@ void main() {
             throwsA((e) =>
                 e is GherkinStepParameterMismatchException &&
                 e.message ==
-                    "StepDefinitionMock parameter count mismatch. Expect 2 parameters but got 0. "
-                        "Ensure you are extending the correct step class which would be Given"));
+                    'StepDefinitionMock parameter count mismatch. Expect 2 parameters but got 0. '
+                        'Ensure you are extending the correct step class which would be Given'));
         expect(step.invocationCount, 0);
       });
 
       test(
-          "throws exception when parameter counts mismatch listing required step type",
+          'throws exception when parameter counts mismatch listing required step type',
           () async {
         final step = StepDefinitionMock(StepDefinitionConfiguration(), 2);
         expect(
@@ -52,44 +52,44 @@ void main() {
             throwsA((e) =>
                 e is GherkinStepParameterMismatchException &&
                 e.message ==
-                    "StepDefinitionMock parameter count mismatch. Expect 2 parameters but got 1. "
-                        "Ensure you are extending the correct step class which would be Given1<TInputType0>"));
+                    'StepDefinitionMock parameter count mismatch. Expect 2 parameters but got 1. '
+                        'Ensure you are extending the correct step class which would be Given1<TInputType0>'));
         expect(step.invocationCount, 0);
       });
 
-      test("runs step when correct number of parameters provided", () async {
+      test('runs step when correct number of parameters provided', () async {
         final step = StepDefinitionMock(StepDefinitionConfiguration(), 1);
         await step.run(null, null, const Duration(seconds: 1), [1]);
         expect(step.invocationCount, 1);
       });
     });
 
-    group("exception reported", () {
-      test("when exception is throw in test it is report as an error",
+    group('exception reported', () {
+      test('when exception is throw in test it is report as an error',
           () async {
         final step = StepDefinitionMock(
-            StepDefinitionConfiguration(), 0, () async => throw Exception("1"));
+            StepDefinitionConfiguration(), 0, () async => throw Exception('1'));
         expect(
             await step.run(null, null, const Duration(milliseconds: 1),
                 const Iterable.empty()), (r) {
           return r is ErroredStepResult &&
               r.result == StepExecutionResult.error &&
               r.exception is Exception &&
-              r.exception.toString() == "Exception: 1";
+              r.exception.toString() == 'Exception: 1';
         });
       });
     });
 
-    group("expectation failures reported", () {
-      test("when an expectation fails the step is failed", () async {
+    group('expectation failures reported', () {
+      test('when an expectation fails the step is failed', () async {
         final step = StepDefinitionMock(StepDefinitionConfiguration(), 0,
-            () async => throw TestFailure("1"));
+            () async => throw TestFailure('1'));
         expect(
             await step.run(null, null, const Duration(milliseconds: 1),
                 const Iterable.empty()), (r) {
           return r is StepResult &&
               r.result == StepExecutionResult.fail &&
-              r.resultReason == "1";
+              r.resultReason == '1';
         });
       });
     });

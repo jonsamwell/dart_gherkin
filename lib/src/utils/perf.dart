@@ -2,7 +2,9 @@ import 'dart:async';
 
 class Perf {
   static Future<T> measure<T>(
-      Future<T> action(), void logFn(int elapsedMilliseconds)) async {
+    Future<T> Function() action,
+    void Function(int elapsedMilliseconds) logFn,
+  ) async {
     final timer = Stopwatch();
     timer.start();
     try {

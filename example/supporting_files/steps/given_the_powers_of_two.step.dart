@@ -9,5 +9,5 @@ class GivenThePowersOfTwo extends Given2WithWorld<int, int, CalculatorWorld> {
   }
 
   @override
-  RegExp get pattern => RegExp(r"the powers {POW} and {POW}");
+  RegExp get pattern => RegExp(r'the powers {POW} and {POW}');
 }

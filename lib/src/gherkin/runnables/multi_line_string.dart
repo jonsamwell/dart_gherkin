@@ -8,7 +8,7 @@ class MultilineStringRunnable extends RunnableBlock {
   List<String> lines = <String>[];
 
   @override
-  String get name => "Multiline String";
+  String get name => 'Multiline String';
 
   MultilineStringRunnable(RunnableDebugInformation debug) : super(debug);
 

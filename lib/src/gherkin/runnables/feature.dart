@@ -12,11 +12,11 @@ import './tags.dart';
 import './text_line.dart';
 
 class FeatureRunnable extends TaggableRunnableBlock {
-  String _name;
+  final String _name;
   String description;
   BackgroundRunnable background;
   List<ScenarioRunnable> scenarios = <ScenarioRunnable>[];
-  List<TagsRunnable> _tagsPendingAssignmentToChild = List<TagsRunnable>();
+  final List<TagsRunnable> _tagsPendingAssignmentToChild = <TagsRunnable>[];
 
   FeatureRunnable(this._name, RunnableDebugInformation debug) : super(debug);
 
@@ -65,6 +65,7 @@ class FeatureRunnable extends TaggableRunnableBlock {
     }
   }
 
+  @override
   void onTagAdded(TagsRunnable tag) {
     for (var scenario in scenarios) {
       scenario.addTag(tag.clone(inherited: true));

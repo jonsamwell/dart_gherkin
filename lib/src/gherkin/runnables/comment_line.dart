@@ -5,7 +5,7 @@ class CommentLineRunnable extends Runnable {
   final String comment;
 
   @override
-  String get name => "Comment Line";
+  String get name => 'Comment Line';
 
   CommentLineRunnable(this.comment, RunnableDebugInformation debug)
       : super(debug);

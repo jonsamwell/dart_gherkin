@@ -50,7 +50,7 @@ class GherkinParser {
     final featureFile = FeatureFile(RunnableDebugInformation(path, 0, null));
     await reporter.message("Parsing feature file: '$path'", MessageLevel.debug);
     final lines =
-        contents.trim().split(RegExp(r"(\r\n|\r|\n)", multiLine: true));
+        contents.trim().split(RegExp(r'(\r\n|\r|\n)', multiLine: true));
     try {
       _parseBlock(
         langaugeService,
@@ -78,7 +78,7 @@ class GherkinParser {
       Iterable<String> lines,
       int lineNumber,
       int depth) {
-    for (int i = lineNumber; i < lines.length; i += 1) {
+    for (var i = lineNumber; i < lines.length; i += 1) {
       final line = lines.elementAt(i).trim();
       // print("$depth - $line");
       final matcher = syntaxMatchers.firstWhere(

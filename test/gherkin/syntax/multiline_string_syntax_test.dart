@@ -8,7 +8,7 @@ import 'package:test/test.dart';
 import '../../mocks/en_dialect_mock.dart';
 
 void main() {
-  group("isMatch", () {
+  group('isMatch', () {
     test('matches correctly', () {
       final syntax = MultilineStringSyntax();
       expect(
@@ -71,29 +71,30 @@ void main() {
           false);
     });
   });
-  group("block", () {
-    test("is block", () {
+
+  group('block', () {
+    test('is block', () {
       final syntax = MultilineStringSyntax();
       expect(syntax.isBlockSyntax, true);
     });
 
-    test("continue block if text line string", () {
+    test('continue block if text line string', () {
       final syntax = MultilineStringSyntax();
       expect(syntax.hasBlockEnded(TextLineSyntax()), false);
     });
 
-    test("continue block if comment string", () {
+    test('continue block if comment string', () {
       final syntax = MultilineStringSyntax();
       expect(syntax.hasBlockEnded(CommentSyntax()), false);
     });
 
-    test("end block if multiline string", () {
+    test('end block if multiline string', () {
       final syntax = MultilineStringSyntax();
       expect(syntax.hasBlockEnded(MultilineStringSyntax()), true);
     });
   });
 
-  group("toRunnable", () {
+  group('toRunnable', () {
     test('creates TextLineRunnable', () {
       final syntax = MultilineStringSyntax();
       final MultilineStringRunnable runnable = syntax.toRunnable(

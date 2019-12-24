@@ -30,7 +30,7 @@ class FeatureFileRunner {
       this._reporter, this._hook);
 
   Future<bool> run(FeatureFile featureFile) async {
-    bool haveAllFeaturesPassed = true;
+    var haveAllFeaturesPassed = true;
     for (var feature in featureFile.features) {
       haveAllFeaturesPassed &= await _runFeature(feature);
     }
@@ -39,7 +39,7 @@ class FeatureFileRunner {
   }
 
   Future<bool> _runFeature(FeatureRunnable feature) async {
-    bool haveAllScenariosPassed = true;
+    var haveAllScenariosPassed = true;
     try {
       await _reporter.onFeatureStarted(StartedMessage(
         Target.feature,
@@ -108,7 +108,7 @@ class FeatureFileRunner {
   ) async {
     final attachmentManager = await _config.getAttachmentManager(_config);
     World world;
-    bool scenarioPassed = true;
+    var scenarioPassed = true;
 
     if (_config.createWorld != null) {
       await _log(
@@ -202,8 +202,8 @@ class FeatureFileRunner {
     if (skipExecution) {
       result = StepResult(0, StepExecutionResult.skipped);
     } else {
-      final ExectuableStep code = _matchStepToExectuableStep(step);
-      final Iterable<dynamic> parameters = _getStepParameters(step, code);
+      final code = _matchStepToExectuableStep(step);
+      final parameters = _getStepParameters(step, code);
       result = await _runWithinTest<StepResult>(
           step.name,
           () async => code.step
@@ -219,7 +219,7 @@ class FeatureFileRunner {
 
   /// the idea here is that we could use this as an abstraction to run
   /// within another test framework
-  Future<T> _runWithinTest<T>(String name, Future<T> fn()) async {
+  Future<T> _runWithinTest<T>(String name, Future<T> Function() fn) async {
     // the timeout is handled indepedently from this
     final completer = Completer<T>();
     try {
@@ -281,8 +281,7 @@ class FeatureFileRunner {
   }
 
   Iterable<dynamic> _getStepParameters(StepRunnable step, ExectuableStep code) {
-    Iterable<dynamic> parameters =
-        code.expression.getParameters(step.debug.lineText);
+    var parameters = code.expression.getParameters(step.debug.lineText);
     if (step.multilineStrings.isNotEmpty) {
       parameters = parameters.toList()..addAll(step.multilineStrings);
     }
@@ -297,6 +296,6 @@ class FeatureFileRunner {
   Future<void> _log(String message, RunnableDebugInformation context,
       MessageLevel level) async {
     await _reporter.message(
-        "$message # ${context.filePath}:${context.lineNumber}", level);
+        '$message # ${context.filePath}:${context.lineNumber}', level);
   }
 }

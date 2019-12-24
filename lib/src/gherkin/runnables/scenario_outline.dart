@@ -29,6 +29,7 @@ class ScenarioOutlineRunnable extends ScenarioRunnable {
     }
   }
 
+  @override
   void onTagAdded(TagsRunnable tag) {
     examples?.addTag(tag.clone(inherited: true));
   }
@@ -39,20 +40,20 @@ class ScenarioOutlineRunnable extends ScenarioRunnable {
           'Scenerio outline `$name` does not contains an example block.');
     }
 
-    final scenarios = List<ScenarioRunnable>();
+    final scenarios = <ScenarioRunnable>[];
 
-    for (int exampleIndex = 0;
+    for (var exampleIndex = 0;
         exampleIndex < examples.table.rows.length;
         exampleIndex += 1) {
       final exampleRow = examples.table.rows.elementAt(exampleIndex);
       final scenarioRunnable = ScenarioExpandedFromOutlineExampleRunnable(
-          '$name (Example ${exampleIndex + 1})'.trim(), this.debug);
+          '$name (Example ${exampleIndex + 1})'.trim(), debug);
       if (tags.isNotEmpty) {
         tags.map((t) => scenarioRunnable.addTag(t.clone()));
       }
 
-      final clonedSteps = this.steps.map((step) => step.clone()).toList();
-      for (int i = 0; i < exampleRow.columns.length; i += 1) {
+      final clonedSteps = steps.map((step) => step.clone()).toList();
+      for (var i = 0; i < exampleRow.columns.length; i += 1) {
         final parameterName = examples.table.header.columns.elementAt(i);
         final value = exampleRow.columns.elementAt(i);
         clonedSteps

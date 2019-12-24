@@ -74,7 +74,7 @@ class JsonStep {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> result = {
+    final result = {
       'keyword': keyword,
       'name': name,
       'line': line,
@@ -100,7 +100,7 @@ class JsonStep {
     }
 
     if (error != null) {
-      result['result']['error_message'] = error;
+      (result['result'] as dynamic)['error_message'] = error;
     }
 
     if (rows.isNotEmpty) {

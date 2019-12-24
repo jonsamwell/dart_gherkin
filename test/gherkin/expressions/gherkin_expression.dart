@@ -7,15 +7,15 @@ import 'package:gherkin/src/gherkin/parameters/plural_parameter.dart';
 import 'package:test/test.dart';
 
 void main() {
-  group("GherkinExpression", () {
+  group('GherkinExpression', () {
     test('parse simple regex expression correctly', () async {
       final parser = GherkinExpression(RegExp('I (open|close) the drawer'),
           [WordParameterLower(), WordParameterCamel()]);
 
-      expect(parser.isMatch("I open the drawer"), equals(true));
-      expect(parser.isMatch("I close the drawer"), equals(true));
-      expect(parser.isMatch("I sausage the drawer"), equals(false));
-      expect(parser.getParameters("I close the drawer"), equals(["close"]));
+      expect(parser.isMatch('I open the drawer'), equals(true));
+      expect(parser.isMatch('I close the drawer'), equals(true));
+      expect(parser.isMatch('I sausage the drawer'), equals(false));
+      expect(parser.getParameters('I close the drawer'), equals(['close']));
     });
 
     test('parse complex regex with custom parameters expression correctly',
@@ -40,7 +40,7 @@ void main() {
       expect(
           parser.getParameters(
               "I open the drawer 6 times and find 'socks' which is bad"),
-          equals(["open", 6, "socks", "bad"]));
+          equals(['open', 6, 'socks', 'bad']));
     });
 
     test('parse simple {word} expression correctly', () async {
@@ -50,7 +50,7 @@ void main() {
       expect(parser.isMatch("I am 'happy'"), equals(false));
       expect(parser.isMatch("I am 'happy' as 'Larry'"), equals(true));
       expect(parser.getParameters("I am 'happy' as 'Larry'"),
-          equals(["happy", "Larry"]));
+          equals(['happy', 'Larry']));
     });
 
     test('parse simple {string} expression correctly', () async {
@@ -59,7 +59,7 @@ void main() {
 
       expect(parser.isMatch("I am 'happy as Larry'"), equals(true));
       expect(parser.getParameters("I am 'happy as Larry'"),
-          equals(["happy as Larry"]));
+          equals(['happy as Larry']));
     });
 
     test('parse simple {int} expression correctly', () async {
@@ -67,8 +67,8 @@ void main() {
           RegExp('I am {int} years and {Int} days old'),
           [IntParameterLower(), IntParameterCamel()]);
 
-      expect(parser.isMatch("I am 150 years and 19 days old"), equals(true));
-      expect(parser.getParameters("I am 150 years and 19 days old"),
+      expect(parser.isMatch('I am 150 years and 19 days old'), equals(true));
+      expect(parser.getParameters('I am 150 years and 19 days old'),
           equals([150, 19]));
     });
 
@@ -78,8 +78,8 @@ void main() {
           [FloatParameterLower(), FloatParameterCamel()]);
 
       expect(
-          parser.isMatch("I am 150.232 years and 19.4 days old"), equals(true));
-      expect(parser.getParameters("I am 150.53 years and 19.00942 days old"),
+          parser.isMatch('I am 150.232 years and 19.4 days old'), equals(true));
+      expect(parser.getParameters('I am 150.53 years and 19.00942 days old'),
           equals([150.53, 19.00942]));
     });
 
@@ -88,11 +88,11 @@ void main() {
           RegExp('I have {int} cucumber(s) in my belly'),
           [IntParameterLower(), PluralParameter()]);
 
-      expect(parser.isMatch("I have 1 cucumber in my belly"), equals(true));
-      expect(parser.isMatch("I have 42 cucumbers in my belly"), equals(true));
+      expect(parser.isMatch('I have 1 cucumber in my belly'), equals(true));
+      expect(parser.isMatch('I have 42 cucumbers in my belly'), equals(true));
       expect(
-          parser.getParameters("I have 1 cucumber in my belly"), equals([1]));
-      expect(parser.getParameters("I have 42 cucumbers in my belly"),
+          parser.getParameters('I have 1 cucumber in my belly'), equals([1]));
+      expect(parser.getParameters('I have 42 cucumbers in my belly'),
           equals([42]));
     });
 
@@ -119,7 +119,7 @@ void main() {
       expect(
           parser.getParameters(
               "'word' 22 'a string' 09 laurie 3.14 'hello' 3.333 cucumbers"),
-          equals(["word", 22, "a string", 9, "laurie", 3.14, "hello", 3.333]));
+          equals(['word', 22, 'a string', 9, 'laurie', 3.14, 'hello', 3.333]));
     });
   });
 }

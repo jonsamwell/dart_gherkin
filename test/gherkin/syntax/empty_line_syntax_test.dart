@@ -4,30 +4,30 @@ import 'package:test/test.dart';
 import '../../mocks/en_dialect_mock.dart';
 
 void main() {
-  group("isMatch", () {
+  group('isMatch', () {
     test('matches correctly', () {
       final keyword = EmptyLineSyntax();
       expect(
           keyword.isMatch(
-            "",
+            '',
             EnDialectMock(),
           ),
           true);
       expect(
           keyword.isMatch(
-            " ",
+            ' ',
             EnDialectMock(),
           ),
           true);
       expect(
           keyword.isMatch(
-            "  ",
+            '  ',
             EnDialectMock(),
           ),
           true);
       expect(
           keyword.isMatch(
-            "    ",
+            '    ',
             EnDialectMock(),
           ),
           true);
@@ -37,25 +37,25 @@ void main() {
       final keyword = EmptyLineSyntax();
       expect(
           keyword.isMatch(
-            "a",
+            'a',
             EnDialectMock(),
           ),
           false);
       expect(
           keyword.isMatch(
-            " b",
+            ' b',
             EnDialectMock(),
           ),
           false);
       expect(
           keyword.isMatch(
-            "  c",
+            '  c',
             EnDialectMock(),
           ),
           false);
       expect(
           keyword.isMatch(
-            "    ,",
+            '    ,',
             EnDialectMock(),
           ),
           false);

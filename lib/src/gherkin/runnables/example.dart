@@ -7,11 +7,14 @@ import './runnable.dart';
 import './table.dart';
 
 class ExampleRunnable extends TaggableRunnableBlock {
-  String _name;
+  final String _name;
   String description;
   Table table;
 
-  ExampleRunnable(this._name, RunnableDebugInformation debug) : super(debug);
+  ExampleRunnable(
+    this._name,
+    RunnableDebugInformation debug,
+  ) : super(debug);
 
   @override
   String get name => _name;

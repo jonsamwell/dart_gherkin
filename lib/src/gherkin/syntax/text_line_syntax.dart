@@ -8,7 +8,7 @@ import './regex_matched_syntax.dart';
 class TextLineSyntax extends RegExMatchedGherkinSyntax {
   @override
   RegExp pattern(GherkinDialect dialect) => RegExp(
-        r"^\s*(?!#)\w+.*]*$",
+        r'^\s*(?!#)\w+.*]*$',
         multiLine: false,
         caseSensitive: false,
       );

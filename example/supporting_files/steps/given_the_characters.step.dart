@@ -8,5 +8,5 @@ class GivenTheCharacters extends Given1WithWorld<String, CalculatorWorld> {
   }
 
   @override
-  RegExp get pattern => RegExp(r"the characters {string}");
+  RegExp get pattern => RegExp(r'the characters {string}');
 }

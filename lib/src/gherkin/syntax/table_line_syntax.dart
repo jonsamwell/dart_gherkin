@@ -10,7 +10,7 @@ import './syntax_matcher.dart';
 class TableLineSyntax extends RegExMatchedGherkinSyntax {
   @override
   RegExp pattern(GherkinDialect dialect) => RegExp(
-        r"^\s*(\|.*\|)\s*(?:\s*#\s*.*)?$",
+        r'^\s*(\|.*\|)\s*(?:\s*#\s*.*)?$',
         multiLine: false,
         caseSensitive: false,
       );
@@ -35,7 +35,7 @@ class TableLineSyntax extends RegExMatchedGherkinSyntax {
   ) {
     final runnable = TableRunnable(debug);
     runnable.rows
-        .add(pattern(dialect).firstMatch(line.trim()).group(1).trim() ?? "");
+        .add(pattern(dialect).firstMatch(line.trim()).group(1).trim() ?? '');
     return runnable;
   }
 }

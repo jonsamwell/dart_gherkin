@@ -6,9 +6,9 @@ class WordParameterBase extends CustomParameter<String> {
 }
 
 class WordParameterLower extends WordParameterBase {
-  WordParameterLower() : super("word");
+  WordParameterLower() : super('word');
 }
 
 class WordParameterCamel extends WordParameterBase {
-  WordParameterCamel() : super("Word");
+  WordParameterCamel() : super('Word');
 }

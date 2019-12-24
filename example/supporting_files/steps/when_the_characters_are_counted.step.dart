@@ -8,5 +8,5 @@ class WhenTheCharactersAreCounted extends WhenWithWorld<CalculatorWorld> {
   }
 
   @override
-  RegExp get pattern => RegExp(r"they are counted");
+  RegExp get pattern => RegExp(r'they are counted');
 }

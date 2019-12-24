@@ -16,7 +16,7 @@ class GherkinExpression {
 
   GherkinExpression(this.originalExpression,
       Iterable<CustomParameter<dynamic>> customParameters) {
-    String pattern = originalExpression.pattern;
+    var pattern = originalExpression.pattern;
     customParameters.forEach((p) {
       if (originalExpression.pattern.contains(p.identifier)) {
         // we need the index in the original pattern to be able to
@@ -40,22 +40,22 @@ class GherkinExpression {
     // but defined directly in the step definition for example:
     //  Given I (open|close) the drawer(s)
     // note that we should ignore the predefined (s) plural parameter
-    bool inCustomBracketSection = false;
+    var inCustomBracketSection = false;
     int indexOfOpeningBracket;
     for (var i = 0; i < originalExpression.pattern.length; i += 1) {
       final char = originalExpression.pattern[i];
-      if (char == "(") {
+      if (char == '(') {
         // look ahead and make sure we don't see "s)" which would
         // indicate the plural parameter
         if (originalExpression.pattern.length > i + 2) {
           final justAhead = originalExpression.pattern[i + 1] +
               originalExpression.pattern[i + 2];
-          if (justAhead != "s)") {
+          if (justAhead != 's)') {
             inCustomBracketSection = true;
             indexOfOpeningBracket = i;
           }
         }
-      } else if (char == ")" && inCustomBracketSection) {
+      } else if (char == ')' && inCustomBracketSection) {
         _sortedParameterPositions.add(_SortedParameterPosition(
             indexOfOpeningBracket, UserDefinedStepParameterParameter()));
         inCustomBracketSection = false;
@@ -70,15 +70,15 @@ class GherkinExpression {
   }
 
   String _escapeIdentifier(String identifier) =>
-      identifier.replaceAll("(", "\\(").replaceAll(")", "\\)");
+      identifier.replaceAll('(', '\\(').replaceAll(')', '\\)');
 
   bool isMatch(String input) {
     return _expression.hasMatch(input);
   }
 
   Iterable<dynamic> getParameters(String input) {
-    final List<String> stringValues = <String>[];
-    final List<dynamic> values = <dynamic>[];
+    final stringValues = <String>[];
+    final values = <dynamic>[];
     _expression.allMatches(input).forEach((m) {
       // the first group is always the input string
       final indicies =
@@ -86,7 +86,7 @@ class GherkinExpression {
       stringValues.addAll(m.groups(indicies));
     });
 
-    for (int i = 0; i < stringValues.length; i += 1) {
+    for (var i = 0; i < stringValues.length; i += 1) {
       final val = stringValues.elementAt(i);
       final cp = _sortedParameterPositions.elementAt(i);
       if (cp.parameter.includeInParameterList) {

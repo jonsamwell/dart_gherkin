@@ -2,24 +2,24 @@ import './custom_parameter.dart';
 
 class FloatParameterBase extends CustomParameter<num> {
   FloatParameterBase(String name)
-      : super(name, RegExp(r"(-?[0-9]+\.?[0-9]*)"), (String input) {
+      : super(name, RegExp(r'(-?[0-9]+\.?[0-9]*)'), (String input) {
           final n = num.parse(input);
           return n;
         });
 }
 
 class FloatParameterLower extends FloatParameterBase {
-  FloatParameterLower() : super("float");
+  FloatParameterLower() : super('float');
 }
 
 class FloatParameterCamel extends FloatParameterBase {
-  FloatParameterCamel() : super("Float");
+  FloatParameterCamel() : super('Float');
 }
 
 class NumParameterLower extends FloatParameterBase {
-  NumParameterLower() : super("num");
+  NumParameterLower() : super('num');
 }
 
 class NumParameterCamel extends FloatParameterBase {
-  NumParameterCamel() : super("Num");
+  NumParameterCamel() : super('Num');
 }

@@ -9,8 +9,8 @@ import './runnable.dart';
 import './runnable_block.dart';
 
 class FeatureFile extends RunnableBlock {
-  String _language = "en";
-  List<TagsRunnable> _tagsPendingAssignmentToChild = <TagsRunnable>[];
+  String _language = 'en';
+  final List<TagsRunnable> _tagsPendingAssignmentToChild = <TagsRunnable>[];
 
   List<FeatureRunnable> features = <FeatureRunnable>[];
 

@@ -10,7 +10,7 @@ import './tag_syntax.dart';
 class ScenarioSyntax extends RegExMatchedGherkinSyntax {
   @override
   RegExp pattern(GherkinDialect dialect) => RegExp(
-        "^\\s*(?:${getMultiDialectRegexPattern(dialect.scenario)}):\\s*(.+)\\s*\$",
+        '^\\s*(?:${getMultiDialectRegexPattern(dialect.scenario)}):\\s*(.+)\\s*\$',
         multiLine: false,
         caseSensitive: false,
       );

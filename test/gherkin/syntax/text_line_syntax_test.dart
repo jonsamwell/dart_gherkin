@@ -6,12 +6,12 @@ import 'package:test/test.dart';
 import '../../mocks/en_dialect_mock.dart';
 
 void main() {
-  group("isMatch", () {
+  group('isMatch', () {
     test('matches correctly', () {
       final syntax = TextLineSyntax();
       expect(
           syntax.isMatch(
-            "Hello Jon",
+            'Hello Jon',
             EnDialectMock(),
           ),
           true);
@@ -23,19 +23,19 @@ void main() {
           true);
       expect(
           syntax.isMatch(
-            " Hello Jon",
+            ' Hello Jon',
             EnDialectMock(),
           ),
           true);
       expect(
           syntax.isMatch(
-            "  Hello Jon",
+            '  Hello Jon',
             EnDialectMock(),
           ),
           true);
       expect(
           syntax.isMatch(
-            "   h ",
+            '   h ',
             EnDialectMock(),
           ),
           true);
@@ -45,48 +45,48 @@ void main() {
       final syntax = TextLineSyntax();
       expect(
           syntax.isMatch(
-            "#Hello Jon",
+            '#Hello Jon',
             EnDialectMock(),
           ),
           false);
       expect(
           syntax.isMatch(
-            "# Hello Jon",
+            '# Hello Jon',
             EnDialectMock(),
           ),
           false);
       expect(
           syntax.isMatch(
-            "#  Hello Jon",
+            '#  Hello Jon',
             EnDialectMock(),
           ),
           false);
       expect(
           syntax.isMatch(
-            "      ",
+            '      ',
             EnDialectMock(),
           ),
           false);
       expect(
           syntax.isMatch(
-            " #   h ",
+            ' #   h ',
             EnDialectMock(),
           ),
           false);
     });
   });
 
-  group("toRunnable", () {
+  group('toRunnable', () {
     test('creates TextLineRunnable', () {
       final syntax = TextLineSyntax();
       final TextLineRunnable runnable = syntax.toRunnable(
-        "  Some text ",
+        '  Some text ',
         RunnableDebugInformation(null, 0, null),
         EnDialectMock(),
       );
       expect(runnable, isNotNull);
       expect(runnable, predicate((x) => x is TextLineRunnable));
-      expect(runnable.text, equals("Some text"));
+      expect(runnable.text, equals('Some text'));
     });
   });
 }

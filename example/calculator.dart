@@ -1,7 +1,7 @@
 class Calculator {
-  final List<num> _cachedNumbers = List<num>();
-  final List<String> _cachedCharacters = List<String>();
-  final List<num> _results = List<num>();
+  final List<num> _cachedNumbers = <num>[];
+  final List<String> _cachedCharacters = <String>[];
+  final List<num> _results = <num>[];
 
   void storeNumericInput(num input) => _cachedNumbers.add(input);
   void storeCharacterInput(String input) => _cachedCharacters.add(input);

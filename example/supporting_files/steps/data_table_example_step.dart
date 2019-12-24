@@ -20,10 +20,10 @@ class GivenIAddTheUsers extends Given1<Table> {
     // or get the table as a map (column values keyed by the header)
     final columns = dataTable.asMap();
     final personOne = columns.elementAt(0);
-    final personOneName = personOne["Firstname"];
+    final personOneName = personOne['Firstname'];
     print('Name of first person: `$personOneName`');
   }
 
   @override
-  RegExp get pattern => RegExp(r"I add the users");
+  RegExp get pattern => RegExp(r'I add the users');
 }

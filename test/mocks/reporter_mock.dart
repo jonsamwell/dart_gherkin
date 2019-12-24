@@ -1,6 +1,6 @@
 import 'package:gherkin/gherkin.dart';
 
-typedef void OnStepFinished(StepFinishedMessage message);
+typedef OnStepFinished = void Function(StepFinishedMessage message);
 
 class ReporterMock extends Reporter {
   int onTestRunStartedInvocationCount = 0;

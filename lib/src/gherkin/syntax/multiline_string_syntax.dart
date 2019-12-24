@@ -12,7 +12,7 @@ import './text_line_syntax.dart';
 class MultilineStringSyntax extends RegExMatchedGherkinSyntax {
   @override
   RegExp pattern(GherkinDialect dialect) => RegExp(
-        r"^\s*("
+        r'^\s*('
         '"""'
         r"|'''|```)\s*$",
         multiLine: false,
@@ -28,7 +28,7 @@ class MultilineStringSyntax extends RegExMatchedGherkinSyntax {
       return true;
     } else if (!(syntax is TextLineSyntax || syntax is CommentSyntax)) {
       throw GherkinSyntaxException(
-          "Multiline string block does not expect ${syntax.runtimeType} syntax.  Expects a text line");
+          'Multiline string block does not expect ${syntax.runtimeType} syntax.  Expects a text line');
     }
     return false;
   }

@@ -5,7 +5,7 @@ class TextLineRunnable extends Runnable {
   String text;
 
   @override
-  String get name => "Language";
+  String get name => 'Language';
 
   TextLineRunnable(RunnableDebugInformation debug) : super(debug);
 }

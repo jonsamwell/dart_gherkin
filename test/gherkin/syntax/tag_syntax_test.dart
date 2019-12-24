@@ -6,24 +6,24 @@ import 'package:test/test.dart';
 import '../../mocks/en_dialect_mock.dart';
 
 void main() {
-  group("isMatch", () {
+  group('isMatch', () {
     test('matches correctly', () {
       final syntax = TagSyntax();
       expect(
           syntax.isMatch(
-            "@tagone @tagtow @tag_three",
+            '@tagone @tagtow @tag_three',
             EnDialectMock(),
           ),
           true);
       expect(
           syntax.isMatch(
-            "@tag",
+            '@tag',
             EnDialectMock(),
           ),
           true);
       expect(
           syntax.isMatch(
-            "@tag one",
+            '@tag one',
             EnDialectMock(),
           ),
           true);
@@ -33,30 +33,30 @@ void main() {
       final syntax = TagSyntax();
       expect(
           syntax.isMatch(
-            "not a tag",
+            'not a tag',
             EnDialectMock(),
           ),
           false);
       expect(
           syntax.isMatch(
-            "#@tag @tag2",
+            '#@tag @tag2',
             EnDialectMock(),
           ),
           false);
     });
   });
 
-  group("toRunnable", () {
+  group('toRunnable', () {
     test('creates TextLineRunnable', () {
       final syntax = TagSyntax();
       final TagsRunnable runnable = syntax.toRunnable(
-        "@tag1 @tag2   @tag3@tag_4",
+        '@tag1 @tag2   @tag3@tag_4',
         RunnableDebugInformation(null, 0, null),
         EnDialectMock(),
       );
       expect(runnable, isNotNull);
       expect(runnable, predicate((x) => x is TagsRunnable));
-      expect(runnable.tags, equals(["@tag1", "@tag2", "@tag3", "@tag_4"]));
+      expect(runnable.tags, equals(['@tag1', '@tag2', '@tag3', '@tag_4']));
     });
   });
 }
