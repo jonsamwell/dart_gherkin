@@ -67,16 +67,20 @@ class FeatureFileRunner {
               MessageLevel.info);
         }
       }
-    } on Error catch (err) {
+    } on Error catch (err, st) {
       await _log(
-          "Fatal error encountered while running feature '${feature.name}'\n$err",
-          feature.debug,
-          MessageLevel.error);
+        "Fatal error encountered while running feature '${feature.name}'\n$err\n$st",
+        feature.debug,
+        MessageLevel.error,
+      );
       rethrow;
-    } catch (e, stacktrace) {
-      await _log("Error while running feature '${feature.name}'\n$e",
-          feature.debug, MessageLevel.error);
-      await _reporter.onException(e, stacktrace);
+    } catch (e, st) {
+      await _log(
+        "Error while running feature '${feature.name}'\n$e",
+        feature.debug,
+        MessageLevel.error,
+      );
+      await _reporter.onException(e, st);
       rethrow;
     } finally {
       await _reporter.onFeatureFinished(
@@ -227,12 +231,12 @@ class FeatureFileRunner {
       try {
         final result = await fn();
         completer.complete(result);
-      } catch (e) {
-        completer.completeError(e);
+      } catch (e, st) {
+        completer.completeError(e, st);
       }
       // }, timeout: Timeout.none);
-    } catch (e) {
-      completer.completeError(e);
+    } catch (e, st) {
+      completer.completeError(e, st);
     }
 
     return completer.future;
@@ -262,7 +266,7 @@ class FeatureFileRunner {
       /// `When4WithWorld<String, bool, int, num, MyWorld>`
       class Given_${step.debug.lineText.trim().replaceAll(RegExp(r'[^a-zA-Z0-9]'), '_')} extends Given1<String> {
         @override
-        RegExp get pattern => RegExp(r"${step.debug.lineText}");
+        RegExp get pattern => RegExp(r"${step.debug.lineText.trim().split(' ').skip(1).join(' ')}");
 
         @override
         Future<void> executeStep(String input1) async {

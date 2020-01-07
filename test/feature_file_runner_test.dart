@@ -179,7 +179,7 @@ void main() {
       /// `When4WithWorld<String, bool, int, num, MyWorld>`
       class Given_Given_I_do__a_ extends Given1<String> {
         @override
-        RegExp get pattern => RegExp(r"Given I do 'a'");
+        RegExp get pattern => RegExp(r"I do 'a'");
 
         @override
         Future<void> executeStep(String input1) async {
