@@ -1,3 +1,7 @@
+## [1.1.6] - 10/01/2019
+- Ensured aysnc errors when executing a scenario do not cause the whole test run to crash from an unhandled exception - each scenario is now run in its own zone
+- Surfaced library exception types
+
 ## [1.1.5+2] - 07/01/2019
 - Ensured stack traces are propogated when an error occurs during test execution
 - Fixed error with message from GherkinStepNotDefinedException that would include the Gherkin keyword in the example regex pattern

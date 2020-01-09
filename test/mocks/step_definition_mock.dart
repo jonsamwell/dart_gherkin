@@ -9,7 +9,11 @@ class MockStepDefinition extends StepDefinitionBase<World> {
   final OnRunCode code;
 
   MockStepDefinition([this.code, int expectedParameterCount = 0])
-      : super(null, expectedParameterCount);
+      : super(
+          StepDefinitionConfiguration()
+            ..timeout = const Duration(milliseconds: 200),
+          expectedParameterCount,
+        );
 
   @override
   Future<void> onRun(Iterable parameters) async {

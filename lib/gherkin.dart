@@ -37,3 +37,10 @@ export 'src/hooks/aggregated_hook.dart';
 
 // Process Handler
 export 'src/processes/process_handler.dart';
+
+// Exceptions
+export 'src/gherkin/exceptions/dialect_not_supported.dart';
+export 'src/gherkin/exceptions/gherkin_exception.dart';
+export 'src/gherkin/exceptions/parameter_count_mismatch_error.dart';
+export 'src/gherkin/exceptions/step_not_defined_error.dart';
+export 'src/gherkin/exceptions/syntax_error.dart';

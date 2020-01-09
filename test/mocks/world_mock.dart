@@ -6,3 +6,10 @@ class WorldMock extends World {
   @override
   void dispose() => disposeFnInvoked = true;
 }
+
+class WorldMockThatThrowsWhenDisposed extends World {
+  bool disposeFnInvoked = false;
+
+  @override
+  void dispose() => throw Exception('Error occured in dispose');
+}

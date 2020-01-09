@@ -1,4 +1,6 @@
-class GherkinDialogNotSupportedException implements Exception {
+import 'gherkin_exception.dart';
+
+class GherkinDialogNotSupportedException implements GherkinException {
   final String dialect;
 
   GherkinDialogNotSupportedException(this.dialect);

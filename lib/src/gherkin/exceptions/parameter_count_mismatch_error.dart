@@ -1,4 +1,6 @@
-class GherkinStepParameterMismatchException implements Exception {
+import 'gherkin_exception.dart';
+
+class GherkinStepParameterMismatchException implements GherkinException {
   final int expectParameterCount;
   final int actualParameterCount;
   final Type step;

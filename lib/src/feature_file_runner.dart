@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:gherkin/src/gherkin/runnables/scenario_type_enum.dart';
 
+import '../gherkin.dart';
 import './reporters/message_level.dart';
 import './hooks/hook.dart';
 import './reporters/reporter.dart';
@@ -59,7 +60,7 @@ class FeatureFileRunner {
       for (final scenario in feature.scenarios) {
         if (_canRunScenario(_config.tagExpression, scenario)) {
           haveAllScenariosPassed &=
-              await _runScenario(scenario, feature.background);
+              await _runScenarioInZone(scenario, feature.background);
         } else {
           await _log(
               "Ignoring scenario '${scenario.name}' as tag expression '${_config.tagExpression}' not satified",
@@ -106,6 +107,38 @@ class FeatureFileRunner {
           );
   }
 
+  Future<bool> _runScenarioInZone(
+    ScenarioRunnable scenario,
+    BackgroundRunnable background,
+  ) {
+    final completer = Completer<bool>();
+    // ensure unhandled errors do not cause the entire test run to crash
+    runZoned(
+      () async {
+        final result = await _runScenario(scenario, background);
+        if (!completer.isCompleted) {
+          completer.complete(result);
+        }
+      },
+      onError: (dynamic error, dynamic stack) {
+        _reporter.onException(error, stack);
+
+        if (!completer.isCompleted) {
+          // this is a special type of exception that indicates something is wrong
+          // with the test rather than the test execution so fail the whole run as
+          // it is a developer level thing
+          if (error is GherkinException) {
+            completer.completeError(error, stack);
+          } else {
+            completer.complete(false);
+          }
+        }
+      },
+    );
+
+    return completer.future;
+  }
+
   Future<bool> _runScenario(
     ScenarioRunnable scenario,
     BackgroundRunnable background,
@@ -114,73 +147,80 @@ class FeatureFileRunner {
     World world;
     var scenarioPassed = true;
 
-    if (_config.createWorld != null) {
-      await _log(
-        "Creating new world for scenerio '${scenario.name}'",
+    try {
+      if (_config.createWorld != null) {
+        await _log(
+          "Creating new world for scenerio '${scenario.name}'",
+          scenario.debug,
+          MessageLevel.debug,
+        );
+        world = await _config.createWorld(_config);
+        world.setAttachmentManager(attachmentManager);
+        await _hook.onAfterScenarioWorldCreated(world, scenario.name);
+      }
+
+      await _hook.onBeforeScenario(_config, scenario.name);
+
+      await _reporter.onScenarioStarted(StartedMessage(
+        scenario.scenarioType == ScenarioType.scenario_outline
+            ? Target.scenario_outline
+            : Target.scenario,
+        scenario.name,
         scenario.debug,
-        MessageLevel.debug,
-      );
-      world = await _config.createWorld(_config);
-      world.setAttachmentManager(attachmentManager);
-      await _hook.onAfterScenarioWorldCreated(world, scenario.name);
-    }
+        scenario.tags.isNotEmpty
+            ? scenario.tags
+                .map((t) => t.tags
+                    .map((tag) => Tag(tag, t.debug.lineNumber, t.isInherited))
+                    .toList())
+                .reduce((a, b) => a..addAll(b))
+                .toList()
+            : Iterable<Tag>.empty().toList(),
+      ));
 
-    await _hook.onBeforeScenario(_config, scenario.name);
+      if (background != null) {
+        await _log(
+          "Running background steps for scenerio '${scenario.name}'",
+          scenario.debug,
+          MessageLevel.info,
+        );
+        for (var step in background.steps) {
+          final result =
+              await _runStep(step, world, attachmentManager, !scenarioPassed);
+          scenarioPassed = result.result == StepExecutionResult.pass;
+          if (!_canContinueScenario(result)) {
+            scenarioPassed = false;
+            await _log(
+                "Background step '${step.name}' did not pass, all remaining steps will be skiped",
+                step.debug,
+                MessageLevel.warning);
+          }
+        }
+      }
 
-    await _reporter.onScenarioStarted(StartedMessage(
-      scenario.scenarioType == ScenarioType.scenario_outline
-          ? Target.scenario_outline
-          : Target.scenario,
-      scenario.name,
-      scenario.debug,
-      scenario.tags.isNotEmpty
-          ? scenario.tags
-              .map((t) => t.tags
-                  .map((tag) => Tag(tag, t.debug.lineNumber, t.isInherited))
-                  .toList())
-              .reduce((a, b) => a..addAll(b))
-              .toList()
-          : Iterable<Tag>.empty().toList(),
-    ));
-
-    if (background != null) {
-      await _log(
-        "Running background steps for scenerio '${scenario.name}'",
-        scenario.debug,
-        MessageLevel.info,
-      );
-      for (var step in background.steps) {
+      for (var step in scenario.steps) {
         final result =
             await _runStep(step, world, attachmentManager, !scenarioPassed);
         scenarioPassed = result.result == StepExecutionResult.pass;
         if (!_canContinueScenario(result)) {
           scenarioPassed = false;
           await _log(
-              "Background step '${step.name}' did not pass, all remaining steps will be skiped",
+              "Step '${step.name}' did not pass, all remaining steps will be skiped",
               step.debug,
               MessageLevel.warning);
         }
       }
+
+      world?.dispose();
+    } catch (e, st) {
+      await _reporter.onException(e, st);
+
+      rethrow;
+    } finally {
+      await _reporter.onScenarioFinished(ScenarioFinishedMessage(
+          scenario.name, scenario.debug, scenarioPassed));
+      await _hook.onAfterScenario(_config, scenario.name);
     }
 
-    for (var step in scenario.steps) {
-      final result =
-          await _runStep(step, world, attachmentManager, !scenarioPassed);
-      scenarioPassed = result.result == StepExecutionResult.pass;
-      if (!_canContinueScenario(result)) {
-        scenarioPassed = false;
-        await _log(
-            "Step '${step.name}' did not pass, all remaining steps will be skiped",
-            step.debug,
-            MessageLevel.warning);
-      }
-    }
-
-    world?.dispose();
-
-    await _reporter.onScenarioFinished(
-        ScenarioFinishedMessage(scenario.name, scenario.debug, scenarioPassed));
-    await _hook.onAfterScenario(_config, scenario.name);
     return scenarioPassed;
   }
 
@@ -188,12 +228,19 @@ class FeatureFileRunner {
     return stepResult.result == StepExecutionResult.pass;
   }
 
-  Future<StepResult> _runStep(StepRunnable step, World world,
-      AttachmentManager attachmentManager, bool skipExecution) async {
+  Future<StepResult> _runStep(
+    StepRunnable step,
+    World world,
+    AttachmentManager attachmentManager,
+    bool skipExecution,
+  ) async {
     StepResult result;
 
     await _log(
-        "Attempting to run step '${step.name}'", step.debug, MessageLevel.info);
+      "Attempting to run step '${step.name}'",
+      step.debug,
+      MessageLevel.info,
+    );
     await _hook.onBeforeStep(world, step.name);
     await _reporter.onStepStarted(StepStartedMessage(
       step.name,
@@ -209,14 +256,25 @@ class FeatureFileRunner {
       final code = _matchStepToExectuableStep(step);
       final parameters = _getStepParameters(step, code);
       result = await _runWithinTest<StepResult>(
-          step.name,
-          () async => code.step
-              .run(world, _reporter, _config.defaultTimeout, parameters));
+        step.name,
+        () async => code.step.run(
+          world,
+          _reporter,
+          _config.defaultTimeout,
+          parameters,
+        ),
+      );
     }
 
     await _hook.onAfterStep(world, step.name, result);
-    await _reporter.onStepFinished(StepFinishedMessage(step.name, step.debug,
-        result, attachmentManager?.getAttachementsForContext(step.name)));
+    await _reporter.onStepFinished(
+      StepFinishedMessage(
+        step.name,
+        step.debug,
+        result,
+        attachmentManager?.getAttachementsForContext(step.name),
+      ),
+    );
 
     return result;
   }
@@ -226,18 +284,14 @@ class FeatureFileRunner {
   Future<T> _runWithinTest<T>(String name, Future<T> Function() fn) async {
     // the timeout is handled indepedently from this
     final completer = Completer<T>();
+    // test(name, () async {
     try {
-      // test(name, () async {
-      try {
-        final result = await fn();
-        completer.complete(result);
-      } catch (e, st) {
-        completer.completeError(e, st);
-      }
-      // }, timeout: Timeout.none);
+      final result = await fn();
+      completer.complete(result);
     } catch (e, st) {
       completer.completeError(e, st);
     }
+    // }, timeout: Timeout.none);
 
     return completer.future;
   }
