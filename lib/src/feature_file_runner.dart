@@ -121,15 +121,17 @@ class FeatureFileRunner {
         }
       },
       onError: (dynamic error, dynamic stack) {
-        _reporter.onException(error, stack);
-
         if (!completer.isCompleted) {
           // this is a special type of exception that indicates something is wrong
           // with the test rather than the test execution so fail the whole run as
-          // it is a developer level thing
+          // it is should be handled at the developer level
           if (error is GherkinException) {
             completer.completeError(error, stack);
           } else {
+            _reporter.onException(
+              error is Error ? Exception(error.toString()) : error,
+              stack,
+            );
             completer.complete(false);
           }
         }

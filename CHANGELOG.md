@@ -1,3 +1,6 @@
+## [1.1.6+1] - 10/01/2019
+- Ensured aysnc errors when executing a scenario do not cause the whole test run to crash from an unhandled exception or error - each scenario is now run in its own zone
+
 ## [1.1.6] - 10/01/2019
 - Ensured aysnc errors when executing a scenario do not cause the whole test run to crash from an unhandled exception - each scenario is now run in its own zone
 - Surfaced library exception types
