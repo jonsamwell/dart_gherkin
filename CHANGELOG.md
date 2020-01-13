@@ -1,3 +1,6 @@
+## [1.1.6+2] - 13/01/2019
+- Fixed issue with non-capturing regex groups in step patterns and made the well known pluralisation parameter '(s)' a non-capturing regex group
+
 ## [1.1.6+1] - 10/01/2019
 - Ensured aysnc errors when executing a scenario do not cause the whole test run to crash from an unhandled exception or error - each scenario is now run in its own zone
 

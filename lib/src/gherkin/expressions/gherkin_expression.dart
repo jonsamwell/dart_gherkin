@@ -40,17 +40,18 @@ class GherkinExpression {
     // but defined directly in the step definition for example:
     //  Given I (open|close) the drawer(s)
     // note that we should ignore the predefined (s) plural parameter
+    // and also ignore the (?:) non-capturing group pattern
     var inCustomBracketSection = false;
     int indexOfOpeningBracket;
     for (var i = 0; i < originalExpression.pattern.length; i += 1) {
       final char = originalExpression.pattern[i];
       if (char == '(') {
-        // look ahead and make sure we don't see "s)" which would
-        // indicate the plural parameter
+        // look ahead and make sure we don't see "s)" or "?:" which would
+        // indicate the plural parameter or a non-capturing group
         if (originalExpression.pattern.length > i + 2) {
           final justAhead = originalExpression.pattern[i + 1] +
               originalExpression.pattern[i + 2];
-          if (justAhead != 's)') {
+          if (justAhead != 's)' && justAhead != '?:') {
             inCustomBracketSection = true;
             indexOfOpeningBracket = i;
           }
@@ -86,9 +87,13 @@ class GherkinExpression {
       stringValues.addAll(m.groups(indicies));
     });
 
+    final definedParameters = _sortedParameterPositions
+        .where((x) => x.parameter.includeInParameterList)
+        .toList();
+
     for (var i = 0; i < stringValues.length; i += 1) {
       final val = stringValues.elementAt(i);
-      final cp = _sortedParameterPositions.elementAt(i);
+      final cp = definedParameters.elementAt(i);
       if (cp.parameter.includeInParameterList) {
         values.add(cp.parameter.transformer(val));
       }

@@ -4,7 +4,7 @@ class PluralParameter extends CustomParameter<String> {
   PluralParameter()
       : super(
           's',
-          RegExp('(s)?'),
+          RegExp('(?:s)?'),
           (String input) => null,
           identifierPrefix: '(',
           identifierSuffix: ')',

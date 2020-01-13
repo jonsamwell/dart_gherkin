@@ -96,10 +96,21 @@ void main() {
           equals([42]));
     });
 
+    test('parse simple non-capturing group expression correctly', () async {
+      final parser = GherkinExpression(
+          RegExp('I have {int} (?:apples|pears) in my belly'),
+          [IntParameterLower(), PluralParameter()]);
+
+      expect(parser.isMatch('I have 2 apples in my belly'), equals(true));
+      expect(parser.isMatch('I have 42 pears in my belly'), equals(true));
+      expect(parser.getParameters('I have 2 apples in my belly'), equals([2]));
+      expect(parser.getParameters('I have 42 pears in my belly'), equals([42]));
+    });
+
     test('parse complex expression correctly', () async {
       final parser = GherkinExpression(
           RegExp(
-              '{word} {int} {string} {int} (jon|laurie) {float} {word} {float} cucumber(s)'),
+              '{word} {int} {string} {int} (?:jon|laurie) {float} {word} {float} cucumber(s)'),
           [
             WordParameterLower(),
             StringParameterLower(),
@@ -119,7 +130,7 @@ void main() {
       expect(
           parser.getParameters(
               "'word' 22 'a string' 09 laurie 3.14 'hello' 3.333 cucumbers"),
-          equals(['word', 22, 'a string', 9, 'laurie', 3.14, 'hello', 3.333]));
+          equals(['word', 22, 'a string', 9, 3.14, 'hello', 3.333]));
     });
   });
 }
