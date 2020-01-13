@@ -1,3 +1,6 @@
+## [1.1.6+3] - 14/01/2019
+- Fixed issue with scenerio not being parsed correctly when under a scenario outline in the same feature file
+
 ## [1.1.6+2] - 13/01/2019
 - Fixed issue with non-capturing regex groups in step patterns and made the well known pluralisation parameter '(s)' a non-capturing regex group
 
