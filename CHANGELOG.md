@@ -1,4 +1,4 @@
-## [1.1.6+3] - 03/02/2019
+## [1.1.6+4] - 03/02/2019
 - Fixed issue with empty cells in scenario table parameters
 - Fixed issue with a leading comment in feature files
 
