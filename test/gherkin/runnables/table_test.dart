@@ -135,5 +135,33 @@ void main() {
       expect(maps.elementAt(1),
           {'header one': 'four', 'header two': 'five', 'header three': 'six'});
     });
+
+    test('table allows empty columns when converted to map', () async {
+      final runnable = TableRunnable(debugInfo);
+      runnable.addChild(TableRunnable(debugInfo)
+        ..rows.add('| header one | header two | header three |'));
+      runnable.addChild(TableRunnable(debugInfo)
+        ..rows.add('| one | two |                 |'));
+      runnable.addChild(TableRunnable(debugInfo)..rows.add('| | five | six |'));
+      runnable.addChild(
+          TableRunnable(debugInfo)..rows.add('| seven | eight | nine |'));
+      final maps = runnable.toTable().asMap();
+      expect(maps.length, 3);
+      expect(maps.elementAt(0), {
+        'header one': 'one',
+        'header two': 'two',
+        'header three': null,
+      });
+      expect(maps.elementAt(1), {
+        'header one': null,
+        'header two': 'five',
+        'header three': 'six',
+      });
+      expect(maps.elementAt(2), {
+        'header one': 'seven',
+        'header two': 'eight',
+        'header three': 'nine',
+      });
+    });
   });
 }

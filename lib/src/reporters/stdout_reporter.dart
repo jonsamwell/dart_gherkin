@@ -20,6 +20,11 @@ class StdoutReporter extends Reporter {
     }
   }
 
+  @override
+  Future<void> onException(Exception exception, StackTrace stackTrace) async {
+    printMessageLine(exception.toString(), getColour(MessageLevel.error));
+  }
+
   String getColour(MessageLevel level) {
     switch (level) {
       case MessageLevel.verbose:

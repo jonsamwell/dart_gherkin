@@ -1,3 +1,4 @@
+import 'package:gherkin/src/gherkin/runnables/comment_line.dart';
 import 'package:gherkin/src/gherkin/runnables/debug_information.dart';
 import 'package:gherkin/src/gherkin/runnables/feature.dart';
 import 'package:gherkin/src/gherkin/runnables/feature_file.dart';
@@ -18,6 +19,11 @@ void main() {
       runnable.addChild(FeatureRunnable('2', debugInfo));
       runnable.addChild(FeatureRunnable('3', debugInfo));
       expect(runnable.features.length, 3);
+    });
+    test('can add CommentLineRunnable', () {
+      final runnable = FeatureFile(debugInfo);
+      runnable.addChild(CommentLineRunnable('1', debugInfo));
+      expect(runnable.features.length, 0);
     });
   });
 }

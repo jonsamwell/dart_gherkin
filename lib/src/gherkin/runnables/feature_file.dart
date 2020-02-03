@@ -7,6 +7,7 @@ import './feature.dart';
 import './language.dart';
 import './runnable.dart';
 import './runnable_block.dart';
+import 'comment_line.dart';
 
 class FeatureFile extends RunnableBlock {
   String _language = 'en';
@@ -35,6 +36,7 @@ class FeatureFile extends RunnableBlock {
           _tagsPendingAssignmentToChild.clear();
         }
         break;
+      case CommentLineRunnable:
       case EmptyLineRunnable:
         break;
       default:

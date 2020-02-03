@@ -1,3 +1,7 @@
+## [1.1.6+3] - 03/02/2019
+- Fixed issue with empty cells in scenario table parameters
+- Fixed issue with a leading comment in feature files
+
 ## [1.1.6+3] - 14/01/2019
 - Fixed issue with scenerio not being parsed correctly when under a scenario outline in the same feature file
 

@@ -1,3 +1,5 @@
+# comment ...
+
 Feature: Calculator with Background
   Tests the addition feature of the calculator
 

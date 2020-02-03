@@ -42,12 +42,16 @@ class TableRunnable extends RunnableBlock {
   }
 
   TableRow _toRow(String raw, int rowIndex, [isHeaderRow = false]) {
+    final columns =
+        raw.trim().split(RegExp(r'\|')).map((c) => c.trim()).skip(1).toList();
+
     return TableRow(
-        raw
-            .split(RegExp(r'\|'))
-            .map((c) => c.trim())
-            .where((c) => c.isNotEmpty),
-        rowIndex,
-        isHeaderRow);
+      columns
+          .take(columns.length - 1)
+          .map((v) => v.isEmpty ? null : v)
+          .toList(),
+      rowIndex,
+      isHeaderRow,
+    );
   }
 }
