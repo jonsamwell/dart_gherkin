@@ -23,6 +23,7 @@ class TagSyntax extends RegExMatchedGherkinSyntax {
         .where((t) => t != null && t.isNotEmpty)
         .map((t) => '@${t.trim()}')
         .toList();
+
     return runnable;
   }
 }

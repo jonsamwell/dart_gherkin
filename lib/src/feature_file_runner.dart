@@ -148,6 +148,14 @@ class FeatureFileRunner {
     final attachmentManager = await _config.getAttachmentManager(_config);
     World world;
     var scenarioPassed = true;
+    final tags = scenario.tags.isNotEmpty
+        ? scenario.tags
+            .map((t) => t.tags
+                .map((tag) => Tag(tag, t.debug.lineNumber, t.isInherited))
+                .toList())
+            .reduce((a, b) => a..addAll(b))
+            .toList()
+        : Iterable<Tag>.empty();
 
     try {
       if (_config.createWorld != null) {
@@ -158,10 +166,14 @@ class FeatureFileRunner {
         );
         world = await _config.createWorld(_config);
         world.setAttachmentManager(attachmentManager);
-        await _hook.onAfterScenarioWorldCreated(world, scenario.name);
+        await _hook.onAfterScenarioWorldCreated(
+          world,
+          scenario.name,
+          tags,
+        );
       }
 
-      await _hook.onBeforeScenario(_config, scenario.name);
+      await _hook.onBeforeScenario(_config, scenario.name, tags);
 
       await _reporter.onScenarioStarted(StartedMessage(
         scenario.scenarioType == ScenarioType.scenario_outline
@@ -218,9 +230,18 @@ class FeatureFileRunner {
 
       rethrow;
     } finally {
-      await _reporter.onScenarioFinished(ScenarioFinishedMessage(
-          scenario.name, scenario.debug, scenarioPassed));
-      await _hook.onAfterScenario(_config, scenario.name);
+      await _reporter.onScenarioFinished(
+        ScenarioFinishedMessage(
+          scenario.name,
+          scenario.debug,
+          scenarioPassed,
+        ),
+      );
+      await _hook.onAfterScenario(
+        _config,
+        scenario.name,
+        tags,
+      );
     }
 
     return scenarioPassed;

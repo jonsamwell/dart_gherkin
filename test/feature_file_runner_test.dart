@@ -7,6 +7,7 @@ import 'package:gherkin/src/gherkin/runnables/feature.dart';
 import 'package:gherkin/src/gherkin/runnables/feature_file.dart';
 import 'package:gherkin/src/gherkin/runnables/scenario.dart';
 import 'package:gherkin/src/gherkin/runnables/step.dart';
+import 'package:gherkin/src/gherkin/runnables/tags.dart';
 import 'package:gherkin/src/gherkin/steps/exectuable_step.dart';
 import 'package:gherkin/src/gherkin/steps/step_run_result.dart';
 import 'package:test/test.dart';
@@ -288,6 +289,46 @@ void main() {
         await runner.run(featureFile);
         expect(hookMock.onBeforeScenarioInvocationCount, 2);
         expect(hookMock.onAfterScenarioInvocationCount, 2);
+      });
+
+      test('scenario tags are passed to hook', () async {
+        final hookMock = HookMock();
+        final stepDefiniton = MockStepDefinition();
+        final tagOne = TagsRunnable(emptyDebuggable)..tags = ['@tag1'];
+        final tagTwo = TagsRunnable(emptyDebuggable)..tags = ['@tag2'];
+        final executableStep =
+            ExectuableStep(MockGherkinExpression((_) => true), stepDefiniton);
+        final runner = FeatureFileRunner(
+            TestConfiguration(),
+            MockTagExpressionEvaluator(),
+            [executableStep],
+            ReporterMock(),
+            hookMock);
+
+        final step = StepRunnable(
+            'Step 1', RunnableDebugInformation('', 0, 'Given I do a'));
+        final scenario1 = ScenarioRunnable('Scenario: 1', emptyDebuggable)
+          ..steps.add(step)
+          ..addTag(tagTwo);
+        final feature = FeatureRunnable('1', emptyDebuggable)
+          ..scenarios.add(scenario1)
+          ..addTag(tagOne);
+        final featureFile = FeatureFile(emptyDebuggable)..features.add(feature);
+        await runner.run(featureFile);
+        expect(hookMock.onBeforeScenarioInvocationCount, 1);
+        expect(hookMock.onAfterScenarioInvocationCount, 1);
+        expect(hookMock.onBeforeScenarioTags.length, 2);
+        expect(hookMock.onAfterScenarioTags.length, 2);
+        expect(hookMock.onBeforeScenarioTags.elementAt(0).name,
+            tagTwo.tags.elementAt(0));
+        expect(hookMock.onBeforeScenarioTags.elementAt(1).name,
+            tagOne.tags.elementAt(0));
+        expect(hookMock.onBeforeScenarioTags.elementAt(1).isInherited, true);
+        expect(hookMock.onAfterScenarioTags.elementAt(0).name,
+            tagTwo.tags.elementAt(0));
+        expect(hookMock.onAfterScenarioTags.elementAt(1).name,
+            tagOne.tags.elementAt(0));
+        expect(hookMock.onAfterScenarioTags.elementAt(1).isInherited, true);
       });
     });
 

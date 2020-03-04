@@ -1,3 +1,6 @@
+## [1.1.7] - 04/03/2020
+- Pass scenario tags into scenerio level hooks to allow for custom actions - this is a breaking changed to the `Hook` interface and hook implementations will need to be updated to cope with the extra parameter
+
 ## [1.1.6+4] - 03/02/2019
 - Fixed issue with empty cells in scenario table parameters
 - Fixed issue with a leading comment in feature files

@@ -28,7 +28,7 @@ void main() {
       expect(hookTwo.onAfterRunInvocationCount, 1);
       expect(hookThree.onAfterRunInvocationCount, 1);
       expect(hookFour.onAfterRunInvocationCount, 1);
-      await aggregatedHook.onBeforeScenario(null, null);
+      await aggregatedHook.onBeforeScenario(null, null, null);
       expect(hookOne.onBeforeScenarioInvocationCount, 1);
       expect(hookTwo.onBeforeScenarioInvocationCount, 1);
       expect(hookThree.onBeforeScenarioInvocationCount, 1);
@@ -38,7 +38,7 @@ void main() {
       expect(hookTwo.onBeforeStepInvocationCount, 1);
       expect(hookThree.onBeforeStepInvocationCount, 1);
       expect(hookFour.onBeforeStepInvocationCount, 1);
-      await aggregatedHook.onAfterScenarioWorldCreated(null, null);
+      await aggregatedHook.onAfterScenarioWorldCreated(null, null, null);
       expect(hookOne.onAfterScenarioWorldCreatedInvocationCount, 1);
       expect(hookTwo.onAfterScenarioWorldCreatedInvocationCount, 1);
       expect(hookThree.onAfterScenarioWorldCreatedInvocationCount, 1);

@@ -1,5 +1,6 @@
 import '../gherkin/steps/step_run_result.dart';
 import '../gherkin/steps/world.dart';
+import '../reporters/messages.dart';
 import '../configuration.dart';
 import './hook.dart';
 
@@ -21,20 +22,41 @@ class AggregatedHook extends Hook {
 
   @override
   Future<void> onAfterScenarioWorldCreated(
-          World world, String scenario) async =>
-      await _invokeHooks((h) => h.onAfterScenarioWorldCreated(world, scenario));
+    World world,
+    String scenario,
+    Iterable<Tag> tags,
+  ) async =>
+      await _invokeHooks((h) => h.onAfterScenarioWorldCreated(
+            world,
+            scenario,
+            tags,
+          ));
 
   /// Run before a scenario and it steps are executed
   @override
   Future<void> onBeforeScenario(
-          TestConfiguration config, String scenario) async =>
-      await _invokeHooks((h) => h.onBeforeScenario(config, scenario));
+    TestConfiguration config,
+    String scenario,
+    Iterable<Tag> tags,
+  ) async =>
+      await _invokeHooks((h) => h.onBeforeScenario(
+            config,
+            scenario,
+            tags,
+          ));
 
   /// Run after a scenario has executed
   @override
   Future<void> onAfterScenario(
-          TestConfiguration config, String scenario) async =>
-      await _invokeHooks((h) => h.onAfterScenario(config, scenario));
+    TestConfiguration config,
+    String scenario,
+    Iterable<Tag> tags,
+  ) async =>
+      await _invokeHooks((h) => h.onAfterScenario(
+            config,
+            scenario,
+            tags,
+          ));
 
   /// Run before a step is executed
   @override

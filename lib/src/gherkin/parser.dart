@@ -71,13 +71,14 @@ class GherkinParser {
   }
 
   num _parseBlock(
-      LanguageService langaugeService,
-      GherkinDialect dialect,
-      SyntaxMatcher parentSyntaxBlock,
-      RunnableBlock parentBlock,
-      Iterable<String> lines,
-      int lineNumber,
-      int depth) {
+    LanguageService langaugeService,
+    GherkinDialect dialect,
+    SyntaxMatcher parentSyntaxBlock,
+    RunnableBlock parentBlock,
+    Iterable<String> lines,
+    int lineNumber,
+    int depth,
+  ) {
     for (var i = lineNumber; i < lines.length; i += 1) {
       final line = lines.elementAt(i).trim();
       // print("$depth - $line");

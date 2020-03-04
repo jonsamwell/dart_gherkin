@@ -10,6 +10,8 @@ class HookMock extends Hook {
   int onAfterScenarioInvocationCount = 0;
   int onAfterScenarioWorldCreatedInvocationCount = 0;
   int onAfterStepInvocationCount = 0;
+  List<Tag> onBeforeScenarioTags;
+  List<Tag> onAfterScenarioTags;
 
   final int providedPriority;
   final OnBeforeRunCode onBeforeRunCode;
@@ -33,8 +35,13 @@ class HookMock extends Hook {
 
   @override
   Future<void> onBeforeScenario(
-          TestConfiguration config, String scenario) async =>
-      onBeforeScenarioInvocationCount += 1;
+    TestConfiguration config,
+    String scenario,
+    Iterable<Tag> tags,
+  ) async {
+    onBeforeScenarioTags = tags?.toList();
+    onBeforeScenarioInvocationCount += 1;
+  }
 
   @override
   Future<void> onBeforeStep(World world, String step) async =>
@@ -42,12 +49,20 @@ class HookMock extends Hook {
 
   @override
   Future<void> onAfterScenario(
-          TestConfiguration config, String scenario) async =>
-      onAfterScenarioInvocationCount += 1;
+    TestConfiguration config,
+    String scenario,
+    Iterable<Tag> tags,
+  ) async {
+    onAfterScenarioTags = tags?.toList();
+    onAfterScenarioInvocationCount += 1;
+  }
 
   @override
   Future<void> onAfterScenarioWorldCreated(
-          World world, String scenario) async =>
+    World world,
+    String scenario,
+    Iterable<Tag> tags,
+  ) async =>
       onAfterScenarioWorldCreatedInvocationCount += 1;
 
   @override
