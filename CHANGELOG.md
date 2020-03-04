@@ -1,24 +1,24 @@
 ## [1.1.7] - 04/03/2020
 - Pass scenario tags into scenerio level hooks to allow for custom actions - this is a breaking changed to the `Hook` interface and hook implementations will need to be updated to cope with the extra parameter
 
-## [1.1.6+4] - 03/02/2019
+## [1.1.6+4] - 03/02/2020
 - Fixed issue with empty cells in scenario table parameters
 - Fixed issue with a leading comment in feature files
 
-## [1.1.6+3] - 14/01/2019
+## [1.1.6+3] - 14/01/2020
 - Fixed issue with scenerio not being parsed correctly when under a scenario outline in the same feature file
 
-## [1.1.6+2] - 13/01/2019
+## [1.1.6+2] - 13/01/2020
 - Fixed issue with non-capturing regex groups in step patterns and made the well known pluralisation parameter '(s)' a non-capturing regex group
 
-## [1.1.6+1] - 10/01/2019
+## [1.1.6+1] - 10/01/2020
 - Ensured aysnc errors when executing a scenario do not cause the whole test run to crash from an unhandled exception or error - each scenario is now run in its own zone
 
-## [1.1.6] - 10/01/2019
+## [1.1.6] - 10/01/2020
 - Ensured aysnc errors when executing a scenario do not cause the whole test run to crash from an unhandled exception - each scenario is now run in its own zone
 - Surfaced library exception types
 
-## [1.1.5+2] - 07/01/2019
+## [1.1.5+2] - 07/01/2020
 - Ensured stack traces are propogated when an error occurs during test execution
 - Fixed error with message from GherkinStepNotDefinedException that would include the Gherkin keyword in the example regex pattern
 
