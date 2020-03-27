@@ -211,8 +211,8 @@ void main() {
 
       You must implement the step like below and add the class to the 'stepDefinitions' property in your configuration:
 
-      /// The 'Given' class can be replaced with 'Then', 'When' 'And' or 'But'
-      /// All classes can take up to 5 input parameters anymore and you should probably us a table
+      /// The 'Given' class prefix can be replaced with 'Then', 'When' 'And' or 'But'
+      /// All classes can take up to 5 input parameters. With more, you should probably use a table.
       /// For example: `When4<String, bool, int, num>`
       /// You can also specify the type of world context you want
       /// `When4WithWorld<String, bool, int, num, MyWorld>`
@@ -223,7 +223,7 @@ void main() {
         @override
         Future<void> executeStep(String input1) async {
           // If the step is "Given I do a 'windy pop'"
-          // in this example input1 would equal 'windy pop'
+          // in this example, input1 would equal 'windy pop'
 
           // your code...
         }
