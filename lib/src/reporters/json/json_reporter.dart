@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:gherkin/src/reporters/json/json_tag.dart';
+
 import '../messages.dart';
 import '../reporter.dart';
 import 'json_feature.dart';
@@ -21,22 +23,22 @@ class JsonReporter extends Reporter {
 
   @override
   Future<void> onScenarioStarted(StartedMessage message) async {
-    _features.last.add(scenario: JsonScenario.from(message));
+    _getCurrentFeature().add(scenario: JsonScenario.from(message));
   }
 
   @override
   Future<void> onStepStarted(StepStartedMessage message) async {
-    _features.last.currentScenario().add(step: JsonStep.from(message));
+    _getCurrentFeature().currentScenario().add(step: JsonStep.from(message));
   }
 
   @override
   Future<void> onStepFinished(StepFinishedMessage message) async {
-    _features.last.currentScenario().currentStep().onFinish(message);
+    _getCurrentFeature().currentScenario().currentStep().onFinish(message);
   }
 
   @override
   Future<void> onException(Exception exception, StackTrace stackTrace) async {
-    _features.last
+    _getCurrentFeature()
         .currentScenario()
         .currentStep()
         .onException(exception, stackTrace);
@@ -54,10 +56,39 @@ class JsonReporter extends Reporter {
 
   Future<void> _generateReport(String path, List<JsonFeature> features) async {
     try {
-      final report = json.encode(_features.toList());
+      final report = json.encode(_features);
       await onSaveReport(report);
     } catch (e) {
       print('Failed to generate json report: $e');
     }
+  }
+
+  JsonFeature _getCurrentFeature() {
+    if (_features.isEmpty) {
+      final feature = JsonFeature()
+        ..name = 'Unnamed feature'
+        ..description =
+            'An unnamed feature is possible if something is logged before any feature has started to execute'
+        ..scenarios = <JsonScenario>[
+          JsonScenario()
+            ..name = 'Unnamed'
+            ..description =
+                'An unnamed scenario is possible if something is logged before any feature has started to execute'
+            ..line = 0
+            ..tags = <JsonTag>[]
+            ..steps = <JsonStep>[
+              JsonStep()
+                ..name = 'Unnamed'
+                ..line = 0
+            ]
+        ]
+        ..line = 0
+        ..tags = <JsonTag>[]
+        ..uri = 'unknown';
+
+      _features.add(feature);
+    }
+
+    return _features.last;
   }
 }

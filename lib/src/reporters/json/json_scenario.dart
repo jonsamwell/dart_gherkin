@@ -39,7 +39,7 @@ class JsonScenario {
       'keyword':
           target == Target.scenario_outline ? 'Scenario Outline' : 'Scenario',
       'type': 'scenario',
-      'id': '${feature.id};${name.toLowerCase()}',
+      'id': '${feature?.id};${name.toLowerCase()}',
       'name': name,
       'description': description,
       'line': line,

@@ -15,7 +15,7 @@ class TestableJsonReporter extends JsonReporter {
   }
 }
 
-String minimiseJson(String jsonReport) {
+String minimizeJson(String jsonReport) {
   return json.encode(json.decode(jsonReport));
 }
 
@@ -64,7 +64,7 @@ void main() {
 
       expect(
         reporter.report,
-        minimiseJson(
+        minimizeJson(
           File.fromUri(Uri.file('./test/reporters/json_reports/report_1.json'))
               .readAsStringSync(),
         ),
@@ -115,7 +115,7 @@ void main() {
 
       expect(
         reporter.report,
-        minimiseJson(
+        minimizeJson(
           File.fromUri(Uri.file('./test/reporters/json_reports/report_5.json'))
               .readAsStringSync(),
         ),
@@ -176,7 +176,7 @@ void main() {
 
       expect(
         reporter.report,
-        minimiseJson(
+        minimizeJson(
           File.fromUri(Uri.file('./test/reporters/json_reports/report_2.json'))
               .readAsStringSync(),
         ),
@@ -249,7 +249,7 @@ void main() {
 
       expect(
         reporter.report,
-        minimiseJson(
+        minimizeJson(
           File.fromUri(Uri.file('./test/reporters/json_reports/report_3.json'))
               .readAsStringSync(),
         ),
@@ -312,7 +312,7 @@ void main() {
 
       expect(
         reporter.report,
-        minimiseJson(
+        minimizeJson(
           File.fromUri(Uri.file('./test/reporters/json_reports/report_4.json'))
               .readAsStringSync(),
         ),
@@ -374,8 +374,22 @@ void main() {
 
       expect(
         reporter.report,
-        minimiseJson(
+        minimizeJson(
           File.fromUri(Uri.file('./test/reporters/json_reports/report_6.json'))
+              .readAsStringSync(),
+        ),
+      );
+    });
+
+    test('can add exception before any features has run', () async {
+      final reporter = TestableJsonReporter();
+      await reporter.onException(Exception('Test exception'), StackTrace.empty);
+      await reporter.onTestRunFinished();
+
+      expect(
+        reporter.report,
+        minimizeJson(
+          File.fromUri(Uri.file('./test/reporters/json_reports/report_7.json'))
               .readAsStringSync(),
         ),
       );

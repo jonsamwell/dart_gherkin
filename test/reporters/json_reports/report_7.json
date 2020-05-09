@@ -1,0 +1,35 @@
+[
+  {
+    "description": "An unnamed feature is possible if something is logged before any feature has started to execute",
+    "id": null,
+    "keyword": "Feature",
+    "line": 0,
+    "name": "Unnamed feature",
+    "uri": "unknown",
+    "elements": [
+      {
+        "keyword": "Scenario",
+        "type": "scenario",
+        "id": "null;unnamed",
+        "name": "Unnamed",
+        "description": "An unnamed scenario is possible if something is logged before any feature has started to execute",
+        "line": 0,
+        "steps": [
+          {
+            "keyword": null,
+            "name": "Unnamed",
+            "line": 0,
+            "match": {
+              "location": "null:0"
+            },
+            "result": {
+              "status": "failed",
+              "duration": 0,
+              "error_message": "Exception: Test exception"
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

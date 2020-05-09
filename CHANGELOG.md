@@ -1,25 +1,28 @@
+## [1.1.8] - 10/05/2020
+- Fixed issue with `JsonReporter` that would throw an error if an exception was logged before any features have run
+
 ## [1.1.7] - 04/03/2020
-- Pass scenario tags into scenerio level hooks to allow for custom actions - this is a breaking changed to the `Hook` interface and hook implementations will need to be updated to cope with the extra parameter
+- Pass scenario tags into scenario level hooks to allow for custom actions - this is a breaking changed to the `Hook` interface and hook implementations will need to be updated to cope with the extra parameter
 
 ## [1.1.6+4] - 03/02/2020
 - Fixed issue with empty cells in scenario table parameters
 - Fixed issue with a leading comment in feature files
 
 ## [1.1.6+3] - 14/01/2020
-- Fixed issue with scenerio not being parsed correctly when under a scenario outline in the same feature file
+- Fixed issue with scenario not being parsed correctly when under a scenario outline in the same feature file
 
 ## [1.1.6+2] - 13/01/2020
-- Fixed issue with non-capturing regex groups in step patterns and made the well known pluralisation parameter '(s)' a non-capturing regex group
+- Fixed issue with non-capturing regex groups in step patterns and made the well known pluralization parameter '(s)' a non-capturing regex group
 
 ## [1.1.6+1] - 10/01/2020
-- Ensured aysnc errors when executing a scenario do not cause the whole test run to crash from an unhandled exception or error - each scenario is now run in its own zone
+- Ensured async errors when executing a scenario do not cause the whole test run to crash from an unhandled exception or error - each scenario is now run in its own zone
 
 ## [1.1.6] - 10/01/2020
-- Ensured aysnc errors when executing a scenario do not cause the whole test run to crash from an unhandled exception - each scenario is now run in its own zone
+- Ensured async errors when executing a scenario do not cause the whole test run to crash from an unhandled exception - each scenario is now run in its own zone
 - Surfaced library exception types
 
 ## [1.1.5+2] - 07/01/2020
-- Ensured stack traces are propogated when an error occurs during test execution
+- Ensured stack traces are propagated when an error occurs during test execution
 - Fixed error with message from GherkinStepNotDefinedException that would include the Gherkin keyword in the example regex pattern
 
 ## [1.1.5+1] - 24/12/2019
@@ -31,19 +34,19 @@
 
 ## [1.1.4] - 05/12/2019
 - Allowed comments at the end of a table line
-- Moved `onBeforeScenario` hook to run after the scenerio world has been created to allow the hook to access the world
+- Moved `onBeforeScenario` hook to run after the scenario world has been created to allow the hook to access the world
 
 ## [1.1.3] - 27/09/2019
 - Relaxed constraint on the test lib
 
 ## [1.1.2] - 22/09/2019
-- Fixed issue with scenerio outline name being reported incorrectly
+- Fixed issue with scenario outline name being reported incorrectly
 
 ## [1.1.1] - 22/09/2019
-- Added `asMap` helper method to a table so a table can be represented as a map to help with serialisation to types
+- Added `asMap` helper method to a table so a table can be represented as a map to help with serialization to types
 
 ## [1.1.0] - 20/09/2019
-* Implemented langauges - features can now be written in different languages / dialects! See https://cucumber.io/docs/gherkin/reference/#overview for supported dialects.
+* Implemented languages - features can now be written in different languages / dialects! See https://cucumber.io/docs/gherkin/reference/#overview for supported dialects.
 
 ## [1.0.12] - 18/09/2019
 * Fixed version constraint analysis errors
@@ -56,7 +59,7 @@
 
 ## [1.0.9] - 16/09/2019
 * Fixed issue where tags were not allowed on features
-* Refactor of the way tags are handled so they are inherited by children if requried (see https://cucumber.io/docs/cucumber/api/#tag-inheritance)
+* Refactor of the way tags are handled so they are inherited by children if required (see https://cucumber.io/docs/cucumber/api/#tag-inheritance)
 * Fixed the JSON reporter so that is adheres to to the cucumber json reporter spec.
 
 ## [1.0.8] - 13/09/2019
@@ -83,7 +86,7 @@
 * Updated dependencies
 
 ## [1.0.1] - 20/06/2019
-* Added the ability to add attachments which gives the ability to set screenshots or other data against the scenerio
+* Added the ability to add attachments which gives the ability to set screenshots or other data against the scenario
 * Added before & after hooks for step execution
 
 ## [1.0.0] - 04/06/2019
