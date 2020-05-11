@@ -31,6 +31,14 @@ class JsonScenario {
   }
 
   JsonStep currentStep() {
+    if (steps.isEmpty) {
+      final step = JsonStep()
+        ..name = 'Unnamed'
+        ..line = 0;
+
+      steps.add(step);
+    }
+
     return steps.last;
   }
 

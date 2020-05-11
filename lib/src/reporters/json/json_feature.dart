@@ -1,5 +1,6 @@
 import '../messages.dart';
 import 'json_scenario.dart';
+import 'json_step.dart';
 import 'json_tag.dart';
 
 class JsonFeature {
@@ -24,12 +25,30 @@ class JsonFeature {
     return feature;
   }
 
-  void add({JsonScenario scenario}) {
+  void add({
+    JsonScenario scenario,
+  }) {
     scenario.feature = this;
     scenarios.add(scenario);
   }
 
   JsonScenario currentScenario() {
+    if (scenarios.isEmpty) {
+      final scenario = JsonScenario()
+        ..name = 'Unnamed'
+        ..description =
+            'An unnamed scenario is possible if something is logged before any scenario steps have started to execute'
+        ..line = 0
+        ..tags = <JsonTag>[]
+        ..steps = <JsonStep>[
+          JsonStep()
+            ..name = 'Unnamed'
+            ..line = 0
+        ];
+
+      scenarios.add(scenario);
+    }
+
     return scenarios.last;
   }
 

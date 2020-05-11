@@ -23,12 +23,17 @@ import './gherkin/attachments/attachment_manager.dart';
 class FeatureFileRunner {
   final TestConfiguration _config;
   final TagExpressionEvaluator _tagExpressionEvaluator;
-  final Iterable<ExectuableStep> _steps;
+  final Iterable<ExecutableStep> _steps;
   final Reporter _reporter;
   final Hook _hook;
 
-  FeatureFileRunner(this._config, this._tagExpressionEvaluator, this._steps,
-      this._reporter, this._hook);
+  FeatureFileRunner(
+    this._config,
+    this._tagExpressionEvaluator,
+    this._steps,
+    this._reporter,
+    this._hook,
+  );
 
   Future<bool> run(FeatureFile featureFile) async {
     var haveAllFeaturesPassed = true;
@@ -42,30 +47,37 @@ class FeatureFileRunner {
   Future<bool> _runFeature(FeatureRunnable feature) async {
     var haveAllScenariosPassed = true;
     try {
-      await _reporter.onFeatureStarted(StartedMessage(
-        Target.feature,
-        feature.name,
+      await _reporter.onFeatureStarted(
+        StartedMessage(
+          Target.feature,
+          feature.name,
+          feature.debug,
+          feature.tags.isNotEmpty
+              ? feature.tags
+                  .map((t) => t.tags
+                      .map((c) => Tag(c, t.debug.lineNumber, t.isInherited))
+                      .toList())
+                  .reduce((a, b) => a..addAll(b))
+                  .toList()
+              : Iterable<Tag>.empty().toList(),
+        ),
+      );
+      await _log(
+        "Attempting to running feature '${feature.name}'",
         feature.debug,
-        feature.tags.isNotEmpty
-            ? feature.tags
-                .map((t) => t.tags
-                    .map((c) => Tag(c, t.debug.lineNumber, t.isInherited))
-                    .toList())
-                .reduce((a, b) => a..addAll(b))
-                .toList()
-            : Iterable<Tag>.empty().toList(),
-      ));
-      await _log("Attempting to running feature '${feature.name}'",
-          feature.debug, MessageLevel.info);
+        MessageLevel.info,
+      );
+
       for (final scenario in feature.scenarios) {
         if (_canRunScenario(_config.tagExpression, scenario)) {
           haveAllScenariosPassed &=
               await _runScenarioInZone(scenario, feature.background);
         } else {
           await _log(
-              "Ignoring scenario '${scenario.name}' as tag expression '${_config.tagExpression}' not satified",
-              feature.debug,
-              MessageLevel.info);
+            "Ignoring scenario '${scenario.name}' as tag expression '${_config.tagExpression}' not satisfied",
+            feature.debug,
+            MessageLevel.info,
+          );
         }
       }
     } on Error catch (err, st) {
@@ -82,18 +94,30 @@ class FeatureFileRunner {
         MessageLevel.error,
       );
       await _reporter.onException(e, st);
+
       rethrow;
     } finally {
       await _reporter.onFeatureFinished(
-          FinishedMessage(Target.feature, feature.name, feature.debug));
-      await _log("Finished running feature '${feature.name}'", feature.debug,
-          MessageLevel.info);
+        FinishedMessage(
+          Target.feature,
+          feature.name,
+          feature.debug,
+        ),
+      );
+      await _log(
+        "Finished running feature '${feature.name}'",
+        feature.debug,
+        MessageLevel.info,
+      );
     }
 
     return haveAllScenariosPassed;
   }
 
-  bool _canRunScenario(String tagExpression, ScenarioRunnable scenario) {
+  bool _canRunScenario(
+    String tagExpression,
+    ScenarioRunnable scenario,
+  ) {
     return tagExpression == null
         ? true
         : _tagExpressionEvaluator.evaluate(
@@ -160,7 +184,7 @@ class FeatureFileRunner {
     try {
       if (_config.createWorld != null) {
         await _log(
-          "Creating new world for scenerio '${scenario.name}'",
+          "Creating new world for scenario '${scenario.name}'",
           scenario.debug,
           MessageLevel.debug,
         );
@@ -175,38 +199,45 @@ class FeatureFileRunner {
 
       await _hook.onBeforeScenario(_config, scenario.name, tags);
 
-      await _reporter.onScenarioStarted(StartedMessage(
-        scenario.scenarioType == ScenarioType.scenario_outline
-            ? Target.scenario_outline
-            : Target.scenario,
-        scenario.name,
-        scenario.debug,
-        scenario.tags.isNotEmpty
-            ? scenario.tags
-                .map((t) => t.tags
-                    .map((tag) => Tag(tag, t.debug.lineNumber, t.isInherited))
-                    .toList())
-                .reduce((a, b) => a..addAll(b))
-                .toList()
-            : Iterable<Tag>.empty().toList(),
-      ));
+      await _reporter.onScenarioStarted(
+        StartedMessage(
+          scenario.scenarioType == ScenarioType.scenario_outline
+              ? Target.scenario_outline
+              : Target.scenario,
+          scenario.name,
+          scenario.debug,
+          scenario.tags.isNotEmpty
+              ? scenario.tags
+                  .map((t) => t.tags
+                      .map((tag) => Tag(tag, t.debug.lineNumber, t.isInherited))
+                      .toList())
+                  .reduce((a, b) => a..addAll(b))
+                  .toList()
+              : Iterable<Tag>.empty().toList(),
+        ),
+      );
 
       if (background != null) {
         await _log(
-          "Running background steps for scenerio '${scenario.name}'",
+          "Running background steps for scenario '${scenario.name}'",
           scenario.debug,
           MessageLevel.info,
         );
         for (var step in background.steps) {
-          final result =
-              await _runStep(step, world, attachmentManager, !scenarioPassed);
+          final result = await _runStep(
+            step,
+            world,
+            attachmentManager,
+            !scenarioPassed,
+          );
           scenarioPassed = result.result == StepExecutionResult.pass;
           if (!_canContinueScenario(result)) {
             scenarioPassed = false;
             await _log(
-                "Background step '${step.name}' did not pass, all remaining steps will be skiped",
-                step.debug,
-                MessageLevel.warning);
+              "Background step '${step.name}' did not pass, all remaining steps will be skipped",
+              step.debug,
+              MessageLevel.warning,
+            );
           }
         }
       }
@@ -218,9 +249,10 @@ class FeatureFileRunner {
         if (!_canContinueScenario(result)) {
           scenarioPassed = false;
           await _log(
-              "Step '${step.name}' did not pass, all remaining steps will be skiped",
-              step.debug,
-              MessageLevel.warning);
+            "Step '${step.name}' did not pass, all remaining steps will be skipped",
+            step.debug,
+            MessageLevel.warning,
+          );
         }
       }
 
@@ -276,7 +308,7 @@ class FeatureFileRunner {
     if (skipExecution) {
       result = StepResult(0, StepExecutionResult.skipped);
     } else {
-      final code = _matchStepToExectuableStep(step);
+      final code = _matchStepToExecutableStep(step);
       final parameters = _getStepParameters(step, code);
       result = await _runWithinTest<StepResult>(
         step.name,
@@ -295,7 +327,7 @@ class FeatureFileRunner {
         step.name,
         step.debug,
         result,
-        attachmentManager?.getAttachementsForContext(step.name),
+        attachmentManager?.getAttachmentsForContext(step.name),
       ),
     );
 
@@ -305,7 +337,7 @@ class FeatureFileRunner {
   /// the idea here is that we could use this as an abstraction to run
   /// within another test framework
   Future<T> _runWithinTest<T>(String name, Future<T> Function() fn) async {
-    // the timeout is handled indepedently from this
+    // the timeout is handled independently from this
     final completer = Completer<T>();
     // test(name, () async {
     try {
@@ -319,7 +351,7 @@ class FeatureFileRunner {
     return completer.future;
   }
 
-  ExectuableStep _matchStepToExectuableStep(StepRunnable step) {
+  ExecutableStep _matchStepToExecutableStep(StepRunnable step) {
     final executable = _steps.firstWhere(
         (s) => s.expression.isMatch(step.debug.lineText),
         orElse: () => null);
@@ -361,7 +393,7 @@ class FeatureFileRunner {
     return executable;
   }
 
-  Iterable<dynamic> _getStepParameters(StepRunnable step, ExectuableStep code) {
+  Iterable<dynamic> _getStepParameters(StepRunnable step, ExecutableStep code) {
     var parameters = code.expression.getParameters(step.debug.lineText);
     if (step.multilineStrings.isNotEmpty) {
       parameters = parameters.toList()..addAll(step.multilineStrings);
@@ -374,9 +406,14 @@ class FeatureFileRunner {
     return parameters;
   }
 
-  Future<void> _log(String message, RunnableDebugInformation context,
-      MessageLevel level) async {
+  Future<void> _log(
+    String message,
+    RunnableDebugInformation context,
+    MessageLevel level,
+  ) async {
     await _reporter.message(
-        '$message # ${context.filePath}:${context.lineNumber}', level);
+      '$message # ${context.filePath}:${context.lineNumber}',
+      level,
+    );
   }
 }

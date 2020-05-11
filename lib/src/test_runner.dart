@@ -25,9 +25,9 @@ class GherkinRunner {
   final _reporter = AggregatedReporter();
   final _hook = AggregatedHook();
   final _parser = GherkinParser();
-  final _langaugeService = LanguageService();
+  final _languageService = LanguageService();
   final _tagExpressionEvaluator = TagExpressionEvaluator();
-  final List<ExectuableStep> _executableSteps = <ExectuableStep>[];
+  final List<ExecutableStep> _executableSteps = <ExecutableStep>[];
   final List<CustomParameter> _customParameters = <CustomParameter>[];
 
   Future<void> execute(TestConfiguration config) async {
@@ -36,7 +36,7 @@ class GherkinRunner {
     _registerHooks(config.hooks);
     _registerCustomParameters(config.customStepParameterDefinitions);
     _registerStepDefinitions(config.stepDefinitions);
-    _langaugeService.initialise(config.featureDefaultLanguage);
+    _languageService.initialise(config.featureDefaultLanguage);
 
     var featureFiles = <FeatureFile>[];
     for (var glob in config.features) {
@@ -45,7 +45,7 @@ class GherkinRunner {
             "Found feature file '${entity.path}'", MessageLevel.verbose);
         final contents = File(entity.path).readAsStringSync();
         final featureFile = await _parser.parseFeatureFile(
-            contents, entity.path, _reporter, _langaugeService);
+            contents, entity.path, _reporter, _languageService);
         featureFiles.add(featureFile);
       }
     }
@@ -54,16 +54,20 @@ class GherkinRunner {
 
     if (featureFiles.isEmpty) {
       await _reporter.message(
-          'No feature files found to run, exitting without running any scenarios',
-          MessageLevel.warning);
+        'No feature files found to run, exiting without running any scenarios',
+        MessageLevel.warning,
+      );
     } else {
       await _reporter.message(
-          'Found ${featureFiles.length} feature file(s) to run',
-          MessageLevel.info);
+        'Found ${featureFiles.length} feature file(s) to run',
+        MessageLevel.info,
+      );
 
       if (config.order == ExecutionOrder.random) {
         await _reporter.message(
-            'Executing features in random order', MessageLevel.info);
+          'Executing features in random order',
+          MessageLevel.info,
+        );
         featureFiles = featureFiles.toList()..shuffle();
       }
 
@@ -72,8 +76,13 @@ class GherkinRunner {
       try {
         await _reporter.onTestRunStarted();
         for (var featureFile in featureFiles) {
-          final runner = FeatureFileRunner(config, _tagExpressionEvaluator,
-              _executableSteps, _reporter, _hook);
+          final runner = FeatureFileRunner(
+            config,
+            _tagExpressionEvaluator,
+            _executableSteps,
+            _reporter,
+            _hook,
+          );
           allFeaturesPassed &= await runner.run(featureFile);
         }
       } finally {
@@ -90,11 +99,15 @@ class GherkinRunner {
   }
 
   void _registerStepDefinitions(
-      Iterable<StepDefinitionGeneric> stepDefinitions) {
-    stepDefinitions.forEach((s) {
-      _executableSteps.add(
-          ExectuableStep(GherkinExpression(s.pattern, _customParameters), s));
-    });
+    Iterable<StepDefinitionGeneric> stepDefinitions,
+  ) {
+    stepDefinitions.forEach(
+      (s) {
+        _executableSteps.add(
+          ExecutableStep(GherkinExpression(s.pattern, _customParameters), s),
+        );
+      },
+    );
   }
 
   void _registerCustomParameters(Iterable<CustomParameter> customParameters) {
@@ -109,7 +122,9 @@ class GherkinRunner {
     _customParameters.add(WordParameterLower());
     _customParameters.add(WordParameterCamel());
     _customParameters.add(PluralParameter());
-    if (customParameters != null) _customParameters.addAll(customParameters);
+    if (customParameters != null) {
+      _customParameters.addAll(customParameters);
+    }
   }
 
   void _registerReporters(Iterable<Reporter> reporters) {

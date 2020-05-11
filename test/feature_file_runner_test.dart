@@ -22,9 +22,9 @@ void main() {
   final emptyDebuggable = RunnableDebugInformation('File Path', 0, 'Line text');
   group('run', () {
     test('run simple feature file scenario', () async {
-      final stepDefiniton = MockStepDefinition();
+      final stepDefinition = MockStepDefinition();
       final executableStep =
-          ExectuableStep(MockGherkinExpression((_) => true), stepDefiniton);
+          ExecutableStep(MockGherkinExpression((_) => true), stepDefinition);
       final runner = FeatureFileRunner(
           TestConfiguration(),
           MockTagExpressionEvaluator(),
@@ -40,8 +40,8 @@ void main() {
         ..scenarios.add(scenario);
       final featureFile = FeatureFile(emptyDebuggable)..features.add(feature);
       await runner.run(featureFile);
-      expect(stepDefiniton.hasRun, true);
-      expect(stepDefiniton.runCount, 1);
+      expect(stepDefinition.hasRun, true);
+      expect(stepDefinition.runCount, 1);
     });
 
     test('world context is created and disposed', () async {
@@ -49,7 +49,7 @@ void main() {
       var worldCreationFnInoked = false;
       final stepDefiniton = MockStepDefinition();
       final executableStep =
-          ExectuableStep(MockGherkinExpression((_) => true), stepDefiniton);
+          ExecutableStep(MockGherkinExpression((_) => true), stepDefiniton);
       final runner = FeatureFileRunner(
           TestConfiguration()
             ..createWorld = (_) async {
@@ -78,9 +78,9 @@ void main() {
       final stepTextTwo = 'Given I do b';
       final stepDefiniton = MockStepDefinition((_) => throw Exception());
       final stepDefinitonTwo = MockStepDefinition();
-      final executableStep = ExectuableStep(
+      final executableStep = ExecutableStep(
           MockGherkinExpression((s) => s == stepTextOne), stepDefiniton);
-      final executableStepTwo = ExectuableStep(
+      final executableStepTwo = ExecutableStep(
           MockGherkinExpression((s) => s == stepTextTwo), stepDefinitonTwo);
       final runner = FeatureFileRunner(
           TestConfiguration(),
@@ -110,9 +110,9 @@ void main() {
       final stepTextTwo = 'Given I do b';
       final stepDefiniton = MockStepDefinition((_) => throw TypeError());
       final stepDefinitonTwo = MockStepDefinition();
-      final executableStep = ExectuableStep(
+      final executableStep = ExecutableStep(
           MockGherkinExpression((s) => s == stepTextOne), stepDefiniton);
-      final executableStepTwo = ExectuableStep(
+      final executableStepTwo = ExecutableStep(
           MockGherkinExpression((s) => s == stepTextTwo), stepDefinitonTwo);
       final runner = FeatureFileRunner(
           TestConfiguration(),
@@ -142,9 +142,9 @@ void main() {
       final stepTextTwo = 'Given I do b';
       final stepDefiniton = MockStepDefinition();
       final stepDefinitonTwo = MockStepDefinition();
-      final executableStep = ExectuableStep(
+      final executableStep = ExecutableStep(
           MockGherkinExpression((s) => s == stepTextOne), stepDefiniton);
-      final executableStepTwo = ExectuableStep(
+      final executableStepTwo = ExecutableStep(
           MockGherkinExpression((s) => s == stepTextTwo), stepDefinitonTwo);
       final runner = FeatureFileRunner(
           TestConfiguration()
@@ -179,7 +179,7 @@ void main() {
       test('exception throw when matching step definition not found', () async {
         final stepDefiniton = MockStepDefinition();
         final executableStep =
-            ExectuableStep(MockGherkinExpression((_) => false), stepDefiniton);
+            ExecutableStep(MockGherkinExpression((_) => false), stepDefiniton);
         final runner = FeatureFileRunner(
             TestConfiguration(),
             MockTagExpressionEvaluator(),
@@ -240,7 +240,7 @@ void main() {
           tableParameterProvided = parameters.first is Table;
         }, 1);
         final executableStep =
-            ExectuableStep(MockGherkinExpression((_) => true), stepDefiniton);
+            ExecutableStep(MockGherkinExpression((_) => true), stepDefiniton);
         final runner = FeatureFileRunner(
             TestConfiguration(),
             MockTagExpressionEvaluator(),
@@ -268,7 +268,7 @@ void main() {
         final hookMock = HookMock();
         final stepDefiniton = MockStepDefinition();
         final executableStep =
-            ExectuableStep(MockGherkinExpression((_) => true), stepDefiniton);
+            ExecutableStep(MockGherkinExpression((_) => true), stepDefiniton);
         final runner = FeatureFileRunner(
             TestConfiguration(),
             MockTagExpressionEvaluator(),
@@ -297,7 +297,7 @@ void main() {
         final tagOne = TagsRunnable(emptyDebuggable)..tags = ['@tag1'];
         final tagTwo = TagsRunnable(emptyDebuggable)..tags = ['@tag2'];
         final executableStep =
-            ExectuableStep(MockGherkinExpression((_) => true), stepDefiniton);
+            ExecutableStep(MockGherkinExpression((_) => true), stepDefiniton);
         final runner = FeatureFileRunner(
             TestConfiguration(),
             MockTagExpressionEvaluator(),
@@ -338,7 +338,7 @@ void main() {
         final reporterMock = ReporterMock();
         final stepDefiniton = MockStepDefinition();
         final executableStep =
-            ExectuableStep(MockGherkinExpression((_) => true), stepDefiniton);
+            ExecutableStep(MockGherkinExpression((_) => true), stepDefiniton);
         final runner = FeatureFileRunner(
             TestConfiguration(),
             MockTagExpressionEvaluator(),
@@ -374,7 +374,7 @@ void main() {
         reporterMock.onStepFinishedFn = (message) => finishedMessage = message;
         final stepDefiniton = MockStepDefinition();
         final executableStep =
-            ExectuableStep(MockGherkinExpression((_) => true), stepDefiniton);
+            ExecutableStep(MockGherkinExpression((_) => true), stepDefiniton);
         final runner = FeatureFileRunner(
             TestConfiguration(),
             MockTagExpressionEvaluator(),
@@ -404,7 +404,7 @@ void main() {
         final stepDefiniton =
             MockStepDefinition((_) => throw testFailureException);
         final executableStep =
-            ExectuableStep(MockGherkinExpression((_) => true), stepDefiniton);
+            ExecutableStep(MockGherkinExpression((_) => true), stepDefiniton);
         final runner = FeatureFileRunner(
             TestConfiguration(),
             MockTagExpressionEvaluator(),
@@ -435,7 +435,7 @@ void main() {
         final stepDefiniton = MockStepDefinition(
             (_) async => await Future.delayed(const Duration(seconds: 2)));
         final executableStep =
-            ExectuableStep(MockGherkinExpression((_) => true), stepDefiniton);
+            ExecutableStep(MockGherkinExpression((_) => true), stepDefiniton);
         final runner = FeatureFileRunner(
             TestConfiguration()
               ..defaultTimeout = const Duration(milliseconds: 1),
@@ -470,11 +470,11 @@ void main() {
         final stepDefiniton = MockStepDefinition((_) => throw Exception());
         final stepDefinitonTwo = MockStepDefinition();
         final stepDefinitonThree = MockStepDefinition();
-        final executableStep = ExectuableStep(
+        final executableStep = ExecutableStep(
             MockGherkinExpression((s) => s == stepTextOne), stepDefiniton);
-        final executableStepTwo = ExectuableStep(
+        final executableStepTwo = ExecutableStep(
             MockGherkinExpression((s) => s == stepTextTwo), stepDefinitonTwo);
-        final executableStepThree = ExectuableStep(
+        final executableStepThree = ExecutableStep(
             MockGherkinExpression((s) => s == stepTextThree),
             stepDefinitonThree);
         final runner = FeatureFileRunner(

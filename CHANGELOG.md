@@ -1,3 +1,6 @@
+## [1.1.8+1] - 11/05/2020
+- Fixed issue with `JsonReporter` that would throw an error if an exception was logged before any scenarios have run
+
 ## [1.1.8] - 10/05/2020
 - Fixed issue with `JsonReporter` that would throw an error if an exception was logged before any features have run
 
