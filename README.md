@@ -431,7 +431,7 @@ Would be implemented like so:
 import 'package:gherkin/gherkin.dart';
 
 StepDefinitionGeneric ExpectTheAppleAmount() {
-  return given1(
+  return then1(
     'I expect {int} apple(s)',
     (count, context) async {
       final actualCount = await _getActualCount();
@@ -441,7 +441,7 @@ StepDefinitionGeneric ExpectTheAppleAmount() {
 }
 ```
 
-**Caveat**: The `expect` library currently only works within the library's own `test` function blocks; so using it with a `Then` step will cause an error.  Therefore, the `expectMatch` or `expectA` or `this.expect` methods have been added which mimic the underlying functionality of `except` in that they assert that the give is true.  The `Matcher` within Dart's test library still work and can be used as expected.
+**Caveat**: The `expect` library currently only works within the library's own `test` function blocks; so using it with a `Then` step will cause an error.  Therefore, the `expectMatch` or `expectA` or `this.expect` or `context.expect` methods have been added which mimic the underlying functionality of `except` in that they assert that the give is true.  The `Matcher` within Dart's test library still work and can be used as expected.
 
 #### Step Timeout
 
@@ -528,13 +528,13 @@ import 'package:gherkin/gherkin.dart';
 ///
 /// For example:
 ///
-/// `Given I add the users`
+/// `When I add the users`
 ///  | Firstname | Surname | Age | Gender |
 ///  | Woody     | Johnson | 28  | Male   |
 ///  | Edith     | Summers | 23  | Female |
 ///  | Megan     | Hill    | 83  | Female |
-StepDefinitionGeneric GivenIAddTheUsers() {
-  return given1(
+StepDefinitionGeneric WhenIAddTheUsers() {
+  return when1(
     'I add the users',
     (Table dataTable, context) async {
       for (var row in dataTable.rows) {
