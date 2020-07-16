@@ -194,7 +194,7 @@ The order by which scenarios will be run. Running an a random order may highligh
 #### defaultLanguage
 
 Defaults to `en`
-This specifies the default langauge the feature files are written in.  See https://cucumber.io/docs/gherkin/reference/#overview for supported languages.
+This specifies the default language the feature files are written in.  See https://cucumber.io/docs/gherkin/reference/#overview for supported languages.
 
 #### stepDefinitions
 
