@@ -11,5 +11,5 @@ class WorldMockThatThrowsWhenDisposed extends World {
   bool disposeFnInvoked = false;
 
   @override
-  void dispose() => throw Exception('Error occured in dispose');
+  void dispose() => throw Exception('Error occurred in dispose');
 }

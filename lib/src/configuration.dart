@@ -1,5 +1,5 @@
+import '../gherkin.dart';
 import './gherkin/parameters/custom_parameter.dart';
-import './gherkin/steps/step_definition_implementations.dart';
 import './gherkin/steps/world.dart';
 import './hooks/hook.dart';
 import './reporters/reporter.dart';
@@ -28,11 +28,11 @@ class TestConfiguration {
   /// The default step timeout - this can be override when definition a step definition
   Duration defaultTimeout = const Duration(seconds: 10);
 
-  /// The execution order of features - this default to random to avoid any inter-test depedencies
+  /// The execution order of features - this default to random to avoid any inter-test dependencies
   ExecutionOrder order = ExecutionOrder.random;
 
   /// The user defined step definitions that are matched with written steps in the features
-  Iterable<StepDefinitionBase> stepDefinitions;
+  Iterable<StepDefinitionGeneric> stepDefinitions;
 
   /// Any user defined step parameters
   Iterable<CustomParameter<dynamic>> customStepParameterDefinitions;
@@ -43,7 +43,9 @@ class TestConfiguration {
   /// a list of reporters to use.
   /// Built-in reporters:
   ///   - StdoutReporter
-  ///
+  ///   - ProgressReporter
+  ///   - TestRunSummaryReporter
+  ///   - JsonReporter
   /// Custom reporters can be created by extending (or implementing) Reporter.dart
   Iterable<Reporter> reporters;
 
@@ -53,10 +55,28 @@ class TestConfiguration {
   /// the program will exit after all the tests have run
   bool exitAfterTestRun = true;
 
-  /// used to allow for custom configuration to ensure framework specific congfiguration is in place
+  /// used to allow for custom configuration to ensure framework specific configuration is in place
   void prepare() {}
 
   /// used to get a new instance of an attachment manager class that is passed to the World context
   CreateAttachmentManager getAttachmentManager =
       (_) => Future.value(AttachmentManager());
+
+  /// Provide a configuration object with default settings such as the reports and feature file location
+  /// Additional setting on the configuration object can be set on the returned instance.
+  static TestConfiguration DEFAULT(
+    Iterable<StepDefinitionGeneric<World>> steps, {
+    String featurePath = 'features/**.feature',
+  }) {
+    return TestConfiguration()
+      ..features = [Glob(featurePath)]
+      ..reporters = [
+        StdoutReporter(MessageLevel.error),
+        ProgressReporter(),
+        TestRunSummaryReporter(),
+        JsonReporter(path: './report.json')
+      ]
+      ..stepDefinitions = steps
+      ..exitAfterTestRun = true;
+  }
 }

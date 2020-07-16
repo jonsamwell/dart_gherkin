@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Dart",
+            "name": "Run Example",
             "program": "test.dart",
             "cwd": "example",
             "request": "launch",

@@ -1,4 +1,5 @@
 import './step_configuration.dart';
+import './step_definition.dart';
 import './step_definition_implementations.dart';
 import './world.dart';
 
@@ -68,3 +69,109 @@ abstract class When5<TInput1, TInput2, TInput3, TInput4, TInput5>
     extends When5WithWorld<TInput1, TInput2, TInput3, TInput4, TInput5, World> {
   When5([StepDefinitionConfiguration configuration]) : super(configuration);
 }
+
+StepDefinitionGeneric<TWorld> when<TWorld extends World>(
+  Pattern pattern,
+  Future<void> Function(StepContext<TWorld> context) onInvoke, {
+  StepDefinitionConfiguration configuration,
+}) =>
+    step<TWorld, dynamic, dynamic, dynamic, dynamic, dynamic>(
+      pattern,
+      0,
+      onInvoke,
+      configuration: configuration,
+    );
+
+StepDefinitionGeneric<TWorld> when1<TInput1, TWorld extends World>(
+  Pattern pattern,
+  Future<void> Function(
+    TInput1 input1,
+    StepContext<TWorld> context,
+  )
+      onInvoke, {
+  StepDefinitionConfiguration configuration,
+}) {
+  return step<TWorld, TInput1, dynamic, dynamic, dynamic, dynamic>(
+    pattern,
+    1,
+    onInvoke,
+    configuration: configuration,
+  );
+}
+
+StepDefinitionGeneric<TWorld> when2<TInput1, TInput2, TWorld extends World>(
+  Pattern pattern,
+  Future<void> Function(
+    TInput1 input1,
+    TInput2 input2,
+    StepContext<TWorld> context,
+  )
+      onInvoke, {
+  StepDefinitionConfiguration configuration,
+}) =>
+    step<TWorld, TInput1, TInput2, dynamic, dynamic, dynamic>(
+      pattern,
+      2,
+      onInvoke,
+      configuration: configuration,
+    );
+
+StepDefinitionGeneric<TWorld>
+    when3<TInput1, TInput2, TInput3, TWorld extends World>(
+  Pattern pattern,
+  Future<void> Function(
+    TInput1 input1,
+    TInput2 input2,
+    TInput3 input3,
+    StepContext<TWorld> context,
+  )
+      onInvoke, {
+  StepDefinitionConfiguration configuration,
+}) =>
+        step<TWorld, TInput1, TInput2, TInput3, dynamic, dynamic>(
+          pattern,
+          3,
+          onInvoke,
+          configuration: configuration,
+        );
+
+StepDefinitionGeneric<TWorld>
+    when4<TInput1, TInput2, TInput3, TInput4, TWorld extends World>(
+  Pattern pattern,
+  Future<void> Function(
+    TInput1 input1,
+    TInput2 input2,
+    TInput3 input3,
+    TInput4 input4,
+    StepContext<TWorld> context,
+  )
+      onInvoke, {
+  StepDefinitionConfiguration configuration,
+}) =>
+        step<TWorld, TInput1, TInput2, TInput3, TInput4, dynamic>(
+          pattern,
+          4,
+          onInvoke,
+          configuration: configuration,
+        );
+
+StepDefinitionGeneric<TWorld>
+    when5<TInput1, TInput2, TInput3, TInput4, TInput5, TWorld extends World>(
+  Pattern pattern,
+  Future<void> Function(
+    TInput1 input1,
+    TInput1 input2,
+    TInput1 input3,
+    TInput1 input4,
+    TInput1 input5,
+    StepContext<TWorld> context,
+  )
+      onInvoke, {
+  StepDefinitionConfiguration configuration,
+}) =>
+        step<TWorld, TInput1, TInput2, TInput3, TInput4, TInput5>(
+          pattern,
+          5,
+          onInvoke,
+          configuration: configuration,
+        );

@@ -7,7 +7,7 @@ This implementation of the Gherkin tries to follow as closely as possible other 
 Available as a Dart package https://pub.dartlang.org/packages/gherkin
 Available as a Flutter specific package https://pub.dartlang.org/packages/flutter_gherkin which contains specific implementations to help instrument an application to test.
 
-```dart
+``` dart
   # Comment
   Feature: Addition
 
@@ -26,8 +26,9 @@ Available as a Flutter specific package https://pub.dartlang.org/packages/flutte
 ## Table of Contents
 
 <!-- TOC -->
-- [Getting Started](#getting-started)
-  - [Configuration](#configuration)
+
+* [Getting Started](#getting-started)
+  + [Configuration](#configuration)
     - [features](#features)
     - [tagExpression](#tagexpression)
     - [order](#order)
@@ -38,29 +39,29 @@ Available as a Flutter specific package https://pub.dartlang.org/packages/flutte
     - [reporters](#reporters)
     - [createWorld](#createworld)
     - [exitAfterTestRun](#exitaftertestrun)
-- [Features Files](#features-files)
-  - [Steps Definitions](#steps-definitions)
+* [Features Files](#features-files)
+  + [Steps Definitions](#steps-definitions)
     - [Given](#given)
     - [Then](#then)
     - [Step Timeout](#step-timeout)
     - [Multiline Strings](#multiline-strings)
     - [Data tables](#data-tables)
     - [Well known step parameters](#well-known-step-parameters)
-    - [Pluralisation](#pluralisation)
+    - [Pluralization](#pluralization)
     - [Custom Parameters](#custom-parameters)
     - [World Context (per test scenario shared state)](#world-context-per-test-scenario-shared-state)
     - [Assertions](#assertions)
-  - [Tags](#tags)
-  - [Languages](#languages)
-- [Hooks](#hooks)
-- [Attachments](#attachments)
-- [Reporting](#reporting)
-- [Flutter](#flutter)
-  - [Restarting the app before each test](#restarting-the-app-before-each-test)
+  + [Tags](#tags)
+  + [Languages](#languages)
+* [Hooks](#hooks)
+* [Attachments](#attachments)
+* [Reporting](#reporting)
+* [Flutter](#flutter)
+  + [Restarting the app before each test](#restarting-the-app-before-each-test)
     - [Flutter World](#flutter-world)
-  - [Pre-defined Steps](#pre-defined-steps)
+  + [Pre-defined Steps](#pre-defined-steps)
     - [Flutter Driver Utilities](#flutter-driver-utilities)
-  - [Debugging](#debugging)
+  + [Debugging](#debugging)
 
 <!-- /TOC -->
 
@@ -72,9 +73,9 @@ See [example readme](example/README.md) for a quick start guide to running the e
 
 To get started with BDD in Dart the first step is to write a feature file and a test scenario within that.
 
-First create a folder called `test`, within the folder create a folder called `features`, then create a file called `calculator_can_add.feature`.
+First create a folder called `test` , within the folder create a folder called `features` , then create a file called `calculator_can_add.feature` .
 
-```dart
+``` dart
 Feature: Calculator
   Tests the addition feature of the calculator
 
@@ -84,33 +85,46 @@ Feature: Calculator
     Then expected result is 3.6
 ```
 
-Now we have created a scenario we need to implement the steps within.  Steps are just classes that extends from the base step definition class or any of its variations `Given`, `Then`, `When`, `And`, `But`.
+Now we have created a scenario we need to implement the steps within.  Steps are just classes that extends from the base step definition class or any of its variations `Given` , `Then` , `When` , `And` , `But` .
 
 Granted the example is a little contrived but is serves to illustrate the process.
 
-To implement a step we have to create a simple step definition class.
+To implement a step we have to create a method that will then be imported into our configuration.
 
-```dart
+``` dart
 import 'package:gherkin/gherkin.dart';
 import '../worlds/custom_world.world.dart';
 
-class GivenTheNumbers extends Given2WithWorld<num, num, CalculatorWorld> {
-  @override
-  Future<void> executeStep(num input1, num input2) async {
-    world.calculator.storeNumericInput(input1);
-    world.calculator.storeNumericInput(input2);
-  }
-
-  @override
-  RegExp get pattern => RegExp(r"the numbers {num} and {num}");
+StepDefinitionGeneric GivenTheNumbers() {
+  return given2<num, num, CalculatorWorld>(
+    'the numbers {num} and {num}',
+    (input1, input2, context) async {
+      context.world.calculator.storeNumericInput(input1);
+      context.world.calculator.storeNumericInput(input2);
+    },
+  );
 }
 ```
 
-As you can see the class inherits from `Given2WithWorld` and specifies the types of the two input parameters.  The third type `CalculatorWorld` is a special world context object that allow access context to pass between steps in the same scenario execution instance.  If you did not need this you could inherit from `Given2` which does not type the world context object but still provides two input parameters.
+As you can see the `given2` method is invoked specifying two input parameters.  The third type `CalculatorWorld` is a special world context object that allow access context to pass between steps in the same scenario execution instance.  If you did not need a custom world object you can omit the type parameters completely.
 
-The input parameters are retrieved via the pattern regex from well know parameter type `{num}` [explained below](#well-known-step-parameters).  They are just special syntax to indicate you are expecting a string, an integer or a number etc at those points in the step text.  Therefore, when the step to execute is `Given the numbers 1.5 and 2.1` the parameters 1.5 and 2.1 will be passed into the step as the correct types.  Note that in the pattern you can use any regex capture group to indicate any input parameter.  For example the regex ```RegExp(r"the (numbers|integers|digits) {num} and {num}``` indicates 3 parameters and would match to either of the below step text.
+``` dart
+import 'package:gherkin/gherkin.dart';
+import '../worlds/custom_world.world.dart';
 
-```dart
+StepDefinitionGeneric GivenTheNumbers() {
+  return given2(
+    'the numbers {num} and {num}',
+    (input1, input2, context) async {
+      // implement step
+    },
+  );
+}
+```
+
+The input parameters are retrieved via the pattern `the numbers {num} and {num}` from well know parameter type `{num}` [explained below](#well-known-step-parameters).  They are just special syntax to indicate you are expecting a string, an integer or a number etc at those points in the step text.  Therefore, when the step to execute is `Given the numbers 1.5 and 2.1` the parameters 1.5 and 2.1 will be passed into the step as the correct types.  Note that in the pattern you can use any regex capture group to indicate any input parameter.  For example the pattern `` `RegExp(r"the (numbers|integers|digits) {num} and {num}` `` indicates 3 parameters and would match to either of the below step text.
+
+``` dart
 Given the numbers 1.5 and 2.1    // passes 3 parameters "numbers", 1.5 & 2.1
 Given the integers 1 and 2      // passes 3 parameters "integers", 1 & 2
 ```
@@ -119,7 +133,7 @@ It is worth noting that this library *does not* rely on mirrors (reflection) for
 
 Now that we have a testable app, a feature file and a custom step definition we need to create a class that will call this library and actually run the tests.  Create a file called `test.dart` and put the below code in.
 
-```dart
+``` dart
 import 'dart:async';
 import 'package:gherkin/gherkin.dart';
 import 'package:glob/glob.dart';
@@ -129,28 +143,24 @@ import 'supporting_files/steps/when_numbers_are_added.step.dart';
 import 'supporting_files/worlds/custom_world.world.dart';
 
 Future<void> main() {
-  final config = TestConfiguration()
-    ..features = [Glob(r"features/**.feature")]
-    ..reporters = [StdoutReporter(MessageLevel.error), ProgressReporter(), TestRunSummaryReporter()]
-    ..createWorld = (TestConfiguration config) {
-      return Future.value(CalculatorWorld());
-    }
-    ..stepDefinitions = [
+  final steps = [
       GivenTheNumbers(),
       WhenTheStoredNumbersAreAdded(),
       ThenExpectNumericResult()
-    ]
-    ..exitAfterTestRun = true;
+  ];
+  final config = TestConfiguration.DEFAULT(steps)
+    ..hooks = [HookExample()]
+    ..customStepParameterDefinitions = [PowerOfTwoParameter()]
+    ..createWorld =
+        (TestConfiguration config) => Future.value(CalculatorWorld());
 
   return GherkinRunner().execute(config);
 }
 ```
 
-This code simple creates a configuration object and calls this library which will then promptly parse your feature files and run the tests.  The configuration file is important and explained in further detail below.  However, all that is happening is a `Glob` is provide which specifies the path to one or more feature files, it sets the reporters to the `ProgressReporter` report which prints the result of scenarios and steps to the standard output (console).  The `TestRunSummaryReporter` prints a summary of the run once all tests have been executed.
+This code simple creates a configuration object and calls this library which will then promptly parse your feature files and run the tests.  The configuration file is important and explained in further detail below.  Finally to actually run the tests run the below on the command line from within the example folder:
 
-Finally to actually run the tests run the below on the command line from within the example folder:
-
-```bash
+``` bash
 dart test.dart
 ```
 
@@ -172,29 +182,26 @@ An iterable of `Glob` patterns that specify the location(s) of `*.feature` files
 
 #### tagExpression
 
-Defaults to `null`.
+Defaults to `null` .
 
 An infix boolean expression which defines the features and scenarios to run based of their tags. See [Tags](#tags).
 
 #### order
 
 Defaults to `ExecutionOrder.random`
-
 The order by which scenarios will be run. Running an a random order may highlight any inter-test dependencies that should be fixed.
 
 #### defaultLanguage
 
 Defaults to `en`
-
 This specifies the default langauge the feature files are written in.  See https://cucumber.io/docs/gherkin/reference/#overview for supported languages.
 
 #### stepDefinitions
 
 Defaults to `Iterable<StepDefinitionBase>`
+Place instances of any custom step definition classes `Given` , `Then` , `When` , `And` , `But` that match to any custom steps defined in your feature files.
 
-Place instances of any custom step definition classes `Given`, `Then`, `When`, `And`, `But` that match to any custom steps defined in your feature files.
-
-```dart
+``` dart
 import 'dart:async';
 import 'package:gherkin/gherkin.dart';
 import 'package:glob/glob.dart';
@@ -222,11 +229,11 @@ Future<void> main() {
 
 #### customStepParameterDefinitions
 
-Defaults to `CustomParameter<dynamic>`.
+Defaults to `CustomParameter<dynamic>` .
 
 Place instances of any custom step parameters that you have defined.  These will be matched up to steps when scenarios are run and their result passed to the executable step.  See [Custom Parameters](#custom-parameters).
 
-```dart
+``` dart
 import 'dart:async';
 import 'package:gherkin/gherkin.dart';
 import 'package:glob/glob.dart';
@@ -238,20 +245,16 @@ import 'supporting_files/steps/when_numbers_are_added.step.dart';
 import 'supporting_files/worlds/custom_world.world.dart';
 
 Future<void> main() {
-  final config = TestConfiguration()
-    ..features = [Glob(r"features/**.feature")]
-    ..reporters = [StdoutReporter(MessageLevel.error), ProgressReporter(), TestRunSummaryReporter()]
+  final steps = [
+      GivenTheNumbers(),
+      WhenTheStoredNumbersAreAdded(),
+      ThenExpectNumericResult()
+  ];
+  final config = TestConfiguration.DEFAULT(steps)
     ..customStepParameterDefinitions = [PowerOfTwoParameter()]
     ..createWorld = (TestConfiguration config) {
       return Future.value(CalculatorWorld());
-    }
-    ..stepDefinitions = [
-      GivenTheNumbers(),
-      GivenThePowersOfTwo(),
-      WhenTheStoredNumbersAreAdded(),
-      ThenExpectNumericResult()
-    ]
-    ..exitAfterTestRun = true;
+    };
 
   return GherkinRunner().execute(config);
 }
@@ -265,12 +268,12 @@ Hooks are custom bits of code that can be run at certain points with the test ru
 
 Attachment are pieces of data you can attach to a running scenario.  This could be simple bits of textual data or even image like a screenshot.  These attachments can then be used by reporters to provide more contextual information.  For example when a step fails a screenshot could be taken and attached to the scenario which is then used by a reporter to display why the step failed.
 
-Attachments would typically be attached via a `Hook` for example `onAfterStep`.
+Attachments would typically be attached via a `Hook` for example `onAfterStep` .
 
 ```
 import 'package:gherkin/gherkin.dart';
 
-class AttachScreenhotOnFailedStepHook extends Hook {
+class AttachScreenshotOnFailedStepHook extends Hook {
   /// Run after a step has executed
   @override
   Future<void> onAfterStep(World world, String step, StepResult stepResult) async {
@@ -291,15 +294,16 @@ class AttachScreenhotOnFailedStepHook extends Hook {
 
 Reporters are classes that are able to report on the status of the test run.  This could be a simple as merely logging scenario result to the console.  There are a number of built-in reporter:
 
-- `StdoutReporter` : Logs all messages from the test run to the standard output (console).
-- `ProgressReporter` : Logs the progress of the test run marking each step with a scenario as either passed, skipped or failed.
-- `TestRunSummaryReporter` - prints the results and duration of the test run once the run has completed - colours the output.
+* `StdoutReporter` : Logs all messages from the test run to the standard output (console).
+* `ProgressReporter` : Logs the progress of the test run marking each step with a scenario as either passed, skipped or failed.
+* `TestRunSummaryReporter` - prints the results and duration of the test run once the run has completed - colours the output.
+* `JsonReporter` - create a json file with the test run results.
 
-You should provide at least one reporter in the configuration otherwise it'll be hard to know what is going on.
+By default all the above reporters are included in the `DEFAULT` configuration object but you can override this to specify the specific ones you want.
 
 *Note*: Feel free to PR new reporters!
 
-```dart
+``` dart
 import 'dart:async';
 import 'package:gherkin/gherkin.dart';
 import 'package:glob/glob.dart';
@@ -311,15 +315,13 @@ import 'supporting_files/steps/when_numbers_are_added.step.dart';
 import 'supporting_files/worlds/custom_world.world.dart';
 
 Future<void> main() {
-  final config = TestConfiguration()
-    ..features = [Glob(r"features/**.feature")]
-    ..reporters = [StdoutReporter(MessageLevel.error), ProgressReporter(), TestRunSummaryReporter()]
-    ..stepDefinitions = [
+  final steps = [
       GivenTheNumbers(),
       WhenTheStoredNumbersAreAdded(),
       ThenExpectNumericResult()
-    ]
-    ..exitAfterTestRun = true;
+  ];
+  final config = TestConfiguration.DEFAULT(steps)
+    ..reporters = [StdoutReporter(MessageLevel.error), TestRunSummaryReporter()];
 
   return GherkinRunner().execute(config);
 }
@@ -327,24 +329,21 @@ Future<void> main() {
 
 #### createWorld
 
-Defaults to `null`.
+Defaults to `null` .
 
 While it is not recommended so share state between steps within the same scenario we all in fact live in the real world and thus at time may need to share certain information such as login credentials etc for future steps to use.  The world context object is created once per scenario and then destroyed at the end of each scenario.  This configuration property allows you to specify a custom `World` class to create which can then be accessed in your step classes.
 
-```dart
+``` dart
 Future<void> main() {
-  final config = TestConfiguration()
-    ..features = [Glob(r"features/**.feature")]
-    ..reporters = [StdoutReporter(MessageLevel.error), ProgressReporter(), TestRunSummaryReporter()]
-    ..createWorld = (TestConfiguration config) {
-      return Future.value(CalculatorWorld());
-    }
-    ..stepDefinitions = [
+  final steps = [
       GivenTheNumbers(),
       WhenTheStoredNumbersAreAdded(),
       ThenExpectNumericResult()
-    ]
-    ..exitAfterTestRun = true;
+  ];
+  final config = TestConfiguration.DEFAULT(steps)
+    ..createWorld = (TestConfiguration config) {
+      return Future.value(CalculatorWorld());
+    };
 
   return GherkinRunner().execute(config);
 }
@@ -353,18 +352,17 @@ Future<void> main() {
 #### exitAfterTestRun
 
 Defaults to `true`
-
 True to exit the program after all tests have run.  You may want to set this to false during debugging.
 
 ## Features Files
 
 ### Steps Definitions
 
-Step definitions are the coded representation of a textual step in a feature file.  Each step starts with either `Given`, `Then`, `When`, `And` or `But`.  It is worth noting that all steps are actually the same but semantically different.  The keyword is not taken into account when matching a step.  Therefore the two below steps are actually treated the same and will result in the same step definition being invoked.
+Step definitions are the coded representation of a textual step in a feature file.  Each step starts with either `Given` , `Then` , `When` , `And` or `But` .  It is worth noting that all steps are actually the same but semantically different.  The keyword is not taken into account when matching a step.  Therefore the two below steps are actually treated the same and will result in the same step definition being invoked.
 
 Note: Step definitions (in this implementation) are allowed up to 5 input parameters.  If you find yourself needing more than this you might want to consider making your step more isolated or using a `Table` parameter.
 
-```dart
+``` dart
 Given there are 6 kangaroos
 Then there are 6 kangaroos
 ```
@@ -375,15 +373,15 @@ However, the domain language you choose will influence what keyword works best i
 
 `Given` steps are used to describe the initial state of a system.  The execution of a `Given` step will usually put the system into well defined state.
 
-To implement a `Given` step you can inherit from the ```Given``` class.
+To implement a `Given` step you can inherit from the `` `Given` `` class.
 
-```dart
+``` dart
 Given Bob has logged in
 ```
 
 Would be implemented like so:
 
-```dart
+``` dart
 import 'package:gherkin/gherkin.dart';
 
 class GivenWellKnownUserIsLoggedIn extends Given1<String> {
@@ -397,9 +395,24 @@ class GivenWellKnownUserIsLoggedIn extends Given1<String> {
 }
 ```
 
-If you need to have more than one Given in a block it is often best to use the additional keywords `And` or `But`.
+Alternatively, and the now recommended approach is to use the shorthand methods definitions `given, given1, given2, given3, given4 or given5` .
 
-```dart
+``` dart
+import 'package:gherkin/gherkin.dart';
+
+StepDefinitionGeneric GivenWellKnownUserIsLoggedIn() {
+  return given1(
+    RegExp(r"(Bob|Mary|Emma|Jon) has logged in"),
+    (wellKnownUsername, context) async {
+      // implement your code
+    },
+  );
+}
+```
+
+If you need to have more than one Given in a block it is often best to use the additional keywords `And` or `But` .
+
+``` dart
 Given Bob has logged in
 And opened the dashboard
 ```
@@ -408,25 +421,23 @@ And opened the dashboard
 
 `Then` steps are used to describe an expected outcome, or result.  They would typically have an assertion in which can pass or fail.
 
-```dart
+``` dart
 Then I expect 10 apples
 ```
 
 Would be implemented like so:
 
-```dart
+``` dart
 import 'package:gherkin/gherkin.dart';
 
-class ThenExpectAppleCount extends Then1<int> {
-  @override
-  Future<void> executeStep(int count) async {
-    // example code
-    final actualCount = await _getActualCount();
-    expectMatch(actualCount, count);
-  }
-
-  @override
-  RegExp get pattern => RegExp(r"I expect {int} apple(s)");
+StepDefinitionGeneric ExpectTheAppleAmount() {
+  return given1(
+    'I expect {int} apple(s)',
+    (count, context) async {
+      final actualCount = await _getActualCount();
+      context.expectMatch(actualCount, count);
+    },
+  );
 }
 ```
 
@@ -434,11 +445,11 @@ class ThenExpectAppleCount extends Then1<int> {
 
 #### Step Timeout
 
-By default a step will timeout if it exceed the `defaultTimeout` parameter in the configuration file.  In some cases you want have a step that is longer or shorter running and in the case you can optionally proved a custom timeout to that step.  To do this pass in a `Duration` object in the step's call to `super`.
+By default a step will timeout if it exceed the `defaultTimeout` parameter in the configuration file.  In some cases you want have a step that is longer or shorter running and in the case you can optionally proved a custom timeout to that step.  To do this pass in a `Duration` object in the step's call to `super` .
 
 For example, the below sets the step's timeout to 10 seconds.
 
-```dart
+``` dart
 import 'package:gherkin/gherkin.dart';
 
 class TapButtonNTimesStep extends When2WithWorld<String, int, World> {
@@ -455,13 +466,30 @@ class TapButtonNTimesStep extends When2WithWorld<String, int, World> {
 }
 ```
 
+or using the shorthand method:
+
+``` dart
+import 'package:gherkin/gherkin.dart';
+
+StepDefinitionGeneric TapButtonNTimesStep() {
+ return given2(
+    'I tap the {string} button {int} times',
+    (buttonName, count, context) async {
+      // step logic
+    },
+    configuration: StepDefinitionConfiguration()
+      ..timeout = Duration(seconds: 10),
+  );
+}
+```
+
 #### Multiline Strings
 
-Multiline strings can follow a step and will be give to the step it proceeds as the final argument.  To denote a multiline string the pre and postfix can either be third double or single quotes `""" ... """` or `''' ... '''`.
+Multiline strings can follow a step and will be give to the step it proceeds as the final argument.  To denote a multiline string the pre and postfix can either be third double or single quotes `""" ... """` or `''' ... '''` .
 
 For example:
 
-```dart
+``` dart
 Given I provide the following "review" comment
 """
 Some long review comment.
@@ -478,24 +506,22 @@ Maybe even include some numbers
 
 The matching step definition would then be:
 
-```dart
+``` dart
 import 'package:gherkin/gherkin.dart';
 
-class GivenIProvideAComment extends Given2<String, String> {
-  @override
-  Future<void> executeStep(String commentType, String comment) async {
-    // TODO: implement executeStep
-  }
-
-  @override
-  RegExp get pattern => RegExp(r"I provide the following {string} comment");
+StepDefinitionGeneric GivenTheMultiLineComment() {
+  return given2(
+    'I provide the following {string} comment',
+    (commentType, comment, context) async {
+      // implement step
+    },
+  );
 }
-
 ```
 
 #### Data tables
 
-```dart
+``` dart
 import 'package:gherkin/gherkin.dart';
 
 /// This step expects a multiline string proceeding it
@@ -507,23 +533,22 @@ import 'package:gherkin/gherkin.dart';
 ///  | Woody     | Johnson | 28  | Male   |
 ///  | Edith     | Summers | 23  | Female |
 ///  | Megan     | Hill    | 83  | Female |
-class GivenIAddTheUsers extends Given1<Table> {
-  @override
-  Future<void> executeStep(Table dataTable) async {
-    for (var row in dataTable.rows) {
-      // do something with row
-      row.columns.forEach((columnValue) => print(columnValue));
-    }
+StepDefinitionGeneric GivenIAddTheUsers() {
+  return given1(
+    'I add the users',
+    (Table dataTable, context) async {
+      for (var row in dataTable.rows) {
+        // do something with row
+        row.columns.forEach((columnValue) => print(columnValue));
+      }
 
-    // or get the table as a map (column values keyed by the header)
-    final columns = dataTable.asMap();
-    final personOne = columns.elementAt(0);
-    final personOneName = personOne["Firstname"];
-    print('Name of first user: `$personOneName`');
-  }
-
-  @override
-  RegExp get pattern => RegExp(r"I add the users");
+      // or get the table as a map (column values keyed by the header)
+      final columns = dataTable.asMap();
+      final personOne = columns.elementAt(0);
+      final personOneName = personOne["Firstname"];
+      print('Name of first user: `$personOneName` ');
+    },
+  );
 }
 ```
 
@@ -535,18 +560,18 @@ In most scenarios theses parameters will be enough for you to write quite advanc
 
 | Parameter Name | Description                                   | Aliases                        | Type   | Example                                                             |
 | -------------- | --------------------------------------------- | ------------------------------ | ------ | ------------------------------------------------------------------- |
-| {word}         | Matches a single word surrounded by a quotes  | {word}, {Word}                 | String | `Given I eat a {word}` would match `Given I eat a "worm"`           |
+| {word}         | Matches a single word surrounded by a quotes  | {word}, {Word}                 | String | `Given I eat a {word}` would match `Given I eat a "worm"` |
 | {string}       | Matches one more words surrounded by a quotes | {string}, {String}             | String | `Given I eat a {string}` would match `Given I eat a "can of worms"` |
-| {int}          | Matches an integer                            | {int}, {Int}                   | int    | `Given I see {int} worm(s)` would match `Given I see 6 worms`       |
-| {num}          | Matches an number                             | {num}, {Num}, {float}, {Float} | num    | `Given I see {num} worm(s)` would match `Given I see 0.75 worms`    |
+| {int}          | Matches an integer                            | {int}, {Int}                   | int    | `Given I see {int} worm(s)` would match `Given I see 6 worms` |
+| {num}          | Matches an number                             | {num}, {Num}, {float}, {Float} | num    | `Given I see {num} worm(s)` would match `Given I see 0.75 worms` |
 
 Note that you can combine the well known parameters in any step. For example `Given I {word} {int} worm(s)` would match `Given I "see" 6 worms` and also match `Given I "eat" 1 worm`
 
-#### Pluralisation
+#### Pluralization
 
-As the aim of a feature is to convey human readable tests it is often desirable to optionally have some word pluaralised so you can use the special pluralisation syntax to do simple pluralisation of some words in your step definition.  For example:
+As the aim of a feature is to convey human readable tests it is often desirable to optionally have some word pluralized so you can use the special pluralization syntax to do simple pluralization of some words in your step definition.  For example:
 
-The step string `Given I see {int} worm(s)` has the pluralisation syntax on the word "worm" and thus would be matched to both `Given I see 1 worm` and `Given I see 4 worms`.
+The step string `Given I see {int} worm(s)` has the pluralization syntax on the word "worm" and thus would be matched to both `Given I see 1 worm` and `Given I see 4 worms` .
 
 #### Custom Parameters
 
@@ -554,7 +579,7 @@ While the well know step parameter will be sufficient in most cases there are ti
 
 The below custom parameter defines a regex that matches the words "red", "green" or "blue". The matches word is passed into the function which is then able to convert the string into a Color object.  The name of the custom parameter is used to identity the parameter within the step text.  In the below example the word "colour" is used.  This is combined with the pre / post prefixes (which default to "{" and "}") to match to the custom parameter.
 
-```dart
+``` dart
 import 'package:gherkin/gherkin.dart';
 
 enum Colour { red, green, blue }
@@ -576,22 +601,21 @@ class ColourParameter extends CustomParameter<Colour> {
 
 The step definition would then use this custom parameter like so:
 
-```dart
+``` dart
 import 'package:gherkin/gherkin.dart';
 import 'colour_parameter.dart';
 
-class GivenIPickAColour extends Given1<Colour> {
-  @override
-  Future<void> executeStep(Colour input1) async {
-    print("The picked colour was: '$input1'");
-  }
-
-  @override
-  RegExp get pattern => RegExp(r"I pick the colour {colour}");
+StepDefinitionGeneric GivenIAddTheUsers() {
+  return given1<Colour>(
+    'I pick the colour {colour}',
+    (colour, _) async {
+      print("The picked colour was: '$colour'");
+    },
+  );
 }
 ```
 
-This customer parameter would be used like this: `Given I pick the colour red`. When the step is invoked the word "red" would matched and passed to the custom parameter to convert it into a `Colour` enum which is then finally passed to the step definition code as a `Colour` object.
+This customer parameter would be used like this: `Given I pick the colour red` . When the step is invoked the word "red" would matched and passed to the custom parameter to convert it into a `Colour` enum which is then finally passed to the step definition code as a `Colour` object.
 
 #### World Context (per test scenario shared state)
 
@@ -603,18 +627,13 @@ Tags are a great way of organizing your features and marking them with filterabl
 
 You can filter the scenarios by providing a tag expression to your configuration file.  Tag expression are simple infix expressions such as:
 
-`@smoke`
-
-`@smoke and @perf`
-
-`@billing or @onboarding`
-
-`@smoke and not @ignore`
-
+ `@smoke`
+ `@smoke and @perf`
+ `@billing or @onboarding`
+ `@smoke and not @ignore`
 You can even us brackets to ensure the order of precedence
 
-`@smoke and not (@ignore or @todo)`
-
+ `@smoke and not (@ignore or @todo)`
 You can use the usual boolean statement "and", "or", "not"
 
 Also see <https://docs.cucumber.io/cucumber/api/#tags>
@@ -625,7 +644,7 @@ In order to allow features to be written in a number of languages, you can now w
 
 You can set the default language of feature files in your project via the configuration setting see [featureDefaultLanguage](#defaultLanguage)
 
-For example these two features are the same the keywords are just written in different languages. Note the ```# language: de``` on the second feature.  English is the default language.
+For example these two features are the same the keywords are just written in different languages. Note the `` `# language: de` `` on the second feature.  English is the default language.
 
 ```
 Feature: Calculator
@@ -670,14 +689,14 @@ Please note the language data is take and attributed to the cucumber project htt
 
 A hook is a point in the execution that custom code can be run.  Hooks can be run at the below points in the test run.
 
-- Before any tests run
-- After all the tests have run
-- Before each scenario
-- After each scenario
+* Before any tests run
+* After all the tests have run
+* Before each scenario
+* After each scenario
 
 To create a hook is easy.  Just inherit from `Hook` and override the method(s) that signifies the point in the process you want to run code at. Note that not all methods need to be override, just the points at which you want to run custom code.
 
-```dart
+``` dart
 import 'package:gherkin/gherkin.dart';
 
 class HookExample extends Hook {
@@ -722,7 +741,7 @@ class HookExample extends Hook {
 
 Finally ensure the hook is added to the hook collection in your configuration file.
 
-```dart
+``` dart
 import 'dart:async';
 import 'package:gherkin/gherkin.dart';
 import 'package:glob/glob.dart';
@@ -759,25 +778,24 @@ Future<void> main() {
 
 A reporter is a class that is able to report on the progress of the test run. In it simplest form it could just print messages to the console or be used to tell a build server such as TeamCity of the progress of the test run.  The library has a number of built in reporters.
 
-- `StdoutReporter` - prints all messages from the test run to the console.
-- `ProgressReporter` - prints the result of each scenario and step to the console - colours the output.
-- `TestRunSummaryReporter` - prints the results and duration of the test run once the run has completed - colours the output.
-- `JsonReporter` - creates a JSON file with the results of the test run which can then be used by 'https://www.npmjs.com/package/cucumber-html-reporter.' to create a HTML report.  You can pass in the file path of the json file to be created.
+* `StdoutReporter` - prints all messages from the test run to the console.
+* `ProgressReporter` - prints the result of each scenario and step to the console - colours the output.
+* `TestRunSummaryReporter` - prints the results and duration of the test run once the run has completed - colours the output.
+* `JsonReporter` - creates a JSON file with the results of the test run which can then be used by 'https://www.npmjs.com/package/cucumber-html-reporter.' to create a HTML report.  You can pass in the file path of the json file to be created.
 
 You can create your own custom reporter by inheriting from the base `Reporter` class and overriding the one or many of the methods to direct the output message.  The `Reporter` defines the following methods that can be overridden.  All methods must return a `Future<void>` and can be async.
 
-- `onTestRunStarted`
-- `onTestRunFinished`
-- `onFeatureStarted`
-- `onFeatureFinished`
-- `onScenarioStarted`
-- `onScenarioFinished`
-- `onStepStarted`
-- `onStepFinished`
-- `onException`
-- `message`
-- `dispose`
-
+* `onTestRunStarted`
+* `onTestRunFinished`
+* `onFeatureStarted`
+* `onFeatureFinished`
+* `onScenarioStarted`
+* `onScenarioFinished`
+* `onStepStarted`
+* `onStepFinished`
+* `onException`
+* `message`
+* `dispose`
 Once you have created your custom reporter don't forget to add it to the `reporters` configuration file property.
 
 *Note*: PR's of new reporters are *always* welcome.

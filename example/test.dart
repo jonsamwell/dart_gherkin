@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:gherkin/gherkin.dart';
-import 'package:glob/glob.dart';
 import 'supporting_files/hooks/hook_example.dart';
 import 'supporting_files/parameters/power_of_two.parameter.dart';
 import 'supporting_files/steps/given_the_characters.step.dart';
@@ -12,29 +11,19 @@ import 'supporting_files/steps/when_the_characters_are_counted.step.dart';
 import 'supporting_files/worlds/custom_world.world.dart';
 
 Future<void> main() {
-  final config = TestConfiguration()
-    ..features = [Glob(r'features/**.feature')]
-    ..reporters = [
-      StdoutReporter(MessageLevel.error),
-      ProgressReporter(),
-      TestRunSummaryReporter(),
-      JsonReporter(path: './report.json')
-    ]
+  final steps = [
+    GivenTheNumbers(),
+    GivenThePowersOfTwo(),
+    GivenTheCharacters(),
+    WhenTheStoredNumbersAreAdded(),
+    WhenTheCharactersAreCounted(),
+    ThenExpectNumericResult()
+  ];
+  final config = TestConfiguration.DEFAULT(steps)
     ..hooks = [HookExample()]
     ..customStepParameterDefinitions = [PowerOfTwoParameter()]
-    ..createWorld = (TestConfiguration config) {
-      return Future.value(CalculatorWorld());
-    }
-    ..stepDefinitions = [
-      GivenTheNumbers(),
-      GivenThePowersOfTwo(),
-      GivenTheCharacters(),
-      WhenTheStoredNumbersAreAdded(),
-      WhenTheCharactersAreCounted(),
-      ThenExpectNumericResult()
-    ]
-    // ..tagExpression = '@debug'
-    ..exitAfterTestRun = true;
+    ..createWorld =
+        (TestConfiguration config) => Future.value(CalculatorWorld());
 
   return GherkinRunner().execute(config);
 }

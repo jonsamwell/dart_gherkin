@@ -16,7 +16,7 @@ import 'package:test/test.dart';
 /// https://github.com/dart-lang/test/blob/7555efe8cab11fea89a22685c6c2198c81a58c2b/lib/src/backend/declarer.dart#L274
 ///
 /// We still want to be able to use the Matchers are we can't expect people not to use them
-/// So we are stuck here using smoke and mirrors and mimicing the expect / expectAsync methods in our step class
+/// So we are stuck here using smoke and mirrors and mimicking the expect / expectAsync methods in our step class
 ///
 /// https://github.com/dart-lang/test/blob/7555efe8cab11fea89a22685c6c2198c81a58c2b/lib/src/frontend/expect.dart
 class ExpectMimic {

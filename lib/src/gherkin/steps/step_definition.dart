@@ -23,18 +23,25 @@ abstract class StepDefinitionGeneric<TWorld extends World> {
   Duration get timeout => _timeout;
   Reporter get reporter => _reporter;
 
-  Future<StepResult> run(TWorld world, Reporter reporter,
-      Duration defaultTimeout, Iterable<dynamic> parameters) async {
+  Future<StepResult> run(
+    TWorld world,
+    Reporter reporter,
+    Duration defaultTimeout,
+    Iterable<dynamic> parameters,
+  ) async {
     _ensureParameterCount(parameters.length, _expectParameterCount);
     int elapsedMilliseconds;
     try {
-      await Perf.measure(() async {
-        _world = world;
-        _reporter = reporter;
-        _timeout = _timeout ?? defaultTimeout;
-        final result = await onRun(parameters).timeout(_timeout);
-        return result;
-      }, (ms) => elapsedMilliseconds = ms);
+      await Perf.measure(
+        () async {
+          _world = world;
+          _reporter = reporter;
+          _timeout = _timeout ?? defaultTimeout;
+          final result = await onRun(parameters).timeout(_timeout);
+          return result;
+        },
+        (ms) => elapsedMilliseconds = ms,
+      );
     } on TestFailure catch (tf) {
       return StepResult(
         elapsedMilliseconds,

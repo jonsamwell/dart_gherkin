@@ -1,3 +1,7 @@
+## [1.1.8+2] - 17/07/2020
+- Added shorthand steps `given(), when1(), then2() etc` to reduce boilerplate code and the need to create a class for every step.  Heavily inspired from the excellent ideas in https://github.com/technogise/flutter_gherkin_addons
+- Added a default static method to the `TestConfiguration` class to again reduce common boilerplate configuration
+
 ## [1.1.8+1] - 11/05/2020
 - Fixed issue with `JsonReporter` that would throw an error if an exception was logged before any scenarios have run
 
