@@ -1,4 +1,4 @@
-import 'package:gherkin/src/gherkin/langauges/language_service.dart';
+import 'package:gherkin/src/gherkin/languages/language_service.dart';
 import 'package:gherkin/src/gherkin/runnables/dialect_block.dart';
 
 import './exceptions/syntax_error.dart';
@@ -22,7 +22,7 @@ import './syntax/text_line_syntax.dart';
 import '../reporters/message_level.dart';
 import '../reporters/reporter.dart';
 import './syntax/example_syntax.dart';
-import './langauges/dialect.dart';
+import './languages/dialect.dart';
 
 class GherkinParser {
   final Iterable<SyntaxMatcher> syntaxMatchers = [
@@ -45,7 +45,7 @@ class GherkinParser {
     String contents,
     String path,
     Reporter reporter,
-    LanguageService langaugeService,
+    LanguageService languageService,
   ) async {
     final featureFile = FeatureFile(RunnableDebugInformation(path, 0, null));
     await reporter.message("Parsing feature file: '$path'", MessageLevel.debug);
@@ -53,8 +53,8 @@ class GherkinParser {
         contents.trim().split(RegExp(r'(\r\n|\r|\n)', multiLine: true));
     try {
       _parseBlock(
-        langaugeService,
-        langaugeService.getDialect(),
+        languageService,
+        languageService.getDialect(),
         FeatureFileSyntax(),
         featureFile,
         lines,
@@ -71,7 +71,7 @@ class GherkinParser {
   }
 
   num _parseBlock(
-    LanguageService langaugeService,
+    LanguageService languageService,
     GherkinDialect dialect,
     SyntaxMatcher parentSyntaxBlock,
     RunnableBlock parentBlock,
@@ -102,12 +102,12 @@ class GherkinParser {
         );
 
         if (runnable is DialectBlock) {
-          dialect = runnable.getDialect(langaugeService);
+          dialect = runnable.getDialect(languageService);
         }
 
         if (runnable is RunnableBlock) {
           i = _parseBlock(
-            langaugeService,
+            languageService,
             dialect,
             matcher,
             runnable,

@@ -640,7 +640,7 @@ Also see <https://docs.cucumber.io/cucumber/api/#tags>
 
 ### Languages
 
-In order to allow features to be written in a number of languages, you can now write the keywords in languages other than English. To improve readability and flow, some languages may have more than one translation for any given keyword. See https://cucumber.io/docs/gherkin/reference/#overview for a list of supported langauges.
+In order to allow features to be written in a number of languages, you can now write the keywords in languages other than English. To improve readability and flow, some languages may have more than one translation for any given keyword. See https://cucumber.io/docs/gherkin/reference/#overview for a list of supported languages.
 
 You can set the default language of feature files in your project via the configuration setting see [featureDefaultLanguage](#defaultLanguage)
 

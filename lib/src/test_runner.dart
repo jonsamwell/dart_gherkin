@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:gherkin/src/gherkin/langauges/language_service.dart';
+import 'package:gherkin/src/gherkin/languages/language_service.dart';
 
 import './configuration.dart';
 import './feature_file_runner.dart';

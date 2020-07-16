@@ -1,4 +1,4 @@
-import 'package:gherkin/src/gherkin/langauges/dialect.dart';
+import 'package:gherkin/src/gherkin/languages/dialect.dart';
 
 import '../runnables/comment_line.dart';
 import '../runnables/debug_information.dart';

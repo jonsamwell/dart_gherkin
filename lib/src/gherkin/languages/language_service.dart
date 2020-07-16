@@ -1,16 +1,16 @@
 import 'package:gherkin/src/gherkin/exceptions/dialect_not_supported.dart';
 
 import 'dialect.dart';
-import 'langauges.dart';
+import 'languages.dart';
 
 class LanguageService {
-  String _defaultLangauge = 'en';
+  String _defaultLanguage = 'en';
   final Map<String, GherkinDialect> _dialects = {};
 
-  String get defaultLanguage => _defaultLangauge;
+  String get defaultLanguage => _defaultLanguage;
 
-  GherkinDialect getDialect([String langaugeCode]) {
-    final code = langaugeCode ?? _defaultLangauge;
+  GherkinDialect getDialect([String languageCode]) {
+    final code = languageCode ?? _defaultLanguage;
 
     if (_dialects[code] == null) {
       throw GherkinDialogNotSupportedException(code);
@@ -20,10 +20,10 @@ class LanguageService {
   }
 
   void initialise([String defaultLanguage = 'en']) {
-    _defaultLangauge = defaultLanguage;
-    // final uri = Uri.file('dialects/langauges.json');
+    _defaultLanguage = defaultLanguage;
+    // final uri = Uri.file('dialects/languages.json');
     // final langFile = File.fromUri(uri);
-    // Map<String, dynamic> langaugesJson =
+    // Map<String, dynamic> languagesJson =
     //     json.decode(langFile.readAsStringSync());
     LANGUAGES_JSON.forEach((key, values) {
       final dialect = GherkinDialect.fromJSON(values)..languageCode = key;
@@ -31,7 +31,7 @@ class LanguageService {
     });
   }
 
-  void setDialect(String langaugeCode, GherkinDialect dialect) {
-    _dialects[langaugeCode] = dialect;
+  void setDialect(String languageCode, GherkinDialect dialect) {
+    _dialects[languageCode] = dialect;
   }
 }

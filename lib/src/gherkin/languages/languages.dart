@@ -1,5 +1,5 @@
 ///
-/// Langauge file take from https://github.com/cucumber/cucumber/blob/master/gherkin/gherkin-languages.json
+/// Language file take from https://github.com/cucumber/cucumber/blob/master/gherkin/gherkin-languages.json
 ///
 final Map<String, dynamic> LANGUAGES_JSON = {
   'af': {

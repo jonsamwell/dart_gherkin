@@ -1,5 +1,5 @@
-import 'package:gherkin/src/gherkin/langauges/dialect.dart';
-import 'package:gherkin/src/gherkin/langauges/language_service.dart';
+import 'package:gherkin/src/gherkin/languages/dialect.dart';
+import 'package:gherkin/src/gherkin/languages/language_service.dart';
 
 import './debug_information.dart';
 import './runnable.dart';
