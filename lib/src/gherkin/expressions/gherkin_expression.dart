@@ -82,9 +82,9 @@ class GherkinExpression {
     final values = <dynamic>[];
     _expression.allMatches(input).forEach((m) {
       // the first group is always the input string
-      final indicies =
+      final indices =
           List.generate(m.groupCount, (i) => i + 1, growable: false).toList();
-      stringValues.addAll(m.groups(indicies));
+      stringValues.addAll(m.groups(indices));
     });
 
     final definedParameters = _sortedParameterPositions
