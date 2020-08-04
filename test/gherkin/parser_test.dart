@@ -21,7 +21,7 @@ void main() {
       @primary_tag_one
       @primary_tag_two
       Feature: The name of the feature
-        A multiine line description
+        A multiline line description
         Line two
         Line three
 
@@ -36,7 +36,7 @@ void main() {
           And I do step b
           And I add the comment
           '''
-          A mutliline
+          A multiline
           comment
           '''
           When I do step c
@@ -49,13 +49,13 @@ void main() {
         LanguageServiceMock(),
       );
       expect(featureFile, isNot(null));
-      expect(featureFile.langauge, equals('en'));
+      expect(featureFile.language, equals('en'));
       expect(featureFile.features.length, 1);
 
       final feature = featureFile.features.elementAt(0);
       expect(feature.name, 'The name of the feature');
       expect(feature.description,
-          'A multiine line description\nLine two\nLine three');
+          'A multiline line description\nLine two\nLine three');
       expect(tagsToList(feature.tags),
           <String>['@primary_tag_one', '@primary_tag_two']);
       expect(feature.scenarios.length, 1);
@@ -85,7 +85,57 @@ void main() {
 
       final commentStep = steps.elementAt(2);
       expect(commentStep.multilineStrings.length, 1);
-      expect(commentStep.multilineStrings.elementAt(0), 'A mutliline\ncomment');
+      expect(commentStep.multilineStrings.elementAt(0), 'A multiline\ncomment');
+    });
+
+    test('parses feature description with non-alpha numeric characters',
+        () async {
+      final parser = GherkinParser();
+      final featureContents = """
+      Feature: Conway's Game of Life
+
+        Rules of Conway's Game of Life
+        > The universe of the _Game of Life_ is an infinite, two-dimensional orthogonal grid of square cells.
+
+        Scenario: Empty universe
+          Given the following universe:
+          '''
+
+          *
+
+          abc
+
+          '''
+          And the following universe:
+          '''
+          *
+          '''
+      """;
+      final featureFile = await parser.parseFeatureFile(
+        featureContents,
+        '',
+        ReporterMock(),
+        LanguageServiceMock(),
+      );
+      expect(featureFile, isNot(null));
+      expect(featureFile.language, equals('en'));
+      expect(featureFile.features.length, 1);
+
+      final feature = featureFile.features.elementAt(0);
+      expect(feature.name, 'Conway\'s Game of Life');
+      expect(feature.description,
+          'Rules of Conway\'s Game of Life\n> The universe of the _Game of Life_ is an infinite, two-dimensional orthogonal grid of square cells.');
+      expect(feature.scenarios.length, 1);
+
+      final scenario = featureFile.features.elementAt(0).scenarios.elementAt(0);
+      expect(scenario.steps.length, 2);
+
+      final steps = scenario.steps;
+      expect(steps.elementAt(0).name, 'Given the following universe:');
+      expect(steps.elementAt(0).multilineStrings.elementAt(0), '\n*\n\nabc\n');
+
+      expect(steps.elementAt(1).name, 'And the following universe:');
+      expect(steps.elementAt(1).multilineStrings.elementAt(0), '*');
     });
 
     test('parses single scenario with no names', () async {
@@ -107,7 +157,7 @@ void main() {
           And I do step b
           And I add the comment
           '''
-          A mutliline
+          A multiline
           comment
           '''
           When I do step c
@@ -120,7 +170,7 @@ void main() {
         LanguageServiceMock(),
       );
       expect(featureFile, isNot(null));
-      expect(featureFile.langauge, equals('en'));
+      expect(featureFile.language, equals('en'));
       expect(featureFile.features.length, 1);
 
       final feature = featureFile.features.elementAt(0);
@@ -149,7 +199,7 @@ void main() {
 
       final commentStep = steps.elementAt(2);
       expect(commentStep.multilineStrings.length, 1);
-      expect(commentStep.multilineStrings.elementAt(0), 'A mutliline\ncomment');
+      expect(commentStep.multilineStrings.elementAt(0), 'A multiline\ncomment');
     });
 
     test('parses single scenario outline with examples', () async {
@@ -178,7 +228,7 @@ void main() {
         LanguageServiceMock(),
       );
       expect(featureFile, isNot(null));
-      expect(featureFile.langauge, equals('en'));
+      expect(featureFile.language, equals('en'));
       expect(featureFile.features.length, 1);
 
       final feature = featureFile.features.elementAt(0);
@@ -246,7 +296,7 @@ void main() {
         LanguageServiceMock(),
       );
       expect(featureFile, isNot(null));
-      expect(featureFile.langauge, equals('en'));
+      expect(featureFile.language, equals('en'));
       expect(featureFile.features.length, 1);
 
       final feature = featureFile.features.elementAt(0);
@@ -328,7 +378,7 @@ void main() {
         LanguageServiceMock(),
       );
       expect(featureFile, isNot(null));
-      expect(featureFile.langauge, equals('en'));
+      expect(featureFile.language, equals('en'));
       expect(featureFile.features.length, 1);
 
       final feature = featureFile.features.elementAt(0);

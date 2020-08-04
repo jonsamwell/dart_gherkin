@@ -1,3 +1,6 @@
+## [1.1.8+3] - 05/08/2020
+- Fixes issues with non-alpha-numeric characters in multiline strings and comments https://github.com/jonsamwell/dart_gherkin/issues/14 https://github.com/jonsamwell/dart_gherkin/issues/15 https://github.com/jonsamwell/dart_gherkin/issues/16
+
 ## [1.1.8+2] - 17/07/2020
 - Added shorthand steps `given(), when1(), then2() etc` to reduce boilerplate code and the need to create a class for every step.  Heavily inspired from the excellent ideas in https://github.com/technogise/flutter_gherkin_addons
 - Added a default static method to the `TestConfiguration` class to again reduce common boilerplate configuration

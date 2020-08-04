@@ -8,10 +8,10 @@ import 'package:test/test.dart';
 void main() {
   final debugInfo = RunnableDebugInformation(null, 0, null);
   group('addChild', () {
-    test('can add LangaugeRunnable', () {
+    test('can add LanguageRunnable', () {
       final runnable = FeatureFile(debugInfo);
       runnable.addChild(LanguageRunnable(debugInfo)..language = 'en');
-      expect(runnable.langauge, 'en');
+      expect(runnable.language, 'en');
     });
     test('can add TagsRunnable', () {
       final runnable = FeatureFile(debugInfo);

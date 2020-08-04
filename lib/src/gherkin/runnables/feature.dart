@@ -53,7 +53,7 @@ class FeatureRunnable extends TaggableRunnableBlock {
           background = child;
         } else {
           throw GherkinSyntaxException(
-              "Feature file can only contain one backgroung block. File'${debug.filePath}' :: line '${child.debug.lineNumber}'");
+              "Feature file can only contain one background block. File'${debug.filePath}' :: line '${child.debug.lineNumber}'");
         }
         break;
       case EmptyLineRunnable:

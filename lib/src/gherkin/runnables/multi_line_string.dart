@@ -1,3 +1,5 @@
+import 'package:gherkin/src/gherkin/runnables/comment_line.dart';
+
 import './debug_information.dart';
 import './empty_line.dart';
 import './runnable.dart';
@@ -21,6 +23,10 @@ class MultilineStringRunnable extends RunnableBlock {
         lines.add((child as TextLineRunnable).text);
         break;
       case EmptyLineRunnable:
+        lines.add('');
+        break;
+      case CommentLineRunnable:
+        // at the moment we ignore comments in multiline strings - this seems standard behaviour in other gherkin implementations
         break;
       default:
         throw exception;

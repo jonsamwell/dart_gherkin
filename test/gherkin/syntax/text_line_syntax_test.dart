@@ -39,6 +39,18 @@ void main() {
             EnDialectMock(),
           ),
           true);
+      expect(
+          syntax.isMatch(
+            '*',
+            EnDialectMock(),
+          ),
+          true);
+      expect(
+          syntax.isMatch(
+            ' +  ',
+            EnDialectMock(),
+          ),
+          true);
     });
 
     test('does not match', () {

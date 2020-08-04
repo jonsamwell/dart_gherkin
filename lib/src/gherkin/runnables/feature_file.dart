@@ -17,7 +17,7 @@ class FeatureFile extends RunnableBlock {
 
   FeatureFile(RunnableDebugInformation debug) : super(debug);
 
-  String get langauge => _language;
+  String get language => _language;
 
   @override
   void addChild(Runnable child) {

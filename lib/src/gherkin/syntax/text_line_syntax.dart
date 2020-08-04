@@ -7,8 +7,10 @@ import './regex_matched_syntax.dart';
 
 class TextLineSyntax extends RegExMatchedGherkinSyntax {
   @override
+
+  /// Regex needs to make sure it does not match comment lines or empty whitespace lines
   RegExp pattern(GherkinDialect dialect) => RegExp(
-        r'^\s*(?!#)\w+.*]*$',
+        r'^\s*(?!(\s*#\s*.+)|(\s+)).+$',
         multiLine: false,
         caseSensitive: false,
       );

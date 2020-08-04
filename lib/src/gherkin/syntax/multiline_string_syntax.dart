@@ -1,4 +1,5 @@
 import 'package:gherkin/src/gherkin/languages/dialect.dart';
+import 'package:gherkin/src/gherkin/syntax/empty_line_syntax.dart';
 
 import '../runnables/debug_information.dart';
 import '../runnables/multi_line_string.dart';
@@ -26,7 +27,9 @@ class MultilineStringSyntax extends RegExMatchedGherkinSyntax {
   bool hasBlockEnded(SyntaxMatcher syntax) {
     if (syntax is MultilineStringSyntax) {
       return true;
-    } else if (!(syntax is TextLineSyntax || syntax is CommentSyntax)) {
+    } else if (!(syntax is TextLineSyntax ||
+        syntax is CommentSyntax ||
+        syntax is EmptyLineSyntax)) {
       throw GherkinSyntaxException(
           'Multiline string block does not expect ${syntax.runtimeType} syntax.  Expects a text line');
     }
