@@ -185,12 +185,19 @@ class GenericFunctionStepDefinition<TWorld extends World>
 
   @override
   Future<void> onRun(Iterable<dynamic> parameters) {
+    var setupConfig = config;
+
+    if (setupConfig == null || setupConfig.timeout == null) {
+      setupConfig = (setupConfig ?? StepDefinitionConfiguration())
+        ..timeout = timeout;
+    }
+
     final methodParams = [
       ...parameters.take(_expectedParameterCount),
       StepContext<TWorld>(
         world,
         reporter,
-        config,
+        setupConfig,
       ),
     ];
 

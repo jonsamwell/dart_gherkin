@@ -28,7 +28,7 @@ class StepDefinitionMock extends StepDefinitionGeneric<World> {
 
 void main() {
   group('onRun', () {
-    group('parameter gaurd', () {
+    group('parameter guard', () {
       test('throws exception when parameter counts mismatch', () async {
         final step = StepDefinitionMock(StepDefinitionConfiguration(), 2);
         expect(

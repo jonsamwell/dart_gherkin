@@ -1,3 +1,6 @@
+## [1.1.8+4] - 20/09/2020
+- Fixes issues with function style step definitions not having access to the default timeout period https://github.com/jonsamwell/flutter_gherkin/issues/81
+
 ## [1.1.8+3] - 05/08/2020
 - Fixes issues with non-alpha-numeric characters in multiline strings and comments https://github.com/jonsamwell/dart_gherkin/issues/14 https://github.com/jonsamwell/dart_gherkin/issues/15 https://github.com/jonsamwell/dart_gherkin/issues/16
 
