@@ -255,8 +255,6 @@ class FeatureFileRunner {
           );
         }
       }
-
-      world?.dispose();
     } catch (e, st) {
       await _reporter.onException(e, st);
 
@@ -274,6 +272,13 @@ class FeatureFileRunner {
         scenario.name,
         tags,
       );
+    }
+
+    try {
+      world?.dispose();
+    } catch (e, st) {
+      await _reporter.onException(e, st);
+      rethrow;
     }
 
     return scenarioPassed;
