@@ -257,7 +257,6 @@ class FeatureFileRunner {
       }
     } catch (e, st) {
       await _reporter.onException(e, st);
-
       rethrow;
     } finally {
       await _reporter.onScenarioFinished(
@@ -272,13 +271,13 @@ class FeatureFileRunner {
         scenario.name,
         tags,
       );
-    }
 
-    try {
-      world?.dispose();
-    } catch (e, st) {
-      await _reporter.onException(e, st);
-      rethrow;
+      try {
+        world?.dispose();
+      } catch (e, st) {
+        await _reporter.onException(e, st);
+        rethrow;
+      }
     }
 
     return scenarioPassed;

@@ -1,3 +1,6 @@
+## [1.1.8+5] - 26/10/2020
+- Ensured world is disposed after last hooks are run
+
 ## [1.1.8+4] - 20/09/2020
 - Fixes issues with function style step definitions not having access to the default timeout period https://github.com/jonsamwell/flutter_gherkin/issues/81
 
