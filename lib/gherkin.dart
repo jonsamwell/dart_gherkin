@@ -6,6 +6,7 @@ export 'src/gherkin/steps/world.dart';
 export 'src/gherkin/steps/step_definition.dart';
 export 'src/gherkin/steps/step_definition_implementations.dart';
 export 'src/gherkin/steps/step_configuration.dart';
+export 'src/gherkin/steps/step.dart';
 export 'src/gherkin/steps/given.dart';
 export 'src/gherkin/steps/then.dart';
 export 'src/gherkin/steps/when.dart';

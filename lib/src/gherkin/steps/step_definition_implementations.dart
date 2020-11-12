@@ -209,7 +209,7 @@ class GenericFunctionStepDefinition<TWorld extends World>
 }
 
 StepDefinitionGeneric<TWorld>
-    step<TWorld extends World, TInput1, TInput2, TInput3, TInput4, TInput5>(
+    stepWith<TWorld extends World, TInput1, TInput2, TInput3, TInput4, TInput5>(
   Pattern pattern,
   int expectedParameterCount,
   Function onInvoke, {

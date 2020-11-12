@@ -75,7 +75,7 @@ StepDefinitionGeneric<TWorld> when<TWorld extends World>(
   Future<void> Function(StepContext<TWorld> context) onInvoke, {
   StepDefinitionConfiguration configuration,
 }) =>
-    step<TWorld, dynamic, dynamic, dynamic, dynamic, dynamic>(
+    stepWith<TWorld, dynamic, dynamic, dynamic, dynamic, dynamic>(
       pattern,
       0,
       onInvoke,
@@ -91,7 +91,7 @@ StepDefinitionGeneric<TWorld> when1<TInput1, TWorld extends World>(
       onInvoke, {
   StepDefinitionConfiguration configuration,
 }) {
-  return step<TWorld, TInput1, dynamic, dynamic, dynamic, dynamic>(
+  return stepWith<TWorld, TInput1, dynamic, dynamic, dynamic, dynamic>(
     pattern,
     1,
     onInvoke,
@@ -109,7 +109,7 @@ StepDefinitionGeneric<TWorld> when2<TInput1, TInput2, TWorld extends World>(
       onInvoke, {
   StepDefinitionConfiguration configuration,
 }) =>
-    step<TWorld, TInput1, TInput2, dynamic, dynamic, dynamic>(
+    stepWith<TWorld, TInput1, TInput2, dynamic, dynamic, dynamic>(
       pattern,
       2,
       onInvoke,
@@ -128,7 +128,7 @@ StepDefinitionGeneric<TWorld>
       onInvoke, {
   StepDefinitionConfiguration configuration,
 }) =>
-        step<TWorld, TInput1, TInput2, TInput3, dynamic, dynamic>(
+        stepWith<TWorld, TInput1, TInput2, TInput3, dynamic, dynamic>(
           pattern,
           3,
           onInvoke,
@@ -148,7 +148,7 @@ StepDefinitionGeneric<TWorld>
       onInvoke, {
   StepDefinitionConfiguration configuration,
 }) =>
-        step<TWorld, TInput1, TInput2, TInput3, TInput4, dynamic>(
+        stepWith<TWorld, TInput1, TInput2, TInput3, TInput4, dynamic>(
           pattern,
           4,
           onInvoke,
@@ -169,7 +169,7 @@ StepDefinitionGeneric<TWorld>
       onInvoke, {
   StepDefinitionConfiguration configuration,
 }) =>
-        step<TWorld, TInput1, TInput2, TInput3, TInput4, TInput5>(
+        stepWith<TWorld, TInput1, TInput2, TInput3, TInput4, TInput5>(
           pattern,
           5,
           onInvoke,
