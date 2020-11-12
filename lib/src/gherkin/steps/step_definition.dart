@@ -14,7 +14,6 @@ abstract class StepDefinitionGeneric<TWorld extends World> {
   Reporter _reporter;
   Duration _timeout;
   RegExp get pattern;
-  set pattern(Pattern value);
 
   StepDefinitionGeneric(this.config, this._expectParameterCount) {
     _timeout = config?.timeout;

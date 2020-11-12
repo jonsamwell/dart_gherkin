@@ -169,7 +169,7 @@ class StepContext<TWorld extends World> {
 
 class GenericFunctionStepDefinition<TWorld extends World>
     extends StepDefinitionGeneric<TWorld> {
-  Pattern _pattern;
+  final Pattern _pattern;
   final Function _onInvoke;
   final int _expectedParameterCount;
 
@@ -206,11 +206,6 @@ class GenericFunctionStepDefinition<TWorld extends World>
 
   @override
   RegExp get pattern => _pattern is RegExp ? _pattern : RegExp(_pattern);
-
-  @override
-  set pattern(Pattern value) {
-    _pattern = value;
-  }
 }
 
 StepDefinitionGeneric<TWorld>
