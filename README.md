@@ -43,6 +43,7 @@ Available as a Flutter specific package https://pub.dartlang.org/packages/flutte
   + [Steps Definitions](#steps-definitions)
     - [Given](#given)
     - [Then](#then)
+    - [Expects Assertions](#expects-assertions)
     - [Step Timeout](#step-timeout)
     - [Multiline Strings](#multiline-strings)
     - [Data tables](#data-tables)
@@ -440,6 +441,8 @@ StepDefinitionGeneric ExpectTheAppleAmount() {
   );
 }
 ```
+
+#### Expects Assertions
 
 **Caveat**: The `expect` library currently only works within the library's own `test` function blocks; so using it with a `Then` step will cause an error.  Therefore, the `expectMatch` or `expectA` or `this.expect` or `context.expect` methods have been added which mimic the underlying functionality of `except` in that they assert that the give is true.  The `Matcher` within Dart's test library still work and can be used as expected.
 
