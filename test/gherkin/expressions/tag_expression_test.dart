@@ -5,7 +5,7 @@ void main() {
   group('TagExpression', () {
     test('evaluate simple single tag expression correctly', () async {
       final evaluator = TagExpressionEvaluator();
-      final tags = ['a', 'b', 'c'];
+      final tags = ['@a', '@b', '@c'];
 
       expect(evaluator.evaluate('@a', tags), true);
       expect(evaluator.evaluate('@b', tags), true);
@@ -14,7 +14,7 @@ void main() {
 
     test('evaluate complex and tag expression correctly', () async {
       final evaluator = TagExpressionEvaluator();
-      final tags = ['a', 'b', 'c'];
+      final tags = ['@a', '@b', '@c'];
 
       expect(evaluator.evaluate('@a and @d', tags), false);
       expect(evaluator.evaluate('(@a and not @d)', tags), true);
@@ -23,7 +23,7 @@ void main() {
 
     test('evaluate complex or tag expression correctly', () async {
       final evaluator = TagExpressionEvaluator();
-      final tags = ['a', 'b', 'c'];
+      final tags = ['@a', '@b', '@c'];
 
       expect(evaluator.evaluate('(@a or @b)', tags), true);
       expect(evaluator.evaluate('not @a or not @d', tags), true);
@@ -32,7 +32,7 @@ void main() {
 
     test('evaluate complex bracket tag expression correctly', () async {
       final evaluator = TagExpressionEvaluator();
-      final tags = ['a', 'b', 'c'];
+      final tags = ['@a', '@b', '@c'];
 
       expect(evaluator.evaluate('@a or (@b and @c)', tags), true);
       expect(evaluator.evaluate('@a and (@d or @e)', tags), false);
@@ -45,6 +45,15 @@ void main() {
       expect(
           evaluator.evaluate('@a and ((@b or not @e) and (@b and @c))', tags),
           true);
+    });
+
+    test('evaluate single negated tag expression correctly', () async {
+      final evaluator = TagExpressionEvaluator();
+      final tags = ['@skip'];
+      final tags1 = ['@ignore'];
+
+      expect(evaluator.evaluate('not @skip', tags), false);
+      expect(evaluator.evaluate('not @skip', tags1), true);
     });
   });
 }

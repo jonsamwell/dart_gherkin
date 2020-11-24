@@ -1,1 +1,1 @@
-enum ScenarioType { scenerio, scenario_outline }
+enum ScenarioType { scenario, scenario_outline }

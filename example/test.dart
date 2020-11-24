@@ -20,6 +20,7 @@ Future<void> main() {
     ThenExpectNumericResult()
   ];
   final config = TestConfiguration.DEFAULT(steps)
+    ..tagExpression = 'not @skip'
     ..hooks = [HookExample()]
     ..customStepParameterDefinitions = [PowerOfTwoParameter()]
     ..createWorld =

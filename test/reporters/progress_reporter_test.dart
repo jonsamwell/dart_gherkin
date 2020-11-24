@@ -47,17 +47,17 @@ void main() {
       ]);
     });
 
-    test('provides correct scenerio started output', () async {
+    test('provides correct scenario started output', () async {
       final reporter = TestableProgressReporter();
 
       await reporter.onScenarioStarted(StartedMessage(
         Target.scenario,
-        'Scenerio 1',
+        'Scenario 1',
         RunnableDebugInformation('filePath', 1, 'line 1'),
         Iterable.empty(),
       ));
 
-      expect(reporter.output, ['Running scenario: Scenerio 1 # filePath:1']);
+      expect(reporter.output, ['Running scenario: Scenario 1 # filePath:1']);
     });
   });
 }

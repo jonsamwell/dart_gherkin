@@ -8,7 +8,9 @@ import './debug_information.dart';
 import './runnable.dart';
 
 class ScenarioOutlineRunnable extends ScenarioRunnable {
-  ExampleRunnable examples;
+  final List<ExampleRunnable> _examples = <ExampleRunnable>[];
+  Iterable<ExampleRunnable> get examples => _examples;
+  TagsRunnable _pendingExampleTags;
 
   ScenarioOutlineRunnable(String name, RunnableDebugInformation debug)
       : super(name, debug);
@@ -17,12 +19,15 @@ class ScenarioOutlineRunnable extends ScenarioRunnable {
   void addChild(Runnable child) {
     switch (child.runtimeType) {
       case ExampleRunnable:
-        if (examples != null) {
-          throw GherkinSyntaxException(
-              'Scenerio outline `$name` already contains an example block');
+        if (_pendingExampleTags != null) {
+          (child as ExampleRunnable).addChild(_pendingExampleTags);
+          _pendingExampleTags = null;
         }
 
-        examples = child;
+        _examples.add(child);
+        break;
+      case TagsRunnable:
+        _pendingExampleTags = child;
         break;
       default:
         super.addChild(child);
@@ -31,38 +36,52 @@ class ScenarioOutlineRunnable extends ScenarioRunnable {
 
   @override
   void onTagAdded(TagsRunnable tag) {
-    examples?.addTag(tag.clone(inherited: true));
+    examples.forEach(
+      (ex) {
+        ex.addTag(tag.clone(inherited: true));
+      },
+    );
   }
 
   Iterable<ScenarioRunnable> expandOutlinesIntoScenarios() {
-    if (examples == null) {
+    if (examples.isEmpty) {
       throw GherkinSyntaxException(
-          'Scenerio outline `$name` does not contains an example block.');
+          'Scenario outline `$name` does not contains an example block.');
     }
 
     final scenarios = <ScenarioRunnable>[];
 
-    for (var exampleIndex = 0;
-        exampleIndex < examples.table.rows.length;
-        exampleIndex += 1) {
-      final exampleRow = examples.table.rows.elementAt(exampleIndex);
-      final scenarioRunnable = ScenarioExpandedFromOutlineExampleRunnable(
-          '$name (Example ${exampleIndex + 1})'.trim(), debug);
-      if (tags.isNotEmpty) {
-        tags.map((t) => scenarioRunnable.addTag(t.clone()));
-      }
+    examples.forEach((example) {
+      for (var exampleIndex = 0;
+          exampleIndex < example.table.rows.length;
+          exampleIndex += 1) {
+        final exampleRow = example.table.rows.elementAt(exampleIndex);
+        var exampleName = '$name Examples: ';
+        if (example.name.isNotEmpty) {
+          exampleName += example.name + ' ';
+        }
 
-      final clonedSteps = steps.map((step) => step.clone()).toList();
-      for (var i = 0; i < exampleRow.columns.length; i += 1) {
-        final parameterName = examples.table.header.columns.elementAt(i);
-        final value = exampleRow.columns.elementAt(i);
-        clonedSteps
-            .forEach((step) => step.setStepParameter(parameterName, value));
-      }
+        exampleName += '(${exampleIndex + 1})';
 
-      clonedSteps.forEach((step) => scenarioRunnable.addChild(step));
-      scenarios.add(scenarioRunnable);
-    }
+        final scenarioRunnable =
+            ScenarioExpandedFromOutlineExampleRunnable(exampleName, debug);
+        if (tags.isNotEmpty || example.tags.isNotEmpty) {
+          [...tags, ...example.tags]
+              .forEach((t) => scenarioRunnable.addTag(t.clone()));
+        }
+
+        final clonedSteps = steps.map((step) => step.clone()).toList();
+        for (var i = 0; i < exampleRow.columns.length; i += 1) {
+          final parameterName = example.table.header.columns.elementAt(i);
+          final value = exampleRow.columns.elementAt(i);
+          clonedSteps
+              .forEach((step) => step.setStepParameter(parameterName, value));
+        }
+
+        clonedSteps.forEach((step) => scenarioRunnable.addChild(step));
+        scenarios.add(scenarioRunnable);
+      }
+    });
 
     return scenarios;
   }

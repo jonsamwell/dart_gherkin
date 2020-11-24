@@ -1,4 +1,3 @@
-import 'package:gherkin/src/gherkin/exceptions/syntax_error.dart';
 import 'package:gherkin/src/gherkin/runnables/debug_information.dart';
 import 'package:gherkin/src/gherkin/runnables/empty_line.dart';
 import 'package:gherkin/src/gherkin/runnables/example.dart';
@@ -41,17 +40,12 @@ void main() {
       expect(runnable.examples, isNotNull);
     });
 
-    test('can only add single ExamplesRunnable', () {
+    test('can add multiple ExamplesRunnable', () {
       final runnable = ScenarioOutlineRunnable('outline one', debugInfo);
       runnable.addChild(ExampleRunnable('1', debugInfo));
+      runnable.addChild(ExampleRunnable('1', debugInfo));
       expect(runnable.examples, isNotNull);
-
-      expect(
-          () => runnable.addChild(ExampleRunnable('2', debugInfo)),
-          throwsA((e) =>
-              e is GherkinSyntaxException &&
-              e.message ==
-                  'Scenerio outline `outline one` already contains an example block'));
+      expect(runnable.examples.length, 2);
     });
   });
 }

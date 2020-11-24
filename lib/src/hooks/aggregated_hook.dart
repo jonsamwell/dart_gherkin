@@ -15,7 +15,7 @@ class AggregatedHook extends Hook {
   Future<void> onBeforeRun(TestConfiguration config) async =>
       await _invokeHooks((h) => h.onBeforeRun(config));
 
-  /// Run after all scenerios in a test run have completed
+  /// Run after all scenarios in a test run have completed
   @override
   Future<void> onAfterRun(TestConfiguration config) async =>
       await _invokeHooks((h) => h.onAfterRun(config));

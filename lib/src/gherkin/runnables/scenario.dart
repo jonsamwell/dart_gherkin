@@ -10,7 +10,7 @@ class ScenarioRunnable extends TaggableRunnableBlock {
   final String _name;
   List<StepRunnable> steps = <StepRunnable>[];
 
-  ScenarioType get scenarioType => ScenarioType.scenerio;
+  ScenarioType get scenarioType => ScenarioType.scenario;
 
   ScenarioRunnable(
     this._name,

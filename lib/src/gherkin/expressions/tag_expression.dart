@@ -7,10 +7,10 @@ import '../exceptions/syntax_error.dart';
 /// not @smoke and not @perf
 /// not (@smoke or @perf)
 /// @smoke and (@perf or @android)
-/// see https://docs.cucumber.io/cucumber/tag-expressions/
+/// see https://cucumber.io/docs/cucumber/api/?sbsearch=tag%20expressions#tags
 ///
 /// We can tackle these infix expressions with good old reverse polish notation
-/// which incidently was one of the first algorithms I coded when I got my first
+/// which incidentally was one of the first algorithms I coded when I got my first
 /// programming job.
 class TagExpressionEvaluator {
   static const String openingBracket = '(';
