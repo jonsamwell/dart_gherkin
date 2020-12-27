@@ -64,14 +64,15 @@ class ScenarioOutlineRunnable extends ScenarioRunnable {
         ].join(' ');
         final clonedSteps = steps.map((step) => step.clone()).toList();
 
+        final scenarioRunnable =
+        ScenarioExpandedFromOutlineExampleRunnable(exampleName, debug);
+
         exampleRow.forEach((parameterName, value) {
-          exampleName = exampleName.replaceAll('<$parameterName>', value);
+          scenarioRunnable.setStepParameter(parameterName, value);
           clonedSteps
               .forEach((step) => step.setStepParameter(parameterName, value));
         });
 
-        final scenarioRunnable =
-            ScenarioExpandedFromOutlineExampleRunnable(exampleName, debug);
         [...tags, ...example.tags]
             .forEach((t) => scenarioRunnable.addTag(t.clone()));
 
