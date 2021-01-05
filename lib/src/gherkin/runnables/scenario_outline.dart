@@ -50,37 +50,35 @@ class ScenarioOutlineRunnable extends ScenarioRunnable {
     }
 
     final scenarios = <ScenarioRunnable>[];
-
     examples.forEach((example) {
-      for (var exampleIndex = 0;
-          exampleIndex < example.table.rows.length;
-          exampleIndex += 1) {
-        final exampleRow = example.table.rows.elementAt(exampleIndex);
-        var exampleName = '$name Examples: ';
-        if (example.name.isNotEmpty) {
-          exampleName += example.name + ' ';
-        }
-
-        exampleName += '(${exampleIndex + 1})';
+      example.table
+          .asMap()
+          .toList()
+          .asMap()
+          .forEach((exampleIndex, exampleRow) {
+        var exampleName = [
+          name,
+          'Examples:',
+          if (example.name.isNotEmpty) example.name,
+          '(${exampleIndex + 1})',
+        ].join(' ');
+        final clonedSteps = steps.map((step) => step.clone()).toList();
 
         final scenarioRunnable =
-            ScenarioExpandedFromOutlineExampleRunnable(exampleName, debug);
-        if (tags.isNotEmpty || example.tags.isNotEmpty) {
-          [...tags, ...example.tags]
-              .forEach((t) => scenarioRunnable.addTag(t.clone()));
-        }
+        ScenarioExpandedFromOutlineExampleRunnable(exampleName, debug);
 
-        final clonedSteps = steps.map((step) => step.clone()).toList();
-        for (var i = 0; i < exampleRow.columns.length; i += 1) {
-          final parameterName = example.table.header.columns.elementAt(i);
-          final value = exampleRow.columns.elementAt(i);
+        exampleRow.forEach((parameterName, value) {
+          scenarioRunnable.setStepParameter(parameterName, value);
           clonedSteps
               .forEach((step) => step.setStepParameter(parameterName, value));
-        }
+        });
+
+        [...tags, ...example.tags]
+            .forEach((t) => scenarioRunnable.addTag(t.clone()));
 
         clonedSteps.forEach((step) => scenarioRunnable.addChild(step));
         scenarios.add(scenarioRunnable);
-      }
+      });
     });
 
     return scenarios;
