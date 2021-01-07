@@ -50,36 +50,36 @@ class ScenarioOutlineRunnable extends ScenarioRunnable {
     }
 
     final scenarios = <ScenarioRunnable>[];
-    examples.forEach((example) {
-      example.table
-          .asMap()
-          .toList()
-          .asMap()
-          .forEach((exampleIndex, exampleRow) {
-        var exampleName = [
-          name,
-          'Examples:',
-          if (example.name.isNotEmpty) example.name,
-          '(${exampleIndex + 1})',
-        ].join(' ');
-        final clonedSteps = steps.map((step) => step.clone()).toList();
+    examples.forEach(
+      (example) {
+        example.table.asMap().toList(growable: false).asMap().forEach(
+          (exampleIndex, exampleRow) {
+            var exampleName = [
+              name,
+              'Examples:',
+              if (example.name.isNotEmpty) example.name,
+              '(${exampleIndex + 1})',
+            ].join(' ');
+            final clonedSteps = steps.map((step) => step.clone()).toList();
 
-        final scenarioRunnable =
-        ScenarioExpandedFromOutlineExampleRunnable(exampleName, debug);
+            final scenarioRunnable =
+                ScenarioExpandedFromOutlineExampleRunnable(exampleName, debug);
 
-        exampleRow.forEach((parameterName, value) {
-          scenarioRunnable.setStepParameter(parameterName, value);
-          clonedSteps
-              .forEach((step) => step.setStepParameter(parameterName, value));
-        });
+            exampleRow.forEach((parameterName, value) {
+              scenarioRunnable.setStepParameter(parameterName, value);
+              clonedSteps.forEach(
+                  (step) => step.setStepParameter(parameterName, value));
+            });
 
-        [...tags, ...example.tags]
-            .forEach((t) => scenarioRunnable.addTag(t.clone()));
+            [...tags, ...example.tags]
+                .forEach((t) => scenarioRunnable.addTag(t.clone()));
 
-        clonedSteps.forEach((step) => scenarioRunnable.addChild(step));
-        scenarios.add(scenarioRunnable);
-      });
-    });
+            clonedSteps.forEach((step) => scenarioRunnable.addChild(step));
+            scenarios.add(scenarioRunnable);
+          },
+        );
+      },
+    );
 
     return scenarios;
   }

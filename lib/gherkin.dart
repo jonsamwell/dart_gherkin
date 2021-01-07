@@ -12,7 +12,14 @@ export 'src/gherkin/steps/when.dart';
 export 'src/gherkin/steps/and.dart';
 export 'src/gherkin/steps/but.dart';
 export 'src/gherkin/steps/step_run_result.dart';
+
+// Custom Parameters
 export 'src/gherkin/parameters/custom_parameter.dart';
+export 'src/gherkin/parameters/float_parameter.dart';
+export 'src/gherkin/parameters/int_parameter.dart';
+export 'src/gherkin/parameters/plural_parameter.dart';
+export 'src/gherkin/parameters/string_parameter.dart';
+export 'src/gherkin/parameters/word_parameter.dart';
 
 // Models
 export 'src/gherkin/models/table.dart';
@@ -26,6 +33,7 @@ export 'src/reporters/stdout_reporter.dart';
 export 'src/reporters/progress_reporter.dart';
 export 'src/reporters/test_run_summary_reporter.dart';
 export 'src/reporters/json/json_reporter.dart';
+export 'src/reporters/aggregated_reporter.dart';
 
 // Attachments
 export 'src/gherkin/attachments/attachment.dart';
@@ -44,3 +52,9 @@ export 'src/gherkin/exceptions/gherkin_exception.dart';
 export 'src/gherkin/exceptions/parameter_count_mismatch_error.dart';
 export 'src/gherkin/exceptions/step_not_defined_error.dart';
 export 'src/gherkin/exceptions/syntax_error.dart';
+
+// Parser
+export 'src/gherkin/ast/feature_file_visitor.dart';
+export 'src/gherkin/languages/language_service.dart';
+export 'src/gherkin/steps/exectuable_step.dart';
+export 'src/gherkin/expressions/gherkin_expression.dart';

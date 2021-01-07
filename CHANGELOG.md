@@ -1,3 +1,7 @@
+## [1.1.10] - 06/01/2021
+
+* Scenario outline examples can now include variables which are replace to create more explicit scenario names, thanks to @irundaia for the PR!
+
 ## [1.1.9] - 24/11/2020
 
 * Added the ability to have multiple example blocks with tags per scenario outline
