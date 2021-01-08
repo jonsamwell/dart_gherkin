@@ -194,6 +194,10 @@ void main() {
       final table = Table.fromJson(json);
 
       expect(table.rows.length, 2);
+      expect(table.rows.first.columns.first, 'one');
+      expect(table.rows.first.columns.last, 'three');
+      expect(table.rows.last.columns.first, 'four');
+      expect(table.rows.last.columns.last, 'six');
       expect(table.header, isNotNull);
     });
   });

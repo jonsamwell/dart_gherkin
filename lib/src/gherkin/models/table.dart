@@ -50,7 +50,7 @@ class Table {
         .map((x) => x as Map<String, dynamic>);
     final headerRow =
         data.toList().length > 1 ? TableRow(data.first.keys, 1, true) : null;
-    final rows = data.map((x) => TableRow(x.values, 1, false));
+    final rows = data.map((x) => TableRow(x.values.cast<String>(), 1, false));
     final table = Table(rows, headerRow);
 
     return table;
