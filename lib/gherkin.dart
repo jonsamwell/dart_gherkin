@@ -27,6 +27,7 @@ export 'src/gherkin/models/table_row.dart';
 
 // Reporters
 export 'src/reporters/reporter.dart';
+export 'src/gherkin/runnables/debug_information.dart';
 export 'src/reporters/message_level.dart';
 export 'src/reporters/messages.dart';
 export 'src/reporters/stdout_reporter.dart';
