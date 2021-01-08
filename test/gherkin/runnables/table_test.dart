@@ -1,3 +1,4 @@
+import 'package:gherkin/gherkin.dart';
 import 'package:gherkin/src/gherkin/runnables/comment_line.dart';
 import 'package:gherkin/src/gherkin/runnables/debug_information.dart';
 import 'package:gherkin/src/gherkin/runnables/table.dart';
@@ -162,6 +163,38 @@ void main() {
         'header two': 'eight',
         'header three': 'nine',
       });
+    });
+  });
+
+  group('json', () {
+    test('single row table as json', () async {
+      final runnable = TableRunnable(debugInfo);
+      runnable.addChild(
+          TableRunnable(debugInfo)..rows.add('| one | two | three |'));
+      final json = runnable.toTable().toJson();
+      expect(json, '[{"0":"one","1":"two","2":"three"}]');
+    });
+
+    test('three row table as json', () async {
+      final runnable = TableRunnable(debugInfo);
+      runnable.addChild(TableRunnable(debugInfo)
+        ..rows.add('| header one | header two | header three |'));
+      runnable.addChild(
+          TableRunnable(debugInfo)..rows.add('| one | two | three |'));
+      runnable.addChild(
+          TableRunnable(debugInfo)..rows.add('| four | five | six |'));
+      final json = runnable.toTable().toJson();
+      expect(json,
+          '[{"header one":"one","header two":"two","header three":"three"},{"header one":"four","header two":"five","header three":"six"}]');
+    });
+
+    test('three row table from json', () async {
+      const json =
+          '[{"header one":"one","header two":"two","header three":"three"},{"header one":"four","header two":"five","header three":"six"}]';
+      final table = Table.fromJson(json);
+
+      expect(table.rows.length, 2);
+      expect(table.header, isNotNull);
     });
   });
 }
