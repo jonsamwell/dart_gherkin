@@ -47,8 +47,8 @@ void main() {
       expect(reporter2.onStepStartedInvocationCount, 1);
 
       await aggregatedReporter.onTestRunFinished();
-      expect(reporter1.onTestRunfinishedInvocationCount, 1);
-      expect(reporter2.onTestRunfinishedInvocationCount, 1);
+      expect(reporter1.onTestRunFinishedInvocationCount, 1);
+      expect(reporter2.onTestRunFinishedInvocationCount, 1);
 
       await aggregatedReporter.onTestRunStarted();
       await aggregatedReporter.onTestRunStarted();
@@ -58,6 +58,31 @@ void main() {
       await aggregatedReporter.dispose();
       expect(reporter1.disposeInvocationCount, 1);
       expect(reporter2.disposeInvocationCount, 1);
+    });
+
+    test('toJson with no serializable reports returns correct json', () async {
+      final reporter1 = ReporterMock();
+      final reporter2 = ReporterMock();
+
+      final aggregatedReporter = AggregatedReporter();
+      aggregatedReporter.addReporter(reporter1);
+      aggregatedReporter.addReporter(reporter2);
+
+      expect(aggregatedReporter.toJson(), '[]');
+    });
+
+    test('toJson with two serializable reports returns correct json', () async {
+      final reporter1 = SerializableReporterMock('{"a", "b", "c": 1}');
+      final reporter2 = ReporterMock();
+      final reporter3 = SerializableReporterMock('{"e", "f", "g": 2}');
+
+      final aggregatedReporter = AggregatedReporter();
+      aggregatedReporter.addReporter(reporter1);
+      aggregatedReporter.addReporter(reporter2);
+      aggregatedReporter.addReporter(reporter3);
+
+      expect(aggregatedReporter.toJson(),
+          '[{"a", "b", "c": 1},{"e", "f", "g": 2}]');
     });
   });
 }

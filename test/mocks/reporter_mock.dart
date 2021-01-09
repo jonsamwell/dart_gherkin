@@ -4,7 +4,7 @@ typedef OnStepFinished = void Function(StepFinishedMessage message);
 
 class ReporterMock extends Reporter {
   int onTestRunStartedInvocationCount = 0;
-  int onTestRunfinishedInvocationCount = 0;
+  int onTestRunFinishedInvocationCount = 0;
   int onFeatureStartedInvocationCount = 0;
   int onFeatureFinishedInvocationCount = 0;
   int onScenarioStartedInvocationCount = 0;
@@ -21,7 +21,7 @@ class ReporterMock extends Reporter {
   Future<void> onTestRunStarted() async => onTestRunStartedInvocationCount += 1;
   @override
   Future<void> onTestRunFinished() async =>
-      onTestRunfinishedInvocationCount += 1;
+      onTestRunFinishedInvocationCount += 1;
   @override
   Future<void> onFeatureStarted(StartedMessage message) async =>
       onFeatureStartedInvocationCount += 1;
@@ -51,4 +51,16 @@ class ReporterMock extends Reporter {
       messageInvocationCount += 1;
   @override
   Future<void> dispose() async => disposeInvocationCount += 1;
+}
+
+class SerializableReporterMock extends Reporter
+    implements SerializableReporter {
+  final String _json;
+
+  SerializableReporterMock(this._json);
+
+  @override
+  String toJson() {
+    return _json;
+  }
 }
