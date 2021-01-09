@@ -4,16 +4,19 @@ import 'package:gherkin/src/reporters/json/json_tag.dart';
 
 import '../messages.dart';
 import '../reporter.dart';
+import '../serializable_reporter.dart';
 import 'json_feature.dart';
 import 'json_scenario.dart';
 import 'json_step.dart';
 
-class JsonReporter extends Reporter {
+class JsonReporter extends Reporter implements SerializableReporter {
   final List<JsonFeature> _features = [];
   final String path;
+  final Future<void> Function(String jsonReport, String path) writeReport;
 
   JsonReporter({
     this.path = './report.json',
+    this.writeReport,
   });
 
   @override
@@ -46,18 +49,22 @@ class JsonReporter extends Reporter {
 
   @override
   Future<void> onTestRunFinished() async {
-    await _generateReport(path, _features);
+    await _generateReport(path);
   }
 
-  Future<void> onSaveReport(String jsonReport) async {
+  Future<void> onSaveReport(String jsonReport, String path) async {
     final file = File(path);
     await file.writeAsString(jsonReport);
   }
 
-  Future<void> _generateReport(String path, List<JsonFeature> features) async {
+  Future<void> _generateReport(String path) async {
     try {
-      final report = json.encode(_features);
-      await onSaveReport(report);
+      final report = toJson();
+      if (writeReport != null) {
+        await writeReport(report, path);
+      } else {
+        await onSaveReport(report, path);
+      }
     } catch (e) {
       print('Failed to generate json report: $e');
     }
@@ -90,5 +97,10 @@ class JsonReporter extends Reporter {
     }
 
     return _features.last;
+  }
+
+  @override
+  String toJson() {
+    return json.encode(_features);
   }
 }

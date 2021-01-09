@@ -9,7 +9,7 @@ class TestableJsonReporter extends JsonReporter {
   String report;
 
   @override
-  Future<void> onSaveReport(String jsonReport) async {
+  Future<void> onSaveReport(String jsonReport, String path) async {
     report = jsonReport;
     return Future.value(null);
   }

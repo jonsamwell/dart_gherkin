@@ -34,6 +34,7 @@ export 'src/reporters/progress_reporter.dart';
 export 'src/reporters/test_run_summary_reporter.dart';
 export 'src/reporters/json/json_reporter.dart';
 export 'src/reporters/aggregated_reporter.dart';
+export 'src/reporters/serializable_reporter.dart';
 export 'src/gherkin/runnables/debug_information.dart';
 
 // Attachments
