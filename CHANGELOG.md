@@ -1,3 +1,7 @@
+## [1.2.0] - 11/01/2021
+
+* BREAKING CHANGE: `Table` has been renamed to `GherkinTable` to avoid naming clashes
+
 ## [1.1.10] - 06/01/2021
 
 * Scenario outline examples can now include variables which are replace to create more explicit scenario names, thanks to @irundaia for the PR!
@@ -149,7 +153,7 @@
 
 * Fixed throw Error sub types not getting handle properly and halting test execution fixes https://github.com/jonsamwell/dart_gherkin/issues/2
 * Fixed linter warnings
-* Made v1 release as api's are stable
+* Made v1 release as apis are stable
 
 ## [0.0.4] - 23/04/2019
 

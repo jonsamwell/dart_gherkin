@@ -43,7 +43,7 @@ class FinishedMessage {
 }
 
 class StepStartedMessage extends StartedMessage {
-  final Table table;
+  final GherkinTable table;
   final String multilineString;
 
   StepStartedMessage(

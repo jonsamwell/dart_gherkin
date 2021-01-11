@@ -2,11 +2,11 @@ import 'dart:convert';
 
 import '../models/table_row.dart';
 
-class Table {
+class GherkinTable {
   final Iterable<TableRow> rows;
   final TableRow header;
 
-  Table(this.rows, this.header);
+  GherkinTable(this.rows, this.header);
 
   void setStepParameter(String parameterName, String value) {
     rows.forEach((row) {
@@ -45,16 +45,17 @@ class Table {
     return '${jsonEncode(asMap())}';
   }
 
-  static Table fromJson(String json) {
+  static GherkinTable fromJson(String json) {
     final data = (jsonDecode(json) as List<dynamic>)
         .map((x) => x as Map<String, dynamic>);
     final headerRow =
         data.toList().length > 1 ? TableRow(data.first.keys, 1, true) : null;
     final rows = data.map((x) => TableRow(x.values.cast<String>(), 1, false));
-    final table = Table(rows, headerRow);
+    final table = GherkinTable(rows, headerRow);
 
     return table;
   }
 
-  Table clone() => Table(rows.map((r) => r.clone()).toList(), header.clone());
+  GherkinTable clone() =>
+      GherkinTable(rows.map((r) => r.clone()).toList(), header.clone());
 }

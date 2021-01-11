@@ -75,7 +75,7 @@ class FeatureFileVisitor {
   Future<void> visitScenarioStep(
     String name,
     Iterable<String> multiLineStrings,
-    Table table,
+    GherkinTable table,
   ) async {}
 
   Iterable<String> _tagsToList(Iterable<TagsRunnable> tags) sync* {

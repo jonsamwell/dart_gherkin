@@ -27,7 +27,7 @@ class TableRunnable extends RunnableBlock {
     }
   }
 
-  Table toTable() {
+  GherkinTable toTable() {
     TableRow header;
     final tableRows = <TableRow>[];
     if (rows.length > 1) {
@@ -38,7 +38,7 @@ class TableRunnable extends RunnableBlock {
       tableRows.add(_toRow(rows.elementAt(i), i));
     }
 
-    return Table(tableRows, header);
+    return GherkinTable(tableRows, header);
   }
 
   TableRow _toRow(String raw, int rowIndex, [isHeaderRow = false]) {

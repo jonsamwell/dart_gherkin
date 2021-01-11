@@ -191,7 +191,7 @@ void main() {
     test('three row table from json', () async {
       const json =
           '[{"header one":"one","header two":"two","header three":"three"},{"header one":"four","header two":"five","header three":"six"}]';
-      final table = Table.fromJson(json);
+      final table = GherkinTable.fromJson(json);
 
       expect(table.rows.length, 2);
       expect(table.rows.first.columns.first, 'one');

@@ -9,7 +9,7 @@ import 'taggable_runnable_block.dart';
 class ExampleRunnable extends TaggableRunnableBlock {
   final String _name;
   String description;
-  Table table;
+  GherkinTable table;
 
   ExampleRunnable(
     this._name,

@@ -10,7 +10,7 @@ class StepRunnable extends RunnableBlock {
   String _name;
   String description;
   List<String> multilineStrings = <String>[];
-  Table table;
+  GherkinTable table;
 
   StepRunnable(this._name, RunnableDebugInformation debug) : super(debug);
 
