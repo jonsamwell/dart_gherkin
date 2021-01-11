@@ -193,6 +193,7 @@ void main() {
           '[{"header one":"one","header two":"two","header three":"three"},{"header one":"four","header two":"five","header three":"six"}]';
       final table = GherkinTable.fromJson(json);
 
+      expect(table.header, isNotNull);
       expect(table.rows.length, 2);
       expect(table.rows.first.columns.first, 'one');
       expect(table.rows.first.columns.last, 'three');

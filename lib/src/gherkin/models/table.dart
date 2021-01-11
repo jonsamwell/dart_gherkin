@@ -49,7 +49,7 @@ class GherkinTable {
     final data = (jsonDecode(json) as List<dynamic>)
         .map((x) => x as Map<String, dynamic>);
     final headerRow =
-        data.toList().length > 1 ? TableRow(data.first.keys, 1, true) : null;
+        data.isNotEmpty ? TableRow(data.first.keys, 1, true) : null;
     final rows = data.map((x) => TableRow(x.values.cast<String>(), 1, false));
     final table = GherkinTable(rows, headerRow);
 
