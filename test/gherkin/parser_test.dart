@@ -439,5 +439,44 @@ void main() {
       expect(commentStep.multilineStrings.length, 1);
       expect(commentStep.multilineStrings.elementAt(0), 'A mutliline\ncomment');
     });
+
+    test(
+        'parses scenario outline and another scenario with tags in the same feature file',
+        () async {
+      final parser = GherkinParser();
+      final featureContents = '''
+      Feature: Bug example
+        This is the minimal example to reproduce the bug
+
+        Scenario Outline: Should run
+          Given the characters "<characters>"
+          When they are counted
+          Then the expected result is <result>
+
+          Examples:
+            | characters | result |
+            | abc        | 294    |
+
+        @skip
+        Scenario: Should not run (but does)
+          Given the characters "abc"
+          When they are counted
+          Then the expected result is 294
+      ''';
+      final featureFile = await parser.parseFeatureFile(
+        featureContents,
+        '',
+        ReporterMock(),
+        LanguageServiceMock(),
+      );
+      expect(featureFile, isNot(null));
+      expect(featureFile.language, equals('en'));
+      expect(featureFile.features.length, 1);
+
+      final feature = featureFile.features.elementAt(0);
+      expect(feature.scenarios.length, 2);
+      expect(feature.scenarios.elementAt(1).tags.length, 1);
+      expect(feature.scenarios.elementAt(1).tags.first, '@skip');
+    });
   });
 }
