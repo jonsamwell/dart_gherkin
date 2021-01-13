@@ -58,5 +58,6 @@ export 'src/gherkin/exceptions/syntax_error.dart';
 // Parser
 export 'src/gherkin/ast/feature_file_visitor.dart';
 export 'src/gherkin/languages/language_service.dart';
-export 'src/gherkin/steps/exectuable_step.dart';
+export 'src/gherkin/steps/executable_step.dart';
 export 'src/gherkin/expressions/gherkin_expression.dart';
+export 'src/gherkin/expressions/tag_expression.dart';

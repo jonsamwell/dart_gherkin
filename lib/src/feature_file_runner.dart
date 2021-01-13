@@ -14,7 +14,7 @@ import './gherkin/runnables/feature.dart';
 import './gherkin/runnables/feature_file.dart';
 import './gherkin/runnables/scenario.dart';
 import './gherkin/runnables/step.dart';
-import './gherkin/steps/exectuable_step.dart';
+import './gherkin/steps/executable_step.dart';
 import './gherkin/steps/step_run_result.dart';
 import './gherkin/steps/world.dart';
 import './reporters/messages.dart';

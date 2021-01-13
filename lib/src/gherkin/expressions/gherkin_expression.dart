@@ -14,8 +14,10 @@ class GherkinExpression {
       <_SortedParameterPosition>[];
   RegExp _expression;
 
-  GherkinExpression(this.originalExpression,
-      Iterable<CustomParameter<dynamic>> customParameters) {
+  GherkinExpression(
+    this.originalExpression,
+    Iterable<CustomParameter<dynamic>> customParameters,
+  ) {
     var pattern = originalExpression.pattern;
     customParameters.forEach((p) {
       if (originalExpression.pattern.contains(p.identifier)) {

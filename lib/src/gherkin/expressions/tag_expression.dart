@@ -15,14 +15,17 @@ import '../exceptions/syntax_error.dart';
 class TagExpressionEvaluator {
   static const String openingBracket = '(';
   static const String closingBracket = ')';
-  static final Map<String, int> _operatorPrededence = {
+  static final Map<String, int> _operatorPrecedence = {
     'not': 4,
     'or': 2,
     'and': 2,
     '(': 0,
   };
 
-  bool evaluate(String tagExpression, List<String> tags) {
+  bool evaluate(
+    String tagExpression,
+    List<String> tags,
+  ) {
     var match = true;
     final rpn = _convertInfixToPostfixExpression(tagExpression);
     match = _evaluateRpn(rpn, tags);
@@ -30,7 +33,10 @@ class TagExpressionEvaluator {
     return match;
   }
 
-  bool _evaluateRpn(Queue<String> rpn, List<String> tags) {
+  bool _evaluateRpn(
+    Queue<String> rpn,
+    List<String> tags,
+  ) {
     final stack = Queue<bool>();
     for (var token in rpn) {
       if (_isTag(token)) {
@@ -85,10 +91,10 @@ class TagExpressionEvaluator {
         }
         operatorQueue.removeLast();
       } else if (_isOperator(part)) {
-        final precendence = _operatorPrededence[part.toLowerCase()];
+        final precedence = _operatorPrecedence[part.toLowerCase()];
 
         while (operatorQueue.isNotEmpty &&
-            _operatorPrededence[operatorQueue.last] >= precendence) {
+            _operatorPrecedence[operatorQueue.last] >= precedence) {
           rpn.add(operatorQueue.removeLast());
         }
         operatorQueue.addLast(part);

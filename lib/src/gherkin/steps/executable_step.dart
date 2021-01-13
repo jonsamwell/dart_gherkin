@@ -1,6 +1,6 @@
 import '../expressions/gherkin_expression.dart';
-import './step_definition.dart';
-import './world.dart';
+import 'step_definition.dart';
+import 'world.dart';
 
 class ExecutableStep {
   final GherkinExpression expression;

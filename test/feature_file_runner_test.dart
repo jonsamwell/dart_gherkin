@@ -8,7 +8,7 @@ import 'package:gherkin/src/gherkin/runnables/feature_file.dart';
 import 'package:gherkin/src/gherkin/runnables/scenario.dart';
 import 'package:gherkin/src/gherkin/runnables/step.dart';
 import 'package:gherkin/src/gherkin/runnables/tags.dart';
-import 'package:gherkin/src/gherkin/steps/exectuable_step.dart';
+import 'package:gherkin/src/gherkin/steps/executable_step.dart';
 import 'package:gherkin/src/gherkin/steps/step_run_result.dart';
 import 'package:test/test.dart';
 import 'mocks/gherkin_expression_mock.dart';

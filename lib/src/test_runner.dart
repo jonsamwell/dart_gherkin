@@ -13,7 +13,7 @@ import './gherkin/parameters/int_parameter.dart';
 import './gherkin/parameters/float_parameter.dart';
 import './gherkin/parser.dart';
 import './gherkin/runnables/feature_file.dart';
-import './gherkin/steps/exectuable_step.dart';
+import './gherkin/steps/executable_step.dart';
 import './gherkin/steps/step_definition.dart';
 import './hooks/aggregated_hook.dart';
 import './hooks/hook.dart';
