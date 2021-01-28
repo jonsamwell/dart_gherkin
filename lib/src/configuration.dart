@@ -56,7 +56,7 @@ class TestConfiguration {
   bool exitAfterTestRun = true;
 
   /// the program will exit after any test failed
-  bool exitAfterTestFailed = true;
+  bool exitAfterTestFailed = false;
 
   /// used to allow for custom configuration to ensure framework specific configuration is in place
   void prepare() {}
