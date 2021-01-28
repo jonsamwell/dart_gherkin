@@ -39,6 +39,7 @@ Available as a Flutter specific package https://pub.dartlang.org/packages/flutte
     - [reporters](#reporters)
     - [createWorld](#createworld)
     - [exitAfterTestRun](#exitaftertestrun)
+    - [exitAfterTestFailed](#exitAfterTestFailed)
 * [Features Files](#features-files)
   + [Steps Definitions](#steps-definitions)
     - [Given](#given)
@@ -223,7 +224,8 @@ Future<void> main() {
       WhenTheStoredNumbersAreAdded(),
       ThenExpectNumericResult()
     ]
-    ..exitAfterTestRun = true;
+    ..exitAfterTestRun = true
+    ..exitAfterTestFailed = false;
 
   return GherkinRunner().execute(config);
 ```
@@ -354,6 +356,11 @@ Future<void> main() {
 
 Defaults to `true`
 True to exit the program after all tests have run.  You may want to set this to false during debugging.
+
+#### exitAfterTestFailed
+
+Defaults to `false`
+True to exit the program when a test have failed.  You may want to set this to true during debugging.
 
 ## Features Files
 
