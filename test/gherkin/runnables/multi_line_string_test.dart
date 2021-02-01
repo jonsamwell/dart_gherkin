@@ -13,11 +13,23 @@ void main() {
     });
     test('can add TextLineRunnable', () {
       final runnable = MultilineStringRunnable(debugInfo);
-      runnable.addChild(TextLineRunnable(debugInfo)..text = '1');
-      runnable.addChild(TextLineRunnable(debugInfo)..text = '2');
-      runnable.addChild(TextLineRunnable(debugInfo)..text = '3');
+      runnable.addChild(TextLineRunnable(debugInfo)..originalText = '1');
+      runnable.addChild(TextLineRunnable(debugInfo)..originalText = '2');
+      runnable.addChild(TextLineRunnable(debugInfo)..originalText = '3');
       expect(runnable.lines.length, 3);
       expect(runnable.lines, ['1', '2', '3']);
+    });
+  });
+
+  group('stripLeadingIndentation', () {
+    test('preserve original indentation without aggressively trimming', () {
+      final runnable = MultilineStringRunnable(debugInfo);
+
+      runnable.addChild(TextLineRunnable(debugInfo)..originalText = '   1');
+      runnable.addChild(TextLineRunnable(debugInfo)..originalText = '    2');
+      runnable.addChild(TextLineRunnable(debugInfo)..originalText = '    3');
+      expect(runnable.lines.length, 3);
+      expect(runnable.lines, ['1', ' 2', ' 3']);
     });
   });
 }
