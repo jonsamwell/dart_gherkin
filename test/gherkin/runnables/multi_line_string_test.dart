@@ -22,7 +22,7 @@ void main() {
   });
 
   group('stripLeadingIndentation', () {
-    test('preserve original indentation without aggressively trimming', () {
+    test('preserve original indentation from the first line', () {
       final runnable = MultilineStringRunnable(debugInfo);
 
       runnable.addChild(TextLineRunnable(debugInfo)..originalText = '   1');
@@ -30,6 +30,16 @@ void main() {
       runnable.addChild(TextLineRunnable(debugInfo)..originalText = '    3');
       expect(runnable.lines.length, 3);
       expect(runnable.lines, ['1', ' 2', ' 3']);
+    });
+
+    test('preserve original indentation from a specified position', () {
+      final runnable = MultilineStringRunnable(debugInfo, leadingWhitespace: 4);
+
+      runnable.addChild(TextLineRunnable(debugInfo)..originalText = '       1');
+      runnable.addChild(TextLineRunnable(debugInfo)..originalText = '      2');
+      runnable.addChild(TextLineRunnable(debugInfo)..originalText = '     3');
+      expect(runnable.lines.length, 3);
+      expect(runnable.lines, ['   1', '  2', ' 3']);
     });
   });
 }
