@@ -42,8 +42,12 @@ class TableRunnable extends RunnableBlock {
   }
 
   TableRow _toRow(String raw, int rowIndex, [isHeaderRow = false]) {
-    final columns =
-        raw.trim().split(RegExp(r'\|')).map((c) => c.trim()).skip(1).toList();
+    final columns = raw
+        .trim()
+        .split(RegExp(r'(?<!\\)\|'))
+        .map((c) => c.trim().replaceAll(r'\|', '|'))
+        .skip(1)
+        .toList();
 
     return TableRow(
       columns
