@@ -87,6 +87,7 @@ class GherkinParser {
           (matcher) => matcher.isMatch(line, dialect),
           orElse: () => null);
       if (matcher != null) {
+        // end look ahead here???
         if (parentSyntaxBlock.hasBlockEnded(matcher)) {
           switch (parentSyntaxBlock.endBlockHandling(matcher)) {
             case EndBlockHandling.ignore:

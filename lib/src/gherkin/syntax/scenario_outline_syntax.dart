@@ -22,8 +22,8 @@ class ScenarioOutlineSyntax extends RegExMatchedGherkinSyntax {
   @override
   bool hasBlockEnded(SyntaxMatcher syntax) =>
       syntax is ScenarioOutlineSyntax ||
-      syntax is ScenarioSyntax ||
-      syntax is TagSyntax;
+      syntax is ScenarioSyntax;// ||
+      // syntax is TagSyntax;
 
   @override
   Runnable toRunnable(

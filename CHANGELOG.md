@@ -1,7 +1,8 @@
-## [1.2.0] - 11/01/2021
+## [1.2.0] - 11/02/2021
 
-* Fixed #22 Tags are not taking into account after an `Example` block
 * BREAKING CHANGE: `Table` has been renamed to `GherkinTable` to avoid naming clashes
+* Fixed #22 Tags are not taking into account after an `Example` block
+* Fixed #23: Multiline strings to support YAML format thanks to @tshedor for the PR!
 
 ## [1.1.10] - 06/01/2021
 
