@@ -22,6 +22,7 @@ class TextLineSyntax extends RegExMatchedGherkinSyntax {
     GherkinDialect dialect,
   ) {
     final runnable = TextLineRunnable(debug);
+    runnable.originalText = line;
     runnable.text = line.trim();
     return runnable;
   }

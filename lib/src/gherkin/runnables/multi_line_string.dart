@@ -7,12 +7,17 @@ import './runnable_block.dart';
 import './text_line.dart';
 
 class MultilineStringRunnable extends RunnableBlock {
+  int leadingWhitespace;
+
   List<String> lines = <String>[];
 
   @override
   String get name => 'Multiline String';
 
-  MultilineStringRunnable(RunnableDebugInformation debug) : super(debug);
+  MultilineStringRunnable(
+    RunnableDebugInformation debug, {
+    this.leadingWhitespace,
+  }) : super(debug);
 
   @override
   void addChild(Runnable child) {
@@ -20,7 +25,9 @@ class MultilineStringRunnable extends RunnableBlock {
         "Unknown runnable child given to Multiline string '${child.runtimeType}'");
     switch (child.runtimeType) {
       case TextLineRunnable:
-        lines.add((child as TextLineRunnable).text);
+        final text = (child as TextLineRunnable).originalText ??
+            (child as TextLineRunnable).text;
+        lines.add(stripLeadingIndentation(text));
         break;
       case EmptyLineRunnable:
         lines.add('');
@@ -31,5 +38,15 @@ class MultilineStringRunnable extends RunnableBlock {
       default:
         throw exception;
     }
+  }
+
+  /// Trim but retain intentional indentation
+  String stripLeadingIndentation(String lineText) {
+    if (lines.isEmpty && leadingWhitespace == null) {
+      leadingWhitespace =
+          RegExp(r'^(\s*)').firstMatch(lineText)?.group(1)?.length ?? 0;
+    }
+
+    return lineText.substring(leadingWhitespace ?? 0);
   }
 }

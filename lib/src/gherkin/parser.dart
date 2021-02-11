@@ -1,5 +1,6 @@
 import 'package:gherkin/src/gherkin/languages/language_service.dart';
 import 'package:gherkin/src/gherkin/runnables/dialect_block.dart';
+import 'package:gherkin/src/gherkin/runnables/multi_line_string.dart';
 
 import './exceptions/syntax_error.dart';
 import './runnables/debug_information.dart';
@@ -95,8 +96,10 @@ class GherkinParser {
           }
         }
 
+        final useUntrimmedLines = matcher is MultilineStringSyntax ||
+            parentBlock is MultilineStringRunnable;
         final runnable = matcher.toRunnable(
-          line,
+          useUntrimmedLines ? lines.elementAt(i) : line,
           parentBlock.debug.copyWith(i, line),
           dialect,
         );
