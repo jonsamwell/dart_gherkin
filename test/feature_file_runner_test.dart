@@ -105,6 +105,73 @@ void main() {
       expect(stepDefinitionTwo.runCount, 0);
     });
 
+    test('feature are skipped if previous feature failed', () async {
+      final stepTextOne = 'Given I do a';
+      final stepTextTwo = 'Given I do b';
+      final stepDefiniton = MockStepDefinition((_) => throw Exception());
+      final stepDefinitonTwo = MockStepDefinition();
+      final executableStep = ExecutableStep(
+          MockGherkinExpression((s) => s == stepTextOne), stepDefiniton);
+      final executableStepTwo = ExecutableStep(
+          MockGherkinExpression((s) => s == stepTextTwo), stepDefinitonTwo);
+      final runner = FeatureFileRunner(
+          TestConfiguration()..exitAfterTestFailed = true,
+          MockTagExpressionEvaluator(),
+          [executableStep, executableStepTwo],
+          ReporterMock(),
+          HookMock());
+      final stepOne =
+          StepRunnable('Step 1', RunnableDebugInformation('', 0, stepTextOne));
+      final stepTwo =
+          StepRunnable('Step 2', RunnableDebugInformation('', 0, stepTextTwo));
+      final scenarioOne = ScenarioRunnable('Scenario: 1', emptyDebuggable)
+        ..steps.add(stepOne);
+      final scenarioTwo = ScenarioRunnable('Scenario: 2', emptyDebuggable)
+        ..steps.add(stepTwo);
+      final featureOne = FeatureRunnable('1', emptyDebuggable)
+        ..scenarios.add(scenarioOne);
+      final featureTwo = FeatureRunnable('2', emptyDebuggable)
+        ..scenarios.add(scenarioTwo);
+      final featureFile = FeatureFile(emptyDebuggable)
+        ..features.addAll([featureOne, featureTwo]);
+      await runner.run(featureFile);
+      expect(stepDefiniton.hasRun, true);
+      expect(stepDefiniton.runCount, 1);
+      expect(stepDefinitonTwo.runCount, 0);
+    });
+
+    test('scenario are skipped if previous scenario failed', () async {
+      final stepTextOne = 'Given I do a';
+      final stepTextTwo = 'Given I do b';
+      final stepDefiniton = MockStepDefinition((_) => throw Exception());
+      final stepDefinitonTwo = MockStepDefinition();
+      final executableStep = ExecutableStep(
+          MockGherkinExpression((s) => s == stepTextOne), stepDefiniton);
+      final executableStepTwo = ExecutableStep(
+          MockGherkinExpression((s) => s == stepTextTwo), stepDefinitonTwo);
+      final runner = FeatureFileRunner(
+          TestConfiguration()..exitAfterTestFailed = true,
+          MockTagExpressionEvaluator(),
+          [executableStep, executableStepTwo],
+          ReporterMock(),
+          HookMock());
+      final stepOne =
+          StepRunnable('Step 1', RunnableDebugInformation('', 0, stepTextOne));
+      final stepTwo =
+          StepRunnable('Step 2', RunnableDebugInformation('', 0, stepTextTwo));
+      final scenarioOne = ScenarioRunnable('Scenario: 1', emptyDebuggable)
+        ..steps.add(stepOne);
+      final scenarioTwo = ScenarioRunnable('Scenario: 2', emptyDebuggable)
+        ..steps.add(stepTwo);
+      final feature = FeatureRunnable('1', emptyDebuggable)
+        ..scenarios.addAll([scenarioOne, scenarioTwo]);
+      final featureFile = FeatureFile(emptyDebuggable)..features.add(feature);
+      await runner.run(featureFile);
+      expect(stepDefiniton.hasRun, true);
+      expect(stepDefiniton.runCount, 1);
+      expect(stepDefinitonTwo.runCount, 0);
+    });
+
     test('Unchecked errors are handled gracefully', () async {
       final stepTextOne = 'Given I do a';
       final stepTextTwo = 'Given I do b';

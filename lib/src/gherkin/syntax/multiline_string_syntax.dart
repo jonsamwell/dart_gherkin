@@ -41,8 +41,11 @@ class MultilineStringSyntax extends RegExMatchedGherkinSyntax {
     String line,
     RunnableDebugInformation debug,
     GherkinDialect dialect,
-  ) =>
-      MultilineStringRunnable(debug);
+  ) {
+    final leadingWhitespace =
+        RegExp(r'^(\s*)').firstMatch(line)?.group(1)?.length ?? 0;
+    return MultilineStringRunnable(debug, leadingWhitespace: leadingWhitespace);
+  }
 
   @override
   EndBlockHandling endBlockHandling(SyntaxMatcher syntax) =>
