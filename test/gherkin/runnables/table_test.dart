@@ -163,5 +163,19 @@ void main() {
         'header three': 'nine',
       });
     });
+
+    test('pipes can be escaped', () async {
+      final runnable = TableRunnable(debugInfo);
+      runnable.addChild(TableRunnable(debugInfo)
+        ..rows.add(
+            r'| one \| with escaped pipe | two | three with \| escaped pipe |'));
+      final maps = runnable.toTable().asMap();
+      expect(maps.length, 1);
+      expect(maps.elementAt(0), {
+        '0': 'one | with escaped pipe',
+        '1': 'two',
+        '2': 'three with | escaped pipe'
+      });
+    });
   });
 }
