@@ -84,6 +84,9 @@ class GherkinRunner {
             _hook,
           );
           allFeaturesPassed &= await runner.run(featureFile);
+          if (config.exitAfterTestFailed && !allFeaturesPassed) {
+            break;
+          }
         }
       } finally {
         await _reporter.onTestRunFinished();
