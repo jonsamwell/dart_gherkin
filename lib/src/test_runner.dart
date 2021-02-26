@@ -69,7 +69,15 @@ class GherkinRunner {
           MessageLevel.info,
         );
         featureFiles = featureFiles.toList()..shuffle();
+      } else if (config.order == ExecutionOrder.sorted) {
+        await _reporter.message(
+          'Executing features in sorted order',
+          MessageLevel.info,
+        );
+        featureFiles
+            .sort((FeatureFile a, FeatureFile b) => a.name.compareTo(b.name));
       }
+
 
       await _hook.onBeforeRun(config);
 

@@ -12,7 +12,7 @@ typedef CreateAttachmentManager = Future<AttachmentManager> Function(
   TestConfiguration config,
 );
 
-enum ExecutionOrder { sequential, random }
+enum ExecutionOrder { sequential, random, sorted }
 
 class TestConfiguration {
   /// The glob path(s) to all the features
