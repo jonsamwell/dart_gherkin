@@ -23,16 +23,15 @@ class FeatureFile extends RunnableBlock {
   void addChild(Runnable child) {
     switch (child.runtimeType) {
       case LanguageRunnable:
-        _language = (child as LanguageRunnable).language;
+        _language = (child as LanguageRunnable).language ?? '';
         break;
       case TagsRunnable:
-        _tagsPendingAssignmentToChild.add(child);
+        _tagsPendingAssignmentToChild.add(child as TagsRunnable);
         break;
       case FeatureRunnable:
-        features.add(child);
+        features.add(child as FeatureRunnable);
         if (_tagsPendingAssignmentToChild.isNotEmpty) {
-          _tagsPendingAssignmentToChild
-              .forEach((t) => (child as TaggableRunnableBlock).addTag(t));
+          _tagsPendingAssignmentToChild.forEach((t) => child.addTag(t));
           _tagsPendingAssignmentToChild.clear();
         }
         break;

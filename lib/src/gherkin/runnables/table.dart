@@ -28,7 +28,7 @@ class TableRunnable extends RunnableBlock {
   }
 
   Table toTable() {
-    TableRow header;
+    TableRow? header;
     final tableRows = <TableRow>[];
     if (rows.length > 1) {
       header = _toRow(rows.first, 0, true);

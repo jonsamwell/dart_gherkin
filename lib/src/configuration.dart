@@ -16,14 +16,14 @@ enum ExecutionOrder { sequential, random }
 
 class TestConfiguration {
   /// The glob path(s) to all the features
-  Iterable<Glob> features;
+  Iterable<Glob>? features;
 
   /// The default feature language
   String featureDefaultLanguage = 'en';
 
   /// a filter to limit the features that are run based on tags
   /// see https://docs.cucumber.io/cucumber/tag-expressions/ for expression syntax
-  String tagExpression;
+  String? tagExpression;
 
   /// The default step timeout - this can be override when definition a step definition
   Duration defaultTimeout = const Duration(seconds: 10);
@@ -32,13 +32,13 @@ class TestConfiguration {
   ExecutionOrder order = ExecutionOrder.random;
 
   /// The user defined step definitions that are matched with written steps in the features
-  Iterable<StepDefinitionGeneric> stepDefinitions;
+  Iterable<StepDefinitionGeneric>? stepDefinitions;
 
   /// Any user defined step parameters
-  Iterable<CustomParameter<dynamic>> customStepParameterDefinitions;
+  Iterable<CustomParameter<dynamic>>? customStepParameterDefinitions;
 
   /// Hooks that are run at certain points in the execution cycle
-  Iterable<Hook> hooks;
+  Iterable<Hook>? hooks;
 
   /// a list of reporters to use.
   /// Built-in reporters:
@@ -47,10 +47,10 @@ class TestConfiguration {
   ///   - TestRunSummaryReporter
   ///   - JsonReporter
   /// Custom reporters can be created by extending (or implementing) Reporter.dart
-  Iterable<Reporter> reporters;
+  Iterable<Reporter>? reporters;
 
   /// An optional function to create a world object for each scenario.
-  CreateWorld createWorld;
+  CreateWorld? createWorld;
 
   /// the program will exit after all the tests have run
   bool exitAfterTestRun = true;

@@ -12,7 +12,7 @@ class GherkinExpression {
   final RegExp originalExpression;
   final List<_SortedParameterPosition> _sortedParameterPositions =
       <_SortedParameterPosition>[];
-  RegExp _expression;
+  RegExp? _expression;
 
   GherkinExpression(this.originalExpression,
       Iterable<CustomParameter<dynamic>> customParameters) {
@@ -42,7 +42,7 @@ class GherkinExpression {
     // note that we should ignore the predefined (s) plural parameter
     // and also ignore the (?:) non-capturing group pattern
     var inCustomBracketSection = false;
-    int indexOfOpeningBracket;
+    int? indexOfOpeningBracket;
     for (var i = 0; i < originalExpression.pattern.length; i += 1) {
       final char = originalExpression.pattern[i];
       if (char == '(') {
@@ -58,7 +58,7 @@ class GherkinExpression {
         }
       } else if (char == ')' && inCustomBracketSection) {
         _sortedParameterPositions.add(_SortedParameterPosition(
-            indexOfOpeningBracket, UserDefinedStepParameterParameter()));
+            indexOfOpeningBracket!, UserDefinedStepParameterParameter()));
         inCustomBracketSection = false;
         indexOfOpeningBracket = 0;
       }
@@ -74,17 +74,17 @@ class GherkinExpression {
       identifier.replaceAll('(', '\\(').replaceAll(')', '\\)');
 
   bool isMatch(String input) {
-    return _expression.hasMatch(input);
+    return _expression!.hasMatch(input);
   }
 
   Iterable<dynamic> getParameters(String input) {
     final stringValues = <String>[];
     final values = <dynamic>[];
-    _expression.allMatches(input).forEach((m) {
+    _expression!.allMatches(input).forEach((m) {
       // the first group is always the input string
       final indices =
           List.generate(m.groupCount, (i) => i + 1, growable: false).toList();
-      stringValues.addAll(m.groups(indices));
+      stringValues.addAll(m.groups(indices) as List<String>);
     });
 
     final definedParameters = _sortedParameterPositions

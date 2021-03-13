@@ -8,8 +8,8 @@ import 'taggable_runnable_block.dart';
 
 class ExampleRunnable extends TaggableRunnableBlock {
   final String _name;
-  String description;
-  Table table;
+  String? description;
+  Table? table;
 
   ExampleRunnable(
     this._name,
@@ -31,7 +31,7 @@ class ExampleRunnable extends TaggableRunnableBlock {
         table = (child as TableRunnable).toTable();
         break;
       case TagsRunnable:
-        addTag(child);
+        addTag(child as TagsRunnable);
         break;
       default:
         throw Exception(

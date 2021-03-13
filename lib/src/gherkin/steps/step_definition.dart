@@ -8,20 +8,20 @@ import 'package:test/test.dart';
 import 'dart:async';
 
 abstract class StepDefinitionGeneric<TWorld extends World> {
-  final StepDefinitionConfiguration config;
+  final StepDefinitionConfiguration? config;
   final int _expectParameterCount;
-  TWorld _world;
-  Reporter _reporter;
-  Duration _timeout;
+  TWorld? _world;
+  Reporter? _reporter;
+  Duration? _timeout;
   RegExp get pattern;
 
   StepDefinitionGeneric(this.config, this._expectParameterCount) {
     _timeout = config?.timeout;
   }
 
-  TWorld get world => _world;
-  Duration get timeout => _timeout;
-  Reporter get reporter => _reporter;
+  TWorld? get world => _world;
+  Duration? get timeout => _timeout;
+  Reporter? get reporter => _reporter;
 
   Future<StepResult> run(
     TWorld world,
@@ -37,7 +37,7 @@ abstract class StepDefinitionGeneric<TWorld extends World> {
           _world = world;
           _reporter = reporter;
           _timeout = _timeout ?? defaultTimeout;
-          final result = await onRun(parameters).timeout(_timeout);
+          final result = await onRun(parameters).timeout(_timeout!);
           return result;
         },
         (ms) => elapsedMilliseconds = ms,

@@ -4,14 +4,14 @@ import '../messages.dart';
 import '../../gherkin/steps/step_run_result.dart';
 
 class JsonStep {
-  String keyword;
-  String name;
-  String file;
-  String error;
-  String docString;
+  String? keyword;
+  String? name;
+  String? file;
+  String? error;
+  String? docString;
   String status = 'failed';
   int duration = 0;
-  int line;
+  int? line;
   List<JsonRow> rows = [];
   List<JsonEmbedding> embeddings = [];
 

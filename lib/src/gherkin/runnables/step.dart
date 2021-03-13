@@ -8,9 +8,9 @@ import './table.dart';
 
 class StepRunnable extends RunnableBlock {
   String _name;
-  String description;
-  List<String> multilineStrings = <String>[];
-  Table table;
+  String? description;
+  List<String>? multilineStrings = <String>[];
+  Table? table;
 
   StepRunnable(this._name, RunnableDebugInformation debug) : super(debug);
 
@@ -21,7 +21,7 @@ class StepRunnable extends RunnableBlock {
   void addChild(Runnable child) {
     switch (child.runtimeType) {
       case MultilineStringRunnable:
-        multilineStrings
+        multilineStrings!
             .add((child as MultilineStringRunnable).lines.join('\n'));
         break;
       case TableRunnable:
@@ -47,7 +47,7 @@ class StepRunnable extends RunnableBlock {
 
   StepRunnable clone() {
     final cloned = StepRunnable(_name, debug);
-    cloned.multilineStrings = multilineStrings.map((s) => s).toList();
+    cloned.multilineStrings = multilineStrings?.map((s) => s).toList();
     cloned.table = table?.clone();
 
     return cloned;

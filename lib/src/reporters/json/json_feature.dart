@@ -4,12 +4,12 @@ import 'json_step.dart';
 import 'json_tag.dart';
 
 class JsonFeature {
-  String uri;
-  String id;
-  String name;
-  String description;
-  int line;
-  Iterable<JsonTag> tags;
+  String? uri;
+  String? id;
+  String? name;
+  String? description;
+  int? line;
+  Iterable<JsonTag>? tags;
   List<JsonScenario> scenarios = [];
 
   static JsonFeature from(StartedMessage message) {
@@ -26,7 +26,7 @@ class JsonFeature {
   }
 
   void add({
-    JsonScenario scenario,
+    required JsonScenario scenario,
   }) {
     scenario.feature = this;
     scenarios.add(scenario);
@@ -62,8 +62,8 @@ class JsonFeature {
       'uri': uri,
     };
 
-    if (tags.isNotEmpty) {
-      result['tags'] = tags.toList();
+    if (tags?.isNotEmpty ?? false) {
+      result['tags'] = tags!.toList();
     }
 
     if (scenarios.isNotEmpty) {

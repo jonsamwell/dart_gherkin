@@ -10,7 +10,7 @@ import './runnable.dart';
 class ScenarioOutlineRunnable extends ScenarioRunnable {
   final List<ExampleRunnable> _examples = <ExampleRunnable>[];
   Iterable<ExampleRunnable> get examples => _examples;
-  TagsRunnable _pendingExampleTags;
+  TagsRunnable? _pendingExampleTags;
 
   ScenarioOutlineRunnable(String name, RunnableDebugInformation debug)
       : super(name, debug);
@@ -20,14 +20,14 @@ class ScenarioOutlineRunnable extends ScenarioRunnable {
     switch (child.runtimeType) {
       case ExampleRunnable:
         if (_pendingExampleTags != null) {
-          (child as ExampleRunnable).addChild(_pendingExampleTags);
+          (child as ExampleRunnable).addChild(_pendingExampleTags!);
           _pendingExampleTags = null;
         }
 
-        _examples.add(child);
+        _examples.add(child as ExampleRunnable);
         break;
       case TagsRunnable:
-        _pendingExampleTags = child;
+        _pendingExampleTags = child as TagsRunnable;
         break;
       default:
         super.addChild(child);
@@ -65,7 +65,7 @@ class ScenarioOutlineRunnable extends ScenarioRunnable {
         final clonedSteps = steps.map((step) => step.clone()).toList();
 
         final scenarioRunnable =
-        ScenarioExpandedFromOutlineExampleRunnable(exampleName, debug);
+            ScenarioExpandedFromOutlineExampleRunnable(exampleName, debug);
 
         exampleRow.forEach((parameterName, value) {
           scenarioRunnable.setStepParameter(parameterName, value);

@@ -16,7 +16,7 @@ abstract class CustomParameter<T> {
   final RegExp pattern;
 
   /// A transformer function that takes a string and return the correct type of this parameter
-  final Transformer<T> transformer;
+  final Transformer<T?> transformer;
 
   /// The prefix used for the name token to identify this parameter.  Defaults to "{".
   final String identifierPrefix;

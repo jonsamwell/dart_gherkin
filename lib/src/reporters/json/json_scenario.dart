@@ -4,13 +4,13 @@ import 'json_step.dart';
 import 'json_tag.dart';
 
 class JsonScenario {
-  Target target;
-  JsonFeature feature;
-  String name;
-  String description;
-  int line;
-  List<JsonStep> steps = [];
-  Iterable<JsonTag> tags;
+  Target? target;
+  JsonFeature? feature;
+  String? name;
+  String? description;
+  int? line;
+  List<JsonStep>? steps = [];
+  Iterable<JsonTag>? tags;
 
   static JsonScenario from(StartedMessage message) {
     final scenario = JsonScenario();

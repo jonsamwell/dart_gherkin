@@ -69,7 +69,7 @@ class TagExpressionEvaluator {
             r'(\()|(or)|(and)|(not)|(@{1}\w{1}[^\s&\)]*)|(\))',
             caseSensitive: false)
         .allMatches(infixExpression)
-        .map((m) => m.group(0));
+        .map((m) => m.group(0)!);
     final rpn = Queue<String>();
     final operatorQueue = ListQueue();
 

@@ -43,8 +43,8 @@ class FinishedMessage {
 }
 
 class StepStartedMessage extends StartedMessage {
-  final Table table;
-  final String multilineString;
+  final Table? table;
+  final String? multilineString;
 
   StepStartedMessage(
     String name,
@@ -61,7 +61,7 @@ class StepStartedMessage extends StartedMessage {
 
 class StepFinishedMessage extends FinishedMessage {
   final StepResult result;
-  final Iterable<Attachment> attachments;
+  final Iterable<Attachment>? attachments;
 
   StepFinishedMessage(
       String name, RunnableDebugInformation context, this.result,

@@ -8,7 +8,7 @@ class StepResult {
   final StepExecutionResult result;
 
   // a reason for the result.  This would be a failure message if the result failed.  This field can be null
-  final String resultReason;
+  final String? resultReason;
 
   StepResult(this.elapsedMilliseconds, this.result, [this.resultReason]);
 }

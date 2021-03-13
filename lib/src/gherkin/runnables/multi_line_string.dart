@@ -7,7 +7,7 @@ import './runnable_block.dart';
 import './text_line.dart';
 
 class MultilineStringRunnable extends RunnableBlock {
-  int leadingWhitespace;
+  int? leadingWhitespace;
 
   List<String> lines = <String>[];
 
@@ -25,9 +25,8 @@ class MultilineStringRunnable extends RunnableBlock {
         "Unknown runnable child given to Multiline string '${child.runtimeType}'");
     switch (child.runtimeType) {
       case TextLineRunnable:
-        final text = (child as TextLineRunnable).originalText ??
-            (child as TextLineRunnable).text;
-        lines.add(stripLeadingIndentation(text));
+        final text = (child as TextLineRunnable).originalText ?? child.text;
+        lines.add(stripLeadingIndentation(text ?? ''));
         break;
       case EmptyLineRunnable:
         lines.add('');
