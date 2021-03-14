@@ -1,7 +1,7 @@
 class RunnableDebugInformation {
   final String filePath;
   final int lineNumber;
-  final String lineText;
+  final String? lineText;
 
   int get nonZeroAdjustedLineNumber => lineNumber + 1;
 

@@ -33,7 +33,7 @@ class JsonReporter extends Reporter {
 
   @override
   Future<void> onStepFinished(StepFinishedMessage message) async {
-    _getCurrentFeature().currentScenario().currentStep().onFinish(message);
+    _getCurrentFeature().currentScenario().currentStep()?.onFinish(message);
   }
 
   @override
@@ -41,7 +41,7 @@ class JsonReporter extends Reporter {
     _getCurrentFeature()
         .currentScenario()
         .currentStep()
-        .onException(exception, stackTrace);
+        ?.onException(exception, stackTrace);
   }
 
   @override

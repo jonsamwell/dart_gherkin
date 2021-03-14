@@ -10,7 +10,7 @@ import './syntax_matcher.dart';
 class ScenarioOutlineSyntax extends RegExMatchedGherkinSyntax {
   @override
   RegExp pattern(GherkinDialect dialect) => RegExp(
-        '^\\s*(?:${getMultiDialectRegexPattern(dialect.scenarioOutline)}):(?:\\s*(.+)\\s*)?\$',
+        '^\\s*(?:${getMultiDialectRegexPattern(dialect.scenarioOutline!)}):(?:\\s*(.+)\\s*)?\$',
         multiLine: false,
         caseSensitive: false,
       );
@@ -28,8 +28,8 @@ class ScenarioOutlineSyntax extends RegExMatchedGherkinSyntax {
     RunnableDebugInformation debug,
     GherkinDialect dialect,
   ) {
-    final name = pattern(dialect).firstMatch(line).group(1);
-    final runnable = ScenarioOutlineRunnable(name?.trim(), debug);
+    final name = pattern(dialect).firstMatch(line)?.group(1);
+    final runnable = ScenarioOutlineRunnable(name?.trim() ?? '', debug);
     return runnable;
   }
 }

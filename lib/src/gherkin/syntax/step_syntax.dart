@@ -11,7 +11,7 @@ import './table_line_syntax.dart';
 class StepSyntax extends RegExMatchedGherkinSyntax {
   @override
   RegExp pattern(GherkinDialect dialect) => RegExp(
-        '^(${getMultiDialectRegexPattern(dialect.stepKeywords)})\\s.*',
+        '^(${getMultiDialectRegexPattern(dialect.stepKeywords!)})\\s.*',
         multiLine: false,
         caseSensitive: false,
       );

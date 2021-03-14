@@ -9,7 +9,7 @@ import './table.dart';
 class StepRunnable extends RunnableBlock {
   String _name;
   String? description;
-  List<String>? multilineStrings = <String>[];
+  List<String> multilineStrings = <String>[];
   Table? table;
 
   StepRunnable(this._name, RunnableDebugInformation debug) : super(debug);

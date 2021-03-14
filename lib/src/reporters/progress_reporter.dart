@@ -86,8 +86,6 @@ class ProgressReporter extends StdoutReporter {
       case StepExecutionResult.skipped:
         return '-';
     }
-
-    return '';
   }
 
   String _getMessageColour(StepExecutionResult result) {
@@ -103,7 +101,5 @@ class ProgressReporter extends StdoutReporter {
       case StepExecutionResult.timeout:
         return StdoutReporter.FAIL_COLOR;
     }
-
-    return StdoutReporter.RESET_COLOR;
   }
 }

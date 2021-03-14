@@ -35,7 +35,7 @@ class TableLineSyntax extends RegExMatchedGherkinSyntax {
   ) {
     final runnable = TableRunnable(debug);
     runnable.rows
-        .add(pattern(dialect).firstMatch(line.trim()).group(1).trim() ?? '');
+        .add(pattern(dialect).firstMatch(line.trim())?.group(1)?.trim() ?? '');
     return runnable;
   }
 }

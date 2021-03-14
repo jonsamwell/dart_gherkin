@@ -205,7 +205,8 @@ class GenericFunctionStepDefinition<TWorld extends World>
   }
 
   @override
-  RegExp get pattern => _pattern is RegExp ? _pattern : RegExp(_pattern);
+  RegExp get pattern =>
+      _pattern is RegExp ? _pattern as RegExp : RegExp(_pattern);
 }
 
 StepDefinitionGeneric<TWorld>

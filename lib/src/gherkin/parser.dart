@@ -117,10 +117,10 @@ class GherkinParser {
             lines,
             i + 1,
             depth + 1,
-          );
+          ) as int;
         }
 
-        parentBlock.addChild(runnable);
+        parentBlock.addChild(runnable!);
       } else {
         throw GherkinSyntaxException(
             "Unknown or un-implemented syntax: '$line', file: '${parentBlock.debug.filePath}");

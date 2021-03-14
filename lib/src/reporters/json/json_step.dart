@@ -28,7 +28,7 @@ class JsonStep {
     step.file = message.context.filePath;
     step.docString = message.multilineString;
 
-    if ((message.table?.rows?.length ?? 0) > 0) {
+    if ((message.table?.rows.length ?? 0) > 0) {
       step.rows =
           message.table.rows.map((r) => JsonRow(r.columns.toList())).toList();
       step.rows.insert(0, JsonRow(message.table.header.columns.toList()));
@@ -51,7 +51,7 @@ class JsonStep {
         break;
     }
 
-    if (message.attachments.isNotEmpty) {
+    if (message.attachments?.isNotEmpty ?? false) {
       embeddings = message.attachments
           .map((attachment) => JsonEmbedding()
             ..data = attachment.data
@@ -66,7 +66,7 @@ class JsonStep {
     _trackError(exception.toString(), stackTrace.toString());
   }
 
-  void _trackError(String error, [String stacktrace]) {
+  void _trackError(String? error, [String? stacktrace]) {
     if (this.error == null && (error?.length ?? 0) > 0) {
       this.error =
           '$error${stacktrace != null ? '\n\n$stacktrace' : ''}'.trim();
@@ -87,11 +87,11 @@ class JsonStep {
       }
     };
 
-    if (docString != null && docString.isNotEmpty) {
+    if (docString != null && docString!.isNotEmpty) {
       result['docString'] = {
         'content_type': '',
         'value': docString,
-        'line': line + 1,
+        'line': line! + 1,
       };
     }
 

@@ -26,20 +26,20 @@ class JsonScenario {
     return scenario;
   }
 
-  void add({JsonStep step}) {
-    steps.add(step);
+  void add({required JsonStep step}) {
+    steps?.add(step);
   }
 
-  JsonStep currentStep() {
-    if (steps.isEmpty) {
+  JsonStep? currentStep() {
+    if (steps?.isEmpty ?? false) {
       final step = JsonStep()
         ..name = 'Unnamed'
         ..line = 0;
 
-      steps.add(step);
+      steps?.add(step);
     }
 
-    return steps.last;
+    return steps?.last;
   }
 
   Map<String, dynamic> toJson() {
@@ -47,18 +47,18 @@ class JsonScenario {
       'keyword':
           target == Target.scenario_outline ? 'Scenario Outline' : 'Scenario',
       'type': 'scenario',
-      'id': '${feature?.id};${name.toLowerCase()}',
+      'id': '${feature?.id};${name?.toLowerCase()}',
       'name': name,
       'description': description,
       'line': line,
     };
 
-    if (tags.isNotEmpty) {
-      result['tags'] = tags.toList();
+    if (tags?.isNotEmpty ?? false) {
+      result['tags'] = tags!.toList();
     }
 
-    if (steps.isNotEmpty) {
-      result['steps'] = steps.toList();
+    if (steps?.isNotEmpty ?? false) {
+      result['steps'] = steps!.toList();
     }
 
     return result;

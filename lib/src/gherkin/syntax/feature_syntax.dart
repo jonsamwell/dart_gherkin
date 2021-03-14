@@ -19,14 +19,14 @@ class FeatureSyntax extends RegExMatchedGherkinSyntax {
     RunnableDebugInformation debug,
     GherkinDialect dialect,
   ) {
-    final name = pattern(dialect).firstMatch(line).group(1);
+    final name = pattern(dialect).firstMatch(line)?.group(1) ?? '';
     final runnable = FeatureRunnable(name, debug);
     return runnable;
   }
 
   @override
   RegExp pattern(GherkinDialect dialect) => RegExp(
-        '^(?:${getMultiDialectRegexPattern(dialect.feature)}):\\s*(.+)\\s*',
+        '^(?:${getMultiDialectRegexPattern(dialect.feature!)}):\\s*(.+)\\s*',
         multiLine: false,
         caseSensitive: false,
       );

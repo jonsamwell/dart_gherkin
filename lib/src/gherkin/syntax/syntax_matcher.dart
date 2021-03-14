@@ -11,7 +11,7 @@ abstract class SyntaxMatcher {
   bool hasBlockEnded(SyntaxMatcher syntax) => true;
   EndBlockHandling endBlockHandling(SyntaxMatcher syntax) =>
       EndBlockHandling.continueProcessing;
-  Runnable toRunnable(
+  Runnable? toRunnable(
     String line,
     RunnableDebugInformation debug,
     GherkinDialect dialect,

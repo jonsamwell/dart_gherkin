@@ -52,7 +52,7 @@ class ScenarioOutlineRunnable extends ScenarioRunnable {
     final scenarios = <ScenarioRunnable>[];
     examples.forEach((example) {
       example.table
-          .asMap()
+          ?.asMap()
           .toList()
           .asMap()
           .forEach((exampleIndex, exampleRow) {

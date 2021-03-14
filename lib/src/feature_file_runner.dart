@@ -57,7 +57,7 @@ class FeatureFileRunner {
           feature.debug,
           feature.tags.isNotEmpty
               ? feature.tags
-                  .map((t) => t.tags
+                  .map((t) => t.tags!
                       .map((c) => Tag(c, t.debug.lineNumber, t.isInherited))
                       .toList())
                   .reduce((a, b) => a..addAll(b))
@@ -99,7 +99,7 @@ class FeatureFileRunner {
         feature.debug,
         MessageLevel.error,
       );
-      await _reporter.onException(e, st);
+      await _reporter.onException(e as Exception, st);
 
       rethrow;
     } finally {
@@ -121,7 +121,7 @@ class FeatureFileRunner {
   }
 
   bool _canRunScenario(
-    String tagExpression,
+    String? tagExpression,
     ScenarioRunnable scenario,
   ) {
     return tagExpression == null
@@ -143,14 +143,14 @@ class FeatureFileRunner {
   ) {
     final completer = Completer<bool>();
     // ensure unhandled errors do not cause the entire test run to crash
-    runZoned(
+    runZonedGuarded(
       () async {
         final result = await _runScenario(scenario, background);
         if (!completer.isCompleted) {
           completer.complete(result);
         }
       },
-      onError: (dynamic error, dynamic stack) {
+      (dynamic error, dynamic stack) {
         if (!completer.isCompleted) {
           // this is a special type of exception that indicates something is wrong
           // with the test rather than the test execution so fail the whole run as
@@ -173,7 +173,7 @@ class FeatureFileRunner {
 
   Future<bool> _runScenario(
     ScenarioRunnable scenario,
-    BackgroundRunnable background,
+    BackgroundRunnable? background,
   ) async {
     final attachmentManager = await _config.getAttachmentManager(_config);
     World world;
@@ -337,7 +337,7 @@ class FeatureFileRunner {
         step.name,
         step.debug,
         result,
-        attachmentManager?.getAttachmentsForContext(step.name),
+        attachmentManager.getAttachmentsForContext(step.name),
       ),
     );
 
@@ -404,7 +404,7 @@ class FeatureFileRunner {
   }
 
   Iterable<dynamic> _getStepParameters(StepRunnable step, ExecutableStep code) {
-    var parameters = code.expression.getParameters(step.debug.lineText);
+    var parameters = code.expression.getParameters(step.debug.lineText ?? '');
     if (step.multilineStrings.isNotEmpty) {
       parameters = parameters.toList()..addAll(step.multilineStrings);
     }
