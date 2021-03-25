@@ -1,15 +1,15 @@
 import 'package:gherkin/src/gherkin/languages/dialect.dart';
 
-import '../runnables/debug_information.dart';
-import '../runnables/runnable.dart';
-import '../runnables/table.dart';
 import './comment_syntax.dart';
 import './regex_matched_syntax.dart';
 import './syntax_matcher.dart';
+import '../runnables/debug_information.dart';
+import '../runnables/runnable.dart';
+import '../runnables/table.dart';
 
 class TableLineSyntax extends RegExMatchedGherkinSyntax {
   @override
-  RegExp pattern(GherkinDialect dialect) => RegExp(
+  RegExp pattern(GherkinDialect? dialect) => RegExp(
         r'^\s*(\|.*\|)\s*(?:\s*#\s*.*)?$',
         multiLine: false,
         caseSensitive: false,
@@ -31,11 +31,10 @@ class TableLineSyntax extends RegExMatchedGherkinSyntax {
   Runnable toRunnable(
     String line,
     RunnableDebugInformation debug,
-    GherkinDialect dialect,
+    GherkinDialect? dialect,
   ) {
     final runnable = TableRunnable(debug);
-    runnable.rows
-        .add(pattern(dialect).firstMatch(line.trim()).group(1).trim() ?? '');
+    runnable.rows.add(pattern(dialect).firstMatch(line.trim())!.group(1)!.trim());
     return runnable;
   }
 }

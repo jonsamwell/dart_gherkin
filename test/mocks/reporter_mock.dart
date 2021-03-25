@@ -1,6 +1,6 @@
 import 'package:gherkin/gherkin.dart';
 
-typedef OnStepFinished = void Function(StepFinishedMessage message);
+typedef OnStepFinished = void Function(StepFinishedMessage? message);
 
 class ReporterMock extends Reporter {
   int onTestRunStartedInvocationCount = 0;
@@ -15,7 +15,7 @@ class ReporterMock extends Reporter {
   int messageInvocationCount = 0;
   int disposeInvocationCount = 0;
 
-  OnStepFinished onStepFinishedFn;
+  OnStepFinished? onStepFinishedFn;
 
   @override
   Future<void> onTestRunStarted() async => onTestRunStartedInvocationCount += 1;
@@ -23,28 +23,28 @@ class ReporterMock extends Reporter {
   Future<void> onTestRunFinished() async =>
       onTestRunfinishedInvocationCount += 1;
   @override
-  Future<void> onFeatureStarted(StartedMessage message) async =>
+  Future<void> onFeatureStarted(StartedMessage? message) async =>
       onFeatureStartedInvocationCount += 1;
   @override
-  Future<void> onFeatureFinished(FinishedMessage message) async =>
+  Future<void> onFeatureFinished(FinishedMessage? message) async =>
       onFeatureFinishedInvocationCount += 1;
   @override
-  Future<void> onScenarioStarted(StartedMessage message) async =>
+  Future<void> onScenarioStarted(StartedMessage? message) async =>
       onScenarioStartedInvocationCount += 1;
   @override
-  Future<void> onScenarioFinished(FinishedMessage message) async =>
+  Future<void> onScenarioFinished(FinishedMessage? message) async =>
       onScenarioFinishedInvocationCount += 1;
   @override
-  Future<void> onStepStarted(StepStartedMessage message) async =>
+  Future<void> onStepStarted(StepStartedMessage? message) async =>
       onStepStartedInvocationCount += 1;
   @override
-  Future<void> onStepFinished(StepFinishedMessage message) async {
-    if (onStepFinishedFn != null) onStepFinishedFn(message);
+  Future<void> onStepFinished(StepFinishedMessage? message) async {
+    if (onStepFinishedFn != null) onStepFinishedFn!(message);
     onStepFinishedInvocationCount += 1;
   }
 
   @override
-  Future<void> onException(Exception exception, StackTrace stackTrace) async =>
+  Future<void> onException(Exception? exception, StackTrace? stackTrace) async =>
       onExceptionInvocationCount += 1;
   @override
   Future<void> message(String message, MessageLevel level) async =>

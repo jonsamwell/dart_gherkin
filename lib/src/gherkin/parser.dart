@@ -1,20 +1,23 @@
+import 'package:collection/collection.dart';
 import 'package:gherkin/src/gherkin/languages/language_service.dart';
 import 'package:gherkin/src/gherkin/runnables/dialect_block.dart';
 import 'package:gherkin/src/gherkin/runnables/multi_line_string.dart';
 
 import './exceptions/syntax_error.dart';
+import './languages/dialect.dart';
 import './runnables/debug_information.dart';
 import './runnables/feature_file.dart';
 import './runnables/runnable_block.dart';
 import './syntax/background_syntax.dart';
 import './syntax/comment_syntax.dart';
 import './syntax/empty_line_syntax.dart';
+import './syntax/example_syntax.dart';
 import './syntax/feature_file_syntax.dart';
 import './syntax/feature_syntax.dart';
 import './syntax/language_syntax.dart';
 import './syntax/multiline_string_syntax.dart';
-import './syntax/scenario_syntax.dart';
 import './syntax/scenario_outline_syntax.dart';
+import './syntax/scenario_syntax.dart';
 import './syntax/step_syntax.dart';
 import './syntax/syntax_matcher.dart';
 import './syntax/table_line_syntax.dart';
@@ -22,8 +25,6 @@ import './syntax/tag_syntax.dart';
 import './syntax/text_line_syntax.dart';
 import '../reporters/message_level.dart';
 import '../reporters/reporter.dart';
-import './syntax/example_syntax.dart';
-import './languages/dialect.dart';
 
 class GherkinParser {
   final Iterable<SyntaxMatcher> syntaxMatchers = [
@@ -50,8 +51,7 @@ class GherkinParser {
   ) async {
     final featureFile = FeatureFile(RunnableDebugInformation(path, 0, null));
     await reporter.message("Parsing feature file: '$path'", MessageLevel.debug);
-    final lines =
-        contents.trim().split(RegExp(r'(\r\n|\r|\n)', multiLine: true));
+    final lines = contents.trim().split(RegExp(r'(\r\n|\r|\n)', multiLine: true));
     try {
       _parseBlock(
         languageService,
@@ -63,8 +63,7 @@ class GherkinParser {
         0,
       );
     } catch (e) {
-      await reporter.message(
-          "Error while parsing feature file: '$path'\n$e", MessageLevel.error);
+      await reporter.message("Error while parsing feature file: '$path'\n$e", MessageLevel.error);
       rethrow;
     }
 
@@ -73,7 +72,7 @@ class GherkinParser {
 
   num _parseBlock(
     LanguageService languageService,
-    GherkinDialect dialect,
+    GherkinDialect? dialect,
     SyntaxMatcher parentSyntaxBlock,
     RunnableBlock parentBlock,
     Iterable<String> lines,
@@ -83,9 +82,7 @@ class GherkinParser {
     for (var i = lineNumber; i < lines.length; i += 1) {
       final line = lines.elementAt(i).trim();
       // print("$depth - $line");
-      final matcher = syntaxMatchers.firstWhere(
-          (matcher) => matcher.isMatch(line, dialect),
-          orElse: () => null);
+      final matcher = syntaxMatchers.firstWhereOrNull((matcher) => matcher.isMatch(line, dialect));
       if (matcher != null) {
         if (parentSyntaxBlock.hasBlockEnded(matcher)) {
           switch (parentSyntaxBlock.endBlockHandling(matcher)) {
@@ -96,8 +93,7 @@ class GherkinParser {
           }
         }
 
-        final useUntrimmedLines = matcher is MultilineStringSyntax ||
-            parentBlock is MultilineStringRunnable;
+        final useUntrimmedLines = matcher is MultilineStringSyntax || parentBlock is MultilineStringRunnable;
         final runnable = matcher.toRunnable(
           useUntrimmedLines ? lines.elementAt(i) : line,
           parentBlock.debug.copyWith(i, line),
@@ -117,13 +113,12 @@ class GherkinParser {
             lines,
             i + 1,
             depth + 1,
-          );
+          ) as int;
         }
 
         parentBlock.addChild(runnable);
       } else {
-        throw GherkinSyntaxException(
-            "Unknown or un-implemented syntax: '$line', file: '${parentBlock.debug.filePath}");
+        throw GherkinSyntaxException("Unknown or un-implemented syntax: '$line', file: '${parentBlock.debug.filePath}");
       }
     }
 

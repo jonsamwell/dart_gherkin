@@ -1,31 +1,30 @@
+import './message_level.dart';
+import './messages.dart';
 import './stdout_reporter.dart';
 import '../gherkin/runnables/debug_information.dart';
 import '../gherkin/steps/step_run_result.dart';
-import './message_level.dart';
-import './messages.dart';
 
 class ProgressReporter extends StdoutReporter {
   @override
-  Future<void> onScenarioStarted(StartedMessage message) async {
+  Future<void> onScenarioStarted(StartedMessage? message) async {
     printMessageLine(
-        'Running scenario: ${_getNameAndContext(message.name, message.context)}',
-        StdoutReporter.WARN_COLOR);
+        'Running scenario: ${_getNameAndContext(message!.name, message.context)}', StdoutReporter.WARN_COLOR);
   }
 
   @override
-  Future<void> onScenarioFinished(ScenarioFinishedMessage message) async {
+  Future<void> onScenarioFinished(ScenarioFinishedMessage? message) async {
     printMessageLine(
-        "${message.passed ? 'PASSED' : 'FAILED'}: Scenario ${_getNameAndContext(message.name, message.context)}",
+        "${message!.passed ? 'PASSED' : 'FAILED'}: Scenario ${_getNameAndContext(message.name, message.context!)}",
         message.passed ? StdoutReporter.PASS_COLOR : StdoutReporter.FAIL_COLOR);
   }
 
   @override
-  Future<void> onStepFinished(StepFinishedMessage message) async {
+  Future<void> onStepFinished(StepFinishedMessage? message) async {
     printMessageLine(
         [
           '  ',
-          _getStatePrefixIcon(message.result.result),
-          _getNameAndContext(message.name, message.context),
+          _getStatePrefixIcon(message!.result.result),
+          _getNameAndContext(message.name, message.context!),
           _getExecutionDuration(message.result),
           _getReasonMessage(message.result),
           _getErrorMessage(message.result)
@@ -52,7 +51,7 @@ class ProgressReporter extends StdoutReporter {
   }
 
   String _getReasonMessage(StepResult stepResult) {
-    if (stepResult.resultReason != null && stepResult.resultReason.isNotEmpty) {
+    if (stepResult.resultReason != null && stepResult.resultReason!.isNotEmpty) {
       return '\n      ${stepResult.resultReason}';
     } else {
       return '';
@@ -67,8 +66,8 @@ class ProgressReporter extends StdoutReporter {
     }
   }
 
-  String _getNameAndContext(String name, RunnableDebugInformation context) {
-    return "$name # ${context.filePath.replaceAll(RegExp(r"\.\\"), "")}:${context.lineNumber}";
+  String _getNameAndContext(String? name, RunnableDebugInformation context) {
+    return "$name # ${context.filePath!.replaceAll(RegExp(r"\.\\"), "")}:${context.lineNumber}";
   }
 
   String _getExecutionDuration(StepResult stepResult) {
@@ -86,8 +85,6 @@ class ProgressReporter extends StdoutReporter {
       case StepExecutionResult.skipped:
         return '-';
     }
-
-    return '';
   }
 
   String _getMessageColour(StepExecutionResult result) {
@@ -103,7 +100,5 @@ class ProgressReporter extends StdoutReporter {
       case StepExecutionResult.timeout:
         return StdoutReporter.FAIL_COLOR;
     }
-
-    return StdoutReporter.RESET_COLOR;
   }
 }

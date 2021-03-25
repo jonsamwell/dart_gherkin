@@ -4,10 +4,9 @@ import 'package:matcher/matcher.dart';
 ///
 /// The matcher package doesn't expose its pretty-print function directly, but
 /// we can use it through StringDescription.
-String prettyPrint(value) =>
-    StringDescription().addDescriptionOf(value).toString();
+String prettyPrint(value) => StringDescription().addDescriptionOf(value).toString();
 
-String formatFailure(Matcher expected, actual, String which, {String reason}) {
+String formatFailure(Matcher expected, actual, String which, {String? reason}) {
   final buffer = StringBuffer();
   buffer.writeln(indent(prettyPrint(expected), first: 'Expected: '));
   buffer.writeln(indent(prettyPrint(actual), first: '  Actual: '));
@@ -20,7 +19,7 @@ String formatFailure(Matcher expected, actual, String which, {String reason}) {
 ///
 /// If [first] is passed, it's used in place of the first line's indentation and
 /// [size] defaults to `first.length`. Otherwise, [size] defaults to 2.
-String indent(String string, {int size, String first}) {
+String indent(String string, {int? size, String? first}) {
   size ??= first == null ? 2 : first.length;
   return prefixLines(string, ' ' * size, first: first);
 }
@@ -31,11 +30,10 @@ String indent(String string, {int size, String first}) {
 /// prefixed with those instead. If [single] is passed, it's used if there's
 /// only a single line; otherwise, [first], [last], or [prefix] is used, in that
 /// order of precedence.
-String prefixLines(String text, String prefix,
-    {String first, String last, String single}) {
+String prefixLines(String text, String prefix, {String? first, String? last, String? single}) {
   first ??= prefix;
   last ??= prefix;
-  single ??= first ?? last ?? prefix;
+  single ??= first;
 
   final lines = text.split('\n');
   if (lines.length == 1) return '$single$text';

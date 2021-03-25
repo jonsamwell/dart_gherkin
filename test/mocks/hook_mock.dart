@@ -10,11 +10,11 @@ class HookMock extends Hook {
   int onAfterScenarioInvocationCount = 0;
   int onAfterScenarioWorldCreatedInvocationCount = 0;
   int onAfterStepInvocationCount = 0;
-  List<Tag> onBeforeScenarioTags;
-  List<Tag> onAfterScenarioTags;
+  List<Tag>? onBeforeScenarioTags;
+  late List<Tag> onAfterScenarioTags;
 
   final int providedPriority;
-  final OnBeforeRunCode onBeforeRunCode;
+  final OnBeforeRunCode? onBeforeRunCode;
 
   @override
   int get priority => providedPriority;
@@ -22,50 +22,47 @@ class HookMock extends Hook {
   HookMock({this.onBeforeRunCode, this.providedPriority = 0});
 
   @override
-  Future<void> onBeforeRun(TestConfiguration config) async {
+  Future<void> onBeforeRun(TestConfiguration? config) async {
     onBeforeRunInvocationCount += 1;
     if (onBeforeRunCode != null) {
-      onBeforeRunCode();
+      onBeforeRunCode!();
     }
   }
 
   @override
-  Future<void> onAfterRun(TestConfiguration config) async =>
-      onAfterRunInvocationCount += 1;
+  Future<void> onAfterRun(TestConfiguration? config) async => onAfterRunInvocationCount += 1;
 
   @override
   Future<void> onBeforeScenario(
-    TestConfiguration config,
-    String scenario,
-    Iterable<Tag> tags,
+    TestConfiguration? config,
+    String? scenario,
+    Iterable<Tag>? tags,
   ) async {
     onBeforeScenarioTags = tags?.toList();
     onBeforeScenarioInvocationCount += 1;
   }
 
   @override
-  Future<void> onBeforeStep(World world, String step) async =>
-      onBeforeStepInvocationCount += 1;
+  Future<void> onBeforeStep(World? world, String? step) async => onBeforeStepInvocationCount += 1;
 
   @override
   Future<void> onAfterScenario(
     TestConfiguration config,
-    String scenario,
+    String? scenario,
     Iterable<Tag> tags,
   ) async {
-    onAfterScenarioTags = tags?.toList();
+    onAfterScenarioTags = tags.toList();
     onAfterScenarioInvocationCount += 1;
   }
 
   @override
   Future<void> onAfterScenarioWorldCreated(
-    World world,
-    String scenario,
-    Iterable<Tag> tags,
+    World? world,
+    String? scenario,
+    Iterable<Tag>? tags,
   ) async =>
       onAfterScenarioWorldCreatedInvocationCount += 1;
 
   @override
-  Future<void> onAfterStep(World world, String step, StepResult result) async =>
-      onAfterStepInvocationCount += 1;
+  Future<void> onAfterStep(World? world, String? step, StepResult? result) async => onAfterStepInvocationCount += 1;
 }

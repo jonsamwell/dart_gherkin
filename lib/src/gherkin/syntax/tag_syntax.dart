@@ -1,28 +1,22 @@
 import 'package:gherkin/src/gherkin/languages/dialect.dart';
 
+import './regex_matched_syntax.dart';
 import '../runnables/debug_information.dart';
 import '../runnables/runnable.dart';
 import '../runnables/tags.dart';
-import './regex_matched_syntax.dart';
 
 class TagSyntax extends RegExMatchedGherkinSyntax {
   @override
-  RegExp pattern(GherkinDialect dialect) =>
-      RegExp('^@', multiLine: false, caseSensitive: false);
+  RegExp pattern(GherkinDialect? dialect) => RegExp('^@', multiLine: false, caseSensitive: false);
 
   @override
   Runnable toRunnable(
     String line,
     RunnableDebugInformation debug,
-    GherkinDialect dialect,
+    GherkinDialect? dialect,
   ) {
     final runnable = TagsRunnable(debug);
-    runnable.tags = line
-        .trim()
-        .split(RegExp('@'))
-        .where((t) => t != null && t.isNotEmpty)
-        .map((t) => '@${t.trim()}')
-        .toList();
+    runnable.tags = line.trim().split(RegExp('@')).where((t) => t.isNotEmpty).map((t) => '@${t.trim()}').toList();
 
     return runnable;
   }

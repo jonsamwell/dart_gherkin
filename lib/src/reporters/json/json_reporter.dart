@@ -17,30 +17,30 @@ class JsonReporter extends Reporter {
   });
 
   @override
-  Future<void> onFeatureStarted(StartedMessage message) async {
-    _features.add(JsonFeature.from(message));
+  Future<void> onFeatureStarted(StartedMessage? message) async {
+    _features.add(JsonFeature.from(message!));
   }
 
   @override
-  Future<void> onScenarioStarted(StartedMessage message) async {
-    _getCurrentFeature().add(scenario: JsonScenario.from(message));
+  Future<void> onScenarioStarted(StartedMessage? message) async {
+    _getCurrentFeature().add(scenario: JsonScenario.from(message!));
   }
 
   @override
-  Future<void> onStepStarted(StepStartedMessage message) async {
-    _getCurrentFeature().currentScenario().add(step: JsonStep.from(message));
+  Future<void> onStepStarted(StepStartedMessage? message) async {
+    _getCurrentFeature().currentScenario().add(step: JsonStep.from(message!));
   }
 
   @override
-  Future<void> onStepFinished(StepFinishedMessage message) async {
-    _getCurrentFeature().currentScenario().currentStep().onFinish(message);
+  Future<void> onStepFinished(StepFinishedMessage? message) async {
+    _getCurrentFeature().currentScenario().currentStep()!.onFinish(message!);
   }
 
   @override
-  Future<void> onException(Exception exception, StackTrace stackTrace) async {
+  Future<void> onException(Exception? exception, StackTrace? stackTrace) async {
     _getCurrentFeature()
         .currentScenario()
-        .currentStep()
+        .currentStep()!
         .onException(exception, stackTrace);
   }
 
@@ -76,7 +76,7 @@ class JsonReporter extends Reporter {
                 'An unnamed scenario is possible if something is logged before any feature has started to execute'
             ..line = 0
             ..tags = <JsonTag>[]
-            ..steps = <JsonStep>[
+            ..steps = <JsonStep?>[
               JsonStep()
                 ..name = 'Unnamed'
                 ..line = 0

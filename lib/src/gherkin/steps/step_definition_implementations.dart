@@ -7,22 +7,22 @@ import './world.dart';
 abstract class StepDefinitionBase<TWorld extends World>
     extends StepDefinitionGeneric<TWorld> {
   StepDefinitionBase(
-      StepDefinitionConfiguration config, int expectParameterCount)
+      StepDefinitionConfiguration? config, int expectParameterCount)
       : super(config, expectParameterCount);
 
-  void expect(actual, matcher, {String reason}) => ExpectMimic().expect(
+  void expect(actual, matcher, {String? reason}) => ExpectMimic().expect(
         actual,
         matcher,
         reason: reason,
       );
 
-  void expectA(actual, matcher, {String reason}) => ExpectMimic().expect(
+  void expectA(actual, matcher, {String? reason}) => ExpectMimic().expect(
         actual,
         matcher,
         reason: reason,
       );
 
-  void expectMatch(actual, matcher, {String reason}) => expect(
+  void expectMatch(actual, matcher, {String? reason}) => expect(
         actual,
         matcher,
         reason: reason,
@@ -31,7 +31,7 @@ abstract class StepDefinitionBase<TWorld extends World>
 
 abstract class StepDefinition<TWorld extends World>
     extends StepDefinitionBase<TWorld> {
-  StepDefinition([StepDefinitionConfiguration configuration])
+  StepDefinition([StepDefinitionConfiguration? configuration])
       : super(configuration, 0);
 
   @override
@@ -42,19 +42,19 @@ abstract class StepDefinition<TWorld extends World>
 
 abstract class StepDefinition1<TWorld extends World, TInput1>
     extends StepDefinitionBase<TWorld> {
-  StepDefinition1([StepDefinitionConfiguration configuration])
+  StepDefinition1([StepDefinitionConfiguration? configuration])
       : super(configuration, 1);
 
   @override
   Future<void> onRun(Iterable<dynamic> parameters) async =>
       await executeStep(parameters.elementAt(0));
 
-  Future<void> executeStep(TInput1 input1);
+  Future<void> executeStep(TInput1? input1);
 }
 
 abstract class StepDefinition2<TWorld extends World, TInput1, TInput2>
     extends StepDefinitionBase<TWorld> {
-  StepDefinition2([StepDefinitionConfiguration configuration])
+  StepDefinition2([StepDefinitionConfiguration? configuration])
       : super(configuration, 2);
 
   @override
@@ -64,14 +64,14 @@ abstract class StepDefinition2<TWorld extends World, TInput1, TInput2>
       );
 
   Future<void> executeStep(
-    TInput1 input1,
-    TInput2 input2,
+    TInput1? input1,
+    TInput2? input2,
   );
 }
 
 abstract class StepDefinition3<TWorld extends World, TInput1, TInput2, TInput3>
     extends StepDefinitionBase<TWorld> {
-  StepDefinition3([StepDefinitionConfiguration configuration])
+  StepDefinition3([StepDefinitionConfiguration? configuration])
       : super(configuration, 3);
 
   @override
@@ -82,15 +82,15 @@ abstract class StepDefinition3<TWorld extends World, TInput1, TInput2, TInput3>
       );
 
   Future<void> executeStep(
-    TInput1 input1,
-    TInput2 input2,
-    TInput3 input3,
+    TInput1? input1,
+    TInput2? input2,
+    TInput3? input3,
   );
 }
 
 abstract class StepDefinition4<TWorld extends World, TInput1, TInput2, TInput3,
     TInput4> extends StepDefinitionBase<TWorld> {
-  StepDefinition4([StepDefinitionConfiguration configuration])
+  StepDefinition4([StepDefinitionConfiguration? configuration])
       : super(configuration, 4);
 
   @override
@@ -102,16 +102,16 @@ abstract class StepDefinition4<TWorld extends World, TInput1, TInput2, TInput3,
       );
 
   Future<void> executeStep(
-    TInput1 input1,
-    TInput2 input2,
-    TInput3 input3,
-    TInput4 input4,
+    TInput1? input1,
+    TInput2? input2,
+    TInput3? input3,
+    TInput4? input4,
   );
 }
 
 abstract class StepDefinition5<TWorld extends World, TInput1, TInput2, TInput3,
     TInput4, TInput5> extends StepDefinitionBase<TWorld> {
-  StepDefinition5([StepDefinitionConfiguration configuration])
+  StepDefinition5([StepDefinitionConfiguration? configuration])
       : super(configuration, 5);
 
   @override
@@ -124,19 +124,19 @@ abstract class StepDefinition5<TWorld extends World, TInput1, TInput2, TInput3,
       );
 
   Future<void> executeStep(
-    TInput1 input1,
-    TInput2 input2,
-    TInput3 input3,
-    TInput4 input4,
-    TInput5 input5,
+    TInput1? input1,
+    TInput2? input2,
+    TInput3? input3,
+    TInput4? input4,
+    TInput5? input5,
   );
 }
 
 /// Class that contains the contextual information when a step is run
 /// Provides access to the world, reporter, step configuration and expect functions.
-class StepContext<TWorld extends World> {
+class StepContext<TWorld extends World?> {
   final TWorld world;
-  final Reporter reporter;
+  final Reporter? reporter;
   final StepDefinitionConfiguration configuration;
 
   StepContext(
@@ -146,28 +146,28 @@ class StepContext<TWorld extends World> {
   );
 
   /// Assert that [actual] matches [matcher], [reason] is optional.
-  void expect(actual, matcher, {String reason}) => ExpectMimic().expect(
+  void expect(actual, matcher, {String? reason}) => ExpectMimic().expect(
         actual,
         matcher,
         reason: reason,
       );
 
   /// Assert that [actual] matches [matcher], [reason] is optional.
-  void expectA(actual, matcher, {String reason}) => expect(
+  void expectA(actual, matcher, {String? reason}) => expect(
         actual,
         matcher,
         reason: reason,
       );
 
   /// Assert that [actual] matches [matcher], [reason] is optional.
-  void expectMatch(actual, matcher, {String reason}) => expect(
+  void expectMatch(actual, matcher, {String? reason}) => expect(
         actual,
         matcher,
         reason: reason,
       );
 }
 
-class GenericFunctionStepDefinition<TWorld extends World>
+class GenericFunctionStepDefinition<TWorld extends World?>
     extends StepDefinitionGeneric<TWorld> {
   final Pattern _pattern;
   final Function _onInvoke;
@@ -177,14 +177,14 @@ class GenericFunctionStepDefinition<TWorld extends World>
     this._pattern,
     this._onInvoke,
     this._expectedParameterCount, {
-    StepDefinitionConfiguration configuration,
+    StepDefinitionConfiguration? configuration,
   }) : super(
           configuration,
           _expectedParameterCount,
         );
 
   @override
-  Future<void> onRun(Iterable<dynamic> parameters) {
+  Future<void>? onRun(Iterable<dynamic> parameters) {
     var setupConfig = config;
 
     if (setupConfig == null || setupConfig.timeout == null) {
@@ -194,7 +194,7 @@ class GenericFunctionStepDefinition<TWorld extends World>
 
     final methodParams = [
       ...parameters.take(_expectedParameterCount),
-      StepContext<TWorld>(
+      StepContext<TWorld?>(
         world,
         reporter,
         setupConfig,
@@ -205,15 +205,15 @@ class GenericFunctionStepDefinition<TWorld extends World>
   }
 
   @override
-  RegExp get pattern => _pattern is RegExp ? _pattern : RegExp(_pattern);
+  RegExp get pattern => _pattern is RegExp ? _pattern as RegExp : RegExp(_pattern as String);
 }
 
 StepDefinitionGeneric<TWorld>
-    step<TWorld extends World, TInput1, TInput2, TInput3, TInput4, TInput5>(
+    step<TWorld extends World?, TInput1, TInput2, TInput3, TInput4, TInput5>(
   Pattern pattern,
   int expectedParameterCount,
   Function onInvoke, {
-  StepDefinitionConfiguration configuration,
+  StepDefinitionConfiguration? configuration,
 }) {
   return GenericFunctionStepDefinition<TWorld>(
     pattern,

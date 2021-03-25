@@ -17,16 +17,16 @@ class FeatureSyntax extends RegExMatchedGherkinSyntax {
   Runnable toRunnable(
     String line,
     RunnableDebugInformation debug,
-    GherkinDialect dialect,
+    GherkinDialect? dialect,
   ) {
-    final name = pattern(dialect).firstMatch(line).group(1);
+    final name = pattern(dialect).firstMatch(line)!.group(1);
     final runnable = FeatureRunnable(name, debug);
     return runnable;
   }
 
   @override
-  RegExp pattern(GherkinDialect dialect) => RegExp(
-        '^(?:${getMultiDialectRegexPattern(dialect.feature)}):\\s*(.+)\\s*',
+  RegExp pattern(GherkinDialect? dialect) => RegExp(
+        '^(?:${getMultiDialectRegexPattern(dialect!.feature!)}):\\s*(.+)\\s*',
         multiLine: false,
         caseSensitive: false,
       );

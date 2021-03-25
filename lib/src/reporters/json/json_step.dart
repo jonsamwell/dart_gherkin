@@ -4,23 +4,23 @@ import '../messages.dart';
 import '../../gherkin/steps/step_run_result.dart';
 
 class JsonStep {
-  String keyword;
-  String name;
-  String file;
-  String error;
-  String docString;
+  String? keyword;
+  String? name;
+  String? file;
+  String? error;
+  String? docString;
   String status = 'failed';
   int duration = 0;
-  int line;
+  int? line;
   List<JsonRow> rows = [];
   List<JsonEmbedding> embeddings = [];
 
   static JsonStep from(StepStartedMessage message) {
     final step = JsonStep();
 
-    final index = message.name.indexOf(' ');
-    final keyword = message.name.substring(0, index + 1);
-    final name = message.name.substring(index + 1, message.name.length);
+    final index = message.name!.indexOf(' ');
+    final keyword = message.name!.substring(0, index + 1);
+    final name = message.name!.substring(index + 1, message.name!.length);
 
     step.keyword = keyword;
     step.name = name;
@@ -30,15 +30,15 @@ class JsonStep {
 
     if ((message.table?.rows?.length ?? 0) > 0) {
       step.rows =
-          message.table.rows.map((r) => JsonRow(r.columns.toList())).toList();
-      step.rows.insert(0, JsonRow(message.table.header.columns.toList()));
+          message.table!.rows!.map((r) => JsonRow(r.columns.toList())).toList();
+      step.rows.insert(0, JsonRow(message.table!.header!.columns.toList()));
     }
 
     return step;
   }
 
   void onFinish(StepFinishedMessage message) {
-    duration = message.result.elapsedMilliseconds * 1000000; // nano seconds.
+    duration = message.result.elapsedMilliseconds! * 1000000; // nano seconds.
 
     switch (message.result.result) {
       case StepExecutionResult.pass:
@@ -62,11 +62,11 @@ class JsonStep {
     _trackError(message.result.resultReason);
   }
 
-  void onException(Exception exception, StackTrace stackTrace) {
+  void onException(Exception? exception, StackTrace? stackTrace) {
     _trackError(exception.toString(), stackTrace.toString());
   }
 
-  void _trackError(String error, [String stacktrace]) {
+  void _trackError(String? error, [String? stacktrace]) {
     if (this.error == null && (error?.length ?? 0) > 0) {
       this.error =
           '$error${stacktrace != null ? '\n\n$stacktrace' : ''}'.trim();
@@ -87,11 +87,11 @@ class JsonStep {
       }
     };
 
-    if (docString != null && docString.isNotEmpty) {
+    if (docString != null && docString!.isNotEmpty) {
       result['docString'] = {
         'content_type': '',
         'value': docString,
-        'line': line + 1,
+        'line': line! + 1,
       };
     }
 

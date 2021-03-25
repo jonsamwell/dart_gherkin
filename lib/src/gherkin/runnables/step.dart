@@ -8,9 +8,9 @@ import './table.dart';
 
 class StepRunnable extends RunnableBlock {
   String _name;
-  String description;
+  String? description;
   List<String> multilineStrings = <String>[];
-  Table table;
+  Table? table;
 
   StepRunnable(this._name, RunnableDebugInformation debug) : super(debug);
 
@@ -18,7 +18,7 @@ class StepRunnable extends RunnableBlock {
   String get name => _name;
 
   @override
-  void addChild(Runnable child) {
+  void addChild(Runnable? child) {
     switch (child.runtimeType) {
       case MultilineStringRunnable:
         multilineStrings
@@ -38,11 +38,11 @@ class StepRunnable extends RunnableBlock {
     }
   }
 
-  void setStepParameter(String parameterName, String value) {
+  void setStepParameter(String? parameterName, String value) {
     _name = _name.replaceAll('<$parameterName>', value);
     table?.setStepParameter(parameterName, value);
     updateDebugInformation(debug.copyWith(debug.lineNumber,
-        debug.lineText.replaceAll('<$parameterName>', value)));
+        debug.lineText!.replaceAll('<$parameterName>', value)));
   }
 
   StepRunnable clone() {

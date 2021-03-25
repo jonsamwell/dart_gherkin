@@ -10,7 +10,7 @@ class FeatureFileSyntax extends SyntaxMatcher {
   bool hasBlockEnded(SyntaxMatcher syntax) => false;
 
   @override
-  bool isMatch(String line, GherkinDialect dialect) {
+  bool isMatch(String line, GherkinDialect? dialect) {
     return false;
   }
 }

@@ -1,4 +1,3 @@
-import 'package:gherkin/gherkin.dart';
 import 'package:gherkin/src/gherkin/runnables/debug_information.dart';
 import 'package:gherkin/src/gherkin/runnables/empty_line.dart';
 import 'package:gherkin/src/gherkin/runnables/example.dart';
@@ -22,9 +21,9 @@ void main() {
       runnable.addChild(StepRunnable('2', debugInfo));
       runnable.addChild(StepRunnable('3', debugInfo));
       expect(runnable.steps.length, 3);
-      expect(runnable.steps.elementAt(0).name, '1');
-      expect(runnable.steps.elementAt(1).name, '2');
-      expect(runnable.steps.elementAt(2).name, '3');
+      expect(runnable.steps.elementAt(0)!.name, '1');
+      expect(runnable.steps.elementAt(1)!.name, '2');
+      expect(runnable.steps.elementAt(2)!.name, '3');
     });
 
     test('can add TagsRunnable which are give to the example', () {
@@ -32,8 +31,8 @@ void main() {
       final example = ExampleRunnable('', debugInfo);
       runnable.addChild(example);
       runnable.addTag(TagsRunnable(debugInfo)..tags = ['one']);
-      expect(example.tags.first.tags.first, 'one');
-      expect(example.tags.first.isInherited, true);
+      expect(example.tags.first!.tags!.first, 'one');
+      expect(example.tags.first!.isInherited, true);
     });
 
     test('can add ExamplesRunnable', () {
@@ -55,10 +54,7 @@ void main() {
       final example = ExampleRunnable('', debugInfo);
       final exampleTable = TableRunnable(debugInfo);
 
-      exampleTable.rows
-        ..add('| i    | j   | k     |')
-        ..add('| 1    | 2   | 3     |')
-        ..add('| text | 4.5 | false |');
+      exampleTable.rows..add('| i    | j   | k     |')..add('| 1    | 2   | 3     |')..add('| text | 4.5 | false |');
       example.addChild(exampleTable);
       runnable.addChild(example);
 

@@ -12,7 +12,7 @@ import 'package:gherkin/gherkin.dart';
 StepDefinitionGeneric GivenIAddTheUsers() {
   return given1(
     'I add the users',
-    (dataTable, _) async {
+    (dynamic dataTable, _) async {
       for (var row in dataTable.rows) {
         // do something with row
         row.columns.forEach((columnValue) => print(columnValue));

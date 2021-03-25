@@ -17,9 +17,9 @@ void main() {
       runnable.addChild(StepRunnable('2', debugInfo));
       runnable.addChild(StepRunnable('3', debugInfo));
       expect(runnable.steps.length, 3);
-      expect(runnable.steps.elementAt(0).name, '1');
-      expect(runnable.steps.elementAt(1).name, '2');
-      expect(runnable.steps.elementAt(2).name, '3');
+      expect(runnable.steps.elementAt(0)!.name, '1');
+      expect(runnable.steps.elementAt(1)!.name, '2');
+      expect(runnable.steps.elementAt(2)!.name, '3');
     });
   });
 }

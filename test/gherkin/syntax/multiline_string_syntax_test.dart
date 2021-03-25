@@ -101,9 +101,9 @@ void main() {
         "'''",
         RunnableDebugInformation(null, 0, null),
         EnDialectMock(),
-      );
+      ) as MultilineStringRunnable;
       expect(runnable, isNotNull);
-      expect(runnable, predicate((x) => x is MultilineStringRunnable));
+      expect(runnable, predicate((dynamic x) => x is MultilineStringRunnable));
       expect(runnable.lines.length, 0);
     });
   });

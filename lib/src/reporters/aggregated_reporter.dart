@@ -1,5 +1,5 @@
-import './messages.dart';
 import './message_level.dart';
+import './messages.dart';
 import './reporter.dart';
 
 class AggregatedReporter extends Reporter {
@@ -23,39 +23,38 @@ class AggregatedReporter extends Reporter {
   }
 
   @override
-  Future<void> onFeatureStarted(StartedMessage message) async {
+  Future<void> onFeatureStarted(StartedMessage? message) async {
     await _invokeReporters((r) async => await r.onFeatureStarted(message));
   }
 
   @override
-  Future<void> onFeatureFinished(FinishedMessage message) async {
+  Future<void> onFeatureFinished(FinishedMessage? message) async {
     await _invokeReporters((r) async => await r.onFeatureFinished(message));
   }
 
   @override
-  Future<void> onScenarioStarted(StartedMessage message) async {
+  Future<void> onScenarioStarted(StartedMessage? message) async {
     await _invokeReporters((r) async => await r.onScenarioStarted(message));
   }
 
   @override
-  Future<void> onScenarioFinished(FinishedMessage message) async {
-    await _invokeReporters((r) async => await r.onScenarioFinished(message));
+  Future<void> onScenarioFinished(FinishedMessage? message) async {
+    await _invokeReporters((r) async => await r.onScenarioFinished(message as ScenarioFinishedMessage?));
   }
 
   @override
-  Future<void> onStepStarted(StepStartedMessage message) async {
+  Future<void> onStepStarted(StepStartedMessage? message) async {
     await _invokeReporters((r) async => await r.onStepStarted(message));
   }
 
   @override
-  Future<void> onStepFinished(StepFinishedMessage message) async {
+  Future<void> onStepFinished(StepFinishedMessage? message) async {
     await _invokeReporters((r) async => await r.onStepFinished(message));
   }
 
   @override
-  Future<void> onException(Exception exception, StackTrace stackTrace) async {
-    await _invokeReporters(
-        (r) async => await r.onException(exception, stackTrace));
+  Future<void> onException(Exception? exception, StackTrace? stackTrace) async {
+    await _invokeReporters((r) async => await r.onException(exception, stackTrace));
   }
 
   @override
@@ -63,9 +62,8 @@ class AggregatedReporter extends Reporter {
     await _invokeReporters((r) async => await r.dispose());
   }
 
-  Future<void> _invokeReporters(
-      Future<void> Function(Reporter r) invoke) async {
-    if (_reporters != null && _reporters.isNotEmpty) {
+  Future<void> _invokeReporters(Future<void> Function(Reporter r) invoke) async {
+    if (_reporters.isNotEmpty) {
       for (var reporter in _reporters) {
         await invoke(reporter);
       }

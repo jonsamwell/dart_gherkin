@@ -4,7 +4,7 @@ import './world.dart';
 
 class ExecutableStep {
   final GherkinExpression expression;
-  final StepDefinitionGeneric<World> step;
+  final StepDefinitionGeneric<World?> step;
 
   ExecutableStep(this.expression, this.step);
 }

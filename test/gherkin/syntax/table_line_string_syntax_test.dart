@@ -136,9 +136,9 @@ void main() {
         ' | Column One | Column Two | ',
         RunnableDebugInformation(null, 0, null),
         EnDialectMock(),
-      );
+      ) as TableRunnable;
       expect(runnable, isNotNull);
-      expect(runnable, predicate((x) => x is TableRunnable));
+      expect(runnable, predicate((dynamic x) => x is TableRunnable));
       expect(runnable.rows.elementAt(0), '| Column One | Column Two |');
       expect(runnable.rows.length, 1);
     });
@@ -149,9 +149,9 @@ void main() {
         ' | Column One | Column Two | Column Three | # comment with spaces',
         RunnableDebugInformation(null, 0, null),
         EnDialectMock(),
-      );
+      ) as TableRunnable;
       expect(runnable, isNotNull);
-      expect(runnable, predicate((x) => x is TableRunnable));
+      expect(runnable, predicate((dynamic x) => x is TableRunnable));
       expect(runnable.rows.elementAt(0),
           '| Column One | Column Two | Column Three |');
       expect(runnable.rows.length, 1);

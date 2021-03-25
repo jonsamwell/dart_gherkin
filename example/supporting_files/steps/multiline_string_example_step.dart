@@ -11,7 +11,7 @@ import 'package:gherkin/gherkin.dart';
 StepDefinitionGeneric GivenTheMultiLineComment() {
   return given2(
     'I provide the following {string} comment',
-    (commentType, comment, _) async {
+    (dynamic commentType, dynamic comment, _) async {
       // implement step
     },
   );

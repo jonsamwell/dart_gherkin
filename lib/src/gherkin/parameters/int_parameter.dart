@@ -2,8 +2,8 @@ import './custom_parameter.dart';
 
 class IntParameterBase extends CustomParameter<int> {
   IntParameterBase(String name)
-      : super(name, RegExp('([0-9]+)'), (String input) {
-          final n = int.parse(input, radix: 10);
+      : super(name, RegExp('([0-9]+)'), (String? input) {
+          final n = input != null ? int.parse(input, radix: 10) : 0;
           return n;
         });
 }

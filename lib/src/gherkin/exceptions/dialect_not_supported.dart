@@ -7,10 +7,6 @@ class GherkinDialogNotSupportedException implements GherkinException {
 
   @override
   String toString() {
-    if (dialect == null) {
-      return 'GherkinDialogNotSupportedException';
-    }
-
     return "GherkinDialogNotSupportedException: Dialect is not supported '$dialect'";
   }
 }

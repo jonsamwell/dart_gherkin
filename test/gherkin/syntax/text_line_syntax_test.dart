@@ -95,9 +95,9 @@ void main() {
         '  Some text ',
         RunnableDebugInformation(null, 0, null),
         EnDialectMock(),
-      );
+      ) as TextLineRunnable;
       expect(runnable, isNotNull);
-      expect(runnable, predicate((x) => x is TextLineRunnable));
+      expect(runnable, predicate((dynamic x) => x is TextLineRunnable));
       expect(runnable.text, equals('Some text'));
     });
   });

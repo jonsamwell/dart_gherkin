@@ -1,5 +1,5 @@
 class JsonRow {
-  List<String> cells = [];
+  List<String?> cells = [];
 
   JsonRow(this.cells);
 

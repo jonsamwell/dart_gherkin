@@ -30,10 +30,10 @@ class TagExpressionEvaluator {
     return match;
   }
 
-  bool _evaluateRpn(Queue<String> rpn, List<String> tags) {
+  bool _evaluateRpn(Queue<String?> rpn, List<String> tags) {
     final stack = Queue<bool>();
     for (var token in rpn) {
-      if (_isTag(token)) {
+      if (_isTag(token!)) {
         stack.addFirst(tags.contains(token));
       } else {
         switch (token) {
@@ -64,17 +64,17 @@ class TagExpressionEvaluator {
     return stack.removeFirst();
   }
 
-  Queue<String> _convertInfixToPostfixExpression(String infixExpression) {
+  Queue<String?> _convertInfixToPostfixExpression(String infixExpression) {
     final expressionParts = RegExp(
             r'(\()|(or)|(and)|(not)|(@{1}\w{1}[^\s&\)]*)|(\))',
             caseSensitive: false)
         .allMatches(infixExpression)
         .map((m) => m.group(0));
-    final rpn = Queue<String>();
+    final rpn = Queue<String?>();
     final operatorQueue = ListQueue();
 
     for (var part in expressionParts) {
-      if (_isTag(part)) {
+      if (_isTag(part!)) {
         rpn.add(part);
       } else if (part == openingBracket) {
         operatorQueue.addLast(part);
@@ -88,7 +88,7 @@ class TagExpressionEvaluator {
         final precendence = _operatorPrededence[part.toLowerCase()];
 
         while (operatorQueue.isNotEmpty &&
-            _operatorPrededence[operatorQueue.last] >= precendence) {
+            _operatorPrededence[operatorQueue.last]! >= precendence!) {
           rpn.add(operatorQueue.removeLast());
         }
         operatorQueue.addLast(part);

@@ -7,10 +7,6 @@ class GherkinStepNotDefinedException implements GherkinException {
 
   @override
   String toString() {
-    if (message == null) {
-      return 'GherkinStepNotDefinedException';
-    }
-
     return 'GherkinStepNotDefinedException: $message';
   }
 }

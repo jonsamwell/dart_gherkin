@@ -11,8 +11,8 @@ import './tag_syntax.dart';
 
 class BackgroundSyntax extends RegExMatchedGherkinSyntax {
   @override
-  RegExp pattern(GherkinDialect dialect) => RegExp(
-        '^\\s*${getMultiDialectRegexPattern(dialect.background)}:(\\s*(.+)\\s*)?',
+  RegExp pattern(GherkinDialect? dialect) => RegExp(
+        '^\\s*${getMultiDialectRegexPattern(dialect!.background!)}:(\\s*(.+)\\s*)?',
         multiLine: false,
         caseSensitive: false,
       );
@@ -28,8 +28,8 @@ class BackgroundSyntax extends RegExMatchedGherkinSyntax {
 
   @override
   Runnable toRunnable(
-      String line, RunnableDebugInformation debug, GherkinDialect dialect) {
-    final name = (pattern(dialect).firstMatch(line).group(1) ?? '').trim();
+      String line, RunnableDebugInformation debug, GherkinDialect? dialect) {
+    final name = (pattern(dialect).firstMatch(line)!.group(1) ?? '').trim();
     final runnable = BackgroundRunnable(name, debug);
 
     return runnable;

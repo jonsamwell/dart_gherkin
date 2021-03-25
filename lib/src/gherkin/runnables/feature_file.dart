@@ -10,26 +10,26 @@ import './runnable_block.dart';
 import 'comment_line.dart';
 
 class FeatureFile extends RunnableBlock {
-  String _language = 'en';
-  final List<TagsRunnable> _tagsPendingAssignmentToChild = <TagsRunnable>[];
+  String? _language = 'en';
+  final List<TagsRunnable?> _tagsPendingAssignmentToChild = <TagsRunnable?>[];
 
-  List<FeatureRunnable> features = <FeatureRunnable>[];
+  List<FeatureRunnable?> features = <FeatureRunnable?>[];
 
   FeatureFile(RunnableDebugInformation debug) : super(debug);
 
-  String get language => _language;
+  String? get language => _language;
 
   @override
-  void addChild(Runnable child) {
+  void addChild(Runnable? child) {
     switch (child.runtimeType) {
       case LanguageRunnable:
         _language = (child as LanguageRunnable).language;
         break;
       case TagsRunnable:
-        _tagsPendingAssignmentToChild.add(child);
+        _tagsPendingAssignmentToChild.add(child as TagsRunnable?);
         break;
       case FeatureRunnable:
-        features.add(child);
+        features.add(child as FeatureRunnable?);
         if (_tagsPendingAssignmentToChild.isNotEmpty) {
           _tagsPendingAssignmentToChild
               .forEach((t) => (child as TaggableRunnableBlock).addTag(t));
@@ -46,5 +46,5 @@ class FeatureFile extends RunnableBlock {
   }
 
   @override
-  String get name => debug.filePath;
+  String? get name => debug.filePath;
 }

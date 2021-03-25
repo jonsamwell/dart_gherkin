@@ -7,5 +7,5 @@ import './runnable.dart';
 abstract class DialectBlock extends Runnable {
   DialectBlock(RunnableDebugInformation debug) : super(debug);
 
-  GherkinDialect getDialect(LanguageService languageService);
+  GherkinDialect? getDialect(LanguageService languageService);
 }

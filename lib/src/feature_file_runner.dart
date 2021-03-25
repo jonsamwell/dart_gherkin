@@ -1,11 +1,10 @@
 import 'dart:async';
+
+import 'package:collection/collection.dart';
 import 'package:gherkin/src/gherkin/runnables/scenario_type_enum.dart';
 
-import '../gherkin.dart';
-import './reporters/message_level.dart';
-import './hooks/hook.dart';
-import './reporters/reporter.dart';
 import './configuration.dart';
+import './gherkin/attachments/attachment_manager.dart';
 import './gherkin/exceptions/step_not_defined_error.dart';
 import './gherkin/expressions/tag_expression.dart';
 import './gherkin/runnables/background.dart';
@@ -17,8 +16,11 @@ import './gherkin/runnables/step.dart';
 import './gherkin/steps/exectuable_step.dart';
 import './gherkin/steps/step_run_result.dart';
 import './gherkin/steps/world.dart';
+import './hooks/hook.dart';
+import './reporters/message_level.dart';
 import './reporters/messages.dart';
-import './gherkin/attachments/attachment_manager.dart';
+import './reporters/reporter.dart';
+import '../gherkin.dart';
 
 class FeatureFileRunner {
   final TestConfiguration _config;
@@ -38,7 +40,7 @@ class FeatureFileRunner {
   Future<bool> run(FeatureFile featureFile) async {
     var haveAllFeaturesPassed = true;
     for (var feature in featureFile.features) {
-      haveAllFeaturesPassed &= await _runFeature(feature);
+      haveAllFeaturesPassed &= await _runFeature(feature!);
       if (_config.exitAfterTestFailed && !haveAllFeaturesPassed) {
         break;
       }
@@ -57,9 +59,7 @@ class FeatureFileRunner {
           feature.debug,
           feature.tags.isNotEmpty
               ? feature.tags
-                  .map((t) => t.tags
-                      .map((c) => Tag(c, t.debug.lineNumber, t.isInherited))
-                      .toList())
+                  .map((t) => t!.tags!.map((c) => Tag(c, t.debug.lineNumber, t.isInherited)).toList())
                   .reduce((a, b) => a..addAll(b))
                   .toList()
               : Iterable<Tag>.empty().toList(),
@@ -73,14 +73,13 @@ class FeatureFileRunner {
 
       for (final scenario in feature.scenarios) {
         if (_canRunScenario(_config.tagExpression, scenario)) {
-          haveAllScenariosPassed &=
-              await _runScenarioInZone(scenario, feature.background);
+          haveAllScenariosPassed &= await _runScenarioInZone(scenario, feature.background);
           if (_config.exitAfterTestFailed && !haveAllScenariosPassed) {
             break;
           }
         } else {
           await _log(
-            "Ignoring scenario '${scenario.name}' as tag expression '${_config.tagExpression}' not satisfied",
+            "Ignoring scenario '${scenario!.name}' as tag expression '${_config.tagExpression}' not satisfied",
             feature.debug,
             MessageLevel.info,
           );
@@ -99,7 +98,7 @@ class FeatureFileRunner {
         feature.debug,
         MessageLevel.error,
       );
-      await _reporter.onException(e, st);
+      await _reporter.onException(e as Exception, st);
 
       rethrow;
     } finally {
@@ -121,31 +120,28 @@ class FeatureFileRunner {
   }
 
   bool _canRunScenario(
-    String tagExpression,
-    ScenarioRunnable scenario,
+    String? tagExpression,
+    ScenarioRunnable? scenario,
   ) {
     return tagExpression == null
         ? true
         : _tagExpressionEvaluator.evaluate(
             tagExpression,
-            scenario.tags.isNotEmpty
-                ? scenario.tags
-                    .map((t) => t.tags.toList())
-                    .reduce((a, b) => a..addAll(b))
-                    .toList()
+            scenario!.tags.isNotEmpty
+                ? scenario.tags.map((t) => t!.tags!.toList()).reduce((a, b) => a..addAll(b)).toList()
                 : Iterable<String>.empty().toList(),
           );
   }
 
   Future<bool> _runScenarioInZone(
-    ScenarioRunnable scenario,
-    BackgroundRunnable background,
+    ScenarioRunnable? scenario,
+    BackgroundRunnable? background,
   ) {
     final completer = Completer<bool>();
     // ensure unhandled errors do not cause the entire test run to crash
     runZoned(
       () async {
-        final result = await _runScenario(scenario, background);
+        final result = await _runScenario(scenario!, background);
         if (!completer.isCompleted) {
           completer.complete(result);
         }
@@ -173,16 +169,14 @@ class FeatureFileRunner {
 
   Future<bool> _runScenario(
     ScenarioRunnable scenario,
-    BackgroundRunnable background,
+    BackgroundRunnable? background,
   ) async {
     final attachmentManager = await _config.getAttachmentManager(_config);
-    World world;
+    World? world;
     var scenarioPassed = true;
     final tags = scenario.tags.isNotEmpty
         ? scenario.tags
-            .map((t) => t.tags
-                .map((tag) => Tag(tag, t.debug.lineNumber, t.isInherited))
-                .toList())
+            .map((t) => t!.tags!.map((tag) => Tag(tag, t.debug.lineNumber, t.isInherited)).toList())
             .reduce((a, b) => a..addAll(b))
             .toList()
         : Iterable<Tag>.empty();
@@ -194,7 +188,7 @@ class FeatureFileRunner {
           scenario.debug,
           MessageLevel.debug,
         );
-        world = await _config.createWorld(_config);
+        world = await _config.createWorld!(_config);
         world.setAttachmentManager(attachmentManager);
         await _hook.onAfterScenarioWorldCreated(
           world,
@@ -207,16 +201,12 @@ class FeatureFileRunner {
 
       await _reporter.onScenarioStarted(
         StartedMessage(
-          scenario.scenarioType == ScenarioType.scenario_outline
-              ? Target.scenario_outline
-              : Target.scenario,
+          scenario.scenarioType == ScenarioType.scenario_outline ? Target.scenario_outline : Target.scenario,
           scenario.name,
           scenario.debug,
           scenario.tags.isNotEmpty
               ? scenario.tags
-                  .map((t) => t.tags
-                      .map((tag) => Tag(tag, t.debug.lineNumber, t.isInherited))
-                      .toList())
+                  .map((t) => t!.tags!.map((tag) => Tag(tag, t.debug.lineNumber, t.isInherited)).toList())
                   .reduce((a, b) => a..addAll(b))
                   .toList()
               : Iterable<Tag>.empty().toList(),
@@ -231,7 +221,7 @@ class FeatureFileRunner {
         );
         for (var step in background.steps) {
           final result = await _runStep(
-            step,
+            step!,
             world,
             attachmentManager,
             !scenarioPassed,
@@ -249,8 +239,7 @@ class FeatureFileRunner {
       }
 
       for (var step in scenario.steps) {
-        final result =
-            await _runStep(step, world, attachmentManager, !scenarioPassed);
+        final result = await _runStep(step!, world, attachmentManager, !scenarioPassed);
         scenarioPassed = result.result == StepExecutionResult.pass;
         if (!_canContinueScenario(result)) {
           scenarioPassed = false;
@@ -262,7 +251,7 @@ class FeatureFileRunner {
         }
       }
     } catch (e, st) {
-      await _reporter.onException(e, st);
+      await _reporter.onException(e as Exception, st);
       rethrow;
     } finally {
       await _reporter.onScenarioFinished(
@@ -281,7 +270,7 @@ class FeatureFileRunner {
       try {
         world?.dispose();
       } catch (e, st) {
-        await _reporter.onException(e, st);
+        await _reporter.onException(e as Exception, st);
         rethrow;
       }
     }
@@ -295,7 +284,7 @@ class FeatureFileRunner {
 
   Future<StepResult> _runStep(
     StepRunnable step,
-    World world,
+    World? world,
     AttachmentManager attachmentManager,
     bool skipExecution,
   ) async {
@@ -311,8 +300,7 @@ class FeatureFileRunner {
       step.name,
       step.debug,
       table: step.table,
-      multilineString:
-          step.multilineStrings.isNotEmpty ? step.multilineStrings.first : null,
+      multilineString: step.multilineStrings.isNotEmpty ? step.multilineStrings.first : null,
     ));
 
     if (skipExecution) {
@@ -337,7 +325,7 @@ class FeatureFileRunner {
         step.name,
         step.debug,
         result,
-        attachmentManager?.getAttachmentsForContext(step.name),
+        attachmentManager.getAttachmentsForContext(step.name),
       ),
     );
 
@@ -362,9 +350,7 @@ class FeatureFileRunner {
   }
 
   ExecutableStep _matchStepToExecutableStep(StepRunnable step) {
-    final executable = _steps.firstWhere(
-        (s) => s.expression.isMatch(step.debug.lineText),
-        orElse: () => null);
+    final executable = _steps.firstWhereOrNull((s) => s.expression.isMatch(step.debug.lineText!));
     if (executable == null) {
       final message = """
       Step definition not found for text:
@@ -383,9 +369,9 @@ class FeatureFileRunner {
       /// For example: `When4<String, bool, int, num>`
       /// You can also specify the type of world context you want
       /// `When4WithWorld<String, bool, int, num, MyWorld>`
-      class Given_${step.debug.lineText.trim().replaceAll(RegExp(r'[^a-zA-Z0-9]'), '_')} extends Given1<String> {
+      class Given_${step.debug.lineText!.trim().replaceAll(RegExp(r'[^a-zA-Z0-9]'), '_')} extends Given1<String> {
         @override
-        RegExp get pattern => RegExp(r"${step.debug.lineText.trim().split(' ').skip(1).join(' ')}");
+        RegExp get pattern => RegExp(r"${step.debug.lineText!.trim().split(' ').skip(1).join(' ')}");
 
         @override
         Future<void> executeStep(String input1) async {
@@ -404,7 +390,7 @@ class FeatureFileRunner {
   }
 
   Iterable<dynamic> _getStepParameters(StepRunnable step, ExecutableStep code) {
-    var parameters = code.expression.getParameters(step.debug.lineText);
+    var parameters = code.expression.getParameters(step.debug.lineText!);
     if (step.multilineStrings.isNotEmpty) {
       parameters = parameters.toList()..addAll(step.multilineStrings);
     }

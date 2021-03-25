@@ -14,7 +14,7 @@ class TableRunnable extends RunnableBlock {
   TableRunnable(RunnableDebugInformation debug) : super(debug);
 
   @override
-  void addChild(Runnable child) {
+  void addChild(Runnable? child) {
     switch (child.runtimeType) {
       case TableRunnable:
         rows.addAll((child as TableRunnable).rows);
@@ -28,7 +28,7 @@ class TableRunnable extends RunnableBlock {
   }
 
   Table toTable() {
-    TableRow header;
+    TableRow? header;
     final tableRows = <TableRow>[];
     if (rows.length > 1) {
       header = _toRow(rows.first, 0, true);

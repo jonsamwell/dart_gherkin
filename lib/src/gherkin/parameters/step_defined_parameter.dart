@@ -5,6 +5,6 @@ class UserDefinedStepParameterParameter extends CustomParameter<String> {
       : super(
           '',
           RegExp(''),
-          (String input) => input,
+          (String? input) => input ?? '',
         );
 }

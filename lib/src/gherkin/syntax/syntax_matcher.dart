@@ -6,15 +6,15 @@ import '../runnables/runnable.dart';
 enum EndBlockHandling { ignore, continueProcessing }
 
 abstract class SyntaxMatcher {
-  bool isMatch(String line, GherkinDialect dialect);
+  bool isMatch(String line, GherkinDialect? dialect);
   bool get isBlockSyntax => false;
   bool hasBlockEnded(SyntaxMatcher syntax) => true;
   EndBlockHandling endBlockHandling(SyntaxMatcher syntax) =>
       EndBlockHandling.continueProcessing;
-  Runnable toRunnable(
+  Runnable? toRunnable(
     String line,
     RunnableDebugInformation debug,
-    GherkinDialect dialect,
+    GherkinDialect? dialect,
   ) =>
       null;
 }
