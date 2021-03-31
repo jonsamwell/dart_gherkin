@@ -29,8 +29,8 @@ void main() {
           TableRunnable(debugInfo)..rows.add('| one | two | three |'));
       final table = runnable.toTable();
       expect(table.header, isNull);
-      expect(table.rows.length, 1);
-      expect(table.rows.first.columns, ['one', 'two', 'three']);
+      expect(table.rows!.length, 1);
+      expect(table.rows!.first.columns, ['one', 'two', 'three']);
     });
 
     test('single row table as map', () async {
@@ -51,9 +51,9 @@ void main() {
       final table = runnable.toTable();
       expect(table.header, isNotNull);
       expect(
-          table.header.columns, ['header one', 'header two', 'header three']);
-      expect(table.rows.length, 1);
-      expect(table.rows.elementAt(0).columns, ['one', 'two', 'three']);
+          table.header!.columns, ['header one', 'header two', 'header three']);
+      expect(table.rows!.length, 1);
+      expect(table.rows!.elementAt(0).columns, ['one', 'two', 'three']);
     });
 
     test('two row table as map', () async {
@@ -79,10 +79,10 @@ void main() {
       final table = runnable.toTable();
       expect(table.header, isNotNull);
       expect(
-          table.header.columns, ['header one', 'header two', 'header three']);
-      expect(table.rows.length, 2);
-      expect(table.rows.elementAt(0).columns, ['one', 'two', 'three']);
-      expect(table.rows.elementAt(1).columns, ['four', 'five', 'six']);
+          table.header!.columns, ['header one', 'header two', 'header three']);
+      expect(table.rows!.length, 2);
+      expect(table.rows!.elementAt(0).columns, ['one', 'two', 'three']);
+      expect(table.rows!.elementAt(1).columns, ['four', 'five', 'six']);
     });
 
     test('three row table as map', () async {
@@ -112,10 +112,10 @@ void main() {
       final table = runnable.toTable();
       expect(table.header, isNotNull);
       expect(
-          table.header.columns, ['header one', 'header two', 'header three']);
-      expect(table.rows.length, 2);
-      expect(table.rows.elementAt(0).columns, ['one', 'two', 'three']);
-      expect(table.rows.elementAt(1).columns, ['four', 'five', 'six']);
+          table.header!.columns, ['header one', 'header two', 'header three']);
+      expect(table.rows!.length, 2);
+      expect(table.rows!.elementAt(0).columns, ['one', 'two', 'three']);
+      expect(table.rows!.elementAt(1).columns, ['four', 'five', 'six']);
     });
 
     test(

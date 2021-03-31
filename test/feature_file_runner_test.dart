@@ -76,7 +76,7 @@ void main() {
     test('steps are skipped if previous step failed', () async {
       final stepTextOne = 'Given I do a';
       final stepTextTwo = 'Given I do b';
-      final stepDefiniton = MockStepDefinition((_) => throw Exception());
+      final stepDefiniton = MockStepDefinition(((_) => throw Exception()) as Future<void> Function(Iterable<dynamic>)?);
       final stepDefinitonTwo = MockStepDefinition();
       final executableStep = ExecutableStep(
           MockGherkinExpression((s) => s == stepTextOne), stepDefiniton);
@@ -108,7 +108,7 @@ void main() {
     test('feature are skipped if previous feature failed', () async {
       final stepTextOne = 'Given I do a';
       final stepTextTwo = 'Given I do b';
-      final stepDefiniton = MockStepDefinition((_) => throw Exception());
+      final stepDefiniton = MockStepDefinition(((_) => throw Exception()) as Future<void> Function(Iterable<dynamic>)?);
       final stepDefinitonTwo = MockStepDefinition();
       final executableStep = ExecutableStep(
           MockGherkinExpression((s) => s == stepTextOne), stepDefiniton);
@@ -143,7 +143,7 @@ void main() {
     test('scenario are skipped if previous scenario failed', () async {
       final stepTextOne = 'Given I do a';
       final stepTextTwo = 'Given I do b';
-      final stepDefiniton = MockStepDefinition((_) => throw Exception());
+      final stepDefiniton = MockStepDefinition(((_) => throw Exception()) as Future<void> Function(Iterable<dynamic>)?);
       final stepDefinitonTwo = MockStepDefinition();
       final executableStep = ExecutableStep(
           MockGherkinExpression((s) => s == stepTextOne), stepDefiniton);
@@ -175,7 +175,7 @@ void main() {
     test('Unchecked errors are handled gracefully', () async {
       final stepTextOne = 'Given I do a';
       final stepTextTwo = 'Given I do b';
-      final stepDefiniton = MockStepDefinition((_) => throw TypeError());
+      final stepDefiniton = MockStepDefinition(((_) => throw TypeError()) as Future<void> Function(Iterable<dynamic>)?);
       final stepDefinitonTwo = MockStepDefinition();
       final executableStep = ExecutableStep(
           MockGherkinExpression((s) => s == stepTextOne), stepDefiniton);
@@ -384,17 +384,17 @@ void main() {
         await runner.run(featureFile);
         expect(hookMock.onBeforeScenarioInvocationCount, 1);
         expect(hookMock.onAfterScenarioInvocationCount, 1);
-        expect(hookMock.onBeforeScenarioTags.length, 2);
+        expect(hookMock.onBeforeScenarioTags!.length, 2);
         expect(hookMock.onAfterScenarioTags.length, 2);
-        expect(hookMock.onBeforeScenarioTags.elementAt(0).name,
-            tagTwo.tags.elementAt(0));
-        expect(hookMock.onBeforeScenarioTags.elementAt(1).name,
-            tagOne.tags.elementAt(0));
-        expect(hookMock.onBeforeScenarioTags.elementAt(1).isInherited, true);
+        expect(hookMock.onBeforeScenarioTags!.elementAt(0).name,
+            tagTwo.tags!.elementAt(0));
+        expect(hookMock.onBeforeScenarioTags!.elementAt(1).name,
+            tagOne.tags!.elementAt(0));
+        expect(hookMock.onBeforeScenarioTags!.elementAt(1).isInherited, true);
         expect(hookMock.onAfterScenarioTags.elementAt(0).name,
-            tagTwo.tags.elementAt(0));
+            tagTwo.tags!.elementAt(0));
         expect(hookMock.onAfterScenarioTags.elementAt(1).name,
-            tagOne.tags.elementAt(0));
+            tagOne.tags!.elementAt(0));
         expect(hookMock.onAfterScenarioTags.elementAt(1).isInherited, true);
       });
     });
@@ -436,7 +436,7 @@ void main() {
       });
 
       test('step reported with correct finishing value when passing', () async {
-        StepFinishedMessage finishedMessage;
+        StepFinishedMessage? finishedMessage;
         final reporterMock = ReporterMock();
         reporterMock.onStepFinishedFn = (message) => finishedMessage = message;
         final stepDefiniton = MockStepDefinition();
@@ -464,12 +464,12 @@ void main() {
       });
 
       test('step reported with correct finishing value when failing', () async {
-        StepFinishedMessage finishedMessage;
+        StepFinishedMessage? finishedMessage;
         final testFailureException = TestFailure('FAILED');
         final reporterMock = ReporterMock();
         reporterMock.onStepFinishedFn = (message) => finishedMessage = message;
         final stepDefiniton =
-            MockStepDefinition((_) => throw testFailureException);
+            MockStepDefinition(((_) => throw testFailureException) as Future<void> Function(Iterable<dynamic>)?);
         final executableStep =
             ExecutableStep(MockGherkinExpression((_) => true), stepDefiniton);
         final runner = FeatureFileRunner(
@@ -496,7 +496,7 @@ void main() {
       test(
           'step reported with correct finishing value when unhandled exception raised',
           () async {
-        StepFinishedMessage finishedMessage;
+        StepFinishedMessage? finishedMessage;
         final reporterMock = ReporterMock();
         reporterMock.onStepFinishedFn = (message) => finishedMessage = message;
         final stepDefiniton = MockStepDefinition(
@@ -526,7 +526,7 @@ void main() {
       });
 
       test('skipped step reported correctly', () async {
-        final finishedMessages = <StepFinishedMessage>[];
+        final finishedMessages = <StepFinishedMessage?>[];
         final reporterMock = ReporterMock();
         reporterMock.onStepFinishedFn =
             (message) => finishedMessages.add(message);
@@ -534,7 +534,7 @@ void main() {
         final stepTextOne = 'Given I do a';
         final stepTextTwo = 'Given I do b';
         final stepTextThree = 'Given I do c';
-        final stepDefiniton = MockStepDefinition((_) => throw Exception());
+        final stepDefiniton = MockStepDefinition(((_) => throw Exception()) as Future<void> Function(Iterable<dynamic>)?);
         final stepDefinitonTwo = MockStepDefinition();
         final stepDefinitonThree = MockStepDefinition();
         final executableStep = ExecutableStep(
@@ -568,11 +568,11 @@ void main() {
         await runner.run(featureFile);
         expect(stepDefiniton.hasRun, true);
         expect(finishedMessages.length, 3);
-        expect(finishedMessages.elementAt(0).result.result,
+        expect(finishedMessages.elementAt(0)!.result.result,
             StepExecutionResult.error);
-        expect(finishedMessages.elementAt(1).result.result,
+        expect(finishedMessages.elementAt(1)!.result.result,
             StepExecutionResult.skipped);
-        expect(finishedMessages.elementAt(2).result.result,
+        expect(finishedMessages.elementAt(2)!.result.result,
             StepExecutionResult.skipped);
       });
     });

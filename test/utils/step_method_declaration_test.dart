@@ -7,7 +7,7 @@ void main() {
   group('function steps', () {
     test('step with 1 parameter is invoked', () async {
       const parameter1Value = 1;
-      int parameter1GivenValue;
+      int? parameter1GivenValue;
 
       final stepMethod = when1(
         'pattern',
@@ -24,7 +24,7 @@ void main() {
 
     test('step is invoked with custom world', () async {
       final customWorld = WorldMock();
-      World receivedWorld;
+      World? receivedWorld;
 
       final stepMethod = given2(
         'pattern',

@@ -6,26 +6,26 @@ import './messages.dart';
 
 class ProgressReporter extends StdoutReporter {
   @override
-  Future<void> onScenarioStarted(StartedMessage message) async {
+  Future<void> onScenarioStarted(StartedMessage? message) async {
     printMessageLine(
-        'Running scenario: ${_getNameAndContext(message.name, message.context)}',
+        'Running scenario: ${_getNameAndContext(message!.name, message.context)}',
         StdoutReporter.WARN_COLOR);
   }
 
   @override
-  Future<void> onScenarioFinished(ScenarioFinishedMessage message) async {
+  Future<void> onScenarioFinished(ScenarioFinishedMessage? message) async {
     printMessageLine(
-        "${message.passed ? 'PASSED' : 'FAILED'}: Scenario ${_getNameAndContext(message.name, message.context)}",
+        "${message!.passed ? 'PASSED' : 'FAILED'}: Scenario ${_getNameAndContext(message.name, message.context!)}",
         message.passed ? StdoutReporter.PASS_COLOR : StdoutReporter.FAIL_COLOR);
   }
 
   @override
-  Future<void> onStepFinished(StepFinishedMessage message) async {
+  Future<void> onStepFinished(StepFinishedMessage? message) async {
     printMessageLine(
         [
           '  ',
-          _getStatePrefixIcon(message.result.result),
-          _getNameAndContext(message.name, message.context),
+          _getStatePrefixIcon(message!.result.result),
+          _getNameAndContext(message.name, message.context!),
           _getExecutionDuration(message.result),
           _getReasonMessage(message.result),
           _getErrorMessage(message.result)
@@ -52,7 +52,7 @@ class ProgressReporter extends StdoutReporter {
   }
 
   String _getReasonMessage(StepResult stepResult) {
-    if (stepResult.resultReason != null && stepResult.resultReason.isNotEmpty) {
+    if (stepResult.resultReason != null && stepResult.resultReason!.isNotEmpty) {
       return '\n      ${stepResult.resultReason}';
     } else {
       return '';
@@ -67,8 +67,8 @@ class ProgressReporter extends StdoutReporter {
     }
   }
 
-  String _getNameAndContext(String name, RunnableDebugInformation context) {
-    return "$name # ${context.filePath.replaceAll(RegExp(r"\.\\"), "")}:${context.lineNumber}";
+  String _getNameAndContext(String? name, RunnableDebugInformation context) {
+    return "$name # ${context.filePath!.replaceAll(RegExp(r"\.\\"), "")}:${context.lineNumber}";
   }
 
   String _getExecutionDuration(StepResult stepResult) {

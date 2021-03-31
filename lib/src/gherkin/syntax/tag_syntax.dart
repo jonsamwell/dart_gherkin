@@ -7,14 +7,14 @@ import './regex_matched_syntax.dart';
 
 class TagSyntax extends RegExMatchedGherkinSyntax {
   @override
-  RegExp pattern(GherkinDialect dialect) =>
+  RegExp pattern(GherkinDialect? dialect) =>
       RegExp('^@', multiLine: false, caseSensitive: false);
 
   @override
   Runnable toRunnable(
     String line,
     RunnableDebugInformation debug,
-    GherkinDialect dialect,
+    GherkinDialect? dialect,
   ) {
     final runnable = TagsRunnable(debug);
     runnable.tags = line

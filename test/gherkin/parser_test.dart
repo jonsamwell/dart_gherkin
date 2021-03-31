@@ -4,9 +4,9 @@ import 'package:test/test.dart';
 import '../mocks/language_service_mock.dart';
 import '../mocks/reporter_mock.dart';
 
-Iterable<String> tagsToList(Iterable<TagsRunnable> tags) sync* {
+Iterable<String> tagsToList(Iterable<TagsRunnable?> tags) sync* {
   for (var tgs in tags) {
-    for (var tag in tgs.tags) {
+    for (var tag in tgs!.tags!) {
       yield tag;
     }
   }
@@ -52,7 +52,7 @@ void main() {
       expect(featureFile.language, equals('en'));
       expect(featureFile.features.length, 1);
 
-      final feature = featureFile.features.elementAt(0);
+      final feature = featureFile.features.elementAt(0)!;
       expect(feature.name, 'The name of the feature');
       expect(feature.description,
           'A multiline line description\nLine two\nLine three');
@@ -60,13 +60,13 @@ void main() {
           <String>['@primary_tag_one', '@primary_tag_two']);
       expect(feature.scenarios.length, 1);
 
-      final background = featureFile.features.elementAt(0).background;
+      final background = featureFile.features.elementAt(0)!.background!;
       expect(background.name, 'Some background');
       expect(background.steps.length, 2);
-      expect(background.steps.elementAt(0).name, 'Given I setup 1');
-      expect(background.steps.elementAt(1).name, 'And I setup 2');
+      expect(background.steps.elementAt(0)!.name, 'Given I setup 1');
+      expect(background.steps.elementAt(1)!.name, 'And I setup 2');
 
-      final scenario = featureFile.features.elementAt(0).scenarios.elementAt(0);
+      final scenario = featureFile.features.elementAt(0)!.scenarios.elementAt(0)!;
       expect(tagsToList(scenario.tags), <String>[
         '@primary_tag_one',
         '@primary_tag_two',
@@ -77,13 +77,13 @@ void main() {
       expect(scenario.steps.length, 5);
 
       final steps = scenario.steps;
-      expect(steps.elementAt(0).name, 'Given I do step a');
-      expect(steps.elementAt(1).name, 'And I do step b');
-      expect(steps.elementAt(2).name, 'And I add the comment');
-      expect(steps.elementAt(3).name, 'When I do step c');
-      expect(steps.elementAt(4).name, 'Then I expect to see d');
+      expect(steps.elementAt(0)!.name, 'Given I do step a');
+      expect(steps.elementAt(1)!.name, 'And I do step b');
+      expect(steps.elementAt(2)!.name, 'And I add the comment');
+      expect(steps.elementAt(3)!.name, 'When I do step c');
+      expect(steps.elementAt(4)!.name, 'Then I expect to see d');
 
-      final commentStep = steps.elementAt(2);
+      final commentStep = steps.elementAt(2)!;
       expect(commentStep.multilineStrings.length, 1);
       expect(commentStep.multilineStrings.elementAt(0), 'A multiline\ncomment');
     });
@@ -121,21 +121,21 @@ void main() {
       expect(featureFile.language, equals('en'));
       expect(featureFile.features.length, 1);
 
-      final feature = featureFile.features.elementAt(0);
+      final feature = featureFile.features.elementAt(0)!;
       expect(feature.name, 'Conway\'s Game of Life');
       expect(feature.description,
           'Rules of Conway\'s Game of Life\n> The universe of the _Game of Life_ is an infinite, two-dimensional orthogonal grid of square cells.');
       expect(feature.scenarios.length, 1);
 
-      final scenario = featureFile.features.elementAt(0).scenarios.elementAt(0);
+      final scenario = featureFile.features.elementAt(0)!.scenarios.elementAt(0)!;
       expect(scenario.steps.length, 2);
 
       final steps = scenario.steps;
-      expect(steps.elementAt(0).name, 'Given the following universe:');
-      expect(steps.elementAt(0).multilineStrings.elementAt(0), '\n*\n\nabc\n');
+      expect(steps.elementAt(0)!.name, 'Given the following universe:');
+      expect(steps.elementAt(0)!.multilineStrings.elementAt(0), '\n*\n\nabc\n');
 
-      expect(steps.elementAt(1).name, 'And the following universe:');
-      expect(steps.elementAt(1).multilineStrings.elementAt(0), '*');
+      expect(steps.elementAt(1)!.name, 'And the following universe:');
+      expect(steps.elementAt(1)!.multilineStrings.elementAt(0), '*');
     });
 
     test('parses single scenario with no names', () async {
@@ -173,31 +173,31 @@ void main() {
       expect(featureFile.language, equals('en'));
       expect(featureFile.features.length, 1);
 
-      final feature = featureFile.features.elementAt(0);
+      final feature = featureFile.features.elementAt(0)!;
       expect(feature.name, 'The name of the feature');
       expect(feature.description,
           'A multiine line description\nLine two\nLine three');
       expect(feature.scenarios.length, 1);
 
-      final background = featureFile.features.elementAt(0).background;
+      final background = featureFile.features.elementAt(0)!.background!;
       expect(background.name, '');
       expect(background.steps.length, 2);
-      expect(background.steps.elementAt(0).name, 'Given I setup 1');
-      expect(background.steps.elementAt(1).name, 'And I setup 2');
+      expect(background.steps.elementAt(0)!.name, 'Given I setup 1');
+      expect(background.steps.elementAt(1)!.name, 'And I setup 2');
 
-      final scenario = featureFile.features.elementAt(0).scenarios.elementAt(0);
+      final scenario = featureFile.features.elementAt(0)!.scenarios.elementAt(0)!;
       expect(tagsToList(scenario.tags), ['@smoke']);
       expect(scenario.name, "When the user does some steps they see 'd'");
       expect(scenario.steps.length, 5);
 
       final steps = scenario.steps;
-      expect(steps.elementAt(0).name, 'Given I do step a');
-      expect(steps.elementAt(1).name, 'And I do step b');
-      expect(steps.elementAt(2).name, 'And I add the comment');
-      expect(steps.elementAt(3).name, 'When I do step c');
-      expect(steps.elementAt(4).name, 'Then I expect to see d');
+      expect(steps.elementAt(0)!.name, 'Given I do step a');
+      expect(steps.elementAt(1)!.name, 'And I do step b');
+      expect(steps.elementAt(2)!.name, 'And I add the comment');
+      expect(steps.elementAt(3)!.name, 'When I do step c');
+      expect(steps.elementAt(4)!.name, 'Then I expect to see d');
 
-      final commentStep = steps.elementAt(2);
+      final commentStep = steps.elementAt(2)!;
       expect(commentStep.multilineStrings.length, 1);
       expect(commentStep.multilineStrings.elementAt(0), 'A multiline\ncomment');
     });
@@ -238,47 +238,47 @@ void main() {
       expect(featureFile.language, equals('en'));
       expect(featureFile.features.length, 1);
 
-      final feature = featureFile.features.elementAt(0);
+      final feature = featureFile.features.elementAt(0)!;
       expect(feature.name, 'The name of the feature');
       expect(feature.scenarios.length, 5);
 
-      final background = featureFile.features.elementAt(0).background;
+      final background = featureFile.features.elementAt(0)!.background!;
       expect(background.name, 'Setup');
       expect(background.steps.length, 2);
-      expect(background.steps.elementAt(0).name, 'Given I setup 1');
-      expect(background.steps.elementAt(1).name, 'And I setup 2');
+      expect(background.steps.elementAt(0)!.name, 'Given I setup 1');
+      expect(background.steps.elementAt(1)!.name, 'And I setup 2');
 
-      final scenario = featureFile.features.elementAt(0).scenarios.elementAt(0);
+      final scenario = featureFile.features.elementAt(0)!.scenarios.elementAt(0)!;
       expect(scenario.name, 'Eating Examples: First set (1)');
       expect(tagsToList(scenario.tags), ['@smoke']);
       expect(scenario.steps.length, 3);
 
       final scenario2 =
-          featureFile.features.elementAt(0).scenarios.elementAt(1);
+          featureFile.features.elementAt(0)!.scenarios.elementAt(1)!;
       expect(scenario2.name, 'Eating Examples: First set (2)');
       expect(tagsToList(scenario2.tags), ['@smoke']);
       expect(scenario2.steps.length, 3);
 
       final scenario3 =
-          featureFile.features.elementAt(0).scenarios.elementAt(2);
+          featureFile.features.elementAt(0)!.scenarios.elementAt(2)!;
       expect(scenario3.name, 'Eating Examples: Second set (1)');
       expect(tagsToList(scenario3.tags), ['@smoke', '@second']);
       expect(scenario3.steps.length, 3);
 
-      expect(scenario.steps.elementAt(0).name, 'Given there are 12 cucumbers');
-      expect(scenario.steps.elementAt(1).name, 'When I eat 5 cucumbers');
+      expect(scenario.steps.elementAt(0)!.name, 'Given there are 12 cucumbers');
+      expect(scenario.steps.elementAt(1)!.name, 'When I eat 5 cucumbers');
       expect(
-          scenario.steps.elementAt(2).name, 'Then I should have 7 cucumbers');
+          scenario.steps.elementAt(2)!.name, 'Then I should have 7 cucumbers');
 
-      expect(scenario2.steps.elementAt(0).name, 'Given there are 20 cucumbers');
-      expect(scenario2.steps.elementAt(1).name, 'When I eat 9 cucumbers');
+      expect(scenario2.steps.elementAt(0)!.name, 'Given there are 20 cucumbers');
+      expect(scenario2.steps.elementAt(1)!.name, 'When I eat 9 cucumbers');
       expect(
-          scenario2.steps.elementAt(2).name, 'Then I should have 11 cucumbers');
+          scenario2.steps.elementAt(2)!.name, 'Then I should have 11 cucumbers');
 
-      expect(scenario3.steps.elementAt(0).name, 'Given there are 12 cucumbers');
-      expect(scenario3.steps.elementAt(1).name, 'When I eat 5 cucumbers');
+      expect(scenario3.steps.elementAt(0)!.name, 'Given there are 12 cucumbers');
+      expect(scenario3.steps.elementAt(1)!.name, 'When I eat 5 cucumbers');
       expect(
-          scenario3.steps.elementAt(2).name, 'Then I should have 7 cucumbers');
+          scenario3.steps.elementAt(2)!.name, 'Then I should have 7 cucumbers');
     });
 
     test(
@@ -317,44 +317,44 @@ void main() {
       expect(featureFile.language, equals('en'));
       expect(featureFile.features.length, 1);
 
-      final feature = featureFile.features.elementAt(0);
+      final feature = featureFile.features.elementAt(0)!;
       expect(feature.name, 'The name of the feature');
       expect(feature.scenarios.length, 3);
 
-      final background = featureFile.features.elementAt(0).background;
+      final background = featureFile.features.elementAt(0)!.background!;
       expect(background.name, 'Setup');
       expect(background.steps.length, 2);
-      expect(background.steps.elementAt(0).name, 'Given I setup 1');
-      expect(background.steps.elementAt(1).name, 'And I setup 2');
+      expect(background.steps.elementAt(0)!.name, 'Given I setup 1');
+      expect(background.steps.elementAt(1)!.name, 'And I setup 2');
 
-      final scenario = featureFile.features.elementAt(0).scenarios.elementAt(0);
+      final scenario = featureFile.features.elementAt(0)!.scenarios.elementAt(0)!;
       expect(scenario.name, 'Eating Examples: (1)');
       expect(tagsToList(scenario.tags), ['@smoke']);
       expect(scenario.steps.length, 3);
 
       final scenario2 =
-          featureFile.features.elementAt(0).scenarios.elementAt(1);
+          featureFile.features.elementAt(0)!.scenarios.elementAt(1)!;
       expect(scenario2.name, 'Eating Examples: (2)');
       expect(tagsToList(scenario2.tags), ['@smoke']);
       expect(scenario2.steps.length, 3);
 
-      expect(scenario.steps.elementAt(0).name, 'Given there are 12 cucumbers');
-      expect(scenario.steps.elementAt(1).name, 'When I eat 5 cucumbers');
+      expect(scenario.steps.elementAt(0)!.name, 'Given there are 12 cucumbers');
+      expect(scenario.steps.elementAt(1)!.name, 'When I eat 5 cucumbers');
       expect(
-          scenario.steps.elementAt(2).name, 'Then I should have 7 cucumbers');
+          scenario.steps.elementAt(2)!.name, 'Then I should have 7 cucumbers');
 
-      expect(scenario2.steps.elementAt(0).name, 'Given there are 20 cucumbers');
-      expect(scenario2.steps.elementAt(1).name, 'When I eat 9 cucumbers');
+      expect(scenario2.steps.elementAt(0)!.name, 'Given there are 20 cucumbers');
+      expect(scenario2.steps.elementAt(1)!.name, 'When I eat 9 cucumbers');
       expect(
-          scenario2.steps.elementAt(2).name, 'Then I should have 11 cucumbers');
+          scenario2.steps.elementAt(2)!.name, 'Then I should have 11 cucumbers');
 
       final scenario3 =
-          featureFile.features.elementAt(0).scenarios.elementAt(2);
+          featureFile.features.elementAt(0)!.scenarios.elementAt(2)!;
       expect(scenario3.name, 'More eating');
-      expect(scenario3.steps.elementAt(0).name, 'Given there are 2 cucumbers');
-      expect(scenario3.steps.elementAt(1).name, 'When I eat 2 cucumbers');
+      expect(scenario3.steps.elementAt(0)!.name, 'Given there are 2 cucumbers');
+      expect(scenario3.steps.elementAt(1)!.name, 'When I eat 2 cucumbers');
       expect(
-          scenario3.steps.elementAt(2).name, 'Then I should have 0 cucumbers');
+          scenario3.steps.elementAt(2)!.name, 'Then I should have 0 cucumbers');
     });
 
     test('parses complex multi-scenario correctly', () async {
@@ -399,43 +399,43 @@ void main() {
       expect(featureFile.language, equals('en'));
       expect(featureFile.features.length, 1);
 
-      final feature = featureFile.features.elementAt(0);
+      final feature = featureFile.features.elementAt(0)!;
       expect(feature.name, 'The name of the feature');
       expect(feature.description,
           'A multiine line description\nLine two\nLine three');
       expect(feature.scenarios.length, 1);
 
-      final background = featureFile.features.elementAt(0).background;
+      final background = featureFile.features.elementAt(0)!.background!;
       expect(background.name, 'Some background');
       expect(background.steps.length, 2);
-      expect(background.steps.elementAt(0).name, 'Given I setup 1');
-      expect(background.steps.elementAt(1).name, 'And I setup 2');
+      expect(background.steps.elementAt(0)!.name, 'Given I setup 1');
+      expect(background.steps.elementAt(1)!.name, 'And I setup 2');
 
-      final scenario = featureFile.features.elementAt(0).scenarios.elementAt(0);
+      final scenario = featureFile.features.elementAt(0)!.scenarios.elementAt(0)!;
       expect(scenario.name, "When the user does some steps they see 'd'");
       expect(tagsToList(scenario.tags), ['@smoke']);
       expect(scenario.steps.length, 6);
 
       final steps = scenario.steps;
-      expect(steps.elementAt(0).name, 'Given I do step a');
-      expect(steps.elementAt(1).name, 'And I do step b');
-      expect(steps.elementAt(2).name, 'And I add the comment');
-      expect(steps.elementAt(3).name, 'And I add the people');
-      expect(steps.elementAt(4).name, 'When I do step c');
-      expect(steps.elementAt(5).name, 'Then I expect to see d');
+      expect(steps.elementAt(0)!.name, 'Given I do step a');
+      expect(steps.elementAt(1)!.name, 'And I do step b');
+      expect(steps.elementAt(2)!.name, 'And I add the comment');
+      expect(steps.elementAt(3)!.name, 'And I add the people');
+      expect(steps.elementAt(4)!.name, 'When I do step c');
+      expect(steps.elementAt(5)!.name, 'Then I expect to see d');
 
-      expect(steps.elementAt(3).table, isNotNull);
-      expect(steps.elementAt(3).table.header, isNotNull);
-      expect(steps.elementAt(3).table.header.columns,
+      expect(steps.elementAt(3)!.table, isNotNull);
+      expect(steps.elementAt(3)!.table!.header, isNotNull);
+      expect(steps.elementAt(3)!.table!.header!.columns,
           ['Firstname', 'Surname', 'Age', 'Gender']);
-      expect(steps.elementAt(3).table.rows.elementAt(0).columns.toList(),
+      expect(steps.elementAt(3)!.table!.rows!.elementAt(0).columns.toList(),
           ['Woody', 'Johnson', '28', 'Male']);
-      expect(steps.elementAt(3).table.rows.elementAt(1).columns.toList(),
+      expect(steps.elementAt(3)!.table!.rows!.elementAt(1).columns.toList(),
           ['Edith', 'Summers', '23', 'Female']);
-      expect(steps.elementAt(3).table.rows.elementAt(2).columns.toList(),
+      expect(steps.elementAt(3)!.table!.rows!.elementAt(2).columns.toList(),
           ['Megan', 'Hill', '83', 'Female']);
 
-      final commentStep = steps.elementAt(2);
+      final commentStep = steps.elementAt(2)!;
       expect(commentStep.multilineStrings.length, 1);
       expect(commentStep.multilineStrings.elementAt(0), 'A mutliline\ncomment');
     });

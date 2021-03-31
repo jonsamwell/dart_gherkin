@@ -32,7 +32,7 @@ void main() {
     test('parses unicode correctly', () async {
       final service = LanguageService();
       service.initialise();
-      final dialect = service.getDialect('zh-TW');
+      final dialect = service.getDialect('zh-TW')!;
       expect(dialect, isNotNull);
       expect(dialect.nativeName, '繁體中文');
     });

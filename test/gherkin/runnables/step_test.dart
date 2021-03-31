@@ -27,9 +27,9 @@ void main() {
         ..addChild(TableRunnable(debugInfo)..rows.add('|3|4|')));
 
       expect(runnable.table, isNotNull);
-      expect(runnable.table.header, isNotNull);
-      expect(runnable.table.header.columns.length, 2);
-      expect(runnable.table.rows.length, 2);
+      expect(runnable.table!.header, isNotNull);
+      expect(runnable.table!.header!.columns.length, 2);
+      expect(runnable.table!.rows!.length, 2);
     });
 
     test('can only add single TableRunnable', () {

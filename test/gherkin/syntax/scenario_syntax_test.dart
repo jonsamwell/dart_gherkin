@@ -50,7 +50,7 @@ void main() {
         EnDialectMock(),
       );
       expect(runnable, isNotNull);
-      expect(runnable, predicate((x) => x is ScenarioRunnable));
+      expect(runnable, predicate((dynamic x) => x is ScenarioRunnable));
       expect(runnable.name, equals('A scenario 123'));
     });
   });

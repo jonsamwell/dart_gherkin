@@ -17,7 +17,7 @@ class ScenarioExpandedFromOutlineExampleRunnable extends ScenarioRunnable {
       : _name = name,
         super(name, debug);
 
-  void setStepParameter(String parameterName, String value) {
+  void setStepParameter(String? parameterName, String value) {
     _name = _name.replaceAll('<$parameterName>', value);
     updateDebugInformation(debug.copyWith(debug.lineNumber,
         debug.lineText?.replaceAll('<$parameterName>', value)));

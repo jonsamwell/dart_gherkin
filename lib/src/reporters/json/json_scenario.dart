@@ -4,13 +4,13 @@ import 'json_step.dart';
 import 'json_tag.dart';
 
 class JsonScenario {
-  Target target;
-  JsonFeature feature;
-  String name;
-  String description;
-  int line;
-  List<JsonStep> steps = [];
-  Iterable<JsonTag> tags;
+  Target? target;
+  JsonFeature? feature;
+  String? name;
+  String? description;
+  int? line;
+  List<JsonStep?> steps = [];
+  late Iterable<JsonTag> tags;
 
   static JsonScenario from(StartedMessage message) {
     final scenario = JsonScenario();
@@ -26,11 +26,11 @@ class JsonScenario {
     return scenario;
   }
 
-  void add({JsonStep step}) {
+  void add({JsonStep? step}) {
     steps.add(step);
   }
 
-  JsonStep currentStep() {
+  JsonStep? currentStep() {
     if (steps.isEmpty) {
       final step = JsonStep()
         ..name = 'Unnamed'
@@ -47,7 +47,7 @@ class JsonScenario {
       'keyword':
           target == Target.scenario_outline ? 'Scenario Outline' : 'Scenario',
       'type': 'scenario',
-      'id': '${feature?.id};${name.toLowerCase()}',
+      'id': '${feature?.id};${name!.toLowerCase()}',
       'name': name,
       'description': description,
       'line': line,

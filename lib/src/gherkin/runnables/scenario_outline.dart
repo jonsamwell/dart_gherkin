@@ -8,15 +8,15 @@ import './debug_information.dart';
 import './runnable.dart';
 
 class ScenarioOutlineRunnable extends ScenarioRunnable {
-  final List<ExampleRunnable> _examples = <ExampleRunnable>[];
-  Iterable<ExampleRunnable> get examples => _examples;
-  TagsRunnable _pendingExampleTags;
+  final List<ExampleRunnable?> _examples = <ExampleRunnable?>[];
+  Iterable<ExampleRunnable?> get examples => _examples;
+  TagsRunnable? _pendingExampleTags;
 
-  ScenarioOutlineRunnable(String name, RunnableDebugInformation debug)
+  ScenarioOutlineRunnable(String? name, RunnableDebugInformation debug)
       : super(name, debug);
 
   @override
-  void addChild(Runnable child) {
+  void addChild(Runnable? child) {
     switch (child.runtimeType) {
       case ExampleRunnable:
         if (_pendingExampleTags != null) {
@@ -24,10 +24,10 @@ class ScenarioOutlineRunnable extends ScenarioRunnable {
           _pendingExampleTags = null;
         }
 
-        _examples.add(child);
+        _examples.add(child as ExampleRunnable?);
         break;
       case TagsRunnable:
-        _pendingExampleTags = child;
+        _pendingExampleTags = child as TagsRunnable?;
         break;
       default:
         super.addChild(child);
@@ -35,10 +35,10 @@ class ScenarioOutlineRunnable extends ScenarioRunnable {
   }
 
   @override
-  void onTagAdded(TagsRunnable tag) {
+  void onTagAdded(TagsRunnable? tag) {
     examples.forEach(
       (ex) {
-        ex.addTag(tag.clone(inherited: true));
+        ex!.addTag(tag!.clone(inherited: true));
       },
     );
   }
@@ -51,7 +51,7 @@ class ScenarioOutlineRunnable extends ScenarioRunnable {
 
     final scenarios = <ScenarioRunnable>[];
     examples.forEach((example) {
-      example.table
+      example!.table!
           .asMap()
           .toList()
           .asMap()
@@ -62,19 +62,19 @@ class ScenarioOutlineRunnable extends ScenarioRunnable {
           if (example.name.isNotEmpty) example.name,
           '(${exampleIndex + 1})',
         ].join(' ');
-        final clonedSteps = steps.map((step) => step.clone()).toList();
+        final clonedSteps = steps.map((step) => step!.clone()).toList();
 
         final scenarioRunnable =
         ScenarioExpandedFromOutlineExampleRunnable(exampleName, debug);
 
         exampleRow.forEach((parameterName, value) {
-          scenarioRunnable.setStepParameter(parameterName, value);
+          scenarioRunnable.setStepParameter(parameterName, value!);
           clonedSteps
               .forEach((step) => step.setStepParameter(parameterName, value));
         });
 
         [...tags, ...example.tags]
-            .forEach((t) => scenarioRunnable.addTag(t.clone()));
+            .forEach((t) => scenarioRunnable.addTag(t!.clone()));
 
         clonedSteps.forEach((step) => scenarioRunnable.addChild(step));
         scenarios.add(scenarioRunnable);

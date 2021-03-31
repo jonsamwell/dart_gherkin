@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:collection/collection.dart' show IterableExtension;
 import 'package:gherkin/src/gherkin/runnables/scenario_type_enum.dart';
 
 import '../gherkin.dart';
@@ -38,7 +39,7 @@ class FeatureFileRunner {
   Future<bool> run(FeatureFile featureFile) async {
     var haveAllFeaturesPassed = true;
     for (var feature in featureFile.features) {
-      haveAllFeaturesPassed &= await _runFeature(feature);
+      haveAllFeaturesPassed &= await _runFeature(feature!);
       if (_config.exitAfterTestFailed && !haveAllFeaturesPassed) {
         break;
       }
@@ -57,7 +58,7 @@ class FeatureFileRunner {
           feature.debug,
           feature.tags.isNotEmpty
               ? feature.tags
-                  .map((t) => t.tags
+                  .map((t) => t!.tags!
                       .map((c) => Tag(c, t.debug.lineNumber, t.isInherited))
                       .toList())
                   .reduce((a, b) => a..addAll(b))
@@ -80,7 +81,7 @@ class FeatureFileRunner {
           }
         } else {
           await _log(
-            "Ignoring scenario '${scenario.name}' as tag expression '${_config.tagExpression}' not satisfied",
+            "Ignoring scenario '${scenario!.name}' as tag expression '${_config.tagExpression}' not satisfied",
             feature.debug,
             MessageLevel.info,
           );
@@ -121,16 +122,16 @@ class FeatureFileRunner {
   }
 
   bool _canRunScenario(
-    String tagExpression,
-    ScenarioRunnable scenario,
+    String? tagExpression,
+    ScenarioRunnable? scenario,
   ) {
     return tagExpression == null
         ? true
         : _tagExpressionEvaluator.evaluate(
             tagExpression,
-            scenario.tags.isNotEmpty
+            scenario!.tags.isNotEmpty
                 ? scenario.tags
-                    .map((t) => t.tags.toList())
+                    .map((t) => t!.tags!.toList())
                     .reduce((a, b) => a..addAll(b))
                     .toList()
                 : Iterable<String>.empty().toList(),
@@ -138,14 +139,14 @@ class FeatureFileRunner {
   }
 
   Future<bool> _runScenarioInZone(
-    ScenarioRunnable scenario,
-    BackgroundRunnable background,
+    ScenarioRunnable? scenario,
+    BackgroundRunnable? background,
   ) {
     final completer = Completer<bool>();
     // ensure unhandled errors do not cause the entire test run to crash
     runZoned(
       () async {
-        final result = await _runScenario(scenario, background);
+        final result = await _runScenario(scenario!, background);
         if (!completer.isCompleted) {
           completer.complete(result);
         }
@@ -173,14 +174,14 @@ class FeatureFileRunner {
 
   Future<bool> _runScenario(
     ScenarioRunnable scenario,
-    BackgroundRunnable background,
+    BackgroundRunnable? background,
   ) async {
     final attachmentManager = await _config.getAttachmentManager(_config);
-    World world;
+    World? world;
     var scenarioPassed = true;
     final tags = scenario.tags.isNotEmpty
         ? scenario.tags
-            .map((t) => t.tags
+            .map((t) => t!.tags!
                 .map((tag) => Tag(tag, t.debug.lineNumber, t.isInherited))
                 .toList())
             .reduce((a, b) => a..addAll(b))
@@ -194,7 +195,7 @@ class FeatureFileRunner {
           scenario.debug,
           MessageLevel.debug,
         );
-        world = await _config.createWorld(_config);
+        world = await _config.createWorld!(_config);
         world.setAttachmentManager(attachmentManager);
         await _hook.onAfterScenarioWorldCreated(
           world,
@@ -214,7 +215,7 @@ class FeatureFileRunner {
           scenario.debug,
           scenario.tags.isNotEmpty
               ? scenario.tags
-                  .map((t) => t.tags
+                  .map((t) => t!.tags!
                       .map((tag) => Tag(tag, t.debug.lineNumber, t.isInherited))
                       .toList())
                   .reduce((a, b) => a..addAll(b))
@@ -231,7 +232,7 @@ class FeatureFileRunner {
         );
         for (var step in background.steps) {
           final result = await _runStep(
-            step,
+            step!,
             world,
             attachmentManager,
             !scenarioPassed,
@@ -250,7 +251,7 @@ class FeatureFileRunner {
 
       for (var step in scenario.steps) {
         final result =
-            await _runStep(step, world, attachmentManager, !scenarioPassed);
+            await _runStep(step!, world, attachmentManager, !scenarioPassed);
         scenarioPassed = result.result == StepExecutionResult.pass;
         if (!_canContinueScenario(result)) {
           scenarioPassed = false;
@@ -295,7 +296,7 @@ class FeatureFileRunner {
 
   Future<StepResult> _runStep(
     StepRunnable step,
-    World world,
+    World? world,
     AttachmentManager attachmentManager,
     bool skipExecution,
   ) async {
@@ -362,9 +363,8 @@ class FeatureFileRunner {
   }
 
   ExecutableStep _matchStepToExecutableStep(StepRunnable step) {
-    final executable = _steps.firstWhere(
-        (s) => s.expression.isMatch(step.debug.lineText),
-        orElse: () => null);
+    final executable = _steps.firstWhereOrNull(
+        (s) => s.expression.isMatch(step.debug.lineText!));
     if (executable == null) {
       final message = """
       Step definition not found for text:
@@ -383,9 +383,9 @@ class FeatureFileRunner {
       /// For example: `When4<String, bool, int, num>`
       /// You can also specify the type of world context you want
       /// `When4WithWorld<String, bool, int, num, MyWorld>`
-      class Given_${step.debug.lineText.trim().replaceAll(RegExp(r'[^a-zA-Z0-9]'), '_')} extends Given1<String> {
+      class Given_${step.debug.lineText!.trim().replaceAll(RegExp(r'[^a-zA-Z0-9]'), '_')} extends Given1<String> {
         @override
-        RegExp get pattern => RegExp(r"${step.debug.lineText.trim().split(' ').skip(1).join(' ')}");
+        RegExp get pattern => RegExp(r"${step.debug.lineText!.trim().split(' ').skip(1).join(' ')}");
 
         @override
         Future<void> executeStep(String input1) async {
@@ -404,7 +404,7 @@ class FeatureFileRunner {
   }
 
   Iterable<dynamic> _getStepParameters(StepRunnable step, ExecutableStep code) {
-    var parameters = code.expression.getParameters(step.debug.lineText);
+    var parameters = code.expression.getParameters(step.debug.lineText!);
     if (step.multilineStrings.isNotEmpty) {
       parameters = parameters.toList()..addAll(step.multilineStrings);
     }

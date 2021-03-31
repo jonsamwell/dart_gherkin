@@ -5,17 +5,17 @@ import './messages.dart';
 
 class TestRunSummaryReporter extends StdoutReporter {
   final _timer = Stopwatch();
-  final List<StepFinishedMessage> _ranSteps = <StepFinishedMessage>[];
-  final List<ScenarioFinishedMessage> _ranScenarios =
-      <ScenarioFinishedMessage>[];
+  final List<StepFinishedMessage?> _ranSteps = <StepFinishedMessage?>[];
+  final List<ScenarioFinishedMessage?> _ranScenarios =
+      <ScenarioFinishedMessage?>[];
 
   @override
-  Future<void> onScenarioFinished(ScenarioFinishedMessage message) async {
+  Future<void> onScenarioFinished(ScenarioFinishedMessage? message) async {
     _ranScenarios.add(message);
   }
 
   @override
-  Future<void> onStepFinished(StepFinishedMessage message) async {
+  Future<void> onStepFinished(StepFinishedMessage? message) async {
     _ranSteps.add(message);
   }
 
@@ -46,29 +46,29 @@ class TestRunSummaryReporter extends StdoutReporter {
     }
   }
 
-  String _collectScenarioSummary(Iterable<ScenarioFinishedMessage> scenarios) {
+  String _collectScenarioSummary(Iterable<ScenarioFinishedMessage?> scenarios) {
     final summaries = <String>[];
-    if (scenarios.any((s) => s.passed)) {
+    if (scenarios.any((s) => s!.passed)) {
       summaries.add(
-          '${StdoutReporter.PASS_COLOR}${scenarios.where((s) => s.passed).length} passed${StdoutReporter.RESET_COLOR}');
+          '${StdoutReporter.PASS_COLOR}${scenarios.where((s) => s!.passed).length} passed${StdoutReporter.RESET_COLOR}');
     }
 
-    if (scenarios.any((s) => !s.passed)) {
+    if (scenarios.any((s) => !s!.passed)) {
       summaries.add(
-          '${StdoutReporter.FAIL_COLOR}${scenarios.where((s) => !s.passed).length} failed${StdoutReporter.RESET_COLOR}');
+          '${StdoutReporter.FAIL_COLOR}${scenarios.where((s) => !s!.passed).length} failed${StdoutReporter.RESET_COLOR}');
     }
 
     return summaries.join(', ');
   }
 
-  String _collectStepSummary(Iterable<StepFinishedMessage> steps) {
+  String _collectStepSummary(Iterable<StepFinishedMessage?> steps) {
     final summaries = <String>[];
     final passed =
-        steps.where((s) => s.result.result == StepExecutionResult.pass);
+        steps.where((s) => s!.result.result == StepExecutionResult.pass);
     final skipped =
-        steps.where((s) => s.result.result == StepExecutionResult.skipped);
+        steps.where((s) => s!.result.result == StepExecutionResult.skipped);
     final failed = steps.where((s) =>
-        s.result.result == StepExecutionResult.error ||
+        s!.result.result == StepExecutionResult.error ||
         s.result.result == StepExecutionResult.fail ||
         s.result.result == StepExecutionResult.timeout);
     if (passed.isNotEmpty) {

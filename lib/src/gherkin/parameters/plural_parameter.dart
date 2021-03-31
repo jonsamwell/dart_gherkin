@@ -1,6 +1,6 @@
 import './custom_parameter.dart';
 
-class PluralParameter extends CustomParameter<String> {
+class PluralParameter extends CustomParameter<String?> {
   PluralParameter()
       : super(
           's',

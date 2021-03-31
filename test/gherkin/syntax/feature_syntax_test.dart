@@ -49,7 +49,7 @@ void main() {
         EnDialectMock(),
       );
       expect(runnable, isNotNull);
-      expect(runnable, predicate((x) => x is FeatureRunnable));
+      expect(runnable, predicate((dynamic x) => x is FeatureRunnable));
       expect(runnable.name, equals('A feature 123'));
     });
   });

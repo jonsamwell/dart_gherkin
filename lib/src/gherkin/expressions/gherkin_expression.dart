@@ -2,27 +2,27 @@ import '../parameters/custom_parameter.dart';
 import '../parameters/step_defined_parameter.dart';
 
 class _SortedParameterPosition {
-  final int startPosition;
+  final int? startPosition;
   final CustomParameter<dynamic> parameter;
 
   _SortedParameterPosition(this.startPosition, this.parameter);
 }
 
 class GherkinExpression {
-  final RegExp originalExpression;
+  final RegExp? originalExpression;
   final List<_SortedParameterPosition> _sortedParameterPositions =
       <_SortedParameterPosition>[];
-  RegExp _expression;
+  late RegExp _expression;
 
   GherkinExpression(this.originalExpression,
       Iterable<CustomParameter<dynamic>> customParameters) {
-    var pattern = originalExpression.pattern;
+    var pattern = originalExpression!.pattern;
     customParameters.forEach((p) {
-      if (originalExpression.pattern.contains(p.identifier)) {
+      if (originalExpression!.pattern.contains(p.identifier)) {
         // we need the index in the original pattern to be able to
         // transform the parameter into the correct type later on
         // so get that then modify the new matching pattern.
-        originalExpression.pattern.replaceAllMapped(
+        originalExpression!.pattern.replaceAllMapped(
             RegExp(_escapeIdentifier(p.identifier),
                 caseSensitive: true, multiLine: true), (m) {
           _sortedParameterPositions.add(_SortedParameterPosition(m.start, p));
@@ -42,15 +42,15 @@ class GherkinExpression {
     // note that we should ignore the predefined (s) plural parameter
     // and also ignore the (?:) non-capturing group pattern
     var inCustomBracketSection = false;
-    int indexOfOpeningBracket;
-    for (var i = 0; i < originalExpression.pattern.length; i += 1) {
-      final char = originalExpression.pattern[i];
+    int? indexOfOpeningBracket;
+    for (var i = 0; i < originalExpression!.pattern.length; i += 1) {
+      final char = originalExpression!.pattern[i];
       if (char == '(') {
         // look ahead and make sure we don't see "s)" or "?:" which would
         // indicate the plural parameter or a non-capturing group
-        if (originalExpression.pattern.length > i + 2) {
-          final justAhead = originalExpression.pattern[i + 1] +
-              originalExpression.pattern[i + 2];
+        if (originalExpression!.pattern.length > i + 2) {
+          final justAhead = originalExpression!.pattern[i + 1] +
+              originalExpression!.pattern[i + 2];
           if (justAhead != 's)' && justAhead != '?:') {
             inCustomBracketSection = true;
             indexOfOpeningBracket = i;
@@ -64,10 +64,10 @@ class GherkinExpression {
       }
     }
 
-    _sortedParameterPositions.sort((a, b) => a.startPosition - b.startPosition);
+    _sortedParameterPositions.sort((a, b) => a.startPosition! - b.startPosition!);
     _expression = RegExp(pattern,
-        caseSensitive: originalExpression.isCaseSensitive,
-        multiLine: originalExpression.isMultiLine);
+        caseSensitive: originalExpression!.isCaseSensitive,
+        multiLine: originalExpression!.isMultiLine);
   }
 
   String _escapeIdentifier(String identifier) =>
@@ -78,7 +78,7 @@ class GherkinExpression {
   }
 
   Iterable<dynamic> getParameters(String input) {
-    final stringValues = <String>[];
+    final stringValues = <String?>[];
     final values = <dynamic>[];
     _expression.allMatches(input).forEach((m) {
       // the first group is always the input string

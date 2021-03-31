@@ -7,7 +7,7 @@ import './regex_matched_syntax.dart';
 
 class CommentSyntax extends RegExMatchedGherkinSyntax {
   @override
-  RegExp pattern(GherkinDialect dialect) => RegExp(
+  RegExp pattern(GherkinDialect? dialect) => RegExp(
         '^#',
         multiLine: false,
         caseSensitive: false,
@@ -17,7 +17,7 @@ class CommentSyntax extends RegExMatchedGherkinSyntax {
   Runnable toRunnable(
     String line,
     RunnableDebugInformation debug,
-    GherkinDialect dialect,
+    GherkinDialect? dialect,
   ) =>
       CommentLineRunnable(line.trim(), debug);
 }

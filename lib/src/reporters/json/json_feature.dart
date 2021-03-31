@@ -4,18 +4,18 @@ import 'json_step.dart';
 import 'json_tag.dart';
 
 class JsonFeature {
-  String uri;
-  String id;
-  String name;
-  String description;
-  int line;
-  Iterable<JsonTag> tags;
+  String? uri;
+  String? id;
+  String? name;
+  String? description;
+  int? line;
+  late Iterable<JsonTag> tags;
   List<JsonScenario> scenarios = [];
 
   static JsonFeature from(StartedMessage message) {
     final feature = JsonFeature();
     feature.uri = message.context.filePath;
-    feature.id = message.name.toLowerCase();
+    feature.id = message.name!.toLowerCase();
     feature.name = message.name;
     feature.description = '';
     feature.line = message.context.nonZeroAdjustedLineNumber;
@@ -26,7 +26,7 @@ class JsonFeature {
   }
 
   void add({
-    JsonScenario scenario,
+    required JsonScenario scenario,
   }) {
     scenario.feature = this;
     scenarios.add(scenario);
@@ -40,7 +40,7 @@ class JsonFeature {
             'An unnamed scenario is possible if something is logged before any scenario steps have started to execute'
         ..line = 0
         ..tags = <JsonTag>[]
-        ..steps = <JsonStep>[
+        ..steps = <JsonStep?>[
           JsonStep()
             ..name = 'Unnamed'
             ..line = 0

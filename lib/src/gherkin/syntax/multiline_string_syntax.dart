@@ -12,7 +12,7 @@ import './text_line_syntax.dart';
 
 class MultilineStringSyntax extends RegExMatchedGherkinSyntax {
   @override
-  RegExp pattern(GherkinDialect dialect) => RegExp(
+  RegExp pattern(GherkinDialect? dialect) => RegExp(
         r'^\s*('
         '"""'
         r"|'''|```)\s*$",
@@ -40,7 +40,7 @@ class MultilineStringSyntax extends RegExMatchedGherkinSyntax {
   Runnable toRunnable(
     String line,
     RunnableDebugInformation debug,
-    GherkinDialect dialect,
+    GherkinDialect? dialect,
   ) {
     final leadingWhitespace =
         RegExp(r'^(\s*)').firstMatch(line)?.group(1)?.length ?? 0;

@@ -21,7 +21,7 @@ class StdoutReporter extends Reporter {
   }
 
   @override
-  Future<void> onException(Exception exception, StackTrace stackTrace) async {
+  Future<void> onException(Exception? exception, StackTrace? stackTrace) async {
     printMessageLine(exception.toString(), getColour(MessageLevel.error));
   }
 
@@ -40,11 +40,11 @@ class StdoutReporter extends Reporter {
     }
   }
 
-  void printMessageLine(String message, [String colour]) {
+  void printMessageLine(String message, [String? colour]) {
     stdout.writeln('${colour ?? RESET_COLOR}$message$RESET_COLOR');
   }
 
-  void printMessage(String message, [String colour]) {
+  void printMessage(String message, [String? colour]) {
     stdout.write('${colour ?? RESET_COLOR}$message$RESET_COLOR');
   }
 }

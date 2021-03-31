@@ -7,7 +7,7 @@ import './regex_matched_syntax.dart';
 
 class EmptyLineSyntax extends RegExMatchedGherkinSyntax {
   @override
-  RegExp pattern(GherkinDialect dialect) => RegExp(
+  RegExp pattern(GherkinDialect? dialect) => RegExp(
         r'^\s*$',
         multiLine: false,
         caseSensitive: false,
@@ -17,7 +17,7 @@ class EmptyLineSyntax extends RegExMatchedGherkinSyntax {
   Runnable toRunnable(
     String line,
     RunnableDebugInformation debug,
-    GherkinDialect dialect,
+    GherkinDialect? dialect,
   ) =>
       EmptyLineRunnable(debug);
 }

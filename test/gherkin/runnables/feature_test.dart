@@ -8,9 +8,9 @@ import 'package:gherkin/src/gherkin/runnables/tags.dart';
 import 'package:gherkin/src/gherkin/runnables/text_line.dart';
 import 'package:test/test.dart';
 
-Iterable<String> tagsToList(Iterable<TagsRunnable> tags) sync* {
+Iterable<String> tagsToList(Iterable<TagsRunnable?> tags) sync* {
   for (var tgs in tags) {
-    for (var tag in tgs.tags) {
+    for (var tag in tgs!.tags!) {
       yield tag;
     }
   }
@@ -48,15 +48,15 @@ void main() {
       runnable.addChild(ScenarioRunnable('2', debugInfo));
       runnable.addChild(ScenarioRunnable('3', debugInfo));
       expect(runnable.scenarios.length, 3);
-      expect(runnable.scenarios.elementAt(0).name, '1');
-      expect(runnable.scenarios.elementAt(1).name, '2');
-      expect(runnable.scenarios.elementAt(2).name, '3');
+      expect(runnable.scenarios.elementAt(0)!.name, '1');
+      expect(runnable.scenarios.elementAt(1)!.name, '2');
+      expect(runnable.scenarios.elementAt(2)!.name, '3');
     });
     test('can add BackgroundRunnable', () {
       final runnable = FeatureRunnable('', debugInfo);
       runnable.addChild(BackgroundRunnable('1', debugInfo));
       expect(runnable.background, isNotNull);
-      expect(runnable.background.name, '1');
+      expect(runnable.background!.name, '1');
     });
   });
 }

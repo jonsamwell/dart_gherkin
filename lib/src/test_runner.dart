@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:glob/list_local_fs.dart';
 import 'package:gherkin/src/gherkin/languages/language_service.dart';
 
 import './configuration.dart';
@@ -113,7 +114,7 @@ class GherkinRunner {
     );
   }
 
-  void _registerCustomParameters(Iterable<CustomParameter> customParameters) {
+  void _registerCustomParameters(Iterable<CustomParameter>? customParameters) {
     _customParameters.add(FloatParameterLower());
     _customParameters.add(FloatParameterCamel());
     _customParameters.add(NumParameterLower());
@@ -130,13 +131,13 @@ class GherkinRunner {
     }
   }
 
-  void _registerReporters(Iterable<Reporter> reporters) {
+  void _registerReporters(Iterable<Reporter>? reporters) {
     if (reporters != null) {
       reporters.forEach((r) => _reporter.addReporter(r));
     }
   }
 
-  void _registerHooks(Iterable<Hook> hooks) {
+  void _registerHooks(Iterable<Hook>? hooks) {
     if (hooks != null) {
       _hook.addHooks(hooks);
     }

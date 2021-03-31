@@ -129,9 +129,9 @@ void main() {
         'Given I do something',
         RunnableDebugInformation(null, 0, null),
         EnDialectMock(),
-      );
+      ) as StepRunnable;
       expect(runnable, isNotNull);
-      expect(runnable, predicate((x) => x is StepRunnable));
+      expect(runnable, predicate((dynamic x) => x is StepRunnable));
       expect(runnable.name, equals('Given I do something'));
     });
   });

@@ -7,8 +7,8 @@ import 'scenario_type_enum.dart';
 import 'taggable_runnable_block.dart';
 
 class ScenarioRunnable extends TaggableRunnableBlock {
-  final String _name;
-  List<StepRunnable> steps = <StepRunnable>[];
+  final String? _name;
+  List<StepRunnable?> steps = <StepRunnable?>[];
 
   ScenarioType get scenarioType => ScenarioType.scenario;
 
@@ -18,13 +18,13 @@ class ScenarioRunnable extends TaggableRunnableBlock {
   ) : super(debug);
 
   @override
-  String get name => _name;
+  String? get name => _name;
 
   @override
-  void addChild(Runnable child) {
+  void addChild(Runnable? child) {
     switch (child.runtimeType) {
       case StepRunnable:
-        steps.add(child);
+        steps.add(child as StepRunnable?);
         break;
       case CommentLineRunnable:
       case EmptyLineRunnable:

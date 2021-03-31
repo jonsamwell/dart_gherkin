@@ -14,5 +14,5 @@ class MockGherkinExpression implements GherkinExpression {
   bool isMatch(String input) => isMatchFn(input);
 
   @override
-  RegExp get originalExpression => null;
+  RegExp? get originalExpression => null;
 }

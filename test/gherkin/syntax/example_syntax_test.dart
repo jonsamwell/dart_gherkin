@@ -67,7 +67,7 @@ void main() {
         EnDialectMock(),
       );
       expect(runnable, isNotNull);
-      expect(runnable, predicate((x) => x is ExampleRunnable));
+      expect(runnable, predicate((dynamic x) => x is ExampleRunnable));
       expect(runnable.name, equals('An example 123'));
     });
 
@@ -79,7 +79,7 @@ void main() {
         EnDialectMock(),
       );
       expect(runnable, isNotNull);
-      expect(runnable, predicate((x) => x is ExampleRunnable));
+      expect(runnable, predicate((dynamic x) => x is ExampleRunnable));
       expect(runnable.name, equals(''));
     });
 
@@ -91,7 +91,7 @@ void main() {
         EnDialectMock(),
       );
       expect(runnable, isNotNull);
-      expect(runnable, predicate((x) => x is ExampleRunnable));
+      expect(runnable, predicate((dynamic x) => x is ExampleRunnable));
       expect(runnable.name, equals(''));
     });
   });

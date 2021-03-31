@@ -32,7 +32,7 @@ void main() {
         EnDialectMock(),
       );
       expect(runnable, isNotNull);
-      expect(runnable, predicate((x) => x is BackgroundRunnable));
+      expect(runnable, predicate((dynamic x) => x is BackgroundRunnable));
       expect(runnable.name, equals('A backgroun 123'));
     });
 
@@ -44,7 +44,7 @@ void main() {
         EnDialectMock(),
       );
       expect(runnable, isNotNull);
-      expect(runnable, predicate((x) => x is BackgroundRunnable));
+      expect(runnable, predicate((dynamic x) => x is BackgroundRunnable));
       expect(runnable.name, equals(''));
     });
 
@@ -56,7 +56,7 @@ void main() {
         EnDialectMock(),
       );
       expect(runnable, isNotNull);
-      expect(runnable, predicate((x) => x is BackgroundRunnable));
+      expect(runnable, predicate((dynamic x) => x is BackgroundRunnable));
       expect(runnable.name, equals(''));
     });
   });

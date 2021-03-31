@@ -53,9 +53,9 @@ void main() {
         '# language: de',
         RunnableDebugInformation(null, 0, null),
         EnDialectMock(),
-      );
+      ) as LanguageRunnable;
       expect(runnable, isNotNull);
-      expect(runnable, predicate((x) => x is LanguageRunnable));
+      expect(runnable, predicate((dynamic x) => x is LanguageRunnable));
       expect(runnable.language, equals('de'));
     });
   });

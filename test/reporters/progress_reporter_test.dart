@@ -5,7 +5,7 @@ import 'package:test/test.dart';
 class TestableProgressReporter extends ProgressReporter {
   final output = <String>[];
   @override
-  void printMessageLine(String message, [String colour]) {
+  void printMessageLine(String message, [String? colour]) {
     output.add(message);
   }
 }

@@ -3,7 +3,7 @@ import './debug_information.dart';
 abstract class Runnable {
   RunnableDebugInformation _debug;
   RunnableDebugInformation get debug => _debug;
-  String get name;
+  String? get name;
 
   Runnable(this._debug);
 

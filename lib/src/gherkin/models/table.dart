@@ -1,26 +1,26 @@
 import '../models/table_row.dart';
 
 class Table {
-  final Iterable<TableRow> rows;
-  final TableRow header;
+  final Iterable<TableRow>? rows;
+  final TableRow? header;
 
   Table(this.rows, this.header);
 
-  void setStepParameter(String parameterName, String value) {
-    rows.forEach((row) {
+  void setStepParameter(String? parameterName, String value) {
+    rows!.forEach((row) {
       row.setStepParameter(parameterName, value);
     });
   }
 
   /// Returns the table as a interable of maps.  With a single map representing a row in the table
   /// keyed by the column name if a header row is present else the column index (as a string)
-  Iterable<Map<String, String>> asMap() {
-    return <Map<String, String>>[
-      ...rows.map((row) {
-        final map = <String, String>{};
+  Iterable<Map<String?, String?>> asMap() {
+    return <Map<String?, String?>>[
+      ...rows!.map((row) {
+        final map = <String?, String?>{};
         if (header != null) {
-          for (var i = 0; i < header.columns.length; i += 1) {
-            map[header.columns.toList().elementAt(i)] =
+          for (var i = 0; i < header!.columns.length; i += 1) {
+            map[header!.columns.toList().elementAt(i)] =
                 row.columns.toList().length > i
                     ? row.columns.elementAt(i)
                     : null;
@@ -37,5 +37,5 @@ class Table {
     ];
   }
 
-  Table clone() => Table(rows.map((r) => r.clone()).toList(), header.clone());
+  Table clone() => Table(rows!.map((r) => r.clone()).toList(), header!.clone());
 }
