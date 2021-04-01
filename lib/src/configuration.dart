@@ -68,7 +68,7 @@ class TestConfiguration {
   /// Provide a configuration object with default settings such as the reports and feature file location
   /// Additional setting on the configuration object can be set on the returned instance.
   static TestConfiguration DEFAULT(
-    Iterable<StepDefinitionGeneric<World>> steps, {
+    Iterable<StepDefinitionGeneric<World?>> steps, {
     String featurePath = 'features/**.feature',
   }) {
     return TestConfiguration()

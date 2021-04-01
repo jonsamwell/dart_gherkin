@@ -100,7 +100,7 @@ class FeatureFileRunner {
         feature.debug,
         MessageLevel.error,
       );
-      await _reporter.onException(e, st);
+      await _reporter.onException(e as Exception, st);
 
       rethrow;
     } finally {
@@ -144,14 +144,14 @@ class FeatureFileRunner {
   ) {
     final completer = Completer<bool>();
     // ensure unhandled errors do not cause the entire test run to crash
-    runZoned(
+    runZonedGuarded(
       () async {
         final result = await _runScenario(scenario!, background);
         if (!completer.isCompleted) {
           completer.complete(result);
         }
       },
-      onError: (dynamic error, dynamic stack) {
+      (dynamic error, StackTrace stack) {
         if (!completer.isCompleted) {
           // this is a special type of exception that indicates something is wrong
           // with the test rather than the test execution so fail the whole run as
@@ -263,7 +263,7 @@ class FeatureFileRunner {
         }
       }
     } catch (e, st) {
-      await _reporter.onException(e, st);
+      await _reporter.onException(e as Exception, st);
       rethrow;
     } finally {
       await _reporter.onScenarioFinished(
@@ -282,7 +282,7 @@ class FeatureFileRunner {
       try {
         world?.dispose();
       } catch (e, st) {
-        await _reporter.onException(e, st);
+        await _reporter.onException(e as Exception, st);
         rethrow;
       }
     }
@@ -338,7 +338,7 @@ class FeatureFileRunner {
         step.name,
         step.debug,
         result,
-        attachmentManager?.getAttachmentsForContext(step.name),
+        attachmentManager.getAttachmentsForContext(step.name),
       ),
     );
 
@@ -363,8 +363,8 @@ class FeatureFileRunner {
   }
 
   ExecutableStep _matchStepToExecutableStep(StepRunnable step) {
-    final executable = _steps.firstWhereOrNull(
-        (s) => s.expression.isMatch(step.debug.lineText!));
+    final executable = _steps
+        .firstWhereOrNull((s) => s.expression.isMatch(step.debug.lineText!));
     if (executable == null) {
       final message = """
       Step definition not found for text:

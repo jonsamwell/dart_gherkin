@@ -66,7 +66,7 @@ abstract class StepDefinitionGeneric<TWorld extends World?> {
       return ErroredStepResult(
         elapsedMilliseconds,
         StepExecutionResult.error,
-        e,
+        e as Exception,
         st,
       );
     }

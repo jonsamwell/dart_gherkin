@@ -35,7 +35,9 @@ class FeatureRunnable extends TaggableRunnableBlock {
         break;
       case ScenarioRunnable:
       case ScenarioOutlineRunnable:
-        Iterable<ScenarioRunnable?> childScenarios = [child as ScenarioRunnable?];
+        Iterable<ScenarioRunnable?> childScenarios = [
+          child as ScenarioRunnable
+        ];
         if (child is ScenarioOutlineRunnable) {
           childScenarios = child.expandOutlinesIntoScenarios();
         }
