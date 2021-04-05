@@ -1,16 +1,18 @@
 import 'dart:io';
+
 import 'package:gherkin/src/gherkin/languages/language_service.dart';
+import 'package:glob/list_local_fs.dart';
 
 import './configuration.dart';
 import './feature_file_runner.dart';
 import './gherkin/expressions/gherkin_expression.dart';
 import './gherkin/expressions/tag_expression.dart';
 import './gherkin/parameters/custom_parameter.dart';
-import './gherkin/parameters/plural_parameter.dart';
-import './gherkin/parameters/word_parameter.dart';
-import './gherkin/parameters/string_parameter.dart';
-import './gherkin/parameters/int_parameter.dart';
 import './gherkin/parameters/float_parameter.dart';
+import './gherkin/parameters/int_parameter.dart';
+import './gherkin/parameters/plural_parameter.dart';
+import './gherkin/parameters/string_parameter.dart';
+import './gherkin/parameters/word_parameter.dart';
 import './gherkin/parser.dart';
 import './gherkin/runnables/feature_file.dart';
 import './gherkin/steps/exectuable_step.dart';
@@ -39,14 +41,15 @@ class GherkinRunner {
     _languageService.initialise(config.featureDefaultLanguage);
 
     var featureFiles = <FeatureFile>[];
-    for (var glob in config.features) {
-      for (var entity in glob.listSync()) {
-        await _reporter.message(
-            "Found feature file '${entity.path}'", MessageLevel.verbose);
-        final contents = File(entity.path).readAsStringSync();
-        final featureFile = await _parser.parseFeatureFile(
-            contents, entity.path, _reporter, _languageService);
-        featureFiles.add(featureFile);
+
+    if (config.features != null) {
+      for (var glob in config.features!) {
+        for (var entity in glob.listSync()) {
+          await _reporter.message("Found feature file '${entity.path}'", MessageLevel.verbose);
+          final contents = File(entity.path).readAsStringSync();
+          final featureFile = await _parser.parseFeatureFile(contents, entity.path, _reporter, _languageService);
+          featureFiles.add(featureFile);
+        }
       }
     }
 
@@ -102,9 +105,9 @@ class GherkinRunner {
   }
 
   void _registerStepDefinitions(
-    Iterable<StepDefinitionGeneric> stepDefinitions,
+    Iterable<StepDefinitionGeneric>? stepDefinitions,
   ) {
-    stepDefinitions.forEach(
+    stepDefinitions?.forEach(
       (s) {
         _executableSteps.add(
           ExecutableStep(GherkinExpression(s.pattern, _customParameters), s),
@@ -113,7 +116,7 @@ class GherkinRunner {
     );
   }
 
-  void _registerCustomParameters(Iterable<CustomParameter> customParameters) {
+  void _registerCustomParameters(Iterable<CustomParameter>? customParameters) {
     _customParameters.add(FloatParameterLower());
     _customParameters.add(FloatParameterCamel());
     _customParameters.add(NumParameterLower());
@@ -130,13 +133,11 @@ class GherkinRunner {
     }
   }
 
-  void _registerReporters(Iterable<Reporter> reporters) {
-    if (reporters != null) {
-      reporters.forEach((r) => _reporter.addReporter(r));
-    }
+  void _registerReporters(Iterable<Reporter>? reporters) {
+    reporters?.forEach((r) => _reporter.addReporter(r));
   }
 
-  void _registerHooks(Iterable<Hook> hooks) {
+  void _registerHooks(Iterable<Hook>? hooks) {
     if (hooks != null) {
       _hook.addHooks(hooks);
     }
