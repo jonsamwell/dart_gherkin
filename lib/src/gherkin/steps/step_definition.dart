@@ -10,7 +10,7 @@ import 'dart:async';
 abstract class StepDefinitionGeneric<TWorld extends World> {
   final StepDefinitionConfiguration? config;
   final int _expectParameterCount;
-  TWorld? _world;
+  late TWorld _world;
   Reporter? _reporter;
   Duration? _timeout;
   RegExp get pattern;
@@ -19,7 +19,7 @@ abstract class StepDefinitionGeneric<TWorld extends World> {
     _timeout = config?.timeout;
   }
 
-  TWorld? get world => _world;
+  TWorld get world => _world;
   Duration? get timeout => _timeout;
   Reporter? get reporter => _reporter;
 

@@ -20,7 +20,7 @@ class Table {
         final map = <String, String?>{};
         if (header != null) {
           for (var i = 0; i < header!.columns.length; i += 1) {
-            map[header!.columns.toList().elementAt(i)] =
+            map[header!.columns.toList().elementAt(i)!] =
                 row.columns.toList().length > i
                     ? row.columns.elementAt(i)
                     : null;

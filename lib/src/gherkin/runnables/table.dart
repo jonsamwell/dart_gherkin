@@ -22,7 +22,8 @@ class TableRunnable extends RunnableBlock {
       case CommentLineRunnable:
         break;
       default:
-        throw Exception("Unknown runnable child given to Table '${child.runtimeType}'");
+        throw Exception(
+            "Unknown runnable child given to Table '${child.runtimeType}'");
     }
   }
 
@@ -49,7 +50,10 @@ class TableRunnable extends RunnableBlock {
         .toList();
 
     return TableRow(
-      columns.take(columns.length - 1).map((v) => v.isEmpty ? '' : v).toList(),
+      columns
+          .take(columns.length - 1)
+          .map((v) => v.isEmpty ? null : v)
+          .toList(),
       rowIndex,
       isHeaderRow,
     );

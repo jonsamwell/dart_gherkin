@@ -1,7 +1,8 @@
 ## 2.0.0
 
 * Null safety
-* Hook#onException no longer accepts `Exception`, it accepts `Object` as Dart made the type returned from `catch` stricter.
+* `Reporter#onException` no longer accepts `Exception`, it accepts `Object` as Dart made the type returned from `catch` stricter.
+* `World` is available to every step
 
 ## [1.1.9] - 24/11/2020
 

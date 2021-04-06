@@ -84,7 +84,7 @@ class GherkinExpression {
       // the first group is always the input string
       final indices =
           List.generate(m.groupCount, (i) => i + 1, growable: false).toList();
-      stringValues.addAll(m.groups(indices) as List<String>);
+      stringValues.addAll(m.groups(indices).whereType<String>().toList());
     });
 
     final definedParameters = _sortedParameterPositions

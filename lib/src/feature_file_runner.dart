@@ -177,7 +177,7 @@ class FeatureFileRunner {
     BackgroundRunnable? background,
   ) async {
     final attachmentManager = await _config.getAttachmentManager(_config);
-    late World? world;
+    var world = World();
     var scenarioPassed = true;
     final tags = scenario.tags.isNotEmpty
         ? scenario.tags
@@ -233,7 +233,7 @@ class FeatureFileRunner {
         for (var step in background.steps) {
           final result = await _runStep(
             step,
-            world!,
+            world,
             attachmentManager,
             !scenarioPassed,
           );
@@ -251,7 +251,7 @@ class FeatureFileRunner {
 
       for (var step in scenario.steps) {
         final result =
-            await _runStep(step, world!, attachmentManager, !scenarioPassed);
+            await _runStep(step, world, attachmentManager, !scenarioPassed);
         scenarioPassed = result.result == StepExecutionResult.pass;
         if (!_canContinueScenario(result)) {
           scenarioPassed = false;
@@ -280,7 +280,7 @@ class FeatureFileRunner {
       );
 
       try {
-        world?.dispose();
+        world.dispose();
       } catch (e, st) {
         await _reporter.onException(e, st);
         rethrow;

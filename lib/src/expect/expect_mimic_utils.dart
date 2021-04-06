@@ -35,7 +35,7 @@ String prefixLines(String text, String prefix,
     {String? first, String? last, String? single}) {
   first ??= prefix;
   last ??= prefix;
-  single ??= first ?? last ?? prefix;
+  single ??= first;
 
   final lines = text.split('\n');
   if (lines.length == 1) return '$single$text';
