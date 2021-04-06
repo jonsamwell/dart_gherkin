@@ -5,7 +5,7 @@ import 'package:gherkin/src/gherkin/runnables/step.dart';
 import 'package:test/test.dart';
 
 void main() {
-  final debugInfo = RunnableDebugInformation(null, 0, null);
+  final debugInfo = RunnableDebugInformation('', 0, null);
   group('addChild', () {
     test('can add EmptyLineRunnable', () {
       final runnable = ScenarioRunnable('', debugInfo);

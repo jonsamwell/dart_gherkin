@@ -20,7 +20,7 @@ class TagSyntax extends RegExMatchedGherkinSyntax {
     runnable.tags = line
         .trim()
         .split(RegExp('@'))
-        .where((t) => t != null && t.isNotEmpty)
+        .where((t) => t.isNotEmpty)
         .map((t) => '@${t.trim()}')
         .toList();
 

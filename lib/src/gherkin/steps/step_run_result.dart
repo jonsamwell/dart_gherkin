@@ -14,7 +14,7 @@ class StepResult {
 }
 
 class ErroredStepResult extends StepResult {
-  final Exception exception;
+  final Object exception;
   final StackTrace stackTrace;
 
   ErroredStepResult(int elapsedMilliseconds, StepExecutionResult result,

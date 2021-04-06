@@ -1,7 +1,7 @@
 import 'gherkin_exception.dart';
 
 class GherkinStepNotDefinedException implements GherkinException {
-  final String message;
+  final String? message;
 
   GherkinStepNotDefinedException(this.message);
 

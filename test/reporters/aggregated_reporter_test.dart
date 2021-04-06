@@ -18,7 +18,7 @@ void main() {
       expect(reporter1.messageInvocationCount, 1);
       expect(reporter2.messageInvocationCount, 1);
 
-      await aggregatedReporter.onException(null, null);
+      await aggregatedReporter.onException(Object(), null);
       expect(reporter1.onExceptionInvocationCount, 1);
       expect(reporter2.onExceptionInvocationCount, 1);
 

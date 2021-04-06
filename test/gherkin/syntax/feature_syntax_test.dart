@@ -45,7 +45,7 @@ void main() {
       final keyword = FeatureSyntax();
       final runnable = keyword.toRunnable(
         'Feature: A feature 123',
-        RunnableDebugInformation(null, 0, null),
+        RunnableDebugInformation('', 0, null),
         EnDialectMock(),
       );
       expect(runnable, isNotNull);

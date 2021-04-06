@@ -7,7 +7,7 @@ import 'package:test/test.dart';
 
 class StepDefinitionMock extends StepDefinitionGeneric<World> {
   int invocationCount = 0;
-  final Func0<Future<void>> code;
+  final Func0<Future<void>>? code;
 
   StepDefinitionMock(
       StepDefinitionConfiguration config, int expectParameterCount,
@@ -18,7 +18,7 @@ class StepDefinitionMock extends StepDefinitionGeneric<World> {
   Future<void> onRun(Iterable parameters) async {
     invocationCount += 1;
     if (code != null) {
-      await code();
+      await code!();
     }
   }
 

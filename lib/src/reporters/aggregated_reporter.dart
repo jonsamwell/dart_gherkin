@@ -38,7 +38,7 @@ class AggregatedReporter extends Reporter {
   }
 
   @override
-  Future<void> onScenarioFinished(FinishedMessage message) async {
+  Future<void> onScenarioFinished(ScenarioFinishedMessage message) async {
     await _invokeReporters((r) async => await r.onScenarioFinished(message));
   }
 
@@ -53,7 +53,7 @@ class AggregatedReporter extends Reporter {
   }
 
   @override
-  Future<void> onException(Exception exception, StackTrace stackTrace) async {
+  Future<void> onException(Object exception, StackTrace stackTrace) async {
     await _invokeReporters(
         (r) async => await r.onException(exception, stackTrace));
   }
@@ -65,7 +65,7 @@ class AggregatedReporter extends Reporter {
 
   Future<void> _invokeReporters(
       Future<void> Function(Reporter r) invoke) async {
-    if (_reporters != null && _reporters.isNotEmpty) {
+    if (_reporters.isNotEmpty) {
       for (var reporter in _reporters) {
         await invoke(reporter);
       }

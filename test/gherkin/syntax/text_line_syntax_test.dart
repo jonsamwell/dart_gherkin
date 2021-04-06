@@ -91,11 +91,11 @@ void main() {
   group('toRunnable', () {
     test('creates TextLineRunnable', () {
       final syntax = TextLineSyntax();
-      final TextLineRunnable runnable = syntax.toRunnable(
+      final runnable = syntax.toRunnable(
         '  Some text ',
-        RunnableDebugInformation(null, 0, null),
+        RunnableDebugInformation('', 0, null),
         EnDialectMock(),
-      );
+      ) as TextLineRunnable;
       expect(runnable, isNotNull);
       expect(runnable, predicate((x) => x is TextLineRunnable));
       expect(runnable.text, equals('Some text'));

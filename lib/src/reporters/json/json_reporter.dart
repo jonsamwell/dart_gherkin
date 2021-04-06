@@ -37,7 +37,7 @@ class JsonReporter extends Reporter {
   }
 
   @override
-  Future<void> onException(Exception exception, StackTrace stackTrace) async {
+  Future<void> onException(Object exception, StackTrace stackTrace) async {
     _getCurrentFeature()
         .currentScenario()
         .currentStep()

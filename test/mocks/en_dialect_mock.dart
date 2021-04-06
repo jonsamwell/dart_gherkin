@@ -17,11 +17,11 @@ class EnDialectMock extends GherkinDialect {
     but = ['But'];
 
     stepKeywords = (<String>[
-      ...given,
-      ...when,
-      ...then,
-      ...and,
-      ...but,
+      ...given!,
+      ...when!,
+      ...then!,
+      ...and!,
+      ...but!,
     ]).toSet();
   }
 }

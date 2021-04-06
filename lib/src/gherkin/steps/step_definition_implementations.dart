@@ -136,7 +136,7 @@ abstract class StepDefinition5<TWorld extends World, TInput1, TInput2, TInput3,
 /// Provides access to the world, reporter, step configuration and expect functions.
 class StepContext<TWorld extends World> {
   final TWorld world;
-  final Reporter reporter;
+  final Reporter? reporter;
   final StepDefinitionConfiguration configuration;
 
   StepContext(
@@ -206,7 +206,7 @@ class GenericFunctionStepDefinition<TWorld extends World>
 
   @override
   RegExp get pattern =>
-      _pattern is RegExp ? _pattern as RegExp : RegExp(_pattern);
+      _pattern is RegExp ? _pattern as RegExp : RegExp(_pattern as String);
 }
 
 StepDefinitionGeneric<TWorld>

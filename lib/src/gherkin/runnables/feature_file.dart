@@ -1,4 +1,3 @@
-import 'package:gherkin/src/gherkin/runnables/taggable_runnable_block.dart';
 import 'package:gherkin/src/gherkin/runnables/tags.dart';
 
 import './debug_information.dart';

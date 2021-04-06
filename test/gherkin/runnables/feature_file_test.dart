@@ -6,7 +6,7 @@ import 'package:gherkin/src/gherkin/runnables/language.dart';
 import 'package:test/test.dart';
 
 void main() {
-  final debugInfo = RunnableDebugInformation(null, 0, null);
+  final debugInfo = RunnableDebugInformation('', 0, null);
   group('addChild', () {
     test('can add LanguageRunnable', () {
       final runnable = FeatureFile(debugInfo);

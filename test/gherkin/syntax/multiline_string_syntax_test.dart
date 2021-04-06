@@ -97,11 +97,11 @@ void main() {
   group('toRunnable', () {
     test('creates TextLineRunnable', () {
       final syntax = MultilineStringSyntax();
-      final MultilineStringRunnable runnable = syntax.toRunnable(
+      final runnable = syntax.toRunnable(
         "'''",
-        RunnableDebugInformation(null, 0, null),
+        RunnableDebugInformation('', 0, null),
         EnDialectMock(),
-      );
+      ) as MultilineStringRunnable;
       expect(runnable, isNotNull);
       expect(runnable, predicate((x) => x is MultilineStringRunnable));
       expect(runnable.lines.length, 0);

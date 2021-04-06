@@ -25,12 +25,12 @@ abstract class StepDefinitionGeneric<TWorld extends World> {
 
   Future<StepResult> run(
     TWorld world,
-    Reporter reporter,
+    Reporter? reporter,
     Duration defaultTimeout,
     Iterable<dynamic> parameters,
   ) async {
     _ensureParameterCount(parameters.length, _expectParameterCount);
-    int elapsedMilliseconds;
+    late int elapsedMilliseconds;
     try {
       await Perf.measure(
         () async {

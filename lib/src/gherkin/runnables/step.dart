@@ -21,33 +21,30 @@ class StepRunnable extends RunnableBlock {
   void addChild(Runnable child) {
     switch (child.runtimeType) {
       case MultilineStringRunnable:
-        multilineStrings!
-            .add((child as MultilineStringRunnable).lines.join('\n'));
+        multilineStrings.add((child as MultilineStringRunnable).lines.join('\n'));
         break;
       case TableRunnable:
         if (table != null) {
-          throw GherkinSyntaxException(
-              "Only a single table can be added to the step '$name'");
+          throw GherkinSyntaxException("Only a single table can be added to the step '$name'");
         }
 
         table = (child as TableRunnable).toTable();
         break;
       default:
-        throw Exception(
-            "Unknown runnable child given to Step '${child.runtimeType}'");
+        throw Exception("Unknown runnable child given to Step '${child.runtimeType}'");
     }
   }
 
   void setStepParameter(String parameterName, String value) {
     _name = _name.replaceAll('<$parameterName>', value);
     table?.setStepParameter(parameterName, value);
-    updateDebugInformation(debug.copyWith(debug.lineNumber,
-        debug.lineText.replaceAll('<$parameterName>', value)));
+    updateDebugInformation(
+        debug.copyWith(debug.lineNumber, debug.lineText?.replaceAll('<$parameterName>', value)));
   }
 
   StepRunnable clone() {
     final cloned = StepRunnable(_name, debug);
-    cloned.multilineStrings = multilineStrings?.map((s) => s).toList();
+    cloned.multilineStrings = multilineStrings.map((s) => s).toList();
     cloned.table = table?.clone();
 
     return cloned;

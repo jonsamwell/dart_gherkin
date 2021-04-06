@@ -6,7 +6,7 @@ import 'package:gherkin/src/gherkin/runnables/table.dart';
 import 'package:test/test.dart';
 
 void main() {
-  final debugInfo = RunnableDebugInformation(null, 0, null);
+  final debugInfo = RunnableDebugInformation('', 0, null);
   group('addChild', () {
     test('can add MultilineStringRunnable', () {
       final runnable = StepRunnable('', debugInfo);
@@ -27,9 +27,9 @@ void main() {
         ..addChild(TableRunnable(debugInfo)..rows.add('|3|4|')));
 
       expect(runnable.table, isNotNull);
-      expect(runnable.table.header, isNotNull);
-      expect(runnable.table.header.columns.length, 2);
-      expect(runnable.table.rows.length, 2);
+      expect(runnable.table!.header, isNotNull);
+      expect(runnable.table!.header!.columns.length, 2);
+      expect(runnable.table!.rows.length, 2);
     });
 
     test('can only add single TableRunnable', () {

@@ -32,8 +32,8 @@ class ProgressReporter extends StdoutReporter {
         ].join((' ')).trimRight(),
         _getMessageColour(message.result.result));
 
-    if (message.attachments.isNotEmpty) {
-      message.attachments.forEach((attachment) {
+    if (message.attachments != null && message.attachments!.isNotEmpty) {
+      message.attachments!.forEach((attachment) {
         var attachment2 = attachment;
         printMessageLine(
             [
@@ -52,7 +52,8 @@ class ProgressReporter extends StdoutReporter {
   }
 
   String _getReasonMessage(StepResult stepResult) {
-    if (stepResult.resultReason != null && stepResult.resultReason.isNotEmpty) {
+    if (stepResult.resultReason != null &&
+        stepResult.resultReason!.isNotEmpty) {
       return '\n      ${stepResult.resultReason}';
     } else {
       return '';

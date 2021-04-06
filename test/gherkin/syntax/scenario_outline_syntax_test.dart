@@ -57,7 +57,7 @@ void main() {
       final keyword = ScenarioOutlineSyntax();
       final runnable = keyword.toRunnable(
         'Scenario Outline: A scenario outline 123',
-        RunnableDebugInformation(null, 0, null),
+        RunnableDebugInformation('', 0, null),
         EnDialectMock(),
       );
       expect(runnable, isNotNull);

@@ -40,14 +40,14 @@ class HookExample extends Hook {
 
   /// Run before a step is executed
   @override
-  Future<void> onBeforeStep(World world, String step) async {
+  Future<void> onBeforeStep(World? world, String step) async {
     print("running hook before step '$step'");
   }
 
   /// Run after a step has executed
   @override
   Future<void> onAfterStep(
-      World world, String step, StepResult stepResult) async {
+      World? world, String step, StepResult stepResult) async {
     print("running hook after step '$step'");
 
     // example of how to add a simple attachment (text, json, image) to a step that a reporter can use

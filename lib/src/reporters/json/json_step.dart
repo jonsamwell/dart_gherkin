@@ -30,8 +30,8 @@ class JsonStep {
 
     if ((message.table?.rows.length ?? 0) > 0) {
       step.rows =
-          message.table.rows.map((r) => JsonRow(r.columns.toList())).toList();
-      step.rows.insert(0, JsonRow(message.table.header.columns.toList()));
+          message.table!.rows.map((r) => JsonRow(r.columns.toList())).toList();
+      step.rows.insert(0, JsonRow(message.table.header?.columns.toList()));
     }
 
     return step;
@@ -52,7 +52,7 @@ class JsonStep {
     }
 
     if (message.attachments?.isNotEmpty ?? false) {
-      embeddings = message.attachments
+      embeddings = message.attachments!
           .map((attachment) => JsonEmbedding()
             ..data = attachment.data
             ..mimeType = attachment.mimeType)
@@ -62,7 +62,7 @@ class JsonStep {
     _trackError(message.result.resultReason);
   }
 
-  void onException(Exception exception, StackTrace stackTrace) {
+  void onException(Object exception, StackTrace stackTrace) {
     _trackError(exception.toString(), stackTrace.toString());
   }
 

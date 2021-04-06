@@ -1,4 +1,3 @@
-import 'package:gherkin/gherkin.dart';
 import 'package:gherkin/src/gherkin/runnables/debug_information.dart';
 import 'package:gherkin/src/gherkin/runnables/empty_line.dart';
 import 'package:gherkin/src/gherkin/runnables/example.dart';
@@ -9,7 +8,7 @@ import 'package:gherkin/src/gherkin/runnables/tags.dart';
 import 'package:test/test.dart';
 
 void main() {
-  final debugInfo = RunnableDebugInformation(null, 0, null);
+  final debugInfo = RunnableDebugInformation('', 0, null);
   group('addChild', () {
     test('can add EmptyLineRunnable', () {
       final runnable = ScenarioOutlineRunnable('', debugInfo);
@@ -51,7 +50,8 @@ void main() {
     });
 
     test('can interpolate variables in the scenario name', () {
-      final runnable = ScenarioOutlineRunnable('Scenario outline with parameters: <i>, <k>', debugInfo);
+      final runnable = ScenarioOutlineRunnable(
+          'Scenario outline with parameters: <i>, <k>', debugInfo);
       final example = ExampleRunnable('', debugInfo);
       final exampleTable = TableRunnable(debugInfo);
 
@@ -66,8 +66,12 @@ void main() {
       final expandedScenario1 = expandedScenarios.elementAt(0);
       final expandedScenario2 = expandedScenarios.elementAt(1);
 
-      expect(expandedScenario1.name, equals('Scenario outline with parameters: 1, 3 Examples: (1)'));
-      expect(expandedScenario2.name, equals('Scenario outline with parameters: text, false Examples: (2)'));
+      expect(expandedScenario1.name,
+          equals('Scenario outline with parameters: 1, 3 Examples: (1)'));
+      expect(
+          expandedScenario2.name,
+          equals(
+              'Scenario outline with parameters: text, false Examples: (2)'));
     });
   });
 }

@@ -57,7 +57,7 @@ class FeatureFileRunner {
           feature.debug,
           feature.tags.isNotEmpty
               ? feature.tags
-                  .map((t) => t.tags!
+                  .map((t) => t.tags
                       .map((c) => Tag(c, t.debug.lineNumber, t.isInherited))
                       .toList())
                   .reduce((a, b) => a..addAll(b))
@@ -99,7 +99,7 @@ class FeatureFileRunner {
         feature.debug,
         MessageLevel.error,
       );
-      await _reporter.onException(e as Exception, st);
+      await _reporter.onException(e, st);
 
       rethrow;
     } finally {
@@ -139,7 +139,7 @@ class FeatureFileRunner {
 
   Future<bool> _runScenarioInZone(
     ScenarioRunnable scenario,
-    BackgroundRunnable background,
+    BackgroundRunnable? background,
   ) {
     final completer = Completer<bool>();
     // ensure unhandled errors do not cause the entire test run to crash
@@ -176,7 +176,7 @@ class FeatureFileRunner {
     BackgroundRunnable? background,
   ) async {
     final attachmentManager = await _config.getAttachmentManager(_config);
-    World world;
+    late World? world;
     var scenarioPassed = true;
     final tags = scenario.tags.isNotEmpty
         ? scenario.tags
@@ -194,7 +194,7 @@ class FeatureFileRunner {
           scenario.debug,
           MessageLevel.debug,
         );
-        world = await _config.createWorld(_config);
+        world = await _config.createWorld!(_config);
         world.setAttachmentManager(attachmentManager);
         await _hook.onAfterScenarioWorldCreated(
           world,
@@ -232,7 +232,7 @@ class FeatureFileRunner {
         for (var step in background.steps) {
           final result = await _runStep(
             step,
-            world,
+            world!,
             attachmentManager,
             !scenarioPassed,
           );
@@ -250,7 +250,7 @@ class FeatureFileRunner {
 
       for (var step in scenario.steps) {
         final result =
-            await _runStep(step, world, attachmentManager, !scenarioPassed);
+            await _runStep(step, world!, attachmentManager, !scenarioPassed);
         scenarioPassed = result.result == StepExecutionResult.pass;
         if (!_canContinueScenario(result)) {
           scenarioPassed = false;
@@ -363,7 +363,7 @@ class FeatureFileRunner {
 
   ExecutableStep _matchStepToExecutableStep(StepRunnable step) {
     final executable = _steps.firstWhere(
-        (s) => s.expression.isMatch(step.debug.lineText),
+        (s) => s.expression.isMatch(step.debug.lineText ?? ''),
         orElse: () => null);
     if (executable == null) {
       final message = """
@@ -383,9 +383,9 @@ class FeatureFileRunner {
       /// For example: `When4<String, bool, int, num>`
       /// You can also specify the type of world context you want
       /// `When4WithWorld<String, bool, int, num, MyWorld>`
-      class Given_${step.debug.lineText.trim().replaceAll(RegExp(r'[^a-zA-Z0-9]'), '_')} extends Given1<String> {
+      class Given_${step.debug.lineText?.trim().replaceAll(RegExp(r'[^a-zA-Z0-9]'), '_')} extends Given1<String> {
         @override
-        RegExp get pattern => RegExp(r"${step.debug.lineText.trim().split(' ').skip(1).join(' ')}");
+        RegExp get pattern => RegExp(r"${step.debug.lineText?.trim().split(' ').skip(1).join(' ')}");
 
         @override
         Future<void> executeStep(String input1) async {

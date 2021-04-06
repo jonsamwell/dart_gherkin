@@ -21,7 +21,7 @@ class StdoutReporter extends Reporter {
   }
 
   @override
-  Future<void> onException(Exception exception, StackTrace stackTrace) async {
+  Future<void> onException(Object exception, StackTrace stackTrace) async {
     printMessageLine(exception.toString(), getColour(MessageLevel.error));
   }
 

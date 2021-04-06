@@ -49,11 +49,11 @@ void main() {
   group('toRunnable', () {
     test('creates TextLineRunnable', () {
       final syntax = TagSyntax();
-      final TagsRunnable runnable = syntax.toRunnable(
+      final runnable = syntax.toRunnable(
         '@tag1 @tag2   @tag3@tag_4',
-        RunnableDebugInformation(null, 0, null),
+        RunnableDebugInformation('', 0, null),
         EnDialectMock(),
-      );
+      ) as TagsRunnable;
       expect(runnable, isNotNull);
       expect(runnable, predicate((x) => x is TagsRunnable));
       expect(runnable.tags, equals(['@tag1', '@tag2', '@tag3', '@tag_4']));

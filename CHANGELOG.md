@@ -1,3 +1,8 @@
+## 2.0.0
+
+* Null safety
+* Hook#onException no longer accepts `Exception`, it accepts `Object` as Dart made the type returned from `catch` stricter.
+
 ## [1.1.9] - 24/11/2020
 
 * Added the ability to have multiple example blocks with tags per scenario outline

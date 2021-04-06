@@ -125,11 +125,11 @@ void main() {
   group('toRunnable', () {
     test('creates StepRunnable', () {
       final syntax = StepSyntax();
-      final StepRunnable runnable = syntax.toRunnable(
+      final runnable = syntax.toRunnable(
         'Given I do something',
-        RunnableDebugInformation(null, 0, null),
+        RunnableDebugInformation('', 0, null),
         EnDialectMock(),
-      );
+      ) as StepRunnable;
       expect(runnable, isNotNull);
       expect(runnable, predicate((x) => x is StepRunnable));
       expect(runnable.name, equals('Given I do something'));

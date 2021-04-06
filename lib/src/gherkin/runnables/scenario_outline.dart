@@ -12,8 +12,7 @@ class ScenarioOutlineRunnable extends ScenarioRunnable {
   Iterable<ExampleRunnable> get examples => _examples;
   TagsRunnable? _pendingExampleTags;
 
-  ScenarioOutlineRunnable(String name, RunnableDebugInformation debug)
-      : super(name, debug);
+  ScenarioOutlineRunnable(String name, RunnableDebugInformation debug) : super(name, debug);
 
   @override
   void addChild(Runnable child) {
@@ -45,17 +44,12 @@ class ScenarioOutlineRunnable extends ScenarioRunnable {
 
   Iterable<ScenarioRunnable> expandOutlinesIntoScenarios() {
     if (examples.isEmpty) {
-      throw GherkinSyntaxException(
-          'Scenario outline `$name` does not contains an example block.');
+      throw GherkinSyntaxException('Scenario outline `$name` does not contains an example block.');
     }
 
     final scenarios = <ScenarioRunnable>[];
     examples.forEach((example) {
-      example.table
-          ?.asMap()
-          .toList()
-          .asMap()
-          .forEach((exampleIndex, exampleRow) {
+      example.table?.asMap().toList().asMap().forEach((exampleIndex, exampleRow) {
         var exampleName = [
           name,
           'Examples:',
@@ -64,17 +58,16 @@ class ScenarioOutlineRunnable extends ScenarioRunnable {
         ].join(' ');
         final clonedSteps = steps.map((step) => step.clone()).toList();
 
-        final scenarioRunnable =
-            ScenarioExpandedFromOutlineExampleRunnable(exampleName, debug);
+        final scenarioRunnable = ScenarioExpandedFromOutlineExampleRunnable(exampleName, debug);
 
         exampleRow.forEach((parameterName, value) {
-          scenarioRunnable.setStepParameter(parameterName, value);
-          clonedSteps
-              .forEach((step) => step.setStepParameter(parameterName, value));
+          if (value != null) {
+            scenarioRunnable.setStepParameter(parameterName, value);
+            clonedSteps.forEach((step) => step.setStepParameter(parameterName, value));
+          }
         });
 
-        [...tags, ...example.tags]
-            .forEach((t) => scenarioRunnable.addTag(t.clone()));
+        [...tags, ...example.tags].forEach((t) => scenarioRunnable.addTag(t.clone()));
 
         clonedSteps.forEach((step) => scenarioRunnable.addChild(step));
         scenarios.add(scenarioRunnable);
