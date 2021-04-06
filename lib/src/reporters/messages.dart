@@ -37,7 +37,7 @@ class StartedMessage {
 class FinishedMessage {
   final Target target;
   final String name;
-  final RunnableDebugInformation? context;
+  final RunnableDebugInformation context;
 
   FinishedMessage(this.target, this.name, this.context);
 }
@@ -64,7 +64,7 @@ class StepFinishedMessage extends FinishedMessage {
   final Iterable<Attachment>? attachments;
 
   StepFinishedMessage(
-      String name, RunnableDebugInformation? context, this.result,
+      String name, RunnableDebugInformation context, this.result,
       [this.attachments = const Iterable<Attachment>.empty()])
       : super(Target.step, name, context);
 }
@@ -73,6 +73,6 @@ class ScenarioFinishedMessage extends FinishedMessage {
   final bool passed;
 
   ScenarioFinishedMessage(
-      String name, RunnableDebugInformation? context, this.passed)
+      String name, RunnableDebugInformation context, this.passed)
       : super(Target.scenario, name, context);
 }

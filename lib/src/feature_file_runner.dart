@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:gherkin/src/gherkin/runnables/scenario_type_enum.dart';
+import 'package:collection/collection.dart';
 
 import '../gherkin.dart';
 import './reporters/message_level.dart';
@@ -362,9 +363,8 @@ class FeatureFileRunner {
   }
 
   ExecutableStep _matchStepToExecutableStep(StepRunnable step) {
-    final executable = _steps.firstWhere(
-        (s) => s.expression.isMatch(step.debug.lineText ?? ''),
-        orElse: () => null);
+    final executable = _steps.firstWhereOrNull(
+        (s) => s.expression.isMatch(step.debug.lineText ?? ''));
     if (executable == null) {
       final message = """
       Step definition not found for text:

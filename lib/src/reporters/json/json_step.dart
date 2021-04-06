@@ -31,7 +31,9 @@ class JsonStep {
     if ((message.table?.rows.length ?? 0) > 0) {
       step.rows =
           message.table!.rows.map((r) => JsonRow(r.columns.toList())).toList();
-      step.rows.insert(0, JsonRow(message.table.header?.columns.toList()));
+      if (message.table?.header?.columns != null) {
+        step.rows.insert(0, JsonRow(message.table!.header!.columns.toList()));
+      }
     }
 
     return step;

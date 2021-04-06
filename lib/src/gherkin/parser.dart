@@ -1,6 +1,7 @@
 import 'package:gherkin/src/gherkin/languages/language_service.dart';
 import 'package:gherkin/src/gherkin/runnables/dialect_block.dart';
 import 'package:gherkin/src/gherkin/runnables/multi_line_string.dart';
+import 'package:collection/collection.dart';
 
 import './exceptions/syntax_error.dart';
 import './runnables/debug_information.dart';
@@ -83,9 +84,8 @@ class GherkinParser {
     for (var i = lineNumber; i < lines.length; i += 1) {
       final line = lines.elementAt(i).trim();
       // print("$depth - $line");
-      final matcher = syntaxMatchers.firstWhere(
-          (matcher) => matcher.isMatch(line, dialect),
-          orElse: () => null);
+      final matcher = syntaxMatchers
+          .firstWhereOrNull((matcher) => matcher.isMatch(line, dialect));
       if (matcher != null) {
         if (parentSyntaxBlock.hasBlockEnded(matcher)) {
           switch (parentSyntaxBlock.endBlockHandling(matcher)) {

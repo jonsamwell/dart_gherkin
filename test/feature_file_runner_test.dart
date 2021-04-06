@@ -317,7 +317,7 @@ void main() {
 
         final step = StepRunnable(
             'Step 1', RunnableDebugInformation('', 0, 'Given I do a'));
-        step.table = Table(null, null);
+        step.table = Table([], null);
         final scenario = ScenarioRunnable('Scenario: 1', emptyDebuggable)
           ..steps.add(step);
         final feature = FeatureRunnable('1', emptyDebuggable)
