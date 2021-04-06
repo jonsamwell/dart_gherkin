@@ -43,7 +43,8 @@ void main() {
       expect(hookTwo.onAfterScenarioWorldCreatedInvocationCount, 1);
       expect(hookThree.onAfterScenarioWorldCreatedInvocationCount, 1);
       expect(hookFour.onAfterScenarioWorldCreatedInvocationCount, 1);
-      await aggregatedHook.onAfterStep(World(), '', null);
+      await aggregatedHook.onAfterStep(
+          World(), '', StepResult(0, StepExecutionResult.pass));
       expect(hookOne.onAfterStepInvocationCount, 1);
       expect(hookTwo.onAfterStepInvocationCount, 1);
       expect(hookThree.onAfterStepInvocationCount, 1);

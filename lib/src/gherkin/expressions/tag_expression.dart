@@ -88,7 +88,7 @@ class TagExpressionEvaluator {
         final precendence = _operatorPrededence[part.toLowerCase()];
 
         while (operatorQueue.isNotEmpty &&
-            _operatorPrededence[operatorQueue.last] >= precendence) {
+            _operatorPrededence[operatorQueue.last]! >= precendence!) {
           rpn.add(operatorQueue.removeLast());
         }
         operatorQueue.addLast(part);
