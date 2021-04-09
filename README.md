@@ -27,43 +27,39 @@ Available as a Flutter specific package https://pub.dartlang.org/packages/flutte
 
 <!-- TOC -->
 
-* [Getting Started](#getting-started)
-  + [Configuration](#configuration)
-    - [features](#features)
-    - [tagExpression](#tagexpression)
-    - [order](#order)
-    - [featureDefaultLanguage](#defaultLanguage)
-    - [stepDefinitions](#stepdefinitions)
-    - [customStepParameterDefinitions](#customstepparameterdefinitions)
-    - [hooks](#hooks)
-    - [reporters](#reporters)
-    - [createWorld](#createworld)
-    - [exitAfterTestRun](#exitaftertestrun)
-    - [exitAfterTestFailed](#exitAfterTestFailed)
-* [Features Files](#features-files)
-  + [Steps Definitions](#steps-definitions)
-    - [Given](#given)
-    - [Then](#then)
-    - [Expects Assertions](#expects-assertions)
-    - [Step Timeout](#step-timeout)
-    - [Multiline Strings](#multiline-strings)
-    - [Data tables](#data-tables)
-    - [Well known step parameters](#well-known-step-parameters)
-    - [Pluralization](#pluralization)
-    - [Custom Parameters](#custom-parameters)
-    - [World Context (per test scenario shared state)](#world-context-per-test-scenario-shared-state)
-    - [Assertions](#assertions)
-  + [Tags](#tags)
-  + [Languages](#languages)
-* [Hooks](#hooks)
-* [Attachments](#attachments)
-* [Reporting](#reporting)
-* [Flutter](#flutter)
-  + [Restarting the app before each test](#restarting-the-app-before-each-test)
-    - [Flutter World](#flutter-world)
-  + [Pre-defined Steps](#pre-defined-steps)
-    - [Flutter Driver Utilities](#flutter-driver-utilities)
-  + [Debugging](#debugging)
+- [dart_gherkin](#dart_gherkin)
+  - [Table of Contents](#table-of-contents)
+  - [Getting Started](#getting-started)
+    - [Configuration](#configuration)
+      - [features](#features)
+      - [tagExpression](#tagexpression)
+      - [order](#order)
+      - [defaultLanguage](#defaultlanguage)
+      - [stepDefinitions](#stepdefinitions)
+      - [customStepParameterDefinitions](#customstepparameterdefinitions)
+      - [hooks](#hooks)
+      - [attachments](#attachments)
+      - [reporters](#reporters)
+      - [createWorld](#createworld)
+      - [exitAfterTestRun](#exitaftertestrun)
+      - [exitAfterTestFailed](#exitaftertestfailed)
+  - [Features Files](#features-files)
+    - [Steps Definitions](#steps-definitions)
+      - [Given](#given)
+      - [Then](#then)
+      - [Expects Assertions](#expects-assertions)
+      - [Step Timeout](#step-timeout)
+      - [Multiline Strings](#multiline-strings)
+      - [Data tables](#data-tables)
+      - [Well known step parameters](#well-known-step-parameters)
+      - [Pluralization](#pluralization)
+      - [Custom Parameters](#custom-parameters)
+      - [World Context (per test scenario shared state)](#world-context-per-test-scenario-shared-state)
+      - [Assertions](#assertions)
+    - [Tags](#tags)
+    - [Languages](#languages)
+  - [Hooks](#hooks-1)
+  - [Reporting](#reporting)
 
 <!-- /TOC -->
 
@@ -138,7 +134,6 @@ Now that we have a testable app, a feature file and a custom step definition we 
 ``` dart
 import 'dart:async';
 import 'package:gherkin/gherkin.dart';
-import 'package:glob/glob.dart';
 import 'supporting_files/steps/given_the_numbers.step.dart';
 import 'supporting_files/steps/then_expect_numeric_result.step.dart';
 import 'supporting_files/steps/when_numbers_are_added.step.dart';
@@ -180,7 +175,7 @@ The parameters below can be specified in your configuration file:
 
 *Required*
 
-An iterable of `Glob` patterns that specify the location(s) of `*.feature` files to run.  See <https://pub.dartlang.org/packages/glob>
+An iterable of `Pattern` patterns that specify the location(s) of `*.feature` files to run. See <https://api.dart.dev/stable/2.12.2/dart-core/Pattern-class.html>.
 
 #### tagExpression
 
@@ -206,7 +201,6 @@ Place instances of any custom step definition classes `Given` , `Then` , `When` 
 ``` dart
 import 'dart:async';
 import 'package:gherkin/gherkin.dart';
-import 'package:glob/glob.dart';
 import 'supporting_files/steps/given_the_numbers.step.dart';
 import 'supporting_files/steps/then_expect_numeric_result.step.dart';
 import 'supporting_files/steps/when_numbers_are_added.step.dart';
@@ -214,7 +208,7 @@ import 'supporting_files/worlds/custom_world.world.dart';
 
 Future<void> main() {
   final config = TestConfiguration()
-    ..features = [Glob(r"features/**.feature")]
+    ..features = [RegExp(r"features/.*\.feature")]
     ..reporters = [StdoutReporter(MessageLevel.error), ProgressReporter(), TestRunSummaryReporter()]
     ..createWorld = (TestConfiguration config) {
       return Future.value(CalculatorWorld());
@@ -239,7 +233,6 @@ Place instances of any custom step parameters that you have defined.  These will
 ``` dart
 import 'dart:async';
 import 'package:gherkin/gherkin.dart';
-import 'package:glob/glob.dart';
 import 'supporting_files/parameters/power_of_two.parameter.dart';
 import 'supporting_files/steps/given_the_numbers.step.dart';
 import 'supporting_files/steps/given_the_powers_of_two.step.dart';
@@ -309,7 +302,6 @@ By default all the above reporters are included in the `DEFAULT` configuration o
 ``` dart
 import 'dart:async';
 import 'package:gherkin/gherkin.dart';
-import 'package:glob/glob.dart';
 import 'supporting_files/parameters/power_of_two.parameter.dart';
 import 'supporting_files/steps/given_the_numbers.step.dart';
 import 'supporting_files/steps/given_the_powers_of_two.step.dart';
@@ -754,7 +746,6 @@ Finally ensure the hook is added to the hook collection in your configuration fi
 ``` dart
 import 'dart:async';
 import 'package:gherkin/gherkin.dart';
-import 'package:glob/glob.dart';
 import 'supporting_files/hooks/hook_example.dart';
 import 'supporting_files/parameters/power_of_two.parameter.dart';
 import 'supporting_files/steps/given_the_numbers.step.dart';
@@ -765,7 +756,7 @@ import 'supporting_files/worlds/custom_world.world.dart';
 
 Future<void> main() {
   final config = TestConfiguration()
-    ..features = [Glob(r"features/**.feature")]
+    ..features = [RegExp(r"features/.*\.feature")]
     ..reporters = [StdoutReporter(MessageLevel.error), ProgressReporter(), TestRunSummaryReporter()]
     ..hooks = [HookExample()]
     ..customStepParameterDefinitions = [PowerOfTwoParameter()]

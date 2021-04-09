@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:gherkin/src/gherkin/languages/language_service.dart';
 
@@ -39,13 +40,14 @@ class GherkinRunner {
     _languageService.initialise(config.featureDefaultLanguage);
 
     var featureFiles = <FeatureFile>[];
-    for (var glob in config.features) {
-      for (var entity in glob.listSync()) {
+    for (var pattern in config.features) {
+      final paths = await config.featureFileIndexer.listFiles(pattern);
+      for (var path in paths) {
         await _reporter.message(
-            "Found feature file '${entity.path}'", MessageLevel.verbose);
-        final contents = File(entity.path).readAsStringSync();
+            "Found feature file '${path}'", MessageLevel.verbose);
+        final contents = await config.featureFileReader.readAsString(path);
         final featureFile = await _parser.parseFeatureFile(
-            contents, entity.path, _reporter, _languageService);
+            contents, path, _reporter, _languageService);
         featureFiles.add(featureFile);
       }
     }
