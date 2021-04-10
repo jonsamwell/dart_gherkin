@@ -6,17 +6,21 @@ import 'package:gherkin/src/io/indexer/feature_file_indexer.dart';
 class IoFeatureFileIndexer implements FeatureFileIndexer {
   @override
   Future<List<String>> listFiles(Pattern pattern) async {
-    final directoryContents = await _directoryContents(Directory.current);
-    return directoryContents
-        .map((e) => relative(e.path, from: Directory.current.path))
-        .where((e) => pattern.allMatches(e).isNotEmpty)
-        .toList();
+    return await _directoryContents(Directory.current, pattern);
   }
 
-  Future<List<FileSystemEntity>> _directoryContents(Directory dir) async {
-    final result = <FileSystemEntity>[];
-    await dir.list(recursive: true).forEach((event) {
-      result.add(event);
+  /// Returns list of relative paths from [dir] which math [pattern].
+  Future<List<String>> _directoryContents(
+      Directory dir, Pattern pattern) async {
+    final result = <String>[];
+    await dir.list(recursive: true).forEach((item) {
+      if (item is File) {
+        final relativePath = relative(item.path, from: Directory.current.path);
+        final match = pattern.matchAsPrefix(relativePath);
+        if (match?.group(0) == relativePath) {
+          result.add(relativePath);
+        }
+      }
     });
     return result;
   }

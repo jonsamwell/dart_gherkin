@@ -36,6 +36,7 @@ Available as a Flutter specific package https://pub.dartlang.org/packages/flutte
     - [stepDefinitions](#stepdefinitions)
     - [customStepParameterDefinitions](#customstepparameterdefinitions)
     - [hooks](#hooks)
+      - [attachments](#attachments)
     - [reporters](#reporters)
     - [createWorld](#createworld)
     - [exitAfterTestRun](#exitaftertestrun)
@@ -179,7 +180,8 @@ The parameters below can be specified in your configuration file:
 
 *Required*
 
-An iterable of `Pattern` patterns that specify the location(s) of `*.feature` files to run. See <https://api.dart.dev/stable/2.12.2/dart-core/Pattern-class.html>.
+An iterable of `Pattern` patterns that specify the location(s) of `*.feature` files to run. 
+Could be [Pattern](https://api.dart.dev/stable/2.12.2/dart-core/Pattern-class.html), [Glob](https://pub.dartlang.org/packages/glob) or just `String`.
 
 #### tagExpression
 
@@ -343,6 +345,89 @@ Future<void> main() {
     ..createWorld = (TestConfiguration config) {
       return Future.value(CalculatorWorld());
     };
+
+  return GherkinRunner().execute(config);
+}
+```
+
+#### featureFileIndexer
+
+`FeatureFileIndexer` is an interface for feature files lookup.
+Defaults to `IoFeatureFileIndexer`, which lists files from current execution directory that match `features` patterns (similar to Glob).
+
+An example of override would be Flutter asset lookup:
+
+``` dart
+class FlutterFeatureFilesIndexer implements FeatureFileIndexer {
+  @override
+  Future<List<String>> listFiles(Pattern pattern) async {
+    final manifest = await rootBundle.loadString('AssetManifest.json');
+    final Map<String, dynamic> manifestMap = jsonDecode(manifest);
+
+    return manifestMap.keys
+        .where((element) {
+          final match = pattern.matchAsPrefix(element);
+          return match?.group(0) == element;
+        })
+        .toList();
+  }
+}
+
+Future<void> main() {
+  final steps = [
+      GivenTheNumbers(),
+      WhenTheStoredNumbersAreAdded(),
+      ThenExpectNumericResult()
+  ];
+  final config = TestConfiguration.DEFAULT(steps)
+    ..featureFileIndexer = FlutterFeatureFilesIndexer();
+
+  return GherkinRunner().execute(config);
+}
+```
+
+#### featureFileReader
+
+`FeatureFileReader` is an interface for feature files content read.
+Defaults to `IoFeatureFileReader`, which reads files as String with [utf-8 encoding](https://api.dart.dev/stable/2.12.2/dart-convert/utf8-constant.html).
+
+To change encoding, use the default `IoFeatureFileReader` with custom [Encoding](https://api.dart.dev/stable/2.12.2/dart-convert/Encoding-class.html).
+
+``` dart
+import dart:convert;
+
+Future<void> main() {
+  final steps = [
+      GivenTheNumbers(),
+      WhenTheStoredNumbersAreAdded(),
+      ThenExpectNumericResult()
+  ];
+  final config = TestConfiguration.DEFAULT(steps)
+    ..featureFileReader = IoFeatureFileReader(latin1);
+
+  return GherkinRunner().execute(config);
+}
+```
+
+An example of override would be Flutter asset loading:
+
+``` dart
+class FlutterFeatureFileReader implements FeatureFileReader {
+  @override
+  Future<String> readAsString(String path) async {
+    return await rootBundle.loadString(path);
+  }
+}
+
+Future<void> main() {
+  final steps = [
+      GivenTheNumbers(),
+      WhenTheStoredNumbersAreAdded(),
+      ThenExpectNumericResult()
+  ];
+  final config = TestConfiguration.DEFAULT(steps)
+    ..featureFileIndexer = FlutterFeatureFilesIndexer()
+    ..featureFileReader = FlutterFeatureFileReader();
 
   return GherkinRunner().execute(config);
 }

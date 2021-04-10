@@ -19,7 +19,8 @@ typedef CreateAttachmentManager = Future<AttachmentManager> Function(
 enum ExecutionOrder { sequential, random }
 
 class TestConfiguration {
-  /// The path(s) to all the features
+  /// The path(s) to all the features.
+  /// All three [Pattern]s all supported: [RegExp], [String], [Glob].
   Iterable<Pattern> features;
 
   /// The default feature language

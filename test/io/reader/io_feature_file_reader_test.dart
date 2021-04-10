@@ -9,7 +9,7 @@ void main() {
       final indexer = IoFeatureFileReader();
 
       expect(
-        await indexer.readAsString(('test_resources/a.feature')),
+        await indexer.readAsString('test_resources/a.feature'),
         'Feature: A',
       );
     });
