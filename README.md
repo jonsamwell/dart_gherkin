@@ -36,7 +36,7 @@ Available as a Flutter specific package https://pub.dartlang.org/packages/flutte
     - [stepDefinitions](#stepdefinitions)
     - [customStepParameterDefinitions](#customstepparameterdefinitions)
     - [hooks](#hooks)
-      - [attachments](#attachments)
+    - [attachments](#attachments)
     - [reporters](#reporters)
     - [createWorld](#createworld)
     - [exitAfterTestRun](#exitaftertestrun)
