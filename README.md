@@ -355,37 +355,6 @@ Future<void> main() {
 `FeatureFileIndexer` is an interface for feature files lookup.
 Defaults to `IoFeatureFileIndexer`, which lists files from current execution directory that match `features` patterns (similar to Glob).
 
-An example of override would be Flutter asset lookup:
-
-``` dart
-class FlutterFeatureFilesIndexer implements FeatureFileIndexer {
-  @override
-  Future<List<String>> listFiles(Pattern pattern) async {
-    final manifest = await rootBundle.loadString('AssetManifest.json');
-    final Map<String, dynamic> manifestMap = jsonDecode(manifest);
-
-    return manifestMap.keys
-        .where((element) {
-          final match = pattern.matchAsPrefix(element);
-          return match?.group(0) == element;
-        })
-        .toList();
-  }
-}
-
-Future<void> main() {
-  final steps = [
-      GivenTheNumbers(),
-      WhenTheStoredNumbersAreAdded(),
-      ThenExpectNumericResult()
-  ];
-  final config = TestConfiguration.DEFAULT(steps)
-    ..featureFileIndexer = FlutterFeatureFilesIndexer();
-
-  return GherkinRunner().execute(config);
-}
-```
-
 #### featureFileReader
 
 `FeatureFileReader` is an interface for feature files content read.
@@ -404,30 +373,6 @@ Future<void> main() {
   ];
   final config = TestConfiguration.DEFAULT(steps)
     ..featureFileReader = IoFeatureFileReader(latin1);
-
-  return GherkinRunner().execute(config);
-}
-```
-
-An example of override would be Flutter asset loading:
-
-``` dart
-class FlutterFeatureFileReader implements FeatureFileReader {
-  @override
-  Future<String> readAsString(String path) async {
-    return await rootBundle.loadString(path);
-  }
-}
-
-Future<void> main() {
-  final steps = [
-      GivenTheNumbers(),
-      WhenTheStoredNumbersAreAdded(),
-      ThenExpectNumericResult()
-  ];
-  final config = TestConfiguration.DEFAULT(steps)
-    ..featureFileIndexer = FlutterFeatureFilesIndexer()
-    ..featureFileReader = FlutterFeatureFileReader();
 
   return GherkinRunner().execute(config);
 }
