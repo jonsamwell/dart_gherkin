@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 import 'package:gherkin/src/gherkin/languages/language_service.dart';
 
 import './configuration.dart';
@@ -98,9 +97,8 @@ class GherkinRunner {
     }
 
     await _reporter.dispose();
-    exitCode = allFeaturesPassed ? 0 : 1;
 
-    if (config.exitAfterTestRun) exit(allFeaturesPassed ? 0 : 1);
+    if (config.exitAfterTestRun && allFeaturesPassed) throw 'Tests failed';
   }
 
   void _registerStepDefinitions(
