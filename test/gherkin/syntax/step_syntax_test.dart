@@ -6,6 +6,7 @@ import 'package:gherkin/src/gherkin/syntax/table_line_syntax.dart';
 import 'package:test/test.dart';
 
 import '../../mocks/en_dialect_mock.dart';
+import '../../mocks/fr_dialect_mock.dart';
 
 void main() {
   group('isMatch', () {
@@ -53,6 +54,22 @@ void main() {
           syntax.isMatch(
             'when I do something',
             EnDialectMock(),
+          ),
+          true);
+    });
+
+    test('matches french when & when he (Lorsqu & Lorsqu\'il) correctly', () {
+      final syntax = StepSyntax();
+      expect(
+          syntax.isMatch(
+            'Lorsque il va acheter sa baguette',
+            FrDialectMock(),
+          ),
+          true);
+      expect(
+          syntax.isMatch(
+            "Lorsqu'il va acheter sa baguette",
+            FrDialectMock(),
           ),
           true);
     });

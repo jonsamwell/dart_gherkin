@@ -16,11 +16,11 @@ typedef CreateAttachmentManager = Future<AttachmentManager> Function(
   TestConfiguration config,
 );
 
-enum ExecutionOrder { sequential, random, sorted }
+enum ExecutionOrder { sequential, random, alphabetical }
 
 class TestConfiguration {
   /// The path(s) to all the features.
-  /// All three [Pattern]s all supported: [RegExp], [String], [Glob].
+  /// All three [Pattern]s are supported: [RegExp], [String], [Glob].
   Iterable<Pattern> features;
 
   /// The default feature language
@@ -81,7 +81,7 @@ class TestConfiguration {
   /// Additional setting on the configuration object can be set on the returned instance.
   static TestConfiguration DEFAULT(
     Iterable<StepDefinitionGeneric<World>> steps, {
-    String featurePath = 'features/.*\.feature',
+    String featurePath = r'features\\.*\.feature',
   }) {
     return TestConfiguration()
       ..features = [RegExp(featurePath)]

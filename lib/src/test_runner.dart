@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:gherkin/src/gherkin/languages/language_service.dart';
 
 import './configuration.dart';
@@ -38,75 +39,101 @@ class GherkinRunner {
     _registerStepDefinitions(config.stepDefinitions);
     _languageService.initialise(config.featureDefaultLanguage);
 
-    var featureFiles = <FeatureFile>[];
-    for (var pattern in config.features) {
-      final paths = await config.featureFileIndexer.listFiles(pattern);
-      for (var path in paths) {
-        await _reporter.message(
-            "Found feature file '${path}'", MessageLevel.verbose);
-        final contents = await config.featureFileReader.readAsString(path);
-        final featureFile = await _parser.parseFeatureFile(
-            contents, path, _reporter, _languageService);
-        featureFiles.add(featureFile);
-      }
-    }
+    var featureFiles = await _getFeatureFiles(config);
 
     var allFeaturesPassed = true;
 
-    if (featureFiles.isEmpty) {
+    if (config.order == ExecutionOrder.random) {
       await _reporter.message(
-        'No feature files found to run, exiting without running any scenarios',
-        MessageLevel.warning,
-      );
-    } else {
-      await _reporter.message(
-        'Found ${featureFiles.length} feature file(s) to run',
+        'Executing features in random order',
         MessageLevel.info,
       );
-
-      if (config.order == ExecutionOrder.random) {
-        await _reporter.message(
-          'Executing features in random order',
-          MessageLevel.info,
-        );
-        featureFiles = featureFiles.toList()..shuffle();
-      } else if (config.order == ExecutionOrder.sorted) {
-        await _reporter.message(
-          'Executing features in sorted order',
-          MessageLevel.info,
-        );
-        featureFiles
-            .sort((FeatureFile a, FeatureFile b) => a.name.compareTo(b.name));
-      }
-
-
-      await _hook.onBeforeRun(config);
-
-      try {
-        await _reporter.onTestRunStarted();
-        for (var featureFile in featureFiles) {
-          final runner = FeatureFileRunner(
-            config,
-            _tagExpressionEvaluator,
-            _executableSteps,
-            _reporter,
-            _hook,
-          );
-          allFeaturesPassed &= await runner.run(featureFile);
-          if (config.exitAfterTestFailed && !allFeaturesPassed) {
-            break;
-          }
-        }
-      } finally {
-        await _reporter.onTestRunFinished();
-      }
-
-      await _hook.onAfterRun(config);
+      featureFiles = featureFiles.toList()..shuffle();
+    } else if (config.order == ExecutionOrder.alphabetical) {
+      await _reporter.message(
+        'Executing features in sorted order',
+        MessageLevel.info,
+      );
+      featureFiles.sort(
+        (FeatureFile a, FeatureFile b) => a.name.compareTo(b.name),
+      );
     }
 
-    await _reporter.dispose();
+    await _hook.onBeforeRun(config);
 
-    if (config.exitAfterTestRun && allFeaturesPassed) throw 'Tests failed';
+    try {
+      await _reporter.onTestRunStarted();
+      for (var featureFile in featureFiles) {
+        final runner = FeatureFileRunner(
+          config,
+          _tagExpressionEvaluator,
+          _executableSteps,
+          _reporter,
+          _hook,
+        );
+        allFeaturesPassed &= await runner.run(featureFile);
+        if (config.exitAfterTestFailed && !allFeaturesPassed) {
+          break;
+        }
+      }
+    } finally {
+      await _reporter.onTestRunFinished();
+      await _hook.onAfterRun(config);
+      await _reporter.dispose();
+
+      exitCode = allFeaturesPassed ? 0 : 1;
+
+      if (config.exitAfterTestRun) {
+        exit(allFeaturesPassed ? 0 : 1);
+      }
+    }
+  }
+
+  Future<List<FeatureFile>> _getFeatureFiles(TestConfiguration config) async {
+    try {
+      final featureFiles = <FeatureFile>[];
+
+      for (var pattern in config.features) {
+        final paths = await config.featureFileIndexer.listFiles(pattern);
+
+        for (var path in paths) {
+          await _reporter.message(
+            "Found feature file '${path}'",
+            MessageLevel.verbose,
+          );
+
+          final contents = await config.featureFileReader.readAsString(path);
+          final featureFile = await _parser.parseFeatureFile(
+            contents,
+            path,
+            _reporter,
+            _languageService,
+          );
+
+          featureFiles.add(featureFile);
+        }
+      }
+
+      if (featureFiles.isEmpty) {
+        await _reporter.message(
+          'No feature files found to run, exiting without running any scenarios',
+          MessageLevel.warning,
+        );
+      } else {
+        await _reporter.message(
+          'Found ${featureFiles.length} feature file(s) to run',
+          MessageLevel.info,
+        );
+      }
+
+      return featureFiles;
+    } catch (e) {
+      throw Exception(
+        'Error when trying to find feature files with patterns'
+        '${config.features.map((e) => e.toString()).join(', ')}`'
+        'ERROR: `${e.toString()}`',
+      );
+    }
   }
 
   void _registerStepDefinitions(

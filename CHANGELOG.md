@@ -1,8 +1,11 @@
 ## [1.2.0] - 11/02/2021
 
 * BREAKING CHANGE: `Table` has been renamed to `GherkinTable` to avoid naming clashes
+* The searching of feature files have been abstracted so it does not rely on the `glob` package thanks to @marcin-jelenski
+* Execution order can now be sorted alphabetically to ensure a consistent order thanks to @bartonhammond
 * Fixed #22 Tags are not taking into account after an `Example` block
 * Fixed #23: Multiline strings to support YAML format thanks to @tshedor for the PR!
+* Fixed #29: French keyword "Lorsqu'il" makes parser crash
 
 ## [1.1.10] - 06/01/2021
 
