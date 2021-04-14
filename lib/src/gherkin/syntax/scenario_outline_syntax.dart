@@ -1,5 +1,4 @@
 import 'package:gherkin/src/gherkin/languages/dialect.dart';
-import 'package:gherkin/src/gherkin/syntax/tag_syntax.dart';
 
 import '../runnables/scenario_outline.dart';
 import '../runnables/debug_information.dart';
@@ -21,9 +20,8 @@ class ScenarioOutlineSyntax extends RegExMatchedGherkinSyntax {
 
   @override
   bool hasBlockEnded(SyntaxMatcher syntax) =>
-      syntax is ScenarioOutlineSyntax ||
-      syntax is ScenarioSyntax;// ||
-      // syntax is TagSyntax;
+      syntax is ScenarioOutlineSyntax || syntax is ScenarioSyntax; // ||
+  // syntax is TagSyntax;
 
   @override
   Runnable toRunnable(
