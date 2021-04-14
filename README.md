@@ -36,6 +36,7 @@ Available as a Flutter specific package https://pub.dartlang.org/packages/flutte
     - [stepDefinitions](#stepdefinitions)
     - [customStepParameterDefinitions](#customstepparameterdefinitions)
     - [hooks](#hooks)
+    - [attachments](#attachments)
     - [reporters](#reporters)
     - [createWorld](#createworld)
     - [exitAfterTestRun](#exitaftertestrun)
@@ -138,7 +139,6 @@ Now that we have a testable app, a feature file and a custom step definition we 
 ``` dart
 import 'dart:async';
 import 'package:gherkin/gherkin.dart';
-import 'package:glob/glob.dart';
 import 'supporting_files/steps/given_the_numbers.step.dart';
 import 'supporting_files/steps/then_expect_numeric_result.step.dart';
 import 'supporting_files/steps/when_numbers_are_added.step.dart';
@@ -180,7 +180,8 @@ The parameters below can be specified in your configuration file:
 
 *Required*
 
-An iterable of `Glob` patterns that specify the location(s) of `*.feature` files to run.  See <https://pub.dartlang.org/packages/glob>
+An iterable of `Pattern` patterns that specify the location(s) of `*.feature` files to run. 
+Could be [Pattern](https://api.dart.dev/stable/2.12.2/dart-core/Pattern-class.html), [Glob](https://pub.dartlang.org/packages/glob) or just `String`.
 
 #### tagExpression
 
@@ -206,7 +207,6 @@ Place instances of any custom step definition classes `Given` , `Then` , `When` 
 ``` dart
 import 'dart:async';
 import 'package:gherkin/gherkin.dart';
-import 'package:glob/glob.dart';
 import 'supporting_files/steps/given_the_numbers.step.dart';
 import 'supporting_files/steps/then_expect_numeric_result.step.dart';
 import 'supporting_files/steps/when_numbers_are_added.step.dart';
@@ -214,7 +214,7 @@ import 'supporting_files/worlds/custom_world.world.dart';
 
 Future<void> main() {
   final config = TestConfiguration()
-    ..features = [Glob(r"features/**.feature")]
+    ..features = [RegExp(r"features/.*\.feature")]
     ..reporters = [StdoutReporter(MessageLevel.error), ProgressReporter(), TestRunSummaryReporter()]
     ..createWorld = (TestConfiguration config) {
       return Future.value(CalculatorWorld());
@@ -239,7 +239,6 @@ Place instances of any custom step parameters that you have defined.  These will
 ``` dart
 import 'dart:async';
 import 'package:gherkin/gherkin.dart';
-import 'package:glob/glob.dart';
 import 'supporting_files/parameters/power_of_two.parameter.dart';
 import 'supporting_files/steps/given_the_numbers.step.dart';
 import 'supporting_files/steps/given_the_powers_of_two.step.dart';
@@ -309,7 +308,6 @@ By default all the above reporters are included in the `DEFAULT` configuration o
 ``` dart
 import 'dart:async';
 import 'package:gherkin/gherkin.dart';
-import 'package:glob/glob.dart';
 import 'supporting_files/parameters/power_of_two.parameter.dart';
 import 'supporting_files/steps/given_the_numbers.step.dart';
 import 'supporting_files/steps/given_the_powers_of_two.step.dart';
@@ -347,6 +345,34 @@ Future<void> main() {
     ..createWorld = (TestConfiguration config) {
       return Future.value(CalculatorWorld());
     };
+
+  return GherkinRunner().execute(config);
+}
+```
+
+#### featureFileIndexer
+
+`FeatureFileIndexer` is an interface for feature files lookup.
+Defaults to `IoFeatureFileIndexer`, which lists files from current execution directory that match `features` patterns (similar to Glob).
+
+#### featureFileReader
+
+`FeatureFileReader` is an interface for feature files content read.
+Defaults to `IoFeatureFileReader`, which reads files as String with [utf-8 encoding](https://api.dart.dev/stable/2.12.2/dart-convert/utf8-constant.html).
+
+To change encoding, use the default `IoFeatureFileReader` with custom [Encoding](https://api.dart.dev/stable/2.12.2/dart-convert/Encoding-class.html).
+
+``` dart
+import dart:convert;
+
+Future<void> main() {
+  final steps = [
+      GivenTheNumbers(),
+      WhenTheStoredNumbersAreAdded(),
+      ThenExpectNumericResult()
+  ];
+  final config = TestConfiguration.DEFAULT(steps)
+    ..featureFileReader = IoFeatureFileReader(latin1);
 
   return GherkinRunner().execute(config);
 }
@@ -754,7 +780,6 @@ Finally ensure the hook is added to the hook collection in your configuration fi
 ``` dart
 import 'dart:async';
 import 'package:gherkin/gherkin.dart';
-import 'package:glob/glob.dart';
 import 'supporting_files/hooks/hook_example.dart';
 import 'supporting_files/parameters/power_of_two.parameter.dart';
 import 'supporting_files/steps/given_the_numbers.step.dart';
@@ -765,7 +790,7 @@ import 'supporting_files/worlds/custom_world.world.dart';
 
 Future<void> main() {
   final config = TestConfiguration()
-    ..features = [Glob(r"features/**.feature")]
+    ..features = [RegExp(r"features/.*\.feature")]
     ..reporters = [StdoutReporter(MessageLevel.error), ProgressReporter(), TestRunSummaryReporter()]
     ..hooks = [HookExample()]
     ..customStepParameterDefinitions = [PowerOfTwoParameter()]
