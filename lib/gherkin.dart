@@ -44,3 +44,9 @@ export 'src/gherkin/exceptions/gherkin_exception.dart';
 export 'src/gherkin/exceptions/parameter_count_mismatch_error.dart';
 export 'src/gherkin/exceptions/step_not_defined_error.dart';
 export 'src/gherkin/exceptions/syntax_error.dart';
+
+// IO
+export 'src/io/indexer/feature_file_indexer.dart';
+export 'src/io/indexer/io_feature_file_indexer.dart';
+export 'src/io/reader/feature_file_reader.dart';
+export 'src/io/reader/io_feature_file_reader.dart';

@@ -1,5 +1,4 @@
-import 'dart:io';
-
+import 'dart:async';
 import 'package:gherkin/src/gherkin/languages/language_service.dart';
 import 'package:glob/list_local_fs.dart';
 
@@ -41,13 +40,15 @@ class GherkinRunner {
     _languageService.initialise(config.featureDefaultLanguage);
 
     var featureFiles = <FeatureFile>[];
-
     if (config.features != null) {
-      for (var glob in config.features!) {
-        for (var entity in glob.listSync()) {
-          await _reporter.message("Found feature file '${entity.path}'", MessageLevel.verbose);
-          final contents = File(entity.path).readAsStringSync();
-          final featureFile = await _parser.parseFeatureFile(contents, entity.path, _reporter, _languageService);
+      for (var pattern in config.features) {
+        final paths = await config.featureFileIndexer.listFiles(pattern);
+        for (var path in paths) {
+          await _reporter.message(
+              "Found feature file '${path}'", MessageLevel.verbose);
+          final contents = await config.featureFileReader.readAsString(path);
+          final featureFile = await _parser.parseFeatureFile(
+              contents, path, _reporter, _languageService);
           featureFiles.add(featureFile);
         }
       }
@@ -99,9 +100,8 @@ class GherkinRunner {
     }
 
     await _reporter.dispose();
-    exitCode = allFeaturesPassed ? 0 : 1;
 
-    if (config.exitAfterTestRun) exit(allFeaturesPassed ? 0 : 1);
+    if (config.exitAfterTestRun && allFeaturesPassed) throw 'Tests failed';
   }
 
   void _registerStepDefinitions(
