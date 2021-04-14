@@ -98,7 +98,7 @@ class GherkinRunner {
 
         for (var path in paths) {
           await _reporter.message(
-            "Found feature file '${path}'",
+            "Found feature file '$path'",
             MessageLevel.verbose,
           );
 

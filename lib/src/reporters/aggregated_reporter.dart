@@ -86,6 +86,6 @@ class AggregatedReporter extends Reporter implements SerializableReporter {
           .join(',');
     }
 
-    return '[${jsonReports}]';
+    return '[$jsonReports]';
   }
 }
