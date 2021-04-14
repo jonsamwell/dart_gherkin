@@ -143,14 +143,14 @@ class FeatureFileRunner {
   ) {
     final completer = Completer<bool>();
     // ensure unhandled errors do not cause the entire test run to crash
-    runZoned(
+    runZonedGuarded(
       () async {
         final result = await _runScenario(scenario, background);
         if (!completer.isCompleted) {
           completer.complete(result);
         }
       },
-      onError: (dynamic error, dynamic stack) {
+      (dynamic error, dynamic stack) {
         if (!completer.isCompleted) {
           // this is a special type of exception that indicates something is wrong
           // with the test rather than the test execution so fail the whole run as
