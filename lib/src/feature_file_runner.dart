@@ -39,7 +39,7 @@ class FeatureFileRunner {
     var haveAllFeaturesPassed = true;
     for (var feature in featureFile.features) {
       haveAllFeaturesPassed &= await _runFeature(feature);
-      if (_config.exitAfterTestFailed && !haveAllFeaturesPassed) {
+      if (_config.stopAfterTestFailed && !haveAllFeaturesPassed) {
         break;
       }
     }
@@ -75,7 +75,7 @@ class FeatureFileRunner {
         if (_canRunScenario(_config.tagExpression, scenario)) {
           haveAllScenariosPassed &=
               await _runScenarioInZone(scenario, feature.background);
-          if (_config.exitAfterTestFailed && !haveAllScenariosPassed) {
+          if (_config.stopAfterTestFailed && !haveAllScenariosPassed) {
             break;
           }
         } else {

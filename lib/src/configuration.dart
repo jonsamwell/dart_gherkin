@@ -63,11 +63,8 @@ class TestConfiguration {
   // Takes files/resources paths from [featureFileIndexer] and returns their content as String.
   FeatureFileReader featureFileReader = IoFeatureFileAccessor();
 
-  /// the program will exit after all the tests have run
-  bool exitAfterTestRun = true;
-
-  /// the program will exit after any test failed
-  bool exitAfterTestFailed = false;
+  /// the program will stop after any test failed
+  bool stopAfterTestFailed = false;
 
   /// used to allow for custom configuration to ensure framework specific configuration is in place
   void prepare() {}
@@ -91,7 +88,6 @@ class TestConfiguration {
         JsonReporter(path: './report.json')
       ]
       ..stepDefinitions = steps
-      ..exitAfterTestRun = true
-      ..exitAfterTestFailed = false;
+      ..stopAfterTestFailed = false;
   }
 }

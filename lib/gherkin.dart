@@ -54,6 +54,7 @@ export 'src/gherkin/exceptions/gherkin_exception.dart';
 export 'src/gherkin/exceptions/parameter_count_mismatch_error.dart';
 export 'src/gherkin/exceptions/step_not_defined_error.dart';
 export 'src/gherkin/exceptions/syntax_error.dart';
+export 'src/gherkin/exceptions/test_run_failed_exception.dart';
 
 // Parser
 export 'src/gherkin/ast/feature_file_visitor.dart';

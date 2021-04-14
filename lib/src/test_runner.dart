@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:io';
+import 'package:gherkin/gherkin.dart';
 import 'package:gherkin/src/gherkin/languages/language_service.dart';
 
 import './configuration.dart';
@@ -21,6 +21,7 @@ import './hooks/hook.dart';
 import './reporters/aggregated_reporter.dart';
 import './reporters/message_level.dart';
 import './reporters/reporter.dart';
+import 'gherkin/exceptions/test_run_failed_exception.dart';
 
 class GherkinRunner {
   final _reporter = AggregatedReporter();
@@ -72,7 +73,7 @@ class GherkinRunner {
           _hook,
         );
         allFeaturesPassed &= await runner.run(featureFile);
-        if (config.exitAfterTestFailed && !allFeaturesPassed) {
+        if (config.stopAfterTestFailed && !allFeaturesPassed) {
           break;
         }
       }
@@ -81,10 +82,8 @@ class GherkinRunner {
       await _hook.onAfterRun(config);
       await _reporter.dispose();
 
-      exitCode = allFeaturesPassed ? 0 : 1;
-
-      if (config.exitAfterTestRun) {
-        exit(allFeaturesPassed ? 0 : 1);
+      if (!allFeaturesPassed) {
+        throw GherkinTestRunFailedException();
       }
     }
   }
