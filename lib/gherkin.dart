@@ -61,3 +61,9 @@ export 'src/gherkin/languages/language_service.dart';
 export 'src/gherkin/steps/executable_step.dart';
 export 'src/gherkin/expressions/gherkin_expression.dart';
 export 'src/gherkin/expressions/tag_expression.dart';
+
+// IO
+export 'src/io/indexer/feature_file_indexer.dart';
+export 'src/io/indexer/io_feature_file_indexer.dart';
+export 'src/io/reader/feature_file_reader.dart';
+export 'src/io/reader/io_feature_file_reader.dart';
