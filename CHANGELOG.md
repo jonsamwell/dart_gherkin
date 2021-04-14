@@ -1,7 +1,7 @@
 ## [1.2.0] - 11/02/2021
 
 * BREAKING CHANGE: `Table` has been renamed to `GherkinTable` to avoid naming clashes
-* The searching of feature files have been abstracted so it does not rely on the `glob` package thanks to @marcin-jelenski
+* POSSIBLE BREAKING CHANGE: Feature file discovery has been refactored to abstract it from the external `Glob` dependency.  It now support the three native dart `Patterns` (String, RegExp & Glob).  There is potential here your patterns may not work anymore due as the default `IoFeatureFileAccessor` assumes the current directory is the working directory to search from. Thanks to @marcin-jelenski for the PR
 * Execution order can now be sorted alphabetically to ensure a consistent order thanks to @bartonhammond
 * Fixed #22 Tags are not taking into account after an `Example` block
 * Fixed #23: Multiline strings to support YAML format thanks to @tshedor for the PR!

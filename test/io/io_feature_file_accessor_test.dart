@@ -1,10 +1,12 @@
-import 'package:gherkin/src/io/indexer/io_feature_file_indexer.dart';
+import 'dart:io';
+
+import 'package:gherkin/gherkin.dart';
 import 'package:glob/glob.dart';
 import 'package:test/test.dart';
 
 void main() {
-  group('file indexer', () {
-    final indexer = IoFeatureFileIndexer();
+  group('Matcher', () {
+    final indexer = IoFeatureFileAccessor();
 
     group('with RegExp', () {
       test('lists all matching files', () async {
@@ -104,6 +106,26 @@ void main() {
           [],
         );
       });
+    });
+  });
+
+  group('Reader', () {
+    test('file contents are read', () async {
+      final indexer = IoFeatureFileAccessor();
+
+      expect(
+        await indexer.read('test/test_resources/a.feature'),
+        'Feature: A',
+      );
+    });
+
+    test('file system exception is thrown when file does not exist', () async {
+      final indexer = IoFeatureFileAccessor();
+
+      expect(
+        indexer.read('nonexistentpath'),
+        throwsA(TypeMatcher<FileSystemException>()),
+      );
     });
   });
 }

@@ -102,7 +102,7 @@ class GherkinRunner {
             MessageLevel.verbose,
           );
 
-          final contents = await config.featureFileReader.readAsString(path);
+          final contents = await config.featureFileReader.read(path);
           final featureFile = await _parser.parseFeatureFile(
             contents,
             path,

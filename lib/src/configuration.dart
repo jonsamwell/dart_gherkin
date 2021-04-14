@@ -1,6 +1,6 @@
-import 'package:gherkin/src/io/indexer/feature_file_indexer.dart';
-import 'package:gherkin/src/io/indexer/io_feature_file_indexer.dart';
-import 'package:gherkin/src/io/reader/feature_file_reader.dart';
+import 'package:gherkin/src/io/feature_file_matcher.dart';
+import 'package:gherkin/src/io/io_feature_file_accessor.dart';
+import 'package:gherkin/src/io/feature_file_reader.dart';
 
 import '../gherkin.dart';
 import './gherkin/parameters/custom_parameter.dart';
@@ -9,7 +9,6 @@ import './hooks/hook.dart';
 import './reporters/reporter.dart';
 
 import 'gherkin/attachments/attachment_manager.dart';
-import 'io/reader/io_feature_file_reader.dart';
 
 typedef CreateWorld = Future<World> Function(TestConfiguration config);
 typedef CreateAttachmentManager = Future<AttachmentManager> Function(
@@ -58,11 +57,11 @@ class TestConfiguration {
   CreateWorld createWorld;
 
   // Lists feature files paths, which match [features] patterns.
-  FeatureFileIndexer featureFileIndexer = IoFeatureFileIndexer();
+  FeatureFileMatcher featureFileIndexer = IoFeatureFileAccessor();
 
   // The feature file reader.
   // Takes files/resources paths from [featureFileIndexer] and returns their content as String.
-  FeatureFileReader featureFileReader = IoFeatureFileReader();
+  FeatureFileReader featureFileReader = IoFeatureFileAccessor();
 
   /// the program will exit after all the tests have run
   bool exitAfterTestRun = true;
