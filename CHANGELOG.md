@@ -1,4 +1,4 @@
-## [1.2.0] - 11/02/2021
+## [1.2.0] - 15/02/2021
 
 NOTE: Massive changes here due to the migration to null-safety and laying the foundation for code generation to enable testing Flutter apps using the `integration_test` package.
 
