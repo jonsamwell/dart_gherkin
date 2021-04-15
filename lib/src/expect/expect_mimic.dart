@@ -47,7 +47,7 @@ class ExpectMimic {
     String? reason,
   }) {
     final matchState = {};
-    matcher = _wrapMatcher(matcher);
+    matcher = wrapMatcher(matcher);
     final result = matcher.matches(actualValue, matchState);
     final formatter = (actual, matcher, reason, matchState, verbose) {
       final mismatchDescription = StringDescription();
@@ -61,22 +61,6 @@ class ExpectMimic {
     if (!result) {
       throw GherkinTestFailure(formatter(
           actualValue, matcher as Matcher, reason, matchState, false));
-    }
-  }
-
-  Matcher _wrapMatcher(x) {
-    if (x is Matcher) {
-      return x;
-    } else if (x is bool Function(Object?)) {
-      // x is already a predicate that can handle anything
-      return predicate(x);
-    } else if (x is bool Function(Never)) {
-      // x is a unary predicate, but expects a specific type
-      // so wrap it.
-      // ignore: unnecessary_lambdas
-      return predicate((a) => (x as dynamic)(a));
-    } else {
-      return equals(x);
     }
   }
 }
