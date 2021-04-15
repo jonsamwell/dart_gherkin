@@ -1,3 +1,5 @@
+import 'package:gherkin/src/expect/expect_mimic.dart';
+
 import '../../reporters/reporter.dart';
 import './step_configuration.dart';
 import './step_definition.dart';
@@ -15,13 +17,11 @@ abstract class StepDefinitionBase<TWorld extends World>
     matcher, {
     String? reason,
   }) =>
-      {
-        // ExpectMimic().expect(
-        //     actual,
-        //     matcher,
-        //     reason: reason,
-        //   );
-      };
+      ExpectMimic().expect(
+        actual,
+        matcher,
+        reason: reason,
+      );
 
   void expectA(
     actual,
@@ -168,13 +168,11 @@ class StepContext<TWorld extends World> {
     matcher, {
     String? reason,
   }) =>
-      {
-        // ExpectMimic().expect(
-        //     actual,
-        //     matcher,
-        //     reason: reason,
-        //   );
-      };
+      ExpectMimic().expect(
+        actual,
+        matcher,
+        reason: reason,
+      );
 
   /// Assert that [actual] matches [matcher], [reason] is optional.
   void expectA(
