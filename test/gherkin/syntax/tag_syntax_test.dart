@@ -49,9 +49,9 @@ void main() {
   group('toRunnable', () {
     test('creates TextLineRunnable', () {
       final syntax = TagSyntax();
-      final TagsRunnable runnable = syntax.toRunnable(
+      final runnable = syntax.toRunnable(
         '@tag1 @tag2   @tag3@tag_4',
-        RunnableDebugInformation(null, 0, null),
+        RunnableDebugInformation.EMPTY(),
         EnDialectMock(),
       );
       expect(runnable, isNotNull);

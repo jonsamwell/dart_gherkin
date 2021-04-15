@@ -8,9 +8,9 @@ import './table.dart';
 
 class StepRunnable extends RunnableBlock {
   String _name;
-  String description;
+  String? description;
+  GherkinTable? table;
   List<String> multilineStrings = <String>[];
-  GherkinTable table;
 
   StepRunnable(this._name, RunnableDebugInformation debug) : super(debug);
 
@@ -41,8 +41,12 @@ class StepRunnable extends RunnableBlock {
   void setStepParameter(String parameterName, String value) {
     _name = _name.replaceAll('<$parameterName>', value);
     table?.setStepParameter(parameterName, value);
-    updateDebugInformation(debug.copyWith(debug.lineNumber,
-        debug.lineText.replaceAll('<$parameterName>', value)));
+    updateDebugInformation(
+      debug.copyWith(
+        debug.lineNumber,
+        debug.lineText.replaceAll('<$parameterName>', value),
+      ),
+    );
   }
 
   StepRunnable clone() {

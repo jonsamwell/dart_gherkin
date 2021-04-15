@@ -15,7 +15,7 @@ class ReporterMock extends Reporter {
   int messageInvocationCount = 0;
   int disposeInvocationCount = 0;
 
-  OnStepFinished onStepFinishedFn;
+  OnStepFinished? onStepFinishedFn;
 
   @override
   Future<void> onTestRunStarted() async => onTestRunStartedInvocationCount += 1;
@@ -39,16 +39,21 @@ class ReporterMock extends Reporter {
       onStepStartedInvocationCount += 1;
   @override
   Future<void> onStepFinished(StepFinishedMessage message) async {
-    if (onStepFinishedFn != null) onStepFinishedFn(message);
+    if (onStepFinishedFn != null) {
+      onStepFinishedFn!(message);
+    }
+
     onStepFinishedInvocationCount += 1;
   }
 
   @override
-  Future<void> onException(Exception exception, StackTrace stackTrace) async =>
+  Future<void> onException(Object exception, StackTrace stackTrace) async =>
       onExceptionInvocationCount += 1;
+
   @override
   Future<void> message(String message, MessageLevel level) async =>
       messageInvocationCount += 1;
+
   @override
   Future<void> dispose() async => disposeInvocationCount += 1;
 }

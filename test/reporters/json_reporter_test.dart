@@ -6,11 +6,12 @@ import 'package:gherkin/src/gherkin/runnables/debug_information.dart';
 import 'package:test/test.dart';
 
 class TestableJsonReporter extends JsonReporter {
-  String report;
+  late final String report;
 
   @override
   Future<void> onSaveReport(String jsonReport, String path) async {
     report = jsonReport;
+
     return Future.value(null);
   }
 }

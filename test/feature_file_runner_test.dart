@@ -23,17 +23,22 @@ void main() {
   group('run', () {
     test('run simple feature file scenario', () async {
       final stepDefinition = MockStepDefinition();
-      final executableStep =
-          ExecutableStep(MockGherkinExpression((_) => true), stepDefinition);
+      final executableStep = ExecutableStep(
+        MockGherkinExpression((_) => true),
+        stepDefinition,
+      );
       final runner = FeatureFileRunner(
-          TestConfiguration(),
-          MockTagExpressionEvaluator(),
-          [executableStep],
-          ReporterMock(),
-          HookMock());
+        TestConfiguration(),
+        MockTagExpressionEvaluator(),
+        [executableStep],
+        ReporterMock(),
+        HookMock(),
+      );
 
       final step = StepRunnable(
-          'Step 1', RunnableDebugInformation('', 0, 'Given I do a'));
+        'Step 1',
+        RunnableDebugInformation('', 0, 'Given I do a'),
+      );
       final scenario = ScenarioRunnable('Scenario: 1', emptyDebuggable)
         ..steps.add(step);
       final feature = FeatureRunnable('1', emptyDebuggable)
@@ -317,7 +322,7 @@ void main() {
 
         final step = StepRunnable(
             'Step 1', RunnableDebugInformation('', 0, 'Given I do a'));
-        step.table = GherkinTable(null, null);
+        step.table = GherkinTable(const Iterable<TableRow>.empty(), null);
         final scenario = ScenarioRunnable('Scenario: 1', emptyDebuggable)
           ..steps.add(step);
         final feature = FeatureRunnable('1', emptyDebuggable)
@@ -384,18 +389,18 @@ void main() {
         await runner.run(featureFile);
         expect(hookMock.onBeforeScenarioInvocationCount, 1);
         expect(hookMock.onAfterScenarioInvocationCount, 1);
-        expect(hookMock.onBeforeScenarioTags.length, 2);
-        expect(hookMock.onAfterScenarioTags.length, 2);
-        expect(hookMock.onBeforeScenarioTags.elementAt(0).name,
+        expect(hookMock.onBeforeScenarioTags!.length, 2);
+        expect(hookMock.onAfterScenarioTags!.length, 2);
+        expect(hookMock.onBeforeScenarioTags!.elementAt(0).name,
             tagTwo.tags.elementAt(0));
-        expect(hookMock.onBeforeScenarioTags.elementAt(1).name,
+        expect(hookMock.onBeforeScenarioTags!.elementAt(1).name,
             tagOne.tags.elementAt(0));
-        expect(hookMock.onBeforeScenarioTags.elementAt(1).isInherited, true);
-        expect(hookMock.onAfterScenarioTags.elementAt(0).name,
+        expect(hookMock.onBeforeScenarioTags!.elementAt(1).isInherited, true);
+        expect(hookMock.onAfterScenarioTags!.elementAt(0).name,
             tagTwo.tags.elementAt(0));
-        expect(hookMock.onAfterScenarioTags.elementAt(1).name,
+        expect(hookMock.onAfterScenarioTags!.elementAt(1).name,
             tagOne.tags.elementAt(0));
-        expect(hookMock.onAfterScenarioTags.elementAt(1).isInherited, true);
+        expect(hookMock.onAfterScenarioTags!.elementAt(1).isInherited, true);
       });
     });
 
@@ -436,7 +441,7 @@ void main() {
       });
 
       test('step reported with correct finishing value when passing', () async {
-        StepFinishedMessage finishedMessage;
+        late StepFinishedMessage finishedMessage;
         final reporterMock = ReporterMock();
         reporterMock.onStepFinishedFn = (message) => finishedMessage = message;
         final stepDefinition = MockStepDefinition();
@@ -464,7 +469,7 @@ void main() {
       });
 
       test('step reported with correct finishing value when failing', () async {
-        StepFinishedMessage finishedMessage;
+        late StepFinishedMessage finishedMessage;
         final testFailureException = TestFailure('FAILED');
         final reporterMock = ReporterMock();
         reporterMock.onStepFinishedFn = (message) => finishedMessage = message;
@@ -496,7 +501,7 @@ void main() {
       test(
           'step reported with correct finishing value when unhandled exception raised',
           () async {
-        StepFinishedMessage finishedMessage;
+        late StepFinishedMessage finishedMessage;
         final reporterMock = ReporterMock();
         reporterMock.onStepFinishedFn = (message) => finishedMessage = message;
         final stepDefinition = MockStepDefinition(

@@ -1,3 +1,3 @@
 class StepDefinitionConfiguration {
-  Duration timeout;
+  Duration? timeout;
 }

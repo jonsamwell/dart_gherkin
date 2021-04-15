@@ -5,7 +5,10 @@ import 'package:test/test.dart';
 class TestableTestRunSummaryReporter extends TestRunSummaryReporter {
   final output = <String>[];
   @override
-  void printMessageLine(String message, [String colour]) {
+  void printMessageLine(
+    String message, [
+    String? colour,
+  ]) {
     output.add(message);
   }
 }
@@ -15,31 +18,83 @@ void main() {
     test('provides correct output', () async {
       final reporter = TestableTestRunSummaryReporter();
 
-      await reporter.onStepFinished(StepFinishedMessage(
-          '', null, StepResult(0, StepExecutionResult.pass)));
-      await reporter.onStepFinished(StepFinishedMessage(
-          '', null, StepResult(0, StepExecutionResult.fail)));
-      await reporter.onStepFinished(StepFinishedMessage(
-          '', null, StepResult(0, StepExecutionResult.skipped)));
-      await reporter.onStepFinished(StepFinishedMessage(
-          '', null, StepResult(0, StepExecutionResult.skipped)));
-      await reporter.onStepFinished(StepFinishedMessage(
-          '', null, StepResult(0, StepExecutionResult.pass)));
-      await reporter.onStepFinished(StepFinishedMessage(
-          '', null, StepResult(0, StepExecutionResult.error)));
-      await reporter.onStepFinished(StepFinishedMessage(
-          '', null, StepResult(0, StepExecutionResult.pass)));
-      await reporter.onStepFinished(StepFinishedMessage(
-          '', null, StepResult(0, StepExecutionResult.timeout)));
+      await reporter.onStepFinished(
+        StepFinishedMessage(
+          '',
+          RunnableDebugInformation.EMPTY(),
+          StepResult(0, StepExecutionResult.pass),
+        ),
+      );
+      await reporter.onStepFinished(
+        StepFinishedMessage(
+          '',
+          RunnableDebugInformation.EMPTY(),
+          StepResult(0, StepExecutionResult.fail),
+        ),
+      );
+      await reporter.onStepFinished(
+        StepFinishedMessage(
+          '',
+          RunnableDebugInformation.EMPTY(),
+          StepResult(0, StepExecutionResult.skipped),
+        ),
+      );
+      await reporter.onStepFinished(
+        StepFinishedMessage(
+          '',
+          RunnableDebugInformation.EMPTY(),
+          StepResult(0, StepExecutionResult.skipped),
+        ),
+      );
+      await reporter.onStepFinished(
+        StepFinishedMessage(
+          '',
+          RunnableDebugInformation.EMPTY(),
+          StepResult(0, StepExecutionResult.pass),
+        ),
+      );
+      await reporter.onStepFinished(
+        StepFinishedMessage(
+          '',
+          RunnableDebugInformation.EMPTY(),
+          StepResult(0, StepExecutionResult.error),
+        ),
+      );
+      await reporter.onStepFinished(
+        StepFinishedMessage(
+          '',
+          RunnableDebugInformation.EMPTY(),
+          StepResult(0, StepExecutionResult.pass),
+        ),
+      );
+      await reporter.onStepFinished(
+        StepFinishedMessage(
+          '',
+          RunnableDebugInformation.EMPTY(),
+          StepResult(0, StepExecutionResult.timeout),
+        ),
+      );
 
-      await reporter
-          .onScenarioFinished(ScenarioFinishedMessage('', null, true));
-      await reporter
-          .onScenarioFinished(ScenarioFinishedMessage('', null, false));
-      await reporter
-          .onScenarioFinished(ScenarioFinishedMessage('', null, false));
-      await reporter
-          .onScenarioFinished(ScenarioFinishedMessage('', null, true));
+      await reporter.onScenarioFinished(ScenarioFinishedMessage(
+        '',
+        RunnableDebugInformation.EMPTY(),
+        true,
+      ));
+      await reporter.onScenarioFinished(ScenarioFinishedMessage(
+        '',
+        RunnableDebugInformation.EMPTY(),
+        false,
+      ));
+      await reporter.onScenarioFinished(ScenarioFinishedMessage(
+        '',
+        RunnableDebugInformation.EMPTY(),
+        false,
+      ));
+      await reporter.onScenarioFinished(ScenarioFinishedMessage(
+        '',
+        RunnableDebugInformation.EMPTY(),
+        true,
+      ));
 
       await reporter.onTestRunFinished();
       expect(reporter.output, [

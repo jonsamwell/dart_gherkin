@@ -4,8 +4,8 @@ import './reporter.dart';
 
 class StdoutReporter extends Reporter {
   final MessageLevel _logLevel;
-  void Function(String text) _writeln;
-  void Function(String text) _write;
+  late void Function(String text) _writeln;
+  late void Function(String text) _write;
 
   static const String NEUTRAL_COLOR = '\u001b[33;34m'; // blue
   static const String DEBUG_COLOR = '\u001b[1;30m'; // gray
@@ -37,7 +37,7 @@ class StdoutReporter extends Reporter {
   }
 
   @override
-  Future<void> onException(Exception exception, StackTrace stackTrace) async {
+  Future<void> onException(Object exception, StackTrace stackTrace) async {
     printMessageLine(exception.toString(), getColour(MessageLevel.error));
   }
 
@@ -56,11 +56,17 @@ class StdoutReporter extends Reporter {
     }
   }
 
-  void printMessageLine(String message, [String colour]) {
+  void printMessageLine(
+    String message, [
+    String? colour,
+  ]) {
     _writeln('${colour ?? RESET_COLOR}$message$RESET_COLOR');
   }
 
-  void printMessage(String message, [String colour]) {
+  void printMessage(
+    String message, [
+    String? colour,
+  ]) {
     _write('${colour ?? RESET_COLOR}$message$RESET_COLOR');
   }
 }

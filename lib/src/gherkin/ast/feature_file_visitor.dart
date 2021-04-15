@@ -38,7 +38,7 @@ class FeatureFileVisitor {
           if (feature.background != null) {
             final bg = feature.background;
 
-            for (final step in bg.steps) {
+            for (final step in bg!.steps) {
               await visitScenarioStep(
                 step.name,
                 step.multilineStrings,
@@ -63,7 +63,7 @@ class FeatureFileVisitor {
 
   Future<void> visitFeature(
     String name,
-    String description,
+    String? description,
     Iterable<String> tags,
   ) async {}
 
@@ -75,7 +75,7 @@ class FeatureFileVisitor {
   Future<void> visitScenarioStep(
     String name,
     Iterable<String> multiLineStrings,
-    GherkinTable table,
+    GherkinTable? table,
   ) async {}
 
   Iterable<String> _tagsToList(Iterable<TagsRunnable> tags) sync* {

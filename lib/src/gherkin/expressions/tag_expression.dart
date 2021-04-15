@@ -71,13 +71,18 @@ class TagExpressionEvaluator {
   }
 
   Queue<String> _convertInfixToPostfixExpression(String infixExpression) {
-    final expressionParts = RegExp(
-            r'(\()|(or)|(and)|(not)|(@{1}\w{1}[^\s&\)]*)|(\))',
-            caseSensitive: false)
-        .allMatches(infixExpression)
-        .map((m) => m.group(0));
     final rpn = Queue<String>();
     final operatorQueue = ListQueue();
+    final expressionParts = RegExp(
+      r'(\()|(or)|(and)|(not)|(@{1}\w{1}[^\s&\)]*)|(\))',
+      caseSensitive: false,
+    )
+        .allMatches(
+          infixExpression,
+        )
+        .map(
+          (m) => m.group(0)!,
+        );
 
     for (var part in expressionParts) {
       if (_isTag(part)) {
@@ -91,10 +96,10 @@ class TagExpressionEvaluator {
         }
         operatorQueue.removeLast();
       } else if (_isOperator(part)) {
-        final precedence = _operatorPrecedence[part.toLowerCase()];
+        final precedence = _operatorPrecedence[part.toLowerCase()]!;
 
         while (operatorQueue.isNotEmpty &&
-            _operatorPrecedence[operatorQueue.last] >= precedence) {
+            _operatorPrecedence[operatorQueue.last]! >= precedence) {
           rpn.add(operatorQueue.removeLast());
         }
         operatorQueue.addLast(part);

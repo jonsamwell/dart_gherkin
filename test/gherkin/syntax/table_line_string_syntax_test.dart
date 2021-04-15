@@ -132,9 +132,9 @@ void main() {
   group('toRunnable', () {
     test('creates TableRunnable', () {
       final syntax = TableLineSyntax();
-      final TableRunnable runnable = syntax.toRunnable(
+      final runnable = syntax.toRunnable(
         ' | Column One | Column Two | ',
-        RunnableDebugInformation(null, 0, null),
+        RunnableDebugInformation.EMPTY(),
         EnDialectMock(),
       );
       expect(runnable, isNotNull);
@@ -145,9 +145,9 @@ void main() {
 
     test('creates TableRunnable from line with trailing comment', () {
       final syntax = TableLineSyntax();
-      final TableRunnable runnable = syntax.toRunnable(
+      final runnable = syntax.toRunnable(
         ' | Column One | Column Two | Column Three | # comment with spaces',
-        RunnableDebugInformation(null, 0, null),
+        RunnableDebugInformation.EMPTY(),
         EnDialectMock(),
       );
       expect(runnable, isNotNull);

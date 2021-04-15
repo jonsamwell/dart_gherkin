@@ -9,25 +9,27 @@ import './runnable.dart';
 
 class ScenarioOutlineRunnable extends ScenarioRunnable {
   final List<ExampleRunnable> _examples = <ExampleRunnable>[];
+  TagsRunnable? _pendingExampleTags;
   Iterable<ExampleRunnable> get examples => _examples;
-  TagsRunnable _pendingExampleTags;
 
-  ScenarioOutlineRunnable(String name, RunnableDebugInformation debug)
-      : super(name, debug);
+  ScenarioOutlineRunnable(
+    String name,
+    RunnableDebugInformation debug,
+  ) : super(name, debug);
 
   @override
   void addChild(Runnable child) {
     switch (child.runtimeType) {
       case ExampleRunnable:
         if (_pendingExampleTags != null) {
-          (child as ExampleRunnable).addChild(_pendingExampleTags);
+          (child as ExampleRunnable).addChild(_pendingExampleTags!);
           _pendingExampleTags = null;
         }
 
-        _examples.add(child);
+        _examples.add(child as ExampleRunnable);
         break;
       case TagsRunnable:
-        _pendingExampleTags = child;
+        _pendingExampleTags = child as TagsRunnable;
         break;
       default:
         super.addChild(child);
@@ -52,7 +54,7 @@ class ScenarioOutlineRunnable extends ScenarioRunnable {
     final scenarios = <ScenarioRunnable>[];
     examples.forEach(
       (example) {
-        example.table.asMap().toList(growable: false).asMap().forEach(
+        example.table!.asMap().toList(growable: false).asMap().forEach(
           (exampleIndex, exampleRow) {
             var exampleName = [
               name,
@@ -60,16 +62,20 @@ class ScenarioOutlineRunnable extends ScenarioRunnable {
               if (example.name.isNotEmpty) example.name,
               '(${exampleIndex + 1})',
             ].join(' ');
+
             final clonedSteps = steps.map((step) => step.clone()).toList();
 
             final scenarioRunnable =
                 ScenarioExpandedFromOutlineExampleRunnable(exampleName, debug);
 
-            exampleRow.forEach((parameterName, value) {
-              scenarioRunnable.setStepParameter(parameterName, value);
-              clonedSteps.forEach(
-                  (step) => step.setStepParameter(parameterName, value));
-            });
+            exampleRow.forEach(
+              (parameterName, value) {
+                scenarioRunnable.setStepParameter(parameterName, value ?? '');
+                clonedSteps.forEach(
+                  (step) => step.setStepParameter(parameterName, value ?? ''),
+                );
+              },
+            );
 
             [...tags, ...example.tags]
                 .forEach((t) => scenarioRunnable.addTag(t.clone()));

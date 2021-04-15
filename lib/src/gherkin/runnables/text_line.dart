@@ -2,11 +2,12 @@ import './debug_information.dart';
 import './runnable.dart';
 
 class TextLineRunnable extends Runnable {
-  String text;
+  /// The trimmed version of the line
+  late String text;
 
   /// While [text] can be `trim()`'d, original whitespace will be preserved
   /// in `originalText`.
-  String originalText;
+  late String? originalText;
 
   @override
   String get name => 'Language';

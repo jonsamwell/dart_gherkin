@@ -18,31 +18,71 @@ void main() {
       expect(reporter1.messageInvocationCount, 1);
       expect(reporter2.messageInvocationCount, 1);
 
-      await aggregatedReporter.onException(null, null);
+      await aggregatedReporter.onException(Object(), StackTrace.empty);
       expect(reporter1.onExceptionInvocationCount, 1);
       expect(reporter2.onExceptionInvocationCount, 1);
 
-      await aggregatedReporter.onFeatureStarted(null);
+      await aggregatedReporter.onFeatureStarted(
+        StartedMessage(
+          Target.feature,
+          '',
+          RunnableDebugInformation.EMPTY(),
+          const Iterable.empty(),
+        ),
+      );
       expect(reporter1.onFeatureStartedInvocationCount, 1);
       expect(reporter2.onFeatureStartedInvocationCount, 1);
 
-      await aggregatedReporter.onFeatureFinished(null);
+      await aggregatedReporter.onFeatureFinished(
+        FinishedMessage(
+          Target.feature,
+          '',
+          RunnableDebugInformation.EMPTY(),
+        ),
+      );
       expect(reporter1.onFeatureFinishedInvocationCount, 1);
       expect(reporter2.onFeatureFinishedInvocationCount, 1);
 
-      await aggregatedReporter.onScenarioFinished(null);
+      await aggregatedReporter.onScenarioFinished(
+        ScenarioFinishedMessage(
+          '',
+          RunnableDebugInformation.EMPTY(),
+          true,
+        ),
+      );
       expect(reporter1.onScenarioFinishedInvocationCount, 1);
       expect(reporter2.onScenarioFinishedInvocationCount, 1);
 
-      await aggregatedReporter.onScenarioStarted(null);
+      await aggregatedReporter.onScenarioStarted(
+        StartedMessage(
+          Target.feature,
+          '',
+          RunnableDebugInformation.EMPTY(),
+          const Iterable.empty(),
+        ),
+      );
       expect(reporter1.onScenarioStartedInvocationCount, 1);
       expect(reporter2.onScenarioStartedInvocationCount, 1);
 
-      await aggregatedReporter.onStepFinished(null);
+      await aggregatedReporter.onStepFinished(
+        StepFinishedMessage(
+          '',
+          RunnableDebugInformation.EMPTY(),
+          StepResult(
+            0,
+            StepExecutionResult.skipped,
+          ),
+        ),
+      );
       expect(reporter1.onStepFinishedInvocationCount, 1);
       expect(reporter2.onStepFinishedInvocationCount, 1);
 
-      await aggregatedReporter.onStepStarted(null);
+      await aggregatedReporter.onStepStarted(
+        StepStartedMessage(
+          '',
+          RunnableDebugInformation.EMPTY(),
+        ),
+      );
       expect(reporter1.onStepStartedInvocationCount, 1);
       expect(reporter2.onStepStartedInvocationCount, 1);
 

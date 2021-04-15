@@ -10,7 +10,7 @@ import 'package:gherkin/gherkin.dart';
 ///  | Edith     | Summers | 23  | Female |
 ///  | Megan     | Hill    | 83  | Female |
 StepDefinitionGeneric GivenIAddTheUsers() {
-  return given1(
+  return given1<GherkinTable, World>(
     'I add the users',
     (dataTable, _) async {
       for (var row in dataTable.rows) {

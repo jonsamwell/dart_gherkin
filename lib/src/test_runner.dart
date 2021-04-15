@@ -136,18 +136,27 @@ class GherkinRunner {
   }
 
   void _registerStepDefinitions(
-    Iterable<StepDefinitionGeneric> stepDefinitions,
+    Iterable<StepDefinitionGeneric>? stepDefinitions,
   ) {
-    stepDefinitions.forEach(
-      (s) {
-        _executableSteps.add(
-          ExecutableStep(GherkinExpression(s.pattern, _customParameters), s),
-        );
-      },
-    );
+    if (stepDefinitions != null) {
+      stepDefinitions.forEach(
+        (s) {
+          _executableSteps.add(
+            ExecutableStep(
+                GherkinExpression(
+                  s.pattern is RegExp
+                      ? s.pattern as RegExp
+                      : RegExp(s.pattern.toString()),
+                  _customParameters,
+                ),
+                s),
+          );
+        },
+      );
+    }
   }
 
-  void _registerCustomParameters(Iterable<CustomParameter> customParameters) {
+  void _registerCustomParameters(Iterable<CustomParameter>? customParameters) {
     _customParameters.add(FloatParameterLower());
     _customParameters.add(FloatParameterCamel());
     _customParameters.add(NumParameterLower());
@@ -159,18 +168,19 @@ class GherkinRunner {
     _customParameters.add(WordParameterLower());
     _customParameters.add(WordParameterCamel());
     _customParameters.add(PluralParameter());
+
     if (customParameters != null) {
       _customParameters.addAll(customParameters);
     }
   }
 
-  void _registerReporters(Iterable<Reporter> reporters) {
+  void _registerReporters(Iterable<Reporter>? reporters) {
     if (reporters != null) {
       reporters.forEach((r) => _reporter.addReporter(r));
     }
   }
 
-  void _registerHooks(Iterable<Hook> hooks) {
+  void _registerHooks(Iterable<Hook>? hooks) {
     if (hooks != null) {
       _hook.addHooks(hooks);
     }

@@ -8,9 +8,9 @@ import 'feature_file_reader.dart';
 
 class IoFeatureFileAccessor implements FeatureFileMatcher, FeatureFileReader {
   final Encoding encoding;
-  final Directory workingDirectory;
+  final Directory? workingDirectory;
 
-  IoFeatureFileAccessor({
+  const IoFeatureFileAccessor({
     this.encoding = utf8,
     this.workingDirectory,
   });

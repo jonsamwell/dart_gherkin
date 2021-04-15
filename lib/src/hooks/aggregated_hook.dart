@@ -5,10 +5,13 @@ import '../configuration.dart';
 import './hook.dart';
 
 class AggregatedHook extends Hook {
-  Iterable<Hook> _orderedHooks;
+  late Iterable<Hook> _orderedHooks;
 
   void addHooks(Iterable<Hook> hooks) {
-    _orderedHooks = hooks.toList()..sort((a, b) => b.priority - a.priority);
+    _orderedHooks = hooks.toList()
+      ..sort(
+        (a, b) => b.priority - a.priority,
+      );
   }
 
   @override
@@ -26,11 +29,13 @@ class AggregatedHook extends Hook {
     String scenario,
     Iterable<Tag> tags,
   ) async =>
-      await _invokeHooks((h) => h.onAfterScenarioWorldCreated(
-            world,
-            scenario,
-            tags,
-          ));
+      await _invokeHooks(
+        (h) => h.onAfterScenarioWorldCreated(
+          world,
+          scenario,
+          tags,
+        ),
+      );
 
   /// Run before a scenario and it steps are executed
   @override
@@ -39,11 +44,13 @@ class AggregatedHook extends Hook {
     String scenario,
     Iterable<Tag> tags,
   ) async =>
-      await _invokeHooks((h) => h.onBeforeScenario(
-            config,
-            scenario,
-            tags,
-          ));
+      await _invokeHooks(
+        (h) => h.onBeforeScenario(
+          config,
+          scenario,
+          tags,
+        ),
+      );
 
   /// Run after a scenario has executed
   @override
@@ -52,24 +59,35 @@ class AggregatedHook extends Hook {
     String scenario,
     Iterable<Tag> tags,
   ) async =>
-      await _invokeHooks((h) => h.onAfterScenario(
-            config,
-            scenario,
-            tags,
-          ));
+      await _invokeHooks(
+        (h) => h.onAfterScenario(
+          config,
+          scenario,
+          tags,
+        ),
+      );
 
   /// Run before a step is executed
   @override
-  Future<void> onBeforeStep(World world, String step) async =>
+  Future<void> onBeforeStep(
+    World world,
+    String step,
+  ) async =>
       await _invokeHooks((h) => h.onBeforeStep(world, step));
 
   /// Run after a step has executed
   @override
-  Future<void> onAfterStep(World world, String step, StepResult result) async =>
+  Future<void> onAfterStep(
+    World world,
+    String step,
+    StepResult result,
+  ) async =>
       await _invokeHooks((h) => h.onAfterStep(world, step, result));
 
-  Future<void> _invokeHooks(Future<void> Function(Hook h) invoke) async {
-    if (_orderedHooks != null && _orderedHooks.isNotEmpty) {
+  Future<void> _invokeHooks(
+    Future<void> Function(Hook h) invoke,
+  ) async {
+    if (_orderedHooks.isNotEmpty) {
       for (var hook in _orderedHooks) {
         await invoke(hook);
       }

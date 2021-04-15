@@ -63,7 +63,7 @@ void main() {
       final syntax = ExampleSyntax();
       final runnable = syntax.toRunnable(
         'Examples: An example 123',
-        RunnableDebugInformation(null, 0, null),
+        RunnableDebugInformation.EMPTY(),
         EnDialectMock(),
       );
       expect(runnable, isNotNull);
@@ -75,7 +75,7 @@ void main() {
       final syntax = ExampleSyntax();
       final runnable = syntax.toRunnable(
         'Examples:   ',
-        RunnableDebugInformation(null, 0, null),
+        RunnableDebugInformation.EMPTY(),
         EnDialectMock(),
       );
       expect(runnable, isNotNull);
@@ -87,7 +87,7 @@ void main() {
       final syntax = ExampleSyntax();
       final runnable = syntax.toRunnable(
         'Examples:',
-        RunnableDebugInformation(null, 0, null),
+        RunnableDebugInformation.EMPTY(),
         EnDialectMock(),
       );
       expect(runnable, isNotNull);

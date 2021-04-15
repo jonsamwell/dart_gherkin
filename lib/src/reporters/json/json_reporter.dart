@@ -12,7 +12,7 @@ import 'json_step.dart';
 class JsonReporter extends Reporter implements SerializableReporter {
   final List<JsonFeature> _features = [];
   final String path;
-  final Future<void> Function(String jsonReport, String path) writeReport;
+  final Future<void> Function(String jsonReport, String path)? writeReport;
 
   JsonReporter({
     this.path = './report.json',
@@ -26,12 +26,12 @@ class JsonReporter extends Reporter implements SerializableReporter {
 
   @override
   Future<void> onScenarioStarted(StartedMessage message) async {
-    _getCurrentFeature().add(scenario: JsonScenario.from(message));
+    _getCurrentFeature().add(JsonScenario.from(message));
   }
 
   @override
   Future<void> onStepStarted(StepStartedMessage message) async {
-    _getCurrentFeature().currentScenario().add(step: JsonStep.from(message));
+    _getCurrentFeature().currentScenario().add(JsonStep.from(message));
   }
 
   @override
@@ -40,7 +40,7 @@ class JsonReporter extends Reporter implements SerializableReporter {
   }
 
   @override
-  Future<void> onException(Exception exception, StackTrace stackTrace) async {
+  Future<void> onException(Object exception, StackTrace stackTrace) async {
     _getCurrentFeature()
         .currentScenario()
         .currentStep()
@@ -61,7 +61,7 @@ class JsonReporter extends Reporter implements SerializableReporter {
     try {
       final report = toJson();
       if (writeReport != null) {
-        await writeReport(report, path);
+        await writeReport!(report, path);
       } else {
         await onSaveReport(report, path);
       }
@@ -78,6 +78,7 @@ class JsonReporter extends Reporter implements SerializableReporter {
             'An unnamed feature is possible if something is logged before any feature has started to execute'
         ..scenarios = <JsonScenario>[
           JsonScenario()
+            ..target = Target.scenario
             ..name = 'Unnamed'
             ..description =
                 'An unnamed scenario is possible if something is logged before any feature has started to execute'

@@ -5,7 +5,7 @@ import 'package:gherkin/src/gherkin/runnables/table.dart';
 import 'package:test/test.dart';
 
 void main() {
-  final debugInfo = RunnableDebugInformation(null, 0, null);
+  final debugInfo = RunnableDebugInformation.EMPTY();
   group('addChild', () {
     test('can add CommentLineRunnable', () {
       final runnable = TableRunnable(debugInfo);
@@ -48,11 +48,14 @@ void main() {
       runnable.addChild(TableRunnable(debugInfo)
         ..rows.add('| header one | header two | header three |'));
       runnable.addChild(
-          TableRunnable(debugInfo)..rows.add('| one | two | three |'));
+        TableRunnable(debugInfo)..rows.add('| one | two | three |'),
+      );
       final table = runnable.toTable();
       expect(table.header, isNotNull);
       expect(
-          table.header.columns, ['header one', 'header two', 'header three']);
+        table.header!.columns,
+        ['header one', 'header two', 'header three'],
+      );
       expect(table.rows.length, 1);
       expect(table.rows.elementAt(0).columns, ['one', 'two', 'three']);
     });
@@ -80,7 +83,9 @@ void main() {
       final table = runnable.toTable();
       expect(table.header, isNotNull);
       expect(
-          table.header.columns, ['header one', 'header two', 'header three']);
+        table.header!.columns,
+        ['header one', 'header two', 'header three'],
+      );
       expect(table.rows.length, 2);
       expect(table.rows.elementAt(0).columns, ['one', 'two', 'three']);
       expect(table.rows.elementAt(1).columns, ['four', 'five', 'six']);
@@ -113,7 +118,9 @@ void main() {
       final table = runnable.toTable();
       expect(table.header, isNotNull);
       expect(
-          table.header.columns, ['header one', 'header two', 'header three']);
+        table.header!.columns,
+        ['header one', 'header two', 'header three'],
+      );
       expect(table.rows.length, 2);
       expect(table.rows.elementAt(0).columns, ['one', 'two', 'three']);
       expect(table.rows.elementAt(1).columns, ['four', 'five', 'six']);

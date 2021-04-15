@@ -46,7 +46,7 @@ void main() {
       var keyword2 = keyword;
       final runnable = keyword2.toRunnable(
         'Scenario: A scenario 123',
-        RunnableDebugInformation(null, 0, null),
+        RunnableDebugInformation.EMPTY(),
         EnDialectMock(),
       );
       expect(runnable, isNotNull);

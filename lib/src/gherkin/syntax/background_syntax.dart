@@ -28,8 +28,11 @@ class BackgroundSyntax extends RegExMatchedGherkinSyntax {
 
   @override
   Runnable toRunnable(
-      String line, RunnableDebugInformation debug, GherkinDialect dialect) {
-    final name = (pattern(dialect).firstMatch(line).group(1) ?? '').trim();
+    String line,
+    RunnableDebugInformation debug,
+    GherkinDialect dialect,
+  ) {
+    final name = (pattern(dialect).firstMatch(line)?.group(1) ?? '').trim();
     final runnable = BackgroundRunnable(name, debug);
 
     return runnable;

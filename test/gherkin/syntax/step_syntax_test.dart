@@ -142,9 +142,9 @@ void main() {
   group('toRunnable', () {
     test('creates StepRunnable', () {
       final syntax = StepSyntax();
-      final StepRunnable runnable = syntax.toRunnable(
+      final runnable = syntax.toRunnable(
         'Given I do something',
-        RunnableDebugInformation(null, 0, null),
+        RunnableDebugInformation.EMPTY(),
         EnDialectMock(),
       );
       expect(runnable, isNotNull);

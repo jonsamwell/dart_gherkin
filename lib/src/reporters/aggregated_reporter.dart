@@ -39,7 +39,7 @@ class AggregatedReporter extends Reporter implements SerializableReporter {
   }
 
   @override
-  Future<void> onScenarioFinished(FinishedMessage message) async {
+  Future<void> onScenarioFinished(ScenarioFinishedMessage message) async {
     await _invokeReporters((r) async => await r.onScenarioFinished(message));
   }
 
@@ -54,7 +54,7 @@ class AggregatedReporter extends Reporter implements SerializableReporter {
   }
 
   @override
-  Future<void> onException(Exception exception, StackTrace stackTrace) async {
+  Future<void> onException(Object exception, StackTrace stackTrace) async {
     await _invokeReporters(
         (r) async => await r.onException(exception, stackTrace));
   }
@@ -82,7 +82,7 @@ class AggregatedReporter extends Reporter implements SerializableReporter {
       jsonReports = _reporters
           .whereType<SerializableReporter>()
           .map((x) => x.toJson())
-          .where((x) => x != null && x.isNotEmpty)
+          .where((x) => x.isNotEmpty)
           .join(',');
     }
 

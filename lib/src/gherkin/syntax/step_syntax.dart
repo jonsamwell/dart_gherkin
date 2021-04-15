@@ -1,14 +1,13 @@
 import 'package:gherkin/src/gherkin/languages/dialect.dart';
 
 import '../runnables/debug_information.dart';
-import '../runnables/runnable.dart';
 import '../runnables/step.dart';
 import './multiline_string_syntax.dart';
 import './regex_matched_syntax.dart';
 import './syntax_matcher.dart';
 import './table_line_syntax.dart';
 
-class StepSyntax extends RegExMatchedGherkinSyntax {
+class StepSyntax extends RegExMatchedGherkinSyntax<StepRunnable> {
   @override
   RegExp pattern(GherkinDialect dialect) {
     final regex =
@@ -29,7 +28,7 @@ class StepSyntax extends RegExMatchedGherkinSyntax {
       !(syntax is MultilineStringSyntax || syntax is TableLineSyntax);
 
   @override
-  Runnable toRunnable(
+  StepRunnable toRunnable(
     String line,
     RunnableDebugInformation debug,
     GherkinDialect dialect,

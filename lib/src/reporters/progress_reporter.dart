@@ -52,7 +52,8 @@ class ProgressReporter extends StdoutReporter {
   }
 
   String _getReasonMessage(StepResult stepResult) {
-    if (stepResult.resultReason != null && stepResult.resultReason.isNotEmpty) {
+    if (stepResult.resultReason != null &&
+        stepResult.resultReason!.isNotEmpty) {
       return '\n      ${stepResult.resultReason}';
     } else {
       return '';
@@ -86,8 +87,6 @@ class ProgressReporter extends StdoutReporter {
       case StepExecutionResult.skipped:
         return '-';
     }
-
-    return '';
   }
 
   String _getMessageColour(StepExecutionResult result) {
@@ -102,8 +101,8 @@ class ProgressReporter extends StdoutReporter {
         return StdoutReporter.WARN_COLOR;
       case StepExecutionResult.timeout:
         return StdoutReporter.FAIL_COLOR;
+      default:
+        return StdoutReporter.RESET_COLOR;
     }
-
-    return StdoutReporter.RESET_COLOR;
   }
 }

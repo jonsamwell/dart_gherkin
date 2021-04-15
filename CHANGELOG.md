@@ -2,10 +2,12 @@
 
 NOTE: Massive changes here due to the migration to null-safety and laying the foundation for code generation to enable testing Flutter apps using the `integration_test` package.
 
+* BREAKING CHANGE: Migration to null-safety, some parameter have become nullable which may lead to subtle unexpected results. Please file any issue you come across.
 * BREAKING CHANGE: `Table` has been renamed to `GherkinTable` to avoid naming clashes
 * BREAKING CHANGE: Null-safety updated all libs to their stable null-safety releases
 * BREAKING CHANGE: `exitAfterTestRun` configuration option has been removed as it need to import `dart:io` which is not available under certain environments (dartjs for example).
 * BREAKING CHANGE: `exitAfterTestFailed` configuration option renamed to `stopAfterTestFailed`
+* BREAKING CHANGE: `Reporter->onException()` exception parameter is now an object rather than an exception
 * POSSIBLE BREAKING CHANGE: Feature file discovery has been refactored to abstract it from the external `Glob` dependency.  It now support the three native dart `Patterns` (String, RegExp & Glob).  There is potential here your patterns may not work anymore due as the default `IoFeatureFileAccessor` assumes the current directory is the working directory to search from. Thanks to @marcin-jelenski for the PR
 * Execution order can now be sorted alphabetically to ensure a consistent order thanks to @bartonhammond
 * Fixed #22 Tags are not taking into account after an `Example` block

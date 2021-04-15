@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:gherkin/src/gherkin/runnables/scenario_type_enum.dart';
+import 'package:collection/collection.dart';
 
 import '../gherkin.dart';
 import './reporters/message_level.dart';
@@ -121,7 +122,7 @@ class FeatureFileRunner {
   }
 
   bool _canRunScenario(
-    String tagExpression,
+    String? tagExpression,
     ScenarioRunnable scenario,
   ) {
     return tagExpression == null
@@ -139,7 +140,7 @@ class FeatureFileRunner {
 
   Future<bool> _runScenarioInZone(
     ScenarioRunnable scenario,
-    BackgroundRunnable background,
+    BackgroundRunnable? background,
   ) {
     final completer = Completer<bool>();
     // ensure unhandled errors do not cause the entire test run to crash
@@ -173,10 +174,10 @@ class FeatureFileRunner {
 
   Future<bool> _runScenario(
     ScenarioRunnable scenario,
-    BackgroundRunnable background,
+    BackgroundRunnable? background,
   ) async {
     final attachmentManager = await _config.getAttachmentManager(_config);
-    World world;
+    late final World world;
     var scenarioPassed = true;
     final tags = scenario.tags.isNotEmpty
         ? scenario.tags
@@ -194,14 +195,17 @@ class FeatureFileRunner {
           scenario.debug,
           MessageLevel.debug,
         );
-        world = await _config.createWorld(_config);
-        world.setAttachmentManager(attachmentManager);
-        await _hook.onAfterScenarioWorldCreated(
-          world,
-          scenario.name,
-          tags,
-        );
+        world = await _config.createWorld!(_config);
+      } else {
+        world = World();
       }
+
+      world.setAttachmentManager(attachmentManager);
+      await _hook.onAfterScenarioWorldCreated(
+        world,
+        scenario.name,
+        tags,
+      );
 
       await _hook.onBeforeScenario(_config, scenario.name, tags);
 
@@ -279,7 +283,7 @@ class FeatureFileRunner {
       );
 
       try {
-        world?.dispose();
+        world.dispose();
       } catch (e, st) {
         await _reporter.onException(e, st);
         rethrow;
@@ -337,7 +341,7 @@ class FeatureFileRunner {
         step.name,
         step.debug,
         result,
-        attachmentManager?.getAttachmentsForContext(step.name),
+        attachmentManager.getAttachmentsForContext(step.name),
       ),
     );
 
@@ -362,9 +366,10 @@ class FeatureFileRunner {
   }
 
   ExecutableStep _matchStepToExecutableStep(StepRunnable step) {
-    final executable = _steps.firstWhere(
-        (s) => s.expression.isMatch(step.debug.lineText),
-        orElse: () => null);
+    final executable = _steps.firstWhereOrNull(
+      (s) => s.expression.isMatch(step.debug.lineText),
+    );
+
     if (executable == null) {
       final message = """
       Step definition not found for text:
@@ -397,6 +402,7 @@ class FeatureFileRunner {
       }
       """;
       _reporter.message(message, MessageLevel.error);
+
       throw GherkinStepNotDefinedException(message);
     }
 

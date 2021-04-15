@@ -43,8 +43,8 @@ class FinishedMessage {
 }
 
 class StepStartedMessage extends StartedMessage {
-  final GherkinTable table;
-  final String multilineString;
+  final GherkinTable? table;
+  final String? multilineString;
 
   StepStartedMessage(
     String name,
@@ -64,9 +64,11 @@ class StepFinishedMessage extends FinishedMessage {
   final Iterable<Attachment> attachments;
 
   StepFinishedMessage(
-      String name, RunnableDebugInformation context, this.result,
-      [this.attachments = const Iterable<Attachment>.empty()])
-      : super(Target.step, name, context);
+    String name,
+    RunnableDebugInformation context,
+    this.result, [
+    this.attachments = const Iterable<Attachment>.empty(),
+  ]) : super(Target.step, name, context);
 }
 
 class ScenarioFinishedMessage extends FinishedMessage {

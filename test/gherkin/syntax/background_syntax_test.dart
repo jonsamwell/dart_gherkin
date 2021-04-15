@@ -27,20 +27,20 @@ void main() {
     test('creates BackgroundRunnable', () {
       final syntax = BackgroundSyntax();
       final runnable = syntax.toRunnable(
-        'Background: A backgroun 123',
-        RunnableDebugInformation(null, 0, null),
+        'Background: A background 123',
+        RunnableDebugInformation.EMPTY(),
         EnDialectMock(),
       );
       expect(runnable, isNotNull);
       expect(runnable, predicate((x) => x is BackgroundRunnable));
-      expect(runnable.name, equals('A backgroun 123'));
+      expect(runnable.name, equals('A background 123'));
     });
 
     test('creates BackgroundRunnable with empty name', () {
       final syntax = BackgroundSyntax();
       final runnable = syntax.toRunnable(
         'Background:   ',
-        RunnableDebugInformation(null, 0, null),
+        RunnableDebugInformation.EMPTY(),
         EnDialectMock(),
       );
       expect(runnable, isNotNull);
@@ -52,7 +52,7 @@ void main() {
       final syntax = BackgroundSyntax();
       final runnable = syntax.toRunnable(
         'Background:',
-        RunnableDebugInformation(null, 0, null),
+        RunnableDebugInformation.EMPTY(),
         EnDialectMock(),
       );
       expect(runnable, isNotNull);

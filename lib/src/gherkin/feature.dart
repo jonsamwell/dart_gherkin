@@ -1,7 +1,7 @@
 class Feature {
-  String name;
-  String language;
-  Iterable<String> tags;
+  late String name;
+  late String language;
+  late Iterable<String> tags;
 
   Feature();
 }

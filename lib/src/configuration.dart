@@ -20,14 +20,14 @@ enum ExecutionOrder { sequential, random, alphabetical }
 class TestConfiguration {
   /// The path(s) to all the features.
   /// All three [Pattern]s are supported: [RegExp], [String], [Glob].
-  Iterable<Pattern> features;
+  Iterable<Pattern> features = const <Pattern>[];
 
   /// The default feature language
   String featureDefaultLanguage = 'en';
 
   /// a filter to limit the features that are run based on tags
   /// see https://docs.cucumber.io/cucumber/tag-expressions/ for expression syntax
-  String tagExpression;
+  String? tagExpression;
 
   /// The default step timeout - this can be override when definition a step definition
   Duration defaultTimeout = const Duration(seconds: 10);
@@ -36,13 +36,13 @@ class TestConfiguration {
   ExecutionOrder order = ExecutionOrder.random;
 
   /// The user defined step definitions that are matched with written steps in the features
-  Iterable<StepDefinitionGeneric> stepDefinitions;
+  Iterable<StepDefinitionGeneric>? stepDefinitions;
 
   /// Any user defined step parameters
-  Iterable<CustomParameter<dynamic>> customStepParameterDefinitions;
+  Iterable<CustomParameter<dynamic>>? customStepParameterDefinitions;
 
   /// Hooks that are run at certain points in the execution cycle
-  Iterable<Hook> hooks;
+  Iterable<Hook>? hooks;
 
   /// a list of reporters to use.
   /// Built-in reporters:
@@ -51,17 +51,17 @@ class TestConfiguration {
   ///   - TestRunSummaryReporter
   ///   - JsonReporter
   /// Custom reporters can be created by extending (or implementing) Reporter.dart
-  Iterable<Reporter> reporters;
+  Iterable<Reporter>? reporters;
 
   /// An optional function to create a world object for each scenario.
-  CreateWorld createWorld;
+  CreateWorld? createWorld;
 
   // Lists feature files paths, which match [features] patterns.
-  FeatureFileMatcher featureFileIndexer = IoFeatureFileAccessor();
+  FeatureFileMatcher featureFileIndexer = const IoFeatureFileAccessor();
 
   // The feature file reader.
   // Takes files/resources paths from [featureFileIndexer] and returns their content as String.
-  FeatureFileReader featureFileReader = IoFeatureFileAccessor();
+  FeatureFileReader featureFileReader = const IoFeatureFileAccessor();
 
   /// the program will stop after any test failed
   bool stopAfterTestFailed = false;

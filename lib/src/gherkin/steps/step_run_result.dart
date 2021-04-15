@@ -1,23 +1,31 @@
 enum StepExecutionResult { pass, fail, skipped, timeout, error }
 
 class StepResult {
-  /// the duration in milliseconds the step took to run
+  /// The duration in milliseconds the step took to run
   final int elapsedMilliseconds;
 
-  /// the result of executing the step
+  /// The result of executing the step
   final StepExecutionResult result;
 
-  // a reason for the result.  This would be a failure message if the result failed.  This field can be null
-  final String resultReason;
+  // A reason for the result
+  // This would be a failure message if the result failed.
+  final String? resultReason;
 
-  StepResult(this.elapsedMilliseconds, this.result, [this.resultReason]);
+  StepResult(
+    this.elapsedMilliseconds,
+    this.result, [
+    this.resultReason,
+  ]);
 }
 
 class ErroredStepResult extends StepResult {
-  final Exception exception;
+  final Object exception;
   final StackTrace stackTrace;
 
-  ErroredStepResult(int elapsedMilliseconds, StepExecutionResult result,
-      this.exception, this.stackTrace)
-      : super(elapsedMilliseconds, result);
+  ErroredStepResult(
+    int elapsedMilliseconds,
+    StepExecutionResult result,
+    this.exception,
+    this.stackTrace,
+  ) : super(elapsedMilliseconds, result);
 }

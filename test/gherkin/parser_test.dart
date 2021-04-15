@@ -61,7 +61,8 @@ void main() {
       expect(feature.scenarios.length, 1);
 
       final background = featureFile.features.elementAt(0).background;
-      expect(background.name, 'Some background');
+      expect(background, isNotNull);
+      expect(background!.name, 'Some background');
       expect(background.steps.length, 2);
       expect(background.steps.elementAt(0).name, 'Given I setup 1');
       expect(background.steps.elementAt(1).name, 'And I setup 2');
@@ -180,7 +181,8 @@ void main() {
       expect(feature.scenarios.length, 1);
 
       final background = featureFile.features.elementAt(0).background;
-      expect(background.name, '');
+      expect(background, isNotNull);
+      expect(background!.name, '');
       expect(background.steps.length, 2);
       expect(background.steps.elementAt(0).name, 'Given I setup 1');
       expect(background.steps.elementAt(1).name, 'And I setup 2');
@@ -243,7 +245,8 @@ void main() {
       expect(feature.scenarios.length, 5);
 
       final background = featureFile.features.elementAt(0).background;
-      expect(background.name, 'Setup');
+      expect(background, isNotNull);
+      expect(background!.name, 'Setup');
       expect(background.steps.length, 2);
       expect(background.steps.elementAt(0).name, 'Given I setup 1');
       expect(background.steps.elementAt(1).name, 'And I setup 2');
@@ -322,7 +325,8 @@ void main() {
       expect(feature.scenarios.length, 3);
 
       final background = featureFile.features.elementAt(0).background;
-      expect(background.name, 'Setup');
+      expect(background, isNotNull);
+      expect(background!.name, 'Setup');
       expect(background.steps.length, 2);
       expect(background.steps.elementAt(0).name, 'Given I setup 1');
       expect(background.steps.elementAt(1).name, 'And I setup 2');
@@ -406,7 +410,8 @@ void main() {
       expect(feature.scenarios.length, 1);
 
       final background = featureFile.features.elementAt(0).background;
-      expect(background.name, 'Some background');
+      expect(background, isNotNull);
+      expect(background!.name, 'Some background');
       expect(background.steps.length, 2);
       expect(background.steps.elementAt(0).name, 'Given I setup 1');
       expect(background.steps.elementAt(1).name, 'And I setup 2');
@@ -425,14 +430,14 @@ void main() {
       expect(steps.elementAt(5).name, 'Then I expect to see d');
 
       expect(steps.elementAt(3).table, isNotNull);
-      expect(steps.elementAt(3).table.header, isNotNull);
-      expect(steps.elementAt(3).table.header.columns,
+      expect(steps.elementAt(3).table!.header, isNotNull);
+      expect(steps.elementAt(3).table!.header!.columns,
           ['Firstname', 'Surname', 'Age', 'Gender']);
-      expect(steps.elementAt(3).table.rows.elementAt(0).columns.toList(),
+      expect(steps.elementAt(3).table!.rows.elementAt(0).columns.toList(),
           ['Woody', 'Johnson', '28', 'Male']);
-      expect(steps.elementAt(3).table.rows.elementAt(1).columns.toList(),
+      expect(steps.elementAt(3).table!.rows.elementAt(1).columns.toList(),
           ['Edith', 'Summers', '23', 'Female']);
-      expect(steps.elementAt(3).table.rows.elementAt(2).columns.toList(),
+      expect(steps.elementAt(3).table!.rows.elementAt(2).columns.toList(),
           ['Megan', 'Hill', '83', 'Female']);
 
       final commentStep = steps.elementAt(2);

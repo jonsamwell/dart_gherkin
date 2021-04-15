@@ -4,16 +4,16 @@ import '../messages.dart';
 import '../../gherkin/steps/step_run_result.dart';
 
 class JsonStep {
-  String keyword;
-  String name;
-  String file;
-  String error;
-  String docString;
-  String status = 'failed';
+  late final String name;
+  late final int line;
+  List<JsonRow>? rows;
+  List<JsonEmbedding>? embeddings;
+  String? error;
+  String? docString;
+  String? file;
+  String? keyword;
   int duration = 0;
-  int line;
-  List<JsonRow> rows = [];
-  List<JsonEmbedding> embeddings = [];
+  String status = 'failed';
 
   static JsonStep from(StepStartedMessage message) {
     final step = JsonStep();
@@ -28,10 +28,25 @@ class JsonStep {
     step.file = message.context.filePath;
     step.docString = message.multilineString;
 
-    if ((message.table?.rows?.length ?? 0) > 0) {
-      step.rows =
-          message.table.rows.map((r) => JsonRow(r.columns.toList())).toList();
-      step.rows.insert(0, JsonRow(message.table.header.columns.toList()));
+    if (message.table?.rows != null && message.table!.rows.isNotEmpty) {
+      step.rows = message.table!.rows
+          .map(
+            (r) => JsonRow(
+              r.columns.toList(
+                growable: false,
+              ),
+            ),
+          )
+          .toList();
+
+      step.rows!.insert(
+        0,
+        JsonRow(
+          message.table!.header!.columns.toList(
+            growable: false,
+          ),
+        ),
+      );
     }
 
     return step;
@@ -62,12 +77,21 @@ class JsonStep {
     _trackError(message.result.resultReason);
   }
 
-  void onException(Exception exception, StackTrace stackTrace) {
-    _trackError(exception.toString(), stackTrace.toString());
+  void onException(
+    Object exception,
+    StackTrace stackTrace,
+  ) {
+    _trackError(
+      exception.toString(),
+      stackTrace.toString(),
+    );
   }
 
-  void _trackError(String error, [String stacktrace]) {
-    if (this.error == null && (error?.length ?? 0) > 0) {
+  void _trackError(
+    String? error, [
+    String? stacktrace,
+  ]) {
+    if (error != null && error.isNotEmpty) {
       this.error =
           '$error${stacktrace != null ? '\n\n$stacktrace' : ''}'.trim();
     }
@@ -87,7 +111,7 @@ class JsonStep {
       }
     };
 
-    if (docString != null && docString.isNotEmpty) {
+    if (docString != null && docString!.isNotEmpty) {
       result['docString'] = {
         'content_type': '',
         'value': docString,
@@ -95,16 +119,16 @@ class JsonStep {
       };
     }
 
-    if (embeddings.isNotEmpty) {
-      result['embeddings'] = embeddings.toList();
+    if (embeddings != null && embeddings!.isNotEmpty) {
+      result['embeddings'] = embeddings!.toList();
     }
 
-    if (error != null) {
+    if (error != null && error!.isNotEmpty) {
       (result['result'] as dynamic)['error_message'] = error;
     }
 
-    if (rows.isNotEmpty) {
-      result['rows'] = rows.toList();
+    if (rows != null && rows!.isNotEmpty) {
+      result['rows'] = rows!.toList();
     }
 
     return result;

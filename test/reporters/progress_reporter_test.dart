@@ -5,7 +5,10 @@ import 'package:test/test.dart';
 class TestableProgressReporter extends ProgressReporter {
   final output = <String>[];
   @override
-  void printMessageLine(String message, [String colour]) {
+  void printMessageLine(
+    String message, [
+    String? colour,
+  ]) {
     output.add(message);
   }
 }
@@ -15,27 +18,39 @@ void main() {
     test('provides correct step finished output', () async {
       final reporter = TestableProgressReporter();
 
-      await reporter.onStepFinished(StepFinishedMessage(
+      await reporter.onStepFinished(
+        StepFinishedMessage(
           'Step 1',
           RunnableDebugInformation('filePath', 1, 'line 1'),
           StepResult(0, StepExecutionResult.pass),
-          [Attachment('A string', 'text/plain')]));
-      await reporter.onStepFinished(StepFinishedMessage(
+          [Attachment('A string', 'text/plain')],
+        ),
+      );
+      await reporter.onStepFinished(
+        StepFinishedMessage(
           'Step 2',
           RunnableDebugInformation('filePath', 2, 'line 2'),
-          StepResult(0, StepExecutionResult.fail, 'Failed Reason')));
-      await reporter.onStepFinished(StepFinishedMessage(
+          StepResult(0, StepExecutionResult.fail, 'Failed Reason'),
+        ),
+      );
+      await reporter.onStepFinished(
+        StepFinishedMessage(
           'Step 3',
           RunnableDebugInformation('filePath', 3, 'line 3'),
-          StepResult(0, StepExecutionResult.skipped)));
+          StepResult(0, StepExecutionResult.skipped),
+        ),
+      );
       await reporter.onStepFinished(StepFinishedMessage(
           'Step 4',
           RunnableDebugInformation('filePath', 4, 'line 4'),
           StepResult(0, StepExecutionResult.error)));
-      await reporter.onStepFinished(StepFinishedMessage(
+      await reporter.onStepFinished(
+        StepFinishedMessage(
           'Step 5',
           RunnableDebugInformation('filePath', 5, 'line 5'),
-          StepResult(1, StepExecutionResult.timeout)));
+          StepResult(1, StepExecutionResult.timeout),
+        ),
+      );
 
       expect(reporter.output, [
         '   √ Step 1 # filePath:1 took 0ms',

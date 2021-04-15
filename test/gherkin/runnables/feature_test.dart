@@ -17,7 +17,7 @@ Iterable<String> tagsToList(Iterable<TagsRunnable> tags) sync* {
 }
 
 void main() {
-  final debugInfo = RunnableDebugInformation(null, 0, null);
+  final debugInfo = RunnableDebugInformation.EMPTY();
   group('addChild', () {
     test('can add TextLineRunnable', () {
       final runnable = FeatureRunnable('', debugInfo);
@@ -25,7 +25,7 @@ void main() {
       runnable.addChild(TextLineRunnable(debugInfo)..text = 'text line two');
       expect(runnable.description, 'text\ntext line two');
     });
-    test('can add TagsRunnable which are given to taggable the tagable child',
+    test('can add TagsRunnable which are given to taggable the taggable child',
         () {
       final runnable = FeatureRunnable('', debugInfo);
       runnable.addChild(TagsRunnable(debugInfo)..tags = ['one', 'two']);
@@ -56,7 +56,7 @@ void main() {
       final runnable = FeatureRunnable('', debugInfo);
       runnable.addChild(BackgroundRunnable('1', debugInfo));
       expect(runnable.background, isNotNull);
-      expect(runnable.background.name, '1');
+      expect(runnable.background!.name, '1');
     });
   });
 }
