@@ -1,10 +1,11 @@
+import 'package:gherkin/src/expect/expect_mimic.dart';
+
 import '../../utils/perf.dart';
 import './step_run_result.dart';
 import '../../reporters/reporter.dart';
 import './step_configuration.dart';
 import './world.dart';
 import '../exceptions/parameter_count_mismatch_error.dart';
-import 'package:test/test.dart';
 import 'dart:async';
 
 abstract class StepDefinitionGeneric<TWorld extends World> {
@@ -46,7 +47,7 @@ abstract class StepDefinitionGeneric<TWorld extends World> {
         },
         (ms) => elapsedMilliseconds = ms,
       );
-    } on TestFailure catch (tf) {
+    } on GherkinTestFailure catch (tf) {
       return StepResult(
         elapsedMilliseconds,
         StepExecutionResult.fail,
