@@ -1,6 +1,11 @@
 {
     "cSpell.words": [
+        "Debuggable",
+        "Errored",
         "Multiline",
-        "behaviour"
+        "Serializable",
+        "behaviour",
+        "pubspec",
+        "writeln"
     ]
 }

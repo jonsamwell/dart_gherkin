@@ -10,4 +10,8 @@ class RunnableDebugInformation {
   RunnableDebugInformation copyWith(int lineNumber, String line) {
     return RunnableDebugInformation(filePath, lineNumber, line);
   }
+
+  static RunnableDebugInformation EMPTY() {
+    return RunnableDebugInformation('', 0, '');
+  }
 }

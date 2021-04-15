@@ -27,8 +27,8 @@ class TableRunnable extends RunnableBlock {
     }
   }
 
-  Table toTable() {
-    TableRow header;
+  GherkinTable toTable() {
+    TableRow? header;
     final tableRows = <TableRow>[];
     if (rows.length > 1) {
       header = _toRow(rows.first, 0, true);
@@ -38,7 +38,7 @@ class TableRunnable extends RunnableBlock {
       tableRows.add(_toRow(rows.elementAt(i), i));
     }
 
-    return Table(tableRows, header);
+    return GherkinTable(tableRows, header);
   }
 
   TableRow _toRow(String raw, int rowIndex, [isHeaderRow = false]) {
@@ -46,14 +46,14 @@ class TableRunnable extends RunnableBlock {
         .trim()
         .split(RegExp(r'(?<!\\)\|'))
         .map((c) => c.trim().replaceAll(r'\|', '|'))
+        .map((c) => c.isEmpty ? null : c)
         .skip(1)
         .toList();
 
     return TableRow(
-      columns
-          .take(columns.length - 1)
-          .map((v) => v.isEmpty ? null : v)
-          .toList(),
+      columns.take(columns.length - 1).toList(
+            growable: false,
+          ),
       rowIndex,
       isHeaderRow,
     );

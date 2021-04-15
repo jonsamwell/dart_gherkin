@@ -1,7 +1,7 @@
 import 'gherkin_exception.dart';
 
 class GherkinDialogNotSupportedException implements GherkinException {
-  final String dialect;
+  final String? dialect;
 
   GherkinDialogNotSupportedException(this.dialect);
 

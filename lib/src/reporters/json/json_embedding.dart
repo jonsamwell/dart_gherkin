@@ -1,6 +1,6 @@
 class JsonEmbedding {
-  String mimeType;
-  String data;
+  late final String mimeType;
+  late final String data;
 
   Map<String, dynamic> toJson() {
     return {

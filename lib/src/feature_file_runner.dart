@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:gherkin/src/gherkin/runnables/scenario_type_enum.dart';
+import 'package:collection/collection.dart';
 
 import '../gherkin.dart';
 import './reporters/message_level.dart';
@@ -14,7 +15,7 @@ import './gherkin/runnables/feature.dart';
 import './gherkin/runnables/feature_file.dart';
 import './gherkin/runnables/scenario.dart';
 import './gherkin/runnables/step.dart';
-import './gherkin/steps/exectuable_step.dart';
+import './gherkin/steps/executable_step.dart';
 import './gherkin/steps/step_run_result.dart';
 import './gherkin/steps/world.dart';
 import './reporters/messages.dart';
@@ -39,7 +40,7 @@ class FeatureFileRunner {
     var haveAllFeaturesPassed = true;
     for (var feature in featureFile.features) {
       haveAllFeaturesPassed &= await _runFeature(feature);
-      if (_config.exitAfterTestFailed && !haveAllFeaturesPassed) {
+      if (_config.stopAfterTestFailed && !haveAllFeaturesPassed) {
         break;
       }
     }
@@ -75,7 +76,7 @@ class FeatureFileRunner {
         if (_canRunScenario(_config.tagExpression, scenario)) {
           haveAllScenariosPassed &=
               await _runScenarioInZone(scenario, feature.background);
-          if (_config.exitAfterTestFailed && !haveAllScenariosPassed) {
+          if (_config.stopAfterTestFailed && !haveAllScenariosPassed) {
             break;
           }
         } else {
@@ -121,7 +122,7 @@ class FeatureFileRunner {
   }
 
   bool _canRunScenario(
-    String tagExpression,
+    String? tagExpression,
     ScenarioRunnable scenario,
   ) {
     return tagExpression == null
@@ -139,18 +140,18 @@ class FeatureFileRunner {
 
   Future<bool> _runScenarioInZone(
     ScenarioRunnable scenario,
-    BackgroundRunnable background,
+    BackgroundRunnable? background,
   ) {
     final completer = Completer<bool>();
     // ensure unhandled errors do not cause the entire test run to crash
-    runZoned(
+    runZonedGuarded(
       () async {
         final result = await _runScenario(scenario, background);
         if (!completer.isCompleted) {
           completer.complete(result);
         }
       },
-      onError: (dynamic error, dynamic stack) {
+      (dynamic error, dynamic stack) {
         if (!completer.isCompleted) {
           // this is a special type of exception that indicates something is wrong
           // with the test rather than the test execution so fail the whole run as
@@ -173,10 +174,10 @@ class FeatureFileRunner {
 
   Future<bool> _runScenario(
     ScenarioRunnable scenario,
-    BackgroundRunnable background,
+    BackgroundRunnable? background,
   ) async {
     final attachmentManager = await _config.getAttachmentManager(_config);
-    World world;
+    late final World world;
     var scenarioPassed = true;
     final tags = scenario.tags.isNotEmpty
         ? scenario.tags
@@ -194,14 +195,17 @@ class FeatureFileRunner {
           scenario.debug,
           MessageLevel.debug,
         );
-        world = await _config.createWorld(_config);
-        world.setAttachmentManager(attachmentManager);
-        await _hook.onAfterScenarioWorldCreated(
-          world,
-          scenario.name,
-          tags,
-        );
+        world = await _config.createWorld!(_config);
+      } else {
+        world = World();
       }
+
+      world.setAttachmentManager(attachmentManager);
+      await _hook.onAfterScenarioWorldCreated(
+        world,
+        scenario.name,
+        tags,
+      );
 
       await _hook.onBeforeScenario(_config, scenario.name, tags);
 
@@ -279,7 +283,7 @@ class FeatureFileRunner {
       );
 
       try {
-        world?.dispose();
+        world.dispose();
       } catch (e, st) {
         await _reporter.onException(e, st);
         rethrow;
@@ -337,7 +341,7 @@ class FeatureFileRunner {
         step.name,
         step.debug,
         result,
-        attachmentManager?.getAttachmentsForContext(step.name),
+        attachmentManager.getAttachmentsForContext(step.name),
       ),
     );
 
@@ -362,9 +366,10 @@ class FeatureFileRunner {
   }
 
   ExecutableStep _matchStepToExecutableStep(StepRunnable step) {
-    final executable = _steps.firstWhere(
-        (s) => s.expression.isMatch(step.debug.lineText),
-        orElse: () => null);
+    final executable = _steps.firstWhereOrNull(
+      (s) => s.expression.isMatch(step.debug.lineText),
+    );
+
     if (executable == null) {
       final message = """
       Step definition not found for text:
@@ -397,6 +402,7 @@ class FeatureFileRunner {
       }
       """;
       _reporter.message(message, MessageLevel.error);
+
       throw GherkinStepNotDefinedException(message);
     }
 

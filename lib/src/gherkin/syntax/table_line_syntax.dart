@@ -1,13 +1,12 @@
 import 'package:gherkin/src/gherkin/languages/dialect.dart';
 
 import '../runnables/debug_information.dart';
-import '../runnables/runnable.dart';
 import '../runnables/table.dart';
 import './comment_syntax.dart';
 import './regex_matched_syntax.dart';
 import './syntax_matcher.dart';
 
-class TableLineSyntax extends RegExMatchedGherkinSyntax {
+class TableLineSyntax extends RegExMatchedGherkinSyntax<TableRunnable> {
   @override
   RegExp pattern(GherkinDialect dialect) => RegExp(
         r'^\s*(\|.*\|)\s*(?:\s*#\s*.*)?$',
@@ -28,14 +27,16 @@ class TableLineSyntax extends RegExMatchedGherkinSyntax {
   }
 
   @override
-  Runnable toRunnable(
+  TableRunnable toRunnable(
     String line,
     RunnableDebugInformation debug,
     GherkinDialect dialect,
   ) {
     final runnable = TableRunnable(debug);
-    runnable.rows
-        .add(pattern(dialect).firstMatch(line.trim()).group(1).trim() ?? '');
+    runnable.rows.add(
+      pattern(dialect).firstMatch(line.trim())!.group(1)!.trim(),
+    );
+
     return runnable;
   }
 }

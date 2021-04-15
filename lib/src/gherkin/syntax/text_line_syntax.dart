@@ -1,11 +1,10 @@
 import 'package:gherkin/src/gherkin/languages/dialect.dart';
 
 import '../runnables/debug_information.dart';
-import '../runnables/runnable.dart';
 import '../runnables/text_line.dart';
 import './regex_matched_syntax.dart';
 
-class TextLineSyntax extends RegExMatchedGherkinSyntax {
+class TextLineSyntax extends RegExMatchedGherkinSyntax<TextLineRunnable> {
   @override
 
   /// Regex needs to make sure it does not match comment lines or empty whitespace lines
@@ -16,7 +15,7 @@ class TextLineSyntax extends RegExMatchedGherkinSyntax {
       );
 
   @override
-  Runnable toRunnable(
+  TextLineRunnable toRunnable(
     String line,
     RunnableDebugInformation debug,
     GherkinDialect dialect,

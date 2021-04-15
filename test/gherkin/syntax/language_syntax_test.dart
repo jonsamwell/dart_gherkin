@@ -49,9 +49,9 @@ void main() {
   group('toRunnable', () {
     test('creates LanguageRunnable', () {
       final keyword = LanguageSyntax();
-      final LanguageRunnable runnable = keyword.toRunnable(
+      final runnable = keyword.toRunnable(
         '# language: de',
-        RunnableDebugInformation(null, 0, null),
+        RunnableDebugInformation.EMPTY(),
         EnDialectMock(),
       );
       expect(runnable, isNotNull);

@@ -3,7 +3,7 @@ import 'package:test/test.dart';
 
 void main() {
   group('service', () {
-    test('can parse langauage json file', () async {
+    test('can parse language json file', () async {
       final service = LanguageService();
       service.initialise();
     });
@@ -35,6 +35,14 @@ void main() {
       final dialect = service.getDialect('zh-TW');
       expect(dialect, isNotNull);
       expect(dialect.nativeName, '繁體中文');
+    });
+
+    test('parses french correctly', () async {
+      final service = LanguageService();
+      service.initialise();
+      final dialect = service.getDialect('fr');
+      expect(dialect, isNotNull);
+      expect(dialect.when.contains("Lorsqu'"), true);
     });
   });
 }

@@ -5,7 +5,7 @@ import 'package:gherkin/src/gherkin/runnables/text_line.dart';
 import 'package:test/test.dart';
 
 void main() {
-  final debugInfo = RunnableDebugInformation(null, 0, null);
+  final debugInfo = RunnableDebugInformation.EMPTY();
   group('addChild', () {
     test('can add EmptyLineRunnable', () {
       final runnable = MultilineStringRunnable(debugInfo);

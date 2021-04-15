@@ -13,10 +13,10 @@ import './text_line.dart';
 
 class FeatureRunnable extends TaggableRunnableBlock {
   final String _name;
-  String description;
-  BackgroundRunnable background;
-  List<ScenarioRunnable> scenarios = <ScenarioRunnable>[];
+  String? description;
+  final List<ScenarioRunnable> scenarios = <ScenarioRunnable>[];
   final List<TagsRunnable> _tagsPendingAssignmentToChild = <TagsRunnable>[];
+  BackgroundRunnable? background;
 
   FeatureRunnable(this._name, RunnableDebugInformation debug) : super(debug);
 
@@ -31,11 +31,11 @@ class FeatureRunnable extends TaggableRunnableBlock {
             "${description == null ? "" : "$description\n"}${(child as TextLineRunnable).text}";
         break;
       case TagsRunnable:
-        _tagsPendingAssignmentToChild.add(child);
+        _tagsPendingAssignmentToChild.add(child as TagsRunnable);
         break;
       case ScenarioRunnable:
       case ScenarioOutlineRunnable:
-        Iterable<ScenarioRunnable> childScenarios = [child];
+        Iterable<ScenarioRunnable> childScenarios = [child as ScenarioRunnable];
         if (child is ScenarioOutlineRunnable) {
           childScenarios = child.expandOutlinesIntoScenarios();
         }
@@ -50,10 +50,12 @@ class FeatureRunnable extends TaggableRunnableBlock {
         break;
       case BackgroundRunnable:
         if (background == null) {
-          background = child;
+          background = child as BackgroundRunnable;
         } else {
           throw GherkinSyntaxException(
-              "Feature file can only contain one background block. File'${debug.filePath}' :: line '${child.debug.lineNumber}'");
+            'Feature file can only contain one background block. '
+            "File'${debug.filePath}' :: line '${child.debug.lineNumber}'",
+          );
         }
         break;
       case EmptyLineRunnable:

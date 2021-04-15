@@ -91,9 +91,9 @@ void main() {
   group('toRunnable', () {
     test('creates TextLineRunnable', () {
       final syntax = TextLineSyntax();
-      final TextLineRunnable runnable = syntax.toRunnable(
+      final runnable = syntax.toRunnable(
         '  Some text ',
-        RunnableDebugInformation(null, 0, null),
+        RunnableDebugInformation.EMPTY(),
         EnDialectMock(),
       );
       expect(runnable, isNotNull);

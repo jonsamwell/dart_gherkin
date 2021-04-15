@@ -27,7 +27,7 @@ class ExampleSyntax extends RegExMatchedGherkinSyntax {
     RunnableDebugInformation debug,
     GherkinDialect dialect,
   ) {
-    final name = (pattern(dialect).firstMatch(line).group(1) ?? '').trim();
+    final name = (pattern(dialect).firstMatch(line)?.group(1) ?? '').trim();
     final runnable = ExampleRunnable(name, debug);
 
     return runnable;

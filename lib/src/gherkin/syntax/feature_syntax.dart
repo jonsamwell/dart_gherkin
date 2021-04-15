@@ -19,8 +19,8 @@ class FeatureSyntax extends RegExMatchedGherkinSyntax {
     RunnableDebugInformation debug,
     GherkinDialect dialect,
   ) {
-    final name = pattern(dialect).firstMatch(line).group(1);
-    final runnable = FeatureRunnable(name, debug);
+    final name = pattern(dialect).firstMatch(line)?.group(1);
+    final runnable = FeatureRunnable(name!, debug);
     return runnable;
   }
 

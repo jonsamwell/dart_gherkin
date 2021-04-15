@@ -9,14 +9,16 @@ class LanguageService {
 
   String get defaultLanguage => _defaultLanguage;
 
-  GherkinDialect getDialect([String languageCode]) {
+  GherkinDialect getDialect([
+    String? languageCode,
+  ]) {
     final code = languageCode ?? _defaultLanguage;
 
     if (_dialects[code] == null) {
       throw GherkinDialogNotSupportedException(code);
     }
 
-    return _dialects[code];
+    return _dialects[code]!;
   }
 
   void initialise([String defaultLanguage = 'en']) {

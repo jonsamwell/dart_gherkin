@@ -17,33 +17,48 @@ void main() {
 
       final aggregatedHook = AggregatedHook();
       aggregatedHook.addHooks([hookOne, hookTwo, hookThree, hookFour]);
-      await aggregatedHook.onBeforeRun(null);
+      await aggregatedHook.onBeforeRun(TestConfiguration.DEFAULT([]));
       expect(executionOrder, [1, 2, 3, 4]);
       expect(hookOne.onBeforeRunInvocationCount, 1);
       expect(hookTwo.onBeforeRunInvocationCount, 1);
       expect(hookThree.onBeforeRunInvocationCount, 1);
       expect(hookFour.onBeforeRunInvocationCount, 1);
-      await aggregatedHook.onAfterRun(null);
+      await aggregatedHook.onAfterRun(TestConfiguration.DEFAULT([]));
       expect(hookOne.onAfterRunInvocationCount, 1);
       expect(hookTwo.onAfterRunInvocationCount, 1);
       expect(hookThree.onAfterRunInvocationCount, 1);
       expect(hookFour.onAfterRunInvocationCount, 1);
-      await aggregatedHook.onBeforeScenario(null, null, null);
+      await aggregatedHook.onBeforeScenario(
+        TestConfiguration.DEFAULT([]),
+        '',
+        const Iterable.empty(),
+      );
       expect(hookOne.onBeforeScenarioInvocationCount, 1);
       expect(hookTwo.onBeforeScenarioInvocationCount, 1);
       expect(hookThree.onBeforeScenarioInvocationCount, 1);
       expect(hookFour.onBeforeScenarioInvocationCount, 1);
-      await aggregatedHook.onBeforeStep(null, null);
+      await aggregatedHook.onBeforeStep(World(), '');
       expect(hookOne.onBeforeStepInvocationCount, 1);
       expect(hookTwo.onBeforeStepInvocationCount, 1);
       expect(hookThree.onBeforeStepInvocationCount, 1);
       expect(hookFour.onBeforeStepInvocationCount, 1);
-      await aggregatedHook.onAfterScenarioWorldCreated(null, null, null);
+      await aggregatedHook.onAfterScenarioWorldCreated(
+        World(),
+        '',
+        const Iterable.empty(),
+      );
       expect(hookOne.onAfterScenarioWorldCreatedInvocationCount, 1);
       expect(hookTwo.onAfterScenarioWorldCreatedInvocationCount, 1);
       expect(hookThree.onAfterScenarioWorldCreatedInvocationCount, 1);
       expect(hookFour.onAfterScenarioWorldCreatedInvocationCount, 1);
-      await aggregatedHook.onAfterStep(null, null, null);
+      await aggregatedHook.onAfterStep(
+        World(),
+        '',
+        StepResult(
+          0,
+          StepExecutionResult.skipped,
+        ),
+      );
       expect(hookOne.onAfterStepInvocationCount, 1);
       expect(hookTwo.onAfterStepInvocationCount, 1);
       expect(hookThree.onAfterStepInvocationCount, 1);

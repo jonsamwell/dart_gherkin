@@ -8,8 +8,8 @@ import 'taggable_runnable_block.dart';
 
 class ExampleRunnable extends TaggableRunnableBlock {
   final String _name;
-  String description;
-  Table table;
+  GherkinTable? table;
+  String? description;
 
   ExampleRunnable(
     this._name,
@@ -25,17 +25,19 @@ class ExampleRunnable extends TaggableRunnableBlock {
       case TableRunnable:
         if (table != null) {
           throw GherkinSyntaxException(
-              "Only a single table can be added to the example '$name'");
+            "Only a single table can be added to the example '$name'",
+          );
         }
 
         table = (child as TableRunnable).toTable();
         break;
       case TagsRunnable:
-        addTag(child);
+        addTag(child as TagsRunnable);
         break;
       default:
         throw Exception(
-            "Unknown runnable child given to Step '${child.runtimeType}'");
+          "Unknown runnable child given to Step '${child.runtimeType}'",
+        );
     }
   }
 }

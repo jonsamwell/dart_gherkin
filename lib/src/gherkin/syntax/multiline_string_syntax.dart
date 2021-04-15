@@ -3,14 +3,14 @@ import 'package:gherkin/src/gherkin/syntax/empty_line_syntax.dart';
 
 import '../runnables/debug_information.dart';
 import '../runnables/multi_line_string.dart';
-import '../runnables/runnable.dart';
 import '../exceptions/syntax_error.dart';
 import './comment_syntax.dart';
 import './regex_matched_syntax.dart';
 import './syntax_matcher.dart';
 import './text_line_syntax.dart';
 
-class MultilineStringSyntax extends RegExMatchedGherkinSyntax {
+class MultilineStringSyntax
+    extends RegExMatchedGherkinSyntax<MultilineStringRunnable> {
   @override
   RegExp pattern(GherkinDialect dialect) => RegExp(
         r'^\s*('
@@ -37,7 +37,7 @@ class MultilineStringSyntax extends RegExMatchedGherkinSyntax {
   }
 
   @override
-  Runnable toRunnable(
+  MultilineStringRunnable toRunnable(
     String line,
     RunnableDebugInformation debug,
     GherkinDialect dialect,

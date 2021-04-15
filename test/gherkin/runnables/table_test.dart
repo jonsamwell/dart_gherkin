@@ -1,10 +1,11 @@
+import 'package:gherkin/gherkin.dart';
 import 'package:gherkin/src/gherkin/runnables/comment_line.dart';
 import 'package:gherkin/src/gherkin/runnables/debug_information.dart';
 import 'package:gherkin/src/gherkin/runnables/table.dart';
 import 'package:test/test.dart';
 
 void main() {
-  final debugInfo = RunnableDebugInformation(null, 0, null);
+  final debugInfo = RunnableDebugInformation.EMPTY();
   group('addChild', () {
     test('can add CommentLineRunnable', () {
       final runnable = TableRunnable(debugInfo);
@@ -47,11 +48,14 @@ void main() {
       runnable.addChild(TableRunnable(debugInfo)
         ..rows.add('| header one | header two | header three |'));
       runnable.addChild(
-          TableRunnable(debugInfo)..rows.add('| one | two | three |'));
+        TableRunnable(debugInfo)..rows.add('| one | two | three |'),
+      );
       final table = runnable.toTable();
       expect(table.header, isNotNull);
       expect(
-          table.header.columns, ['header one', 'header two', 'header three']);
+        table.header!.columns,
+        ['header one', 'header two', 'header three'],
+      );
       expect(table.rows.length, 1);
       expect(table.rows.elementAt(0).columns, ['one', 'two', 'three']);
     });
@@ -79,7 +83,9 @@ void main() {
       final table = runnable.toTable();
       expect(table.header, isNotNull);
       expect(
-          table.header.columns, ['header one', 'header two', 'header three']);
+        table.header!.columns,
+        ['header one', 'header two', 'header three'],
+      );
       expect(table.rows.length, 2);
       expect(table.rows.elementAt(0).columns, ['one', 'two', 'three']);
       expect(table.rows.elementAt(1).columns, ['four', 'five', 'six']);
@@ -112,7 +118,9 @@ void main() {
       final table = runnable.toTable();
       expect(table.header, isNotNull);
       expect(
-          table.header.columns, ['header one', 'header two', 'header three']);
+        table.header!.columns,
+        ['header one', 'header two', 'header three'],
+      );
       expect(table.rows.length, 2);
       expect(table.rows.elementAt(0).columns, ['one', 'two', 'three']);
       expect(table.rows.elementAt(1).columns, ['four', 'five', 'six']);
@@ -176,6 +184,43 @@ void main() {
         '1': 'two',
         '2': 'three with | escaped pipe'
       });
+    });
+  });
+
+  group('json', () {
+    test('single row table as json', () async {
+      final runnable = TableRunnable(debugInfo);
+      runnable.addChild(
+          TableRunnable(debugInfo)..rows.add('| one | two | three |'));
+      final json = runnable.toTable().toJson();
+      expect(json, '[{"0":"one","1":"two","2":"three"}]');
+    });
+
+    test('three row table as json', () async {
+      final runnable = TableRunnable(debugInfo);
+      runnable.addChild(TableRunnable(debugInfo)
+        ..rows.add('| header one | header two | header three |'));
+      runnable.addChild(
+          TableRunnable(debugInfo)..rows.add('| one | two | three |'));
+      runnable.addChild(
+          TableRunnable(debugInfo)..rows.add('| four | five | six |'));
+      final json = runnable.toTable().toJson();
+      expect(json,
+          '[{"header one":"one","header two":"two","header three":"three"},{"header one":"four","header two":"five","header three":"six"}]');
+    });
+
+    test('three row table from json', () async {
+      const json =
+          '[{"header one":"one","header two":"two","header three":"three"},{"header one":"four","header two":"five","header three":"six"}]';
+      final table = GherkinTable.fromJson(json);
+
+      expect(table.header, isNotNull);
+      expect(table.rows.length, 2);
+      expect(table.rows.first.columns.first, 'one');
+      expect(table.rows.first.columns.last, 'three');
+      expect(table.rows.last.columns.first, 'four');
+      expect(table.rows.last.columns.last, 'six');
+      expect(table.header, isNotNull);
     });
   });
 }

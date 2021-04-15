@@ -2,7 +2,7 @@ import './debug_information.dart';
 import './runnable.dart';
 
 class TagsRunnable extends Runnable {
-  Iterable<String> tags;
+  late Iterable<String> tags;
   bool isInherited = false;
 
   @override

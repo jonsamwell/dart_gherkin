@@ -4,13 +4,13 @@ import 'json_step.dart';
 import 'json_tag.dart';
 
 class JsonFeature {
-  String uri;
-  String id;
-  String name;
-  String description;
-  int line;
-  Iterable<JsonTag> tags;
-  List<JsonScenario> scenarios = [];
+  late final String uri;
+  late final String name;
+  late final String description;
+  late final int line;
+  String? id;
+  Iterable<JsonTag>? tags;
+  List<JsonScenario>? scenarios;
 
   static JsonFeature from(StartedMessage message) {
     final feature = JsonFeature();
@@ -25,16 +25,18 @@ class JsonFeature {
     return feature;
   }
 
-  void add({
+  void add(
     JsonScenario scenario,
-  }) {
+  ) {
     scenario.feature = this;
-    scenarios.add(scenario);
+    scenarios ??= <JsonScenario>[];
+    scenarios?.add(scenario);
   }
 
   JsonScenario currentScenario() {
-    if (scenarios.isEmpty) {
+    if (scenarios == null || scenarios!.isEmpty) {
       final scenario = JsonScenario()
+        ..target = Target.scenario
         ..name = 'Unnamed'
         ..description =
             'An unnamed scenario is possible if something is logged before any scenario steps have started to execute'
@@ -46,10 +48,10 @@ class JsonFeature {
             ..line = 0
         ];
 
-      scenarios.add(scenario);
+      scenarios = (scenarios ?? [])..add(scenario);
     }
 
-    return scenarios.last;
+    return scenarios!.last;
   }
 
   Map<String, dynamic> toJson() {
@@ -62,12 +64,12 @@ class JsonFeature {
       'uri': uri,
     };
 
-    if (tags.isNotEmpty) {
-      result['tags'] = tags.toList();
+    if (tags != null && tags!.isNotEmpty) {
+      result['tags'] = tags!.toList();
     }
 
-    if (scenarios.isNotEmpty) {
-      result['elements'] = scenarios.toList();
+    if (scenarios != null && scenarios!.isNotEmpty) {
+      result['elements'] = scenarios!.toList();
     }
 
     return result;

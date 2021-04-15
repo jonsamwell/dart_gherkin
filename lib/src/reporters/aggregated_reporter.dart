@@ -1,8 +1,9 @@
+import './serializable_reporter.dart';
 import './messages.dart';
 import './message_level.dart';
 import './reporter.dart';
 
-class AggregatedReporter extends Reporter {
+class AggregatedReporter extends Reporter implements SerializableReporter {
   final List<Reporter> _reporters = <Reporter>[];
 
   void addReporter(Reporter reporter) => _reporters.add(reporter);
@@ -38,7 +39,7 @@ class AggregatedReporter extends Reporter {
   }
 
   @override
-  Future<void> onScenarioFinished(FinishedMessage message) async {
+  Future<void> onScenarioFinished(ScenarioFinishedMessage message) async {
     await _invokeReporters((r) async => await r.onScenarioFinished(message));
   }
 
@@ -53,7 +54,7 @@ class AggregatedReporter extends Reporter {
   }
 
   @override
-  Future<void> onException(Exception exception, StackTrace stackTrace) async {
+  Future<void> onException(Object exception, StackTrace stackTrace) async {
     await _invokeReporters(
         (r) async => await r.onException(exception, stackTrace));
   }
@@ -61,14 +62,30 @@ class AggregatedReporter extends Reporter {
   @override
   Future<void> dispose() async {
     await _invokeReporters((r) async => await r.dispose());
+    _reporters.clear();
   }
 
   Future<void> _invokeReporters(
-      Future<void> Function(Reporter r) invoke) async {
-    if (_reporters != null && _reporters.isNotEmpty) {
+    Future<void> Function(Reporter r) invoke,
+  ) async {
+    if (_reporters.isNotEmpty) {
       for (var reporter in _reporters) {
         await invoke(reporter);
       }
     }
+  }
+
+  @override
+  String toJson() {
+    var jsonReports = '';
+    if (_reporters.isNotEmpty) {
+      jsonReports = _reporters
+          .whereType<SerializableReporter>()
+          .map((x) => x.toJson())
+          .where((x) => x.isNotEmpty)
+          .join(',');
+    }
+
+    return '[$jsonReports]';
   }
 }

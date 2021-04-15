@@ -1,6 +1,7 @@
 import 'package:gherkin/src/gherkin/languages/language_service.dart';
 import 'package:gherkin/src/gherkin/runnables/dialect_block.dart';
 import 'package:gherkin/src/gherkin/runnables/multi_line_string.dart';
+import 'package:collection/collection.dart';
 
 import './exceptions/syntax_error.dart';
 import './runnables/debug_information.dart';
@@ -48,10 +49,21 @@ class GherkinParser {
     Reporter reporter,
     LanguageService languageService,
   ) async {
-    final featureFile = FeatureFile(RunnableDebugInformation(path, 0, null));
-    await reporter.message("Parsing feature file: '$path'", MessageLevel.debug);
-    final lines =
-        contents.trim().split(RegExp(r'(\r\n|\r|\n)', multiLine: true));
+    final featureFile = FeatureFile(
+      RunnableDebugInformation(
+        path,
+        0,
+        '',
+      ),
+    );
+    await reporter.message(
+      "Parsing feature file: '$path'",
+      MessageLevel.debug,
+    );
+    final lines = contents.trim().split(
+          RegExp(r'(\r\n|\r|\n)', multiLine: true),
+        );
+
     try {
       _parseBlock(
         languageService,
@@ -64,14 +76,17 @@ class GherkinParser {
       );
     } catch (e) {
       await reporter.message(
-          "Error while parsing feature file: '$path'\n$e", MessageLevel.error);
+        "Error while parsing feature file: '$path'\n$e",
+        MessageLevel.error,
+      );
+
       rethrow;
     }
 
     return featureFile;
   }
 
-  num _parseBlock(
+  int _parseBlock(
     LanguageService languageService,
     GherkinDialect dialect,
     SyntaxMatcher parentSyntaxBlock,
@@ -83,10 +98,12 @@ class GherkinParser {
     for (var i = lineNumber; i < lines.length; i += 1) {
       final line = lines.elementAt(i).trim();
       // print("$depth - $line");
-      final matcher = syntaxMatchers.firstWhere(
-          (matcher) => matcher.isMatch(line, dialect),
-          orElse: () => null);
+      final matcher = syntaxMatchers.firstWhereOrNull(
+        (matcher) => matcher.isMatch(line, dialect),
+      );
+
       if (matcher != null) {
+        // end look ahead here???
         if (parentSyntaxBlock.hasBlockEnded(matcher)) {
           switch (parentSyntaxBlock.endBlockHandling(matcher)) {
             case EndBlockHandling.ignore:
@@ -123,7 +140,8 @@ class GherkinParser {
         parentBlock.addChild(runnable);
       } else {
         throw GherkinSyntaxException(
-            "Unknown or un-implemented syntax: '$line', file: '${parentBlock.debug.filePath}");
+          "Unknown or un-implemented syntax: '$line', file: '${parentBlock.debug.filePath}",
+        );
       }
     }
 

@@ -12,10 +12,12 @@ class GherkinExpression {
   final RegExp originalExpression;
   final List<_SortedParameterPosition> _sortedParameterPositions =
       <_SortedParameterPosition>[];
-  RegExp _expression;
+  late final RegExp _expression;
 
-  GherkinExpression(this.originalExpression,
-      Iterable<CustomParameter<dynamic>> customParameters) {
+  GherkinExpression(
+    this.originalExpression,
+    Iterable<CustomParameter<dynamic>> customParameters,
+  ) {
     var pattern = originalExpression.pattern;
     customParameters.forEach((p) {
       if (originalExpression.pattern.contains(p.identifier)) {
@@ -42,7 +44,7 @@ class GherkinExpression {
     // note that we should ignore the predefined (s) plural parameter
     // and also ignore the (?:) non-capturing group pattern
     var inCustomBracketSection = false;
-    int indexOfOpeningBracket;
+    int? indexOfOpeningBracket;
     for (var i = 0; i < originalExpression.pattern.length; i += 1) {
       final char = originalExpression.pattern[i];
       if (char == '(') {
@@ -57,8 +59,12 @@ class GherkinExpression {
           }
         }
       } else if (char == ')' && inCustomBracketSection) {
-        _sortedParameterPositions.add(_SortedParameterPosition(
-            indexOfOpeningBracket, UserDefinedStepParameterParameter()));
+        _sortedParameterPositions.add(
+          _SortedParameterPosition(
+            indexOfOpeningBracket!,
+            UserDefinedStepParameterParameter(),
+          ),
+        );
         inCustomBracketSection = false;
         indexOfOpeningBracket = 0;
       }
@@ -80,12 +86,20 @@ class GherkinExpression {
   Iterable<dynamic> getParameters(String input) {
     final stringValues = <String>[];
     final values = <dynamic>[];
-    _expression.allMatches(input).forEach((m) {
-      // the first group is always the input string
-      final indices =
-          List.generate(m.groupCount, (i) => i + 1, growable: false).toList();
-      stringValues.addAll(m.groups(indices));
-    });
+    _expression.allMatches(input).forEach(
+      (m) {
+        // the first group is always the input string
+        final indices = List.generate(
+          m.groupCount,
+          (i) => i + 1,
+          growable: false,
+        ).toList();
+
+        stringValues.addAll(
+          m.groups(indices).where((x) => x != null).cast(),
+        );
+      },
+    );
 
     final definedParameters = _sortedParameterPositions
         .where((x) => x.parameter.includeInParameterList)

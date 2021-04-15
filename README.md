@@ -39,8 +39,7 @@ Available as a Flutter specific package https://pub.dartlang.org/packages/flutte
     - [attachments](#attachments)
     - [reporters](#reporters)
     - [createWorld](#createworld)
-    - [exitAfterTestRun](#exitaftertestrun)
-    - [exitAfterTestFailed](#exitAfterTestFailed)
+    - [stopAfterTestFailed](#stopAfterTestFailed)
 * [Features Files](#features-files)
   + [Steps Definitions](#steps-definitions)
     - [Given](#given)
@@ -180,7 +179,7 @@ The parameters below can be specified in your configuration file:
 
 *Required*
 
-An iterable of `Pattern` patterns that specify the location(s) of `*.feature` files to run. 
+An iterable of `Pattern` patterns that specify the location(s) of `*.feature` files to run.
 Could be [Pattern](https://api.dart.dev/stable/2.12.2/dart-core/Pattern-class.html), [Glob](https://pub.dartlang.org/packages/glob) or just `String`.
 
 #### tagExpression
@@ -378,15 +377,10 @@ Future<void> main() {
 }
 ```
 
-#### exitAfterTestRun
-
-Defaults to `true`
-True to exit the program after all tests have run.  You may want to set this to false during debugging.
-
-#### exitAfterTestFailed
+#### stopAfterTestFailed
 
 Defaults to `false`
-True to exit the program when a test have failed.  You may want to set this to true during debugging.
+True to stop the test run when a test fails.  You may want to set this to true during debugging.
 
 ## Features Files
 
