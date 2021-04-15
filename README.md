@@ -58,12 +58,6 @@ Available as a Flutter specific package https://pub.dartlang.org/packages/flutte
 * [Hooks](#hooks)
 * [Attachments](#attachments)
 * [Reporting](#reporting)
-* [Flutter](#flutter)
-  + [Restarting the app before each test](#restarting-the-app-before-each-test)
-    - [Flutter World](#flutter-world)
-  + [Pre-defined Steps](#pre-defined-steps)
-    - [Flutter Driver Utilities](#flutter-driver-utilities)
-  + [Debugging](#debugging)
 
 <!-- /TOC -->
 
