@@ -1,3 +1,3 @@
 abstract class FeatureFileReader {
-  Future<String> read(String path);
+  String read(String path);
 }

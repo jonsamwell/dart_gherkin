@@ -93,7 +93,7 @@ class GherkinRunner {
       final featureFiles = <FeatureFile>[];
 
       for (var pattern in config.features) {
-        final paths = await config.featureFileIndexer.listFiles(pattern);
+        final paths = config.featureFileIndexer.listFiles(pattern);
 
         for (var path in paths) {
           await _reporter.message(
@@ -101,7 +101,7 @@ class GherkinRunner {
             MessageLevel.verbose,
           );
 
-          final contents = await config.featureFileReader.read(path);
+          final contents = config.featureFileReader.read(path);
           final featureFile = await _parser.parseFeatureFile(
             contents,
             path,
