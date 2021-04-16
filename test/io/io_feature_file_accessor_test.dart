@@ -11,14 +11,14 @@ void main() {
     group('with RegExp', () {
       test('does not list directories', () async {
         expect(
-          indexer.listFiles(RegExp(r'test_resources')),
+          await indexer.listFiles(RegExp(r'test_resources')),
           [],
         );
       });
 
       test('does not throw error for weird paths', () async {
         expect(
-          indexer.listFiles(RegExp(r'nonexistentpath')),
+          await indexer.listFiles(RegExp(r'nonexistentpath')),
           [],
         );
       });
@@ -27,14 +27,14 @@ void main() {
     group('Glob', () {
       test('does not return directories', () async {
         expect(
-          indexer.listFiles(Glob('test/test_resources/')),
+          await indexer.listFiles(Glob('test/test_resources/')),
           [],
         );
       });
 
       test('does not throw error for weird paths', () async {
         expect(
-          indexer.listFiles(Glob('nonexistentpath')),
+          await indexer.listFiles(Glob('nonexistentpath')),
           [],
         );
       });
@@ -43,14 +43,14 @@ void main() {
     group('String', () {
       test('does not return directories', () async {
         expect(
-          indexer.listFiles('test/test_resources/'),
+          await indexer.listFiles('test/test_resources/'),
           [],
         );
       });
 
       test('does not throw error for weird paths', () async {
         expect(
-          indexer.listFiles('nonexistentpath'),
+          await indexer.listFiles('nonexistentpath'),
           [],
         );
       });
@@ -62,7 +62,7 @@ void main() {
       final indexer = IoFeatureFileAccessor();
 
       expect(
-        indexer.read('test/test_resources/a.feature'),
+        await indexer.read('test/test_resources/a.feature'),
         'Feature: A',
       );
     });
@@ -71,7 +71,7 @@ void main() {
       final indexer = IoFeatureFileAccessor();
 
       expect(
-        () => indexer.read('nonexistentpath'),
+        () async => await indexer.read('nonexistentpath'),
         throwsA(TypeMatcher<FileSystemException>()),
       );
     });

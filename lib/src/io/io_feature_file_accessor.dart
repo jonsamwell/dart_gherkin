@@ -16,37 +16,41 @@ class IoFeatureFileAccessor implements FeatureFileMatcher, FeatureFileReader {
   });
 
   @override
-  String read(String path) {
-    return File(path).readAsStringSync(encoding: encoding);
+  Future<String> read(String path) async {
+    return await File(path).readAsString(encoding: encoding);
   }
 
   @override
-  List<String> listFiles(Pattern pattern) {
-    return _directoryContents(
+  Future<List<String>> listFiles(Pattern pattern) async {
+    return await _directoryContents(
       workingDirectory ?? Directory.current,
       pattern,
     );
   }
 
   /// Returns a list of relative paths from [dir] which match [pattern].
-  List<String> _directoryContents(
+  Future<List<String>> _directoryContents(
     Directory directory,
     Pattern pattern,
-  ) {
-    final files = directory.listSync(recursive: true);
-    return files.fold<List<String>>(<String>[], (acc, item) {
-      if (item is File) {
-        final relativePath = relative(
-          item.path,
-          from: directory.path,
-        );
+  ) async {
+    final result = <String>[];
 
-        final match = pattern.matchAsPrefix(relativePath);
-        if (match?.group(0) == relativePath) {
-          acc.add(relativePath);
+    await directory.list(recursive: true).forEach(
+      (item) {
+        if (item is File) {
+          final relativePath = relative(
+            item.path,
+            from: directory.path,
+          );
+
+          final match = pattern.matchAsPrefix(relativePath);
+          if (match?.group(0) == relativePath) {
+            result.add(relativePath);
+          }
         }
-      }
-      return acc;
-    });
+      },
+    );
+
+    return result;
   }
 }

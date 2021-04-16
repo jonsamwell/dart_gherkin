@@ -1,3 +1,3 @@
 abstract class FeatureFileMatcher {
-  Iterable<String> listFiles(Pattern pattern);
+  Future<Iterable<String>> listFiles(Pattern pattern);
 }
