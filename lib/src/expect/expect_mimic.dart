@@ -1,5 +1,5 @@
 import './expect_mimic_utils.dart';
-import 'package:test/test.dart';
+import 'package:matcher/matcher.dart';
 
 /// This is an atrocity but I can't see a way around it at the moment
 /// To use the expect() it must be called within a test() or this happens:
@@ -59,8 +59,17 @@ class ExpectMimic {
     };
 
     if (!result) {
-      fail(formatter(
+      throw GherkinTestFailure(formatter(
           actualValue, matcher as Matcher, reason, matchState, false));
     }
   }
+}
+
+class GherkinTestFailure {
+  final String message;
+
+  GherkinTestFailure(this.message);
+
+  @override
+  String toString() => message;
 }

@@ -1,4 +1,8 @@
-## [2.0.0] - 15/02/2021
+## [2.0.1] - 15/04/2021
+
+* BREAKING CHANGE: `TestFailure` is no longer thrown when an `expect` fails. Instead, use `GherkinTestFailure` when catching errors (i.e. replace `on TestFailure catch` with `on GherkinTestFailure catch`) (#37).
+
+## [2.0.0] - 15/04/2021
 
 NOTE: Massive changes here due to the migration to null-safety and laying the foundation for code generation to enable testing Flutter apps using the `integration_test` package.
 
