@@ -1,5 +1,6 @@
 import 'package:gherkin/gherkin.dart';
 import 'package:gherkin/src/configuration.dart';
+import 'package:gherkin/src/expect/expect_mimic.dart';
 import 'package:gherkin/src/feature_file_runner.dart';
 import 'package:gherkin/src/gherkin/exceptions/step_not_defined_error.dart';
 import 'package:gherkin/src/gherkin/runnables/debug_information.dart';
@@ -470,7 +471,7 @@ void main() {
 
       test('step reported with correct finishing value when failing', () async {
         late StepFinishedMessage finishedMessage;
-        final testFailureException = TestFailure('FAILED');
+        final testFailureException = GherkinTestFailure('FAILED');
         final reporterMock = ReporterMock();
         reporterMock.onStepFinishedFn = (message) => finishedMessage = message;
         final stepDefinition =

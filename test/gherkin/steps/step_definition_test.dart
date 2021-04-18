@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:gherkin/gherkin.dart';
+import 'package:gherkin/src/expect/expect_mimic.dart';
 import 'package:gherkin/src/gherkin/exceptions/parameter_count_mismatch_error.dart';
 import 'package:gherkin/src/gherkin/steps/step_configuration.dart';
 import 'package:gherkin/src/gherkin/steps/step_run_result.dart';
@@ -107,7 +108,7 @@ void main() {
     group('expectation failures reported', () {
       test('when an expectation fails the step is failed', () async {
         final step = StepDefinitionMock(StepDefinitionConfiguration(), 0,
-            () async => throw TestFailure('1'));
+            () async => throw GherkinTestFailure('1'));
         expect(
           await step.run(
             World(),
