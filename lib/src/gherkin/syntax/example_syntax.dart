@@ -19,7 +19,7 @@ class ExampleSyntax extends RegExMatchedGherkinSyntax {
   bool get isBlockSyntax => true;
 
   @override
-  bool hasBlockEnded(SyntaxMatcher syntax) => !(syntax is TableLineSyntax);
+  bool hasBlockEnded(SyntaxMatcher syntax) => syntax is! TableLineSyntax;
 
   @override
   Runnable toRunnable(
