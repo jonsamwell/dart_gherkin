@@ -57,7 +57,13 @@ class TestConfiguration {
   CreateWorld? createWorld;
 
   // Lists feature files paths, which match [features] patterns.
-  FeatureFileMatcher featureFileIndexer = const IoFeatureFileAccessor();
+  FeatureFileMatcher featureFileMatcher = const IoFeatureFileAccessor();
+
+  @Deprecated('Use featureFileMatcher instead')
+  FeatureFileMatcher get featureFileIndexer => featureFileMatcher;
+
+  @Deprecated('Use featureFileMatcher instead')
+  set featureFileIndexer(FeatureFileMatcher matcher) => featureFileMatcher = matcher;
 
   // The feature file reader.
   // Takes files/resources paths from [featureFileIndexer] and returns their content as String.
