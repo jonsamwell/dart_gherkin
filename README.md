@@ -365,7 +365,7 @@ Future<void> main() {
       ThenExpectNumericResult()
   ];
   final config = TestConfiguration.DEFAULT(steps)
-    ..featureFileReader = IoFeatureFileReader(latin1);
+    ..featureFileReader = IoFeatureFileReader(encoding: latin1);
 
   return GherkinRunner().execute(config);
 }
