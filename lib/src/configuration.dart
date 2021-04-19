@@ -63,7 +63,9 @@ class TestConfiguration {
   FeatureFileMatcher get featureFileIndexer => featureFileMatcher;
 
   @Deprecated('Use featureFileMatcher instead')
-  set featureFileIndexer(FeatureFileMatcher matcher) => featureFileMatcher = matcher;
+  set featureFileIndexer(FeatureFileMatcher matcher) {
+    featureFileMatcher = matcher;
+  }
 
   // The feature file reader.
   // Takes files/resources paths from [featureFileIndexer] and returns their content as String.
