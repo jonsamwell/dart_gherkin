@@ -9,11 +9,15 @@ import 'scenario_outline_syntax.dart';
 
 class ScenarioSyntax extends RegExMatchedGherkinSyntax<ScenarioRunnable> {
   @override
-  RegExp pattern(GherkinDialect dialect) => RegExp(
-        '^\\s*(?:${getMultiDialectRegexPattern(dialect.scenario)}):\\s*(.+)\\s*\$',
-        multiLine: false,
-        caseSensitive: false,
-      );
+  RegExp pattern(GherkinDialect dialect) {
+    final dialectPattern =
+        RegExMatchedGherkinSyntax.getMultiDialectRegexPattern(dialect.scenario);
+    return RegExp(
+      '^\\s*(?:$dialectPattern):\\s*(.+)\\s*\$',
+      multiLine: false,
+      caseSensitive: false,
+    );
+  }
 
   @override
   bool get isBlockSyntax => true;

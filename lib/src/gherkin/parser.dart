@@ -2,7 +2,6 @@ import 'package:gherkin/src/gherkin/languages/language_service.dart';
 import 'package:gherkin/src/gherkin/runnables/dialect_block.dart';
 import 'package:gherkin/src/gherkin/runnables/multi_line_string.dart';
 import 'package:collection/collection.dart';
-import 'package:gherkin/src/gherkin/syntax/example_tag_syntax.dart';
 
 import './exceptions/syntax_error.dart';
 import './runnables/debug_information.dart';
@@ -33,7 +32,6 @@ class GherkinParser {
     CommentSyntax(),
     FeatureSyntax(),
     BackgroundSyntax(),
-    ExampleTagSyntax(),
     TagSyntax(),
     ScenarioOutlineSyntax(),
     ScenarioSyntax(),
@@ -74,7 +72,6 @@ class GherkinParser {
         featureFile,
         lines,
         0,
-        0,
       );
     } catch (e) {
       await reporter.message(
@@ -95,14 +92,22 @@ class GherkinParser {
     RunnableBlock parentBlock,
     Iterable<String> lines,
     int lineNumber,
-    int depth,
   ) {
     for (var i = lineNumber; i < lines.length; i += 1) {
       final line = lines.elementAt(i).trim();
-      // print("$depth - $line");
+      // print("$line");
       final matcher = syntaxMatchers.firstWhereOrNull(
         (matcher) => matcher.isMatch(line, dialect),
       );
+
+      /// Tags are unique because they rely on the next immediate line.
+      /// Other matchers care about what comes before but never after.
+      ///
+      /// This is a subpar solution and would be a good candidate to refactor
+      if (matcher is TagSyntax) {
+        matcher.annotating =
+            TagSyntax.determineAnnotationBlock(lines.elementAt(i + 1), dialect);
+      }
 
       if (matcher != null) {
         // end look ahead here???
@@ -135,7 +140,6 @@ class GherkinParser {
             runnable,
             lines,
             i + 1,
-            depth + 1,
           );
         }
 

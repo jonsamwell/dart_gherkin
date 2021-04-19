@@ -1,5 +1,4 @@
 import 'package:gherkin/src/gherkin/languages/dialect.dart';
-import 'package:gherkin/src/gherkin/syntax/example_tag_syntax.dart';
 import 'package:gherkin/src/gherkin/syntax/tag_syntax.dart';
 
 import '../runnables/scenario_outline.dart';
@@ -11,11 +10,16 @@ import './syntax_matcher.dart';
 class ScenarioOutlineSyntax
     extends RegExMatchedGherkinSyntax<ScenarioOutlineRunnable> {
   @override
-  RegExp pattern(GherkinDialect dialect) => RegExp(
-        '^\\s*(?:${getMultiDialectRegexPattern(dialect.scenarioOutline)}):(?:\\s*(.+)\\s*)?\$',
-        multiLine: false,
-        caseSensitive: false,
-      );
+  RegExp pattern(GherkinDialect dialect) {
+    final dialectPattern =
+        RegExMatchedGherkinSyntax.getMultiDialectRegexPattern(
+            dialect.scenarioOutline);
+    return RegExp(
+      '^\\s*(?:$dialectPattern):(?:\\s*(.+)\\s*)?\$',
+      multiLine: false,
+      caseSensitive: false,
+    );
+  }
 
   @override
   bool get isBlockSyntax => true;
@@ -24,7 +28,7 @@ class ScenarioOutlineSyntax
   bool hasBlockEnded(SyntaxMatcher syntax) =>
       syntax is ScenarioOutlineSyntax ||
       syntax is ScenarioSyntax ||
-      (syntax is TagSyntax && syntax is! ExampleTagSyntax);
+      (syntax is TagSyntax && syntax.annotating != AnnotatingBlock.examples);
 
   @override
   ScenarioOutlineRunnable toRunnable(
@@ -33,7 +37,6 @@ class ScenarioOutlineSyntax
     GherkinDialect dialect,
   ) {
     final name = pattern(dialect).firstMatch(line)!.group(1)!;
-    final runnable = ScenarioOutlineRunnable(name.trim(), debug);
-    return runnable;
+    return ScenarioOutlineRunnable(name.trim(), debug);
   }
 }

@@ -11,11 +11,16 @@ import './tag_syntax.dart';
 
 class BackgroundSyntax extends RegExMatchedGherkinSyntax {
   @override
-  RegExp pattern(GherkinDialect dialect) => RegExp(
-        '^\\s*${getMultiDialectRegexPattern(dialect.background)}:(\\s*(.+)\\s*)?',
-        multiLine: false,
-        caseSensitive: false,
-      );
+  RegExp pattern(GherkinDialect dialect) {
+    final dialectPattern =
+        RegExMatchedGherkinSyntax.getMultiDialectRegexPattern(
+            dialect.background);
+    return RegExp(
+      '^\\s*$dialectPattern:(\\s*(.+)\\s*)?',
+      multiLine: false,
+      caseSensitive: false,
+    );
+  }
 
   @override
   bool get isBlockSyntax => true;
