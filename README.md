@@ -343,15 +343,15 @@ Future<void> main() {
 }
 ```
 
-#### featureFileIndexer
+#### featureFileMatcher
 
-`FeatureFileIndexer` is an interface for feature files lookup.
-Defaults to `IoFeatureFileIndexer`, which lists files from current execution directory that match `features` patterns (similar to Glob).
+`FeatureFileMatcher` is an interface for feature files lookup.
+Defaults to `IoFeatureFileAccessor`, which lists files from current execution directory that match `features` patterns (similar to Glob).
 
 #### featureFileReader
 
 `FeatureFileReader` is an interface for feature files content read.
-Defaults to `IoFeatureFileReader`, which reads files as String with [utf-8 encoding](https://api.dart.dev/stable/2.12.2/dart-convert/utf8-constant.html).
+Defaults to `IoFeatureFileAccessor`, which reads files as String with [utf-8 encoding](https://api.dart.dev/stable/2.12.2/dart-convert/utf8-constant.html).
 
 To change encoding, use the default `IoFeatureFileReader` with custom [Encoding](https://api.dart.dev/stable/2.12.2/dart-convert/Encoding-class.html).
 
@@ -365,7 +365,7 @@ Future<void> main() {
       ThenExpectNumericResult()
   ];
   final config = TestConfiguration.DEFAULT(steps)
-    ..featureFileReader = IoFeatureFileReader(latin1);
+    ..featureFileReader = IoFeatureFileReader(encoding: latin1);
 
   return GherkinRunner().execute(config);
 }
