@@ -9,17 +9,21 @@ import './table_line_syntax.dart';
 
 class ExampleSyntax extends RegExMatchedGherkinSyntax {
   @override
-  RegExp pattern(GherkinDialect dialect) => RegExp(
-        '^\\s*(?:${getMultiDialectRegexPattern(dialect.examples)}):(\\s*(.+)\\s*)?\$',
-        multiLine: false,
-        caseSensitive: false,
-      );
+  RegExp pattern(GherkinDialect dialect) {
+    final dialectPattern =
+        RegExMatchedGherkinSyntax.getMultiDialectRegexPattern(dialect.examples);
+    return RegExp(
+      '^\\s*(?:$dialectPattern):(\\s*(.+)\\s*)?\$',
+      multiLine: false,
+      caseSensitive: false,
+    );
+  }
 
   @override
   bool get isBlockSyntax => true;
 
   @override
-  bool hasBlockEnded(SyntaxMatcher syntax) => !(syntax is TableLineSyntax);
+  bool hasBlockEnded(SyntaxMatcher syntax) => syntax is! TableLineSyntax;
 
   @override
   Runnable toRunnable(

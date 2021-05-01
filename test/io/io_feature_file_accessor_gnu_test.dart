@@ -12,11 +12,11 @@ void main() {
       test('lists all matching files', () async {
         expect(
           await indexer.listFiles(RegExp(r'test/test_resources/(.*).feature')),
-          [
+          containsAll([
             r'test/test_resources/a.feature',
             r'test/test_resources/subdir/b.feature',
             r'test/test_resources/subdir/c.feature',
-          ],
+          ]),
         );
       });
 
@@ -24,10 +24,10 @@ void main() {
         expect(
           await indexer
               .listFiles(RegExp(r'test/test_resources/subdir/.*\.feature')),
-          [
+          containsAll([
             r'test/test_resources/subdir/b.feature',
             r'test/test_resources/subdir/c.feature',
-          ],
+          ]),
         );
       });
     });
@@ -36,11 +36,11 @@ void main() {
       test('lists all matching files', () async {
         expect(
           await indexer.listFiles(Glob('test/test_resources/**.feature')),
-          [
+          containsAll([
             r'test/test_resources/a.feature',
             r'test/test_resources/subdir/b.feature',
             r'test/test_resources/subdir/c.feature',
-          ],
+          ]),
         );
       });
 

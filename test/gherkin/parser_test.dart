@@ -481,7 +481,7 @@ void main() {
       final feature = featureFile.features.elementAt(0);
       expect(feature.scenarios.length, 2);
       expect(feature.scenarios.elementAt(1).tags.length, 1);
-      expect(feature.scenarios.elementAt(1).tags.first, '@skip');
+      expect(feature.scenarios.elementAt(1).tags.first.tags.first, '@skip');
     });
   });
 }

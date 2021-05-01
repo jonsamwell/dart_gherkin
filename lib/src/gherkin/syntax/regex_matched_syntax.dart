@@ -8,12 +8,9 @@ abstract class RegExMatchedGherkinSyntax<TRunnable extends Runnable>
   RegExp pattern(GherkinDialect dialect);
 
   @override
-  bool isMatch(String line, GherkinDialect dialect) {
-    final match = pattern(dialect).hasMatch(line);
+  bool isMatch(String line, GherkinDialect dialect) =>
+      pattern(dialect).hasMatch(line);
 
-    return match;
-  }
-
-  String getMultiDialectRegexPattern(Iterable<String> dialectVariants) =>
+  static String getMultiDialectRegexPattern(Iterable<String> dialectVariants) =>
       dialectVariants.map((s) => s.trim()).where((s) => s != '*').join('|');
 }
