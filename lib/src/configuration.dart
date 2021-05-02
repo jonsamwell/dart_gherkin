@@ -59,14 +59,6 @@ class TestConfiguration {
   // Lists feature files paths, which match [features] patterns.
   FeatureFileMatcher featureFileMatcher = const IoFeatureFileAccessor();
 
-  @Deprecated('Use featureFileMatcher instead')
-  FeatureFileMatcher get featureFileIndexer => featureFileMatcher;
-
-  @Deprecated('Use featureFileMatcher instead')
-  set featureFileIndexer(FeatureFileMatcher matcher) {
-    featureFileMatcher = matcher;
-  }
-
   // The feature file reader.
   // Takes files/resources paths from [featureFileIndexer] and returns their content as String.
   FeatureFileReader featureFileReader = const IoFeatureFileAccessor();

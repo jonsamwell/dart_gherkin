@@ -11,8 +11,11 @@ class TagSyntax extends RegExMatchedGherkinSyntax<TagsRunnable> {
   AnnotatingBlock? annotating;
 
   @override
-  RegExp pattern(GherkinDialect dialect) =>
-      RegExp('^@', multiLine: false, caseSensitive: false);
+  RegExp pattern(GherkinDialect dialect) => RegExp(
+        '^@',
+        multiLine: false,
+        caseSensitive: false,
+      );
 
   @override
   TagsRunnable toRunnable(
