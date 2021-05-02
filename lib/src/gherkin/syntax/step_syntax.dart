@@ -12,7 +12,8 @@ class StepSyntax extends RegExMatchedGherkinSyntax<StepRunnable> {
   RegExp pattern(GherkinDialect dialect) {
     final dialectPattern =
         RegExMatchedGherkinSyntax.getMultiDialectRegexPattern(
-            dialect.stepKeywords);
+      dialect.stepKeywords,
+    );
 
     return RegExp(
       '^($dialectPattern)\\s?.*',

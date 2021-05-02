@@ -14,7 +14,9 @@ class BackgroundSyntax extends RegExMatchedGherkinSyntax {
   RegExp pattern(GherkinDialect dialect) {
     final dialectPattern =
         RegExMatchedGherkinSyntax.getMultiDialectRegexPattern(
-            dialect.background);
+      dialect.background,
+    );
+
     return RegExp(
       '^\\s*$dialectPattern:(\\s*(.+)\\s*)?',
       multiLine: false,

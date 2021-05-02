@@ -12,6 +12,7 @@ class ExampleSyntax extends RegExMatchedGherkinSyntax {
   RegExp pattern(GherkinDialect dialect) {
     final dialectPattern =
         RegExMatchedGherkinSyntax.getMultiDialectRegexPattern(dialect.examples);
+
     return RegExp(
       '^\\s*(?:$dialectPattern):(\\s*(.+)\\s*)?\$',
       multiLine: false,

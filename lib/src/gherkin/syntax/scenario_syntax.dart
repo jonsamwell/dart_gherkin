@@ -12,6 +12,7 @@ class ScenarioSyntax extends RegExMatchedGherkinSyntax<ScenarioRunnable> {
   RegExp pattern(GherkinDialect dialect) {
     final dialectPattern =
         RegExMatchedGherkinSyntax.getMultiDialectRegexPattern(dialect.scenario);
+
     return RegExp(
       '^\\s*(?:$dialectPattern):\\s*(.+)\\s*\$',
       multiLine: false,
