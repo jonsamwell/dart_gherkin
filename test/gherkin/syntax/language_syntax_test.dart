@@ -27,6 +27,12 @@ void main() {
             EnDialectMock(),
           ),
           true);
+      expect(
+          keyword.isMatch(
+            '#language:en-au',
+            EnDialectMock(),
+          ),
+          true);
     });
 
     test('does not match', () {
