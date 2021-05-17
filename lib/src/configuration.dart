@@ -4,6 +4,7 @@ import 'package:gherkin/src/io/feature_file_reader.dart';
 
 import '../gherkin.dart';
 import './gherkin/parameters/custom_parameter.dart';
+import './gherkin/steps/scenario_context.dart';
 import './gherkin/steps/world.dart';
 import './hooks/hook.dart';
 import './reporters/reporter.dart';
@@ -13,6 +14,9 @@ import 'gherkin/attachments/attachment_manager.dart';
 typedef CreateWorld = Future<World> Function(TestConfiguration config);
 typedef CreateAttachmentManager = Future<AttachmentManager> Function(
   TestConfiguration config,
+);
+typedef CreateScenarioContext = Future<ScenarioContext> Function(
+    TestConfiguration config
 );
 
 enum ExecutionOrder { sequential, random, alphabetical }
@@ -72,6 +76,9 @@ class TestConfiguration {
   /// used to get a new instance of an attachment manager class that is passed to the World context
   CreateAttachmentManager getAttachmentManager =
       (_) => Future.value(AttachmentManager());
+
+  CreateScenarioContext getScenarioContext =
+      (_) => Future.value(ScenarioContext());
 
   /// Provide a configuration object with default settings such as the reports and feature file location
   /// Additional setting on the configuration object can be set on the returned instance.

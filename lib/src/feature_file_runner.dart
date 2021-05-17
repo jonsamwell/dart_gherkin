@@ -177,6 +177,7 @@ class FeatureFileRunner {
     BackgroundRunnable? background,
   ) async {
     final attachmentManager = await _config.getAttachmentManager(_config);
+    final scenarioContext = await _config.getScenarioContext(_config);
     late final World world;
     var scenarioPassed = true;
     final tags = scenario.tags.isNotEmpty
@@ -201,6 +202,7 @@ class FeatureFileRunner {
       }
 
       world.setAttachmentManager(attachmentManager);
+      world.scenarioContext = scenarioContext;
       await _hook.onAfterScenarioWorldCreated(
         world,
         scenario.name,

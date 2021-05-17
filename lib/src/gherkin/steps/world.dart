@@ -1,7 +1,9 @@
 import 'package:gherkin/src/gherkin/attachments/attachment_manager.dart';
+import 'package:gherkin/src/gherkin/steps/scenario_context.dart';
 
 class World {
   late AttachmentManager _attachmentManager;
+  late ScenarioContext scenarioContext;
 
   void setAttachmentManager(AttachmentManager attachmentManager) {
     _attachmentManager = attachmentManager;
@@ -20,5 +22,6 @@ class World {
 
   void dispose() {
     _attachmentManager.dispose();
+    scenarioContext.dispose();
   }
 }
