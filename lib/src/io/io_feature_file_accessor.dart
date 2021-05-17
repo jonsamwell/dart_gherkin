@@ -45,7 +45,7 @@ class IoFeatureFileAccessor implements FeatureFileMatcher, FeatureFileReader {
 
           final match = pattern.matchAsPrefix(relativePath);
           if (match?.group(0) == relativePath) {
-            result.add(relativePath);
+            result.add(item.path);
           }
         }
       },
