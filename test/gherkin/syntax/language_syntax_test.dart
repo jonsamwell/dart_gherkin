@@ -27,6 +27,18 @@ void main() {
             EnDialectMock(),
           ),
           true);
+      expect(
+          keyword.isMatch(
+            '#language:en-au',
+            EnDialectMock(),
+          ),
+          true);
+      expect(
+          keyword.isMatch(
+            '#language:en-Scouse',
+            EnDialectMock(),
+          ),
+          true);
     });
 
     test('does not match', () {

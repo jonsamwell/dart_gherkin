@@ -8,7 +8,7 @@ import './regex_matched_syntax.dart';
 class LanguageSyntax extends RegExMatchedGherkinSyntax {
   @override
   RegExp pattern(GherkinDialect dialect) => RegExp(
-        r'^\s*#\s*language:\s*([a-z]{2,7})\s*$',
+        r'^\s*#\s*language:\s*([a-z-]{2,16})\s*$',
         multiLine: false,
         caseSensitive: false,
       );
