@@ -4,6 +4,8 @@ import 'package:gherkin/gherkin.dart';
 import 'package:glob/glob.dart';
 import 'package:test/test.dart';
 
+import 'path_part_matcher.dart';
+
 void main() {
   group('Matcher', () {
     final indexer = IoFeatureFileAccessor();
@@ -13,11 +15,11 @@ void main() {
         expect(
           await indexer
               .listFiles(RegExp(r'test\\test_resources\\(.*).feature')),
-          [
+          PathPartMatcher([
             r'test\test_resources\a.feature',
             r'test\test_resources\subdir\b.feature',
             r'test\test_resources\subdir\c.feature',
-          ],
+          ]),
         );
       });
 
@@ -25,10 +27,10 @@ void main() {
         expect(
           await indexer
               .listFiles(RegExp(r'test\\test_resources\\subdir\\.*\.feature')),
-          [
+          PathPartMatcher([
             r'test\test_resources\subdir\b.feature',
             r'test\test_resources\subdir\c.feature',
-          ],
+          ]),
         );
       });
     });
@@ -37,20 +39,20 @@ void main() {
       test('lists all matching files', () async {
         expect(
           await indexer.listFiles(Glob('test/test_resources/**.feature')),
-          [
+          PathPartMatcher([
             r'test\test_resources\a.feature',
             r'test\test_resources\subdir\b.feature',
             r'test\test_resources\subdir\c.feature',
-          ],
+          ]),
         );
       });
 
       test('list all matching file without subdirectories', () async {
         expect(
           await indexer.listFiles(Glob('test/test_resources/*.feature')),
-          [
+          PathPartMatcher([
             r'test\test_resources\a.feature',
-          ],
+          ]),
         );
       });
     });
@@ -59,9 +61,9 @@ void main() {
       test('lists one specified file', () async {
         expect(
           await indexer.listFiles(r'test\test_resources\a.feature'),
-          [
+          PathPartMatcher([
             r'test\test_resources\a.feature',
-          ],
+          ]),
         );
       });
     });

@@ -2,13 +2,18 @@ import 'package:gherkin/src/io/feature_file_matcher.dart';
 import 'package:gherkin/src/io/io_feature_file_accessor.dart';
 import 'package:gherkin/src/io/feature_file_reader.dart';
 
-import '../gherkin.dart';
 import './gherkin/parameters/custom_parameter.dart';
 import './gherkin/steps/world.dart';
 import './hooks/hook.dart';
 import './reporters/reporter.dart';
 
 import 'gherkin/attachments/attachment_manager.dart';
+import 'gherkin/steps/step_definition.dart';
+import 'reporters/json/json_reporter.dart';
+import 'reporters/message_level.dart';
+import 'reporters/progress_reporter.dart';
+import 'reporters/stdout_reporter.dart';
+import 'reporters/test_run_summary_reporter.dart';
 
 typedef CreateWorld = Future<World> Function(TestConfiguration config);
 typedef CreateAttachmentManager = Future<AttachmentManager> Function(
