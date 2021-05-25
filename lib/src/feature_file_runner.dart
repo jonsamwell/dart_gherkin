@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:gherkin/src/gherkin/runnables/scenario_type_enum.dart';
 import 'package:collection/collection.dart';
 
-import '../gherkin.dart';
 import './reporters/message_level.dart';
 import './hooks/hook.dart';
 import './reporters/reporter.dart';
@@ -20,6 +19,7 @@ import './gherkin/steps/step_run_result.dart';
 import './gherkin/steps/world.dart';
 import './reporters/messages.dart';
 import './gherkin/attachments/attachment_manager.dart';
+import 'gherkin/exceptions/gherkin_exception.dart';
 
 class FeatureFileRunner {
   final TestConfiguration _config;

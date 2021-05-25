@@ -1,3 +1,6 @@
+## [2.0.2] - 25/05/2021
+* Fix #45 executing feature files outside of the current working directory
+
 ## [2.0.1] - 02/05/2021
 
 * BREAKING CHANGE: `TestFailure` is no longer thrown when an `expect` fails. Instead, use `GherkinTestFailure` when catching errors (i.e. replace `on TestFailure catch` with `on GherkinTestFailure catch`) (#37).
