@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import './custom_parameter.dart';
 
 class FloatParameterBase extends CustomParameter<num> {
