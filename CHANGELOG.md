@@ -1,4 +1,9 @@
+## [2.0.3] - 01/06/2021
+
+* Updated float parameter parser so an exception is not thrown during parsing
+
 ## [2.0.2] - 25/05/2021
+
 * Fix #45 executing feature files outside of the current working directory
 
 ## [2.0.1] - 02/05/2021
