@@ -1,3 +1,7 @@
+## [2.0.4] - 21/06/2021
+
+* Fixed late initialization error when invoking hooks
+
 ## [2.0.3] - 01/06/2021
 
 * Updated float parameter parser so an exception is not thrown during parsing

@@ -5,7 +5,7 @@ import '../configuration.dart';
 import './hook.dart';
 
 class AggregatedHook extends Hook {
-  late Iterable<Hook> _orderedHooks;
+  Iterable<Hook>? _orderedHooks;
 
   void addHooks(Iterable<Hook> hooks) {
     _orderedHooks = hooks.toList()
@@ -87,8 +87,8 @@ class AggregatedHook extends Hook {
   Future<void> _invokeHooks(
     Future<void> Function(Hook h) invoke,
   ) async {
-    if (_orderedHooks.isNotEmpty) {
-      for (var hook in _orderedHooks) {
+    if (_orderedHooks != null && _orderedHooks!.isNotEmpty) {
+      for (var hook in _orderedHooks!) {
         await invoke(hook);
       }
     }
