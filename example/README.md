@@ -5,6 +5,7 @@ To run this example:
 1. Ensure dart is accessible in the command line (on your path variable)
 2. In a command prompt (from the root of this library):
     ```bash
+    dart pub get 
     cd example
 
     dart test.dart
