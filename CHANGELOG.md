@@ -1,3 +1,8 @@
+## [2.0.5+1] - 15/09/2021
+
+* Fixed first/last flag on `FeatureFileVisitor`
+* Fixed find feature files regex pattern fdr windows in example project
+
 ## [2.0.5] - 15/09/2021
 
 * Added json reporter test case for multi-scenario
