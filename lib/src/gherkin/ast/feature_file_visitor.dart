@@ -29,10 +29,14 @@ class FeatureFileVisitor {
             ? scenario.expandOutlinesIntoScenarios()
             : [scenario];
 
-        for (final childScenario in allScenarios) {
+        for (var i = 0; i < allScenarios.length; i += 1) {
+          final childScenario = allScenarios.elementAt(i);
+
           await visitScenario(
             childScenario.name,
             _tagsToList(childScenario.tags),
+            i == 0,
+            i == (allScenarios.length - 1),
           );
 
           if (feature.background != null) {
@@ -70,6 +74,8 @@ class FeatureFileVisitor {
   Future<void> visitScenario(
     String name,
     Iterable<String> tags,
+    bool isFirst,
+    bool isLast,
   ) async {}
 
   Future<void> visitScenarioStep(

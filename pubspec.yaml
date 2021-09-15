@@ -1,5 +1,5 @@
 name: gherkin
-version: 2.0.4
+version: 2.0.5
 description: A Gherkin parsers and runner for Dart which is very similar to Cucumber, it provides the base BDD functionality ready for use in platform specific implementations i.e. flutter/web
 homepage: https://github.com/jonsamwell/dart_gherkin
 
@@ -9,7 +9,7 @@ dependencies:
   collection: ^1.15.0
 
 dev_dependencies:
-  test: ^1.16.8
+  test: ">=1.16.8"
   pedantic: ^1.11.0
   glob: ^2.0.1
 

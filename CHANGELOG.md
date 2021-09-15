@@ -1,3 +1,8 @@
+## [2.0.5] - 15/09/2021
+
+* Added json reporter test case for multi-scenario
+* Added first/last flag on `FeatureFileVisitor`
+
 ## [2.0.4] - 21/06/2021
 
 * Fixed late initialization error when invoking hooks

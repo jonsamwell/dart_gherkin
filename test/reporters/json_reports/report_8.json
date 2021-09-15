@@ -1,0 +1,103 @@
+[
+  {
+    "description": "",
+    "id": "feature 1",
+    "keyword": "Feature",
+    "line": 3,
+    "name": "Feature 1",
+    "uri": "filepath",
+    "tags": [
+      {
+        "line": 2,
+        "name": "tag1"
+      }
+    ],
+    "elements": [
+      {
+        "keyword": "Scenario",
+        "type": "scenario",
+        "id": "feature 1;scenario 1",
+        "name": "Scenario 1",
+        "description": "",
+        "line": 5,
+        "tags": [
+          {
+            "line": 4,
+            "name": "tag2"
+          }
+        ],
+        "steps": [
+          {
+            "keyword": "Step ",
+            "name": "1",
+            "line": 6,
+            "match": {
+              "location": "filepath:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 100000000
+            }
+          },
+          {
+            "keyword": "Step ",
+            "name": "2",
+            "line": 7,
+            "match": {
+              "location": "filepath:7"
+            },
+            "result": {
+              "status": "failed",
+              "duration": 100000000,
+              "error_message": "error message"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "description": "",
+    "id": "feature 2",
+    "keyword": "Feature",
+    "line": 3,
+    "name": "Feature 2",
+    "uri": "filepath",
+    "tags": [
+      {
+        "line": 2,
+        "name": "tag1"
+      }
+    ],
+    "elements": [
+      {
+        "keyword": "Scenario",
+        "type": "scenario",
+        "id": "feature 2;scenario 2",
+        "name": "Scenario 2",
+        "description": "",
+        "line": 5,
+        "tags": [
+          {
+            "line": 4,
+            "name": "tag2"
+          }
+        ],
+        "steps": [
+          {
+            "keyword": "Step ",
+            "name": "1",
+            "line": 6,
+            "match": {
+              "location": "filepath:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 100000000
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

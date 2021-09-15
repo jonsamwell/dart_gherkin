@@ -395,5 +395,103 @@ void main() {
         ),
       );
     });
+
+    test('correct report with two features', () async {
+      final reporter = TestableJsonReporter();
+      await reporter.onFeatureStarted(StartedMessage(
+        Target.feature,
+        'Feature 1',
+        RunnableDebugInformation('filepath', 2, 'linetext2'),
+        [Tag('tag1', 1, false)],
+      ));
+
+      await reporter.onScenarioStarted(StartedMessage(
+        Target.scenario,
+        'Scenario 1',
+        RunnableDebugInformation('filepath', 4, 'linetext4'),
+        [Tag('tag1', 1, true), Tag('tag2', 3, false)],
+      ));
+
+      await reporter.onStepStarted(StepStartedMessage(
+        'Step 1',
+        RunnableDebugInformation('filepath', 5, 'linetext5'),
+      ));
+
+      await reporter.onStepFinished(StepFinishedMessage(
+        'Step 1',
+        RunnableDebugInformation('filepath', 5, 'linetext5'),
+        StepResult(100, StepExecutionResult.pass),
+      ));
+
+      await reporter.onStepStarted(StepStartedMessage(
+        'Step 2',
+        RunnableDebugInformation('filepath', 6, 'linetext6'),
+      ));
+
+      await reporter.onStepFinished(StepFinishedMessage(
+        'Step 2',
+        RunnableDebugInformation('filepath', 6, 'linetext6'),
+        StepResult(100, StepExecutionResult.fail, 'error message'),
+      ));
+
+      await reporter.onScenarioFinished(ScenarioFinishedMessage(
+        'Scenario 1',
+        RunnableDebugInformation('filepath', 4, 'linetext4'),
+        true,
+      ));
+
+      await reporter.onFeatureFinished(FinishedMessage(
+        Target.feature,
+        'Feature 1',
+        RunnableDebugInformation('filepath', 2, 'linetext2'),
+      ));
+
+      await reporter.onFeatureStarted(StartedMessage(
+        Target.feature,
+        'Feature 2',
+        RunnableDebugInformation('filepath', 2, 'linetext2'),
+        [Tag('tag1', 1, false)],
+      ));
+
+      await reporter.onScenarioStarted(StartedMessage(
+        Target.scenario,
+        'Scenario 2',
+        RunnableDebugInformation('filepath', 4, 'linetext4'),
+        [Tag('tag1', 1, true), Tag('tag2', 3, false)],
+      ));
+
+      await reporter.onStepStarted(StepStartedMessage(
+        'Step 1',
+        RunnableDebugInformation('filepath', 5, 'linetext5'),
+      ));
+
+      await reporter.onStepFinished(StepFinishedMessage(
+        'Step 1',
+        RunnableDebugInformation('filepath', 5, 'linetext5'),
+        StepResult(100, StepExecutionResult.pass),
+      ));
+
+      await reporter.onScenarioFinished(ScenarioFinishedMessage(
+        'Scenario 2',
+        RunnableDebugInformation('filepath', 4, 'linetext4'),
+        true,
+      ));
+
+      await reporter.onFeatureFinished(FinishedMessage(
+        Target.feature,
+        'Feature 2',
+        RunnableDebugInformation('filepath', 2, 'linetext2'),
+      ));
+
+      await reporter.onTestRunFinished();
+
+      expect(
+        reporter.report,
+        minimizeJson(
+          File.fromUri(Uri.file('./test/reporters/json_reports/report_8.json'))
+              .readAsStringSync(),
+        ),
+      );
+    });
   });
 }
