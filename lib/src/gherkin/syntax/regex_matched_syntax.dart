@@ -12,5 +12,5 @@ abstract class RegExMatchedGherkinSyntax<TRunnable extends Runnable>
       pattern(dialect).hasMatch(line);
 
   static String getMultiDialectRegexPattern(Iterable<String> dialectVariants) =>
-      dialectVariants.map((s) => s.trim()).where((s) => s != '*').join('|');
+      dialectVariants.map((s) => s.trim().replaceAll('*', '\\*')).join('|');
 }
