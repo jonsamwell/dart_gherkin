@@ -10,11 +10,11 @@ class EnDialectMock extends GherkinDialect {
     scenario = ['Scenario'];
     scenarioOutline = ['Scenario Outline'];
     examples = ['Scenarios', 'Examples'];
-    given = ['Given'];
-    when = ['When'];
-    then = ['Then'];
-    and = ['And'];
-    but = ['But'];
+    given = ['Given', '*'];
+    when = ['When', '*'];
+    then = ['Then', '*'];
+    and = ['And', '*'];
+    but = ['But', '*'];
 
     stepKeywords = (<String>[
       ...given,

@@ -90,6 +90,16 @@ void main() {
           true);
     });
 
+    test('matches * correctly', () {
+      final syntax = StepSyntax();
+      expect(
+          syntax.isMatch(
+            '* something',
+            EnDialectMock(),
+          ),
+          true);
+    });
+
     test('matches but correctly', () {
       final syntax = StepSyntax();
       expect(
