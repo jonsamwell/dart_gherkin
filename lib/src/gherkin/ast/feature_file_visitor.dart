@@ -22,6 +22,7 @@ class FeatureFileVisitor {
         feature.name,
         feature.description,
         _tagsToList(feature.tags),
+        feature.scenarios.length,
       );
 
       for (var i = 0; i < feature.scenarios.length; i += 1) {
@@ -35,6 +36,8 @@ class FeatureFileVisitor {
 
         for (var childScenario in allScenarios) {
           await visitScenario(
+            feature.name,
+            _tagsToList(feature.tags),
             childScenario.name,
             _tagsToList(childScenario.tags),
             acknowledgedScenarioPosition ? false : isFirst,
@@ -66,16 +69,19 @@ class FeatureFileVisitor {
       }
     }
 
-    return Future.value('');
+    return Future.value(null);
   }
 
   Future<void> visitFeature(
     String name,
     String? description,
     Iterable<String> tags,
+    int childScenarioCount,
   ) async {}
 
   Future<void> visitScenario(
+    String featureName,
+    Iterable<String> featureTags,
     String name,
     Iterable<String> tags,
     bool isFirst,

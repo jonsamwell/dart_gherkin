@@ -1,3 +1,7 @@
+## [2.0.7] - 11/10/2021
+
+* Updated feature file visitor to provide parent feature information to child scenario
+
 ## [2.0.6] - 11/10/2021
 
 * Ensure stdout reporter only print ANSI colours when the stdout supports it
