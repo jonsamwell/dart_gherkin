@@ -1,3 +1,7 @@
+## [2.0.6] - 11/10/2021
+
+* Ensure stdout reporter only print ANSI colours when the stdout supports it
+
 ## [2.0.5+1] - 15/09/2021
 
 * Fixed first/last flag on `FeatureFileVisitor`

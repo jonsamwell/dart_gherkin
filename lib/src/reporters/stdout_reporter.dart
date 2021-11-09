@@ -3,10 +3,6 @@ import './message_level.dart';
 import './reporter.dart';
 
 class StdoutReporter extends Reporter {
-  final MessageLevel _logLevel;
-  late void Function(String text) _writeln;
-  late void Function(String text) _write;
-
   static const String NEUTRAL_COLOR = '\u001b[33;34m'; // blue
   static const String DEBUG_COLOR = '\u001b[1;30m'; // gray
   static const String FAIL_COLOR = '\u001b[33;31m'; // red
@@ -14,8 +10,20 @@ class StdoutReporter extends Reporter {
   static const String RESET_COLOR = '\u001b[33;0m';
   static const String PASS_COLOR = '\u001b[33;32m'; // green
 
+  final MessageLevel logLevel;
+  final bool? _supportsAnsiEscapes;
+  late void Function(String text) _writeln;
+  late void Function(String text) _write;
+
+  bool get supportsAnsiEscapes {
+    return _supportsAnsiEscapes != null
+        ? _supportsAnsiEscapes!
+        : stdout.supportsAnsiEscapes;
+  }
+
   StdoutReporter([
-    this._logLevel = MessageLevel.verbose,
+    this.logLevel = MessageLevel.verbose,
+    this._supportsAnsiEscapes,
   ]) {
     _writeln = (text) => stdout.writeln(text);
     _write = (text) => stdout.write(text);
@@ -31,7 +39,7 @@ class StdoutReporter extends Reporter {
 
   @override
   Future<void> message(String message, MessageLevel level) async {
-    if (level.index >= _logLevel.index) {
+    if (level.index >= logLevel.index) {
       printMessageLine(message, getColour(level));
     }
   }
@@ -60,13 +68,21 @@ class StdoutReporter extends Reporter {
     String message, [
     String? colour,
   ]) {
-    _writeln('${colour ?? RESET_COLOR}$message$RESET_COLOR');
+    if (supportsAnsiEscapes) {
+      _writeln('${colour ?? RESET_COLOR}$message$RESET_COLOR');
+    } else {
+      _writeln(message);
+    }
   }
 
   void printMessage(
     String message, [
     String? colour,
   ]) {
-    _write('${colour ?? RESET_COLOR}$message$RESET_COLOR');
+    if (supportsAnsiEscapes) {
+      _write('${colour ?? RESET_COLOR}$message$RESET_COLOR');
+    } else {
+      _writeln(message);
+    }
   }
 }

@@ -15,34 +15,39 @@ class ProgressReporter extends StdoutReporter {
   @override
   Future<void> onScenarioFinished(ScenarioFinishedMessage message) async {
     printMessageLine(
-        "${message.passed ? 'PASSED' : 'FAILED'}: Scenario ${_getNameAndContext(message.name, message.context)}",
-        message.passed ? StdoutReporter.PASS_COLOR : StdoutReporter.FAIL_COLOR);
+      "${message.passed ? 'PASSED' : 'FAILED'}: Scenario ${_getNameAndContext(message.name, message.context)}",
+      message.passed ? StdoutReporter.PASS_COLOR : StdoutReporter.FAIL_COLOR,
+    );
   }
 
   @override
   Future<void> onStepFinished(StepFinishedMessage message) async {
     printMessageLine(
-        [
-          '  ',
-          _getStatePrefixIcon(message.result.result),
-          _getNameAndContext(message.name, message.context),
-          _getExecutionDuration(message.result),
-          _getReasonMessage(message.result),
-          _getErrorMessage(message.result)
-        ].join((' ')).trimRight(),
-        _getMessageColour(message.result.result));
+      [
+        '  ',
+        _getStatePrefixIcon(message.result.result),
+        _getNameAndContext(message.name, message.context),
+        _getExecutionDuration(message.result),
+        _getReasonMessage(message.result),
+        _getErrorMessage(message.result)
+      ].join((' ')).trimRight(),
+      _getMessageColour(message.result.result),
+    );
 
     if (message.attachments.isNotEmpty) {
-      message.attachments.forEach((attachment) {
-        var attachment2 = attachment;
-        printMessageLine(
+      message.attachments.forEach(
+        (attachment) {
+          var attachment2 = attachment;
+          printMessageLine(
             [
               '    ',
               'Attachment',
               "(${attachment2.mimeType})${attachment.mimeType == 'text/plain' ? ': ${attachment.data}' : ''}"
             ].join((' ')).trimRight(),
-            StdoutReporter.RESET_COLOR);
-      });
+            StdoutReporter.RESET_COLOR,
+          );
+        },
+      );
     }
   }
 

@@ -223,7 +223,7 @@ class FeatureFileRunner {
                       .toList())
                   .reduce((a, b) => a..addAll(b))
                   .toList()
-              : Iterable<Tag>.empty().toList(),
+              : Iterable<Tag>.empty().toList(growable: false),
         ),
       );
 
@@ -253,8 +253,12 @@ class FeatureFileRunner {
       }
 
       for (var step in scenario.steps) {
-        final result =
-            await _runStep(step, world, attachmentManager, !scenarioPassed);
+        final result = await _runStep(
+          step,
+          world,
+          attachmentManager,
+          !scenarioPassed,
+        );
         scenarioPassed = result.result == StepExecutionResult.pass;
         if (!_canContinueScenario(result)) {
           scenarioPassed = false;
@@ -311,13 +315,16 @@ class FeatureFileRunner {
       MessageLevel.info,
     );
     await _hook.onBeforeStep(world, step.name);
-    await _reporter.onStepStarted(StepStartedMessage(
-      step.name,
-      step.debug,
-      table: step.table,
-      multilineString:
-          step.multilineStrings.isNotEmpty ? step.multilineStrings.first : null,
-    ));
+    await _reporter.onStepStarted(
+      StepStartedMessage(
+        step.name,
+        step.debug,
+        table: step.table,
+        multilineString: step.multilineStrings.isNotEmpty
+            ? step.multilineStrings.first
+            : null,
+      ),
+    );
 
     if (skipExecution) {
       result = StepResult(0, StepExecutionResult.skipped);
