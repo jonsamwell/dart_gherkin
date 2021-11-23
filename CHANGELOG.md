@@ -1,3 +1,7 @@
+## [2.0.8] - 24/11/2021
+
+* Fixed issue checking ANSI support on web environments in the StdoutReporter
+
 ## [2.0.7] - 11/10/2021
 
 * Updated feature file visitor to provide parent feature information to child scenario

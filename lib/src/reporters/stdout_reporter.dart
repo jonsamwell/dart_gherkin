@@ -16,9 +16,15 @@ class StdoutReporter extends Reporter {
   late void Function(String text) _write;
 
   bool get supportsAnsiEscapes {
-    return _supportsAnsiEscapes != null
-        ? _supportsAnsiEscapes!
-        : stdout.supportsAnsiEscapes;
+    try {
+      return _supportsAnsiEscapes != null
+          ? _supportsAnsiEscapes!
+          : stdout.supportsAnsiEscapes;
+    } catch (_, __) {
+      // stdout.supportsAnsiEscapes throws in the web environment
+      // see https://github.com/dart-lang/sdk/blob/main/sdk/lib/_internal/js_dev_runtime/patch/io_patch.dart#L622
+      return false;
+    }
   }
 
   StdoutReporter([
