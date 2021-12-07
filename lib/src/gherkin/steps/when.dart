@@ -160,10 +160,10 @@ StepDefinitionGeneric<TWorld>
   Pattern pattern,
   Future<void> Function(
     TInput1 input1,
-    TInput1 input2,
-    TInput1 input3,
-    TInput1 input4,
-    TInput1 input5,
+    TInput2 input2,
+    TInput3 input3,
+    TInput4 input4,
+    TInput5 input5,
     StepContext<TWorld> context,
   )
       onInvoke, {
