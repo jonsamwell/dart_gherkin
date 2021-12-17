@@ -42,6 +42,7 @@ class FeatureFileVisitor {
             _tagsToList(childScenario.tags),
             acknowledgedScenarioPosition ? false : isFirst,
             acknowledgedScenarioPosition ? false : isLast,
+            path,
           );
 
           acknowledgedScenarioPosition = true;
@@ -86,6 +87,7 @@ class FeatureFileVisitor {
     Iterable<String> tags,
     bool isFirst,
     bool isLast,
+    String path,
   ) async {}
 
   Future<void> visitScenarioStep(
