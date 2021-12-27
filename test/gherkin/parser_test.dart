@@ -483,5 +483,62 @@ void main() {
       expect(feature.scenarios.elementAt(1).tags.length, 1);
       expect(feature.scenarios.elementAt(1).tags.first.tags.first, '@skip');
     });
+
+    test('parses steps with asterisk(*)', () async {
+      final parser = GherkinParser();
+      final featureContents = '''
+      Feature: Asterisk example
+        Scenario: All done
+          Given I am out shopping
+          And I have eggs
+          And I have milk
+          And I have butter
+          When I check my list
+          Then I don't need anything
+
+        Scenario: All done more elegantly
+          Given I am out shopping
+          * I have eggs
+          * I have milk
+          * I have butter
+          When I check my list
+          Then I don't need anything
+      ''';
+      final featureFile = await parser.parseFeatureFile(
+        featureContents,
+        '',
+        ReporterMock(),
+        LanguageServiceMock(),
+      );
+      expect(featureFile, isNot(null));
+      expect(featureFile.language, equals('en'));
+      expect(featureFile.features.length, 1);
+
+      final feature = featureFile.features.elementAt(0);
+      expect(feature.name, 'Asterisk example');
+      expect(feature.scenarios.length, 2);
+
+      final scenario = featureFile.features.elementAt(0).scenarios.elementAt(0);
+      expect(scenario.name, 'All done');
+
+      final steps = scenario.steps;
+      expect(steps.elementAt(0).name, 'Given I am out shopping');
+      expect(steps.elementAt(1).name, 'And I have eggs');
+      expect(steps.elementAt(2).name, 'And I have milk');
+      expect(steps.elementAt(3).name, 'And I have butter');
+      expect(steps.elementAt(4).name, 'When I check my list');
+      expect(steps.elementAt(5).name, 'Then I don\'t need anything');
+
+      final scenario2 =
+          featureFile.features.elementAt(0).scenarios.elementAt(1);
+      expect(scenario2.name, 'All done more elegantly');
+
+      expect(scenario2.steps.elementAt(0).name, 'Given I am out shopping');
+      expect(scenario2.steps.elementAt(1).name, '* I have eggs');
+      expect(scenario2.steps.elementAt(2).name, '* I have milk');
+      expect(scenario2.steps.elementAt(3).name, '* I have butter');
+      expect(scenario2.steps.elementAt(4).name, 'When I check my list');
+      expect(scenario2.steps.elementAt(5).name, 'Then I don\'t need anything');
+    });
   });
 }
