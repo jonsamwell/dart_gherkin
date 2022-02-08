@@ -4,8 +4,7 @@ A fully featured Gherkin parser and test runner.  Works with Flutter and Dart 2.
 
 This implementation of the Gherkin tries to follow as closely as possible other implementations of Gherkin and specifically [Cucumber](https://docs.cucumber.io/cucumber/) in it's various forms.
 
-Available as a Dart package https://pub.dartlang.org/packages/gherkin
-Available as a Flutter specific package https://pub.dartlang.org/packages/flutter_gherkin which contains specific implementations to help instrument an application to test.
+Available as both a [Dart package](https://pub.dev/packages/gherkin) (this very package) and as a [Flutter specific package](https://pub.dev/packages/flutter_gherkin) which contains specific implementations to help instrument an application to test.
 
 ``` dart
   # Comment
