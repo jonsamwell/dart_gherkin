@@ -1,16 +1,11 @@
 import 'package:gherkin/gherkin.dart';
-import 'package:gherkin/src/configuration.dart';
 import 'package:gherkin/src/expect/expect_mimic.dart';
 import 'package:gherkin/src/feature_file_runner.dart';
-import 'package:gherkin/src/gherkin/exceptions/step_not_defined_error.dart';
-import 'package:gherkin/src/gherkin/runnables/debug_information.dart';
 import 'package:gherkin/src/gherkin/runnables/feature.dart';
 import 'package:gherkin/src/gherkin/runnables/feature_file.dart';
 import 'package:gherkin/src/gherkin/runnables/scenario.dart';
 import 'package:gherkin/src/gherkin/runnables/step.dart';
 import 'package:gherkin/src/gherkin/runnables/tags.dart';
-import 'package:gherkin/src/gherkin/steps/executable_step.dart';
-import 'package:gherkin/src/gherkin/steps/step_run_result.dart';
 import 'package:test/test.dart';
 import 'mocks/gherkin_expression_mock.dart';
 import 'mocks/hook_mock.dart';
@@ -466,7 +461,7 @@ void main() {
         expect(stepDefinition.hasRun, true);
         expect(finishedMessage, (m) => m.name == 'Step 1');
         expect(finishedMessage,
-            (m) => m.result.result == StepExecutionResult.pass);
+            (m) => m.result.result == StepExecutionResult.passed);
       });
 
       test('step reported with correct finishing value when failing', () async {

@@ -240,7 +240,7 @@ class FeatureFileRunner {
             attachmentManager,
             !scenarioPassed,
           );
-          scenarioPassed = result.result == StepExecutionResult.pass;
+          scenarioPassed = result.result == StepExecutionResult.passed;
           if (!_canContinueScenario(result)) {
             scenarioPassed = false;
             await _log(
@@ -259,7 +259,7 @@ class FeatureFileRunner {
           attachmentManager,
           !scenarioPassed,
         );
-        scenarioPassed = result.result == StepExecutionResult.pass;
+        scenarioPassed = result.result == StepExecutionResult.passed;
         if (!_canContinueScenario(result)) {
           scenarioPassed = false;
           await _log(
@@ -298,7 +298,7 @@ class FeatureFileRunner {
   }
 
   bool _canContinueScenario(StepResult stepResult) {
-    return stepResult.result == StepExecutionResult.pass;
+    return stepResult.result == StepExecutionResult.passed;
   }
 
   Future<StepResult> _runStep(

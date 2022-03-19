@@ -76,7 +76,7 @@ abstract class StepDefinitionGeneric<TWorld extends World> {
       );
     }
 
-    return StepResult(elapsedMilliseconds, StepExecutionResult.pass);
+    return StepResult(elapsedMilliseconds, StepExecutionResult.passed);
   }
 
   Future<void> onRun(Iterable<dynamic> parameters);

@@ -1,5 +1,4 @@
 import 'package:gherkin/gherkin.dart';
-import 'package:gherkin/src/gherkin/runnables/debug_information.dart';
 import 'package:test/test.dart';
 
 class TestableProgressReporter extends ProgressReporter {
@@ -22,7 +21,7 @@ void main() {
         StepFinishedMessage(
           'Step 1',
           RunnableDebugInformation('filePath', 1, 'line 1'),
-          StepResult(0, StepExecutionResult.pass),
+          StepResult(0, StepExecutionResult.passed),
           [Attachment('A string', 'text/plain')],
         ),
       );

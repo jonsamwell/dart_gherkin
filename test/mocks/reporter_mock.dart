@@ -59,13 +59,13 @@ class ReporterMock extends Reporter {
 }
 
 class SerializableReporterMock extends Reporter
-    implements SerializableReporter {
+    implements JsonSerializableReporter {
   final String _json;
 
   SerializableReporterMock(this._json);
 
   @override
-  String toJson() {
+  String serialize() {
     return _json;
   }
 }

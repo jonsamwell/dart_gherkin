@@ -83,7 +83,7 @@ class ProgressReporter extends StdoutReporter {
 
   String _getStatePrefixIcon(StepExecutionResult result) {
     switch (result) {
-      case StepExecutionResult.pass:
+      case StepExecutionResult.passed:
         return '√';
       case StepExecutionResult.error:
       case StepExecutionResult.fail:
@@ -96,7 +96,7 @@ class ProgressReporter extends StdoutReporter {
 
   String _getMessageColour(StepExecutionResult result) {
     switch (result) {
-      case StepExecutionResult.pass:
+      case StepExecutionResult.passed:
         return StdoutReporter.PASS_COLOR;
       case StepExecutionResult.fail:
         return StdoutReporter.FAIL_COLOR;

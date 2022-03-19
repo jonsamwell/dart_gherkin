@@ -1,5 +1,4 @@
 import 'package:gherkin/gherkin.dart';
-import 'package:gherkin/src/reporters/aggregated_reporter.dart';
 import 'package:test/test.dart';
 
 import '../mocks/reporter_mock.dart';
@@ -108,7 +107,7 @@ void main() {
       aggregatedReporter.addReporter(reporter1);
       aggregatedReporter.addReporter(reporter2);
 
-      expect(aggregatedReporter.toJson(), '[]');
+      expect(aggregatedReporter.serialize(), '[]');
     });
 
     test('toJson with two serializable reports returns correct json', () async {
@@ -121,7 +120,7 @@ void main() {
       aggregatedReporter.addReporter(reporter2);
       aggregatedReporter.addReporter(reporter3);
 
-      expect(aggregatedReporter.toJson(),
+      expect(aggregatedReporter.serialize(),
           '[{"a", "b", "c": 1},{"e", "f", "g": 2}]');
     });
   });

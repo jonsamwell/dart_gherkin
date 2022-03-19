@@ -1,5 +1,4 @@
 import 'package:gherkin/gherkin.dart';
-import 'package:gherkin/src/gherkin/steps/step_run_result.dart';
 import 'package:test/test.dart';
 
 class TestableTestRunSummaryReporter extends TestRunSummaryReporter {
@@ -22,7 +21,7 @@ void main() {
         StepFinishedMessage(
           '',
           RunnableDebugInformation.EMPTY(),
-          StepResult(0, StepExecutionResult.pass),
+          StepResult(0, StepExecutionResult.passed),
         ),
       );
       await reporter.onStepFinished(
@@ -50,7 +49,7 @@ void main() {
         StepFinishedMessage(
           '',
           RunnableDebugInformation.EMPTY(),
-          StepResult(0, StepExecutionResult.pass),
+          StepResult(0, StepExecutionResult.passed),
         ),
       );
       await reporter.onStepFinished(
@@ -64,7 +63,7 @@ void main() {
         StepFinishedMessage(
           '',
           RunnableDebugInformation.EMPTY(),
-          StepResult(0, StepExecutionResult.pass),
+          StepResult(0, StepExecutionResult.passed),
         ),
       );
       await reporter.onStepFinished(

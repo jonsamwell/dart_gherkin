@@ -1,7 +1,7 @@
 import './message_level.dart';
 import './messages.dart';
 
-abstract class Reporter {
+class Reporter {
   Future<void> onTestRunStarted() async {}
   Future<void> onTestRunFinished() async {}
   Future<void> onFeatureStarted(StartedMessage message) async {}

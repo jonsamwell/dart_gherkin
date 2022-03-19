@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:gherkin/gherkin.dart';
-import 'package:gherkin/src/gherkin/runnables/debug_information.dart';
 import 'package:test/test.dart';
 
 class TestableJsonReporter extends JsonReporter {
@@ -46,7 +45,7 @@ void main() {
       await reporter.onStepFinished(StepFinishedMessage(
         'Step 1',
         RunnableDebugInformation('filepath', 5, 'linetext5'),
-        StepResult(100, StepExecutionResult.pass),
+        StepResult(100, StepExecutionResult.passed),
       ));
 
       await reporter.onScenarioFinished(ScenarioFinishedMessage(
@@ -62,13 +61,12 @@ void main() {
       ));
 
       await reporter.onTestRunFinished();
-
+      final expectedJson =
+          File.fromUri(Uri.file('./test/reporters/json_reports/report_1.json'))
+              .readAsStringSync();
       expect(
         reporter.report,
-        minimizeJson(
-          File.fromUri(Uri.file('./test/reporters/json_reports/report_1.json'))
-              .readAsStringSync(),
-        ),
+        minimizeJson(expectedJson),
       );
     });
 
@@ -97,7 +95,7 @@ void main() {
       await reporter.onStepFinished(StepFinishedMessage(
         'Step 1',
         RunnableDebugInformation('filepath', 5, 'linetext5'),
-        StepResult(100, StepExecutionResult.pass),
+        StepResult(100, StepExecutionResult.passed),
       ));
 
       await reporter.onScenarioFinished(ScenarioFinishedMessage(
@@ -147,7 +145,7 @@ void main() {
       await reporter.onStepFinished(StepFinishedMessage(
         'Step 1',
         RunnableDebugInformation('filepath', 5, 'linetext5'),
-        StepResult(100, StepExecutionResult.pass),
+        StepResult(100, StepExecutionResult.passed),
       ));
 
       await reporter.onStepStarted(StepStartedMessage(
@@ -209,7 +207,7 @@ void main() {
       await reporter.onStepFinished(StepFinishedMessage(
         'Step 1',
         RunnableDebugInformation('filepath', 5, 'linetext5'),
-        StepResult(100, StepExecutionResult.pass),
+        StepResult(100, StepExecutionResult.passed),
       ));
 
       await reporter.onStepStarted(StepStartedMessage(
@@ -282,7 +280,7 @@ void main() {
       await reporter.onStepFinished(StepFinishedMessage(
         'Step 1',
         RunnableDebugInformation('filepath', 5, 'linetext5'),
-        StepResult(100, StepExecutionResult.pass),
+        StepResult(100, StepExecutionResult.passed),
       ));
 
       await reporter.onStepStarted(StepStartedMessage(
@@ -344,7 +342,7 @@ void main() {
       await reporter.onStepFinished(StepFinishedMessage(
         'Step 1',
         RunnableDebugInformation('filepath', 5, 'linetext5'),
-        StepResult(100, StepExecutionResult.pass),
+        StepResult(100, StepExecutionResult.passed),
       ));
 
       await reporter.onStepStarted(StepStartedMessage(
@@ -355,7 +353,7 @@ void main() {
       await reporter.onStepFinished(StepFinishedMessage(
         'Step 2',
         RunnableDebugInformation('filepath', 6, 'linetext6'),
-        StepResult(100, StepExecutionResult.pass),
+        StepResult(100, StepExecutionResult.passed),
         [Attachment('data', 'mimetype')],
       ));
 
@@ -420,7 +418,7 @@ void main() {
       await reporter.onStepFinished(StepFinishedMessage(
         'Step 1',
         RunnableDebugInformation('filepath', 5, 'linetext5'),
-        StepResult(100, StepExecutionResult.pass),
+        StepResult(100, StepExecutionResult.passed),
       ));
 
       await reporter.onStepStarted(StepStartedMessage(
@@ -468,7 +466,7 @@ void main() {
       await reporter.onStepFinished(StepFinishedMessage(
         'Step 1',
         RunnableDebugInformation('filepath', 5, 'linetext5'),
-        StepResult(100, StepExecutionResult.pass),
+        StepResult(100, StepExecutionResult.passed),
       ));
 
       await reporter.onScenarioFinished(ScenarioFinishedMessage(

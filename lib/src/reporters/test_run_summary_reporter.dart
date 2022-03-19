@@ -64,7 +64,7 @@ class TestRunSummaryReporter extends StdoutReporter {
   String _collectStepSummary(Iterable<StepFinishedMessage> steps) {
     final summaries = <String>[];
     final passed =
-        steps.where((s) => s.result.result == StepExecutionResult.pass);
+        steps.where((s) => s.result.result == StepExecutionResult.passed);
     final skipped =
         steps.where((s) => s.result.result == StepExecutionResult.skipped);
     final failed = steps.where((s) =>
