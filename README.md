@@ -27,37 +27,40 @@ Available as a Flutter specific package https://pub.dartlang.org/packages/flutte
 
 <!-- TOC -->
 
-* [Getting Started](#getting-started)
-  + [Configuration](#configuration)
-    - [features](#features)
-    - [tagExpression](#tagexpression)
-    - [order](#order)
-    - [featureDefaultLanguage](#defaultLanguage)
-    - [stepDefinitions](#stepdefinitions)
-    - [customStepParameterDefinitions](#customstepparameterdefinitions)
-    - [hooks](#hooks)
-    - [attachments](#attachments)
-    - [reporters](#reporters)
-    - [createWorld](#createworld)
-    - [stopAfterTestFailed](#stopAfterTestFailed)
-* [Features Files](#features-files)
-  + [Steps Definitions](#steps-definitions)
-    - [Given](#given)
-    - [Then](#then)
-    - [Expects Assertions](#expects-assertions)
-    - [Step Timeout](#step-timeout)
-    - [Multiline Strings](#multiline-strings)
-    - [Data tables](#data-tables)
-    - [Well known step parameters](#well-known-step-parameters)
-    - [Pluralization](#pluralization)
-    - [Custom Parameters](#custom-parameters)
-    - [World Context (per test scenario shared state)](#world-context-per-test-scenario-shared-state)
-    - [Assertions](#assertions)
-  + [Tags](#tags)
-  + [Languages](#languages)
-* [Hooks](#hooks)
-* [Attachments](#attachments)
-* [Reporting](#reporting)
+- [dart_gherkin](#dart_gherkin)
+  - [Table of Contents](#table-of-contents)
+  - [Getting Started](#getting-started)
+    - [Configuration](#configuration)
+      - [features](#features)
+      - [tagExpression](#tagexpression)
+      - [order](#order)
+      - [defaultLanguage](#defaultlanguage)
+      - [stepDefinitions](#stepdefinitions)
+      - [customStepParameterDefinitions](#customstepparameterdefinitions)
+      - [hooks](#hooks)
+      - [attachments](#attachments)
+      - [reporters](#reporters)
+      - [createWorld](#createworld)
+      - [featureFileMatcher](#featurefilematcher)
+      - [featureFileReader](#featurefilereader)
+      - [stopAfterTestFailed](#stopaftertestfailed)
+  - [Features Files](#features-files)
+    - [Steps Definitions](#steps-definitions)
+      - [Given](#given)
+      - [Then](#then)
+      - [Expects Assertions](#expects-assertions)
+      - [Step Timeout](#step-timeout)
+      - [Multiline Strings](#multiline-strings)
+      - [Data tables](#data-tables)
+      - [Well known step parameters](#well-known-step-parameters)
+      - [Pluralization](#pluralization)
+      - [Custom Parameters](#custom-parameters)
+      - [World Context (per test scenario shared state)](#world-context-per-test-scenario-shared-state)
+      - [Assertions](#assertions)
+    - [Tags](#tags)
+    - [Languages](#languages)
+  - [Hooks](#hooks-1)
+  - [Reporting](#reporting)
 
 <!-- /TOC -->
 
@@ -808,17 +811,21 @@ A reporter is a class that is able to report on the progress of the test run. In
 
 You can create your own custom reporter by inheriting from the base `Reporter` class and overriding the one or many of the methods to direct the output message.  The `Reporter` defines the following methods that can be overridden.  All methods must return a `Future<void>` and can be async.
 
-* `onTestRunStarted`
-* `onTestRunFinished`
-* `onFeatureStarted`
-* `onFeatureFinished`
-* `onScenarioStarted`
-* `onScenarioFinished`
-* `onStepStarted`
-* `onStepFinished`
+* `onTest` - where test started or finished
+* `onFeature` - where feature started or finished
+* `onScenario` - where scenario started or finished
+* `onStep` - where test started or finished
 * `onException`
 * `message`
 * `dispose`
+
+For all field who's stared `on` (example, `onStep`) has to methods for class `ReporterMap`:
+
+* `onStared`
+* `onFinished`
+
+All methods nullable. If reporter has non-nullable value he will call them.
+
 Once you have created your custom reporter don't forget to add it to the `reporters` configuration file property.
 
 *Note*: PR's of new reporters are *always* welcome.
