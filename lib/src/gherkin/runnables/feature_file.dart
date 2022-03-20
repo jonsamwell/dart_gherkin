@@ -1,12 +1,11 @@
+import 'package:gherkin/src/gherkin/runnables/comment_line.dart';
+import 'package:gherkin/src/gherkin/runnables/debug_information.dart';
+import 'package:gherkin/src/gherkin/runnables/empty_line.dart';
+import 'package:gherkin/src/gherkin/runnables/feature.dart';
+import 'package:gherkin/src/gherkin/runnables/language.dart';
+import 'package:gherkin/src/gherkin/runnables/runnable.dart';
+import 'package:gherkin/src/gherkin/runnables/runnable_block.dart';
 import 'package:gherkin/src/gherkin/runnables/tags.dart';
-
-import './debug_information.dart';
-import './empty_line.dart';
-import './feature.dart';
-import './language.dart';
-import './runnable.dart';
-import './runnable_block.dart';
-import 'comment_line.dart';
 
 class FeatureFile extends RunnableBlock {
   String _language = 'en';
@@ -30,7 +29,9 @@ class FeatureFile extends RunnableBlock {
       case FeatureRunnable:
         features.add(child as FeatureRunnable);
         if (_tagsPendingAssignmentToChild.isNotEmpty) {
-          _tagsPendingAssignmentToChild.forEach((t) => (child).addTag(t));
+          for (final tag in _tagsPendingAssignmentToChild) {
+            child.addTag(tag);
+          }
           _tagsPendingAssignmentToChild.clear();
         }
         break;
@@ -39,7 +40,8 @@ class FeatureFile extends RunnableBlock {
         break;
       default:
         throw Exception(
-            "Unknown runnable child given to FeatureFile '${child.runtimeType}'");
+          "Unknown runnable child given to FeatureFile '${child.runtimeType}'",
+        );
     }
   }
 

@@ -1,15 +1,14 @@
+import 'package:gherkin/src/gherkin/exceptions/syntax_error.dart';
+import 'package:gherkin/src/gherkin/runnables/background.dart';
+import 'package:gherkin/src/gherkin/runnables/comment_line.dart';
+import 'package:gherkin/src/gherkin/runnables/debug_information.dart';
+import 'package:gherkin/src/gherkin/runnables/empty_line.dart';
+import 'package:gherkin/src/gherkin/runnables/runnable.dart';
+import 'package:gherkin/src/gherkin/runnables/scenario.dart';
+import 'package:gherkin/src/gherkin/runnables/scenario_outline.dart';
 import 'package:gherkin/src/gherkin/runnables/taggable_runnable_block.dart';
-
-import '../exceptions/syntax_error.dart';
-import './background.dart';
-import './comment_line.dart';
-import './debug_information.dart';
-import './empty_line.dart';
-import './runnable.dart';
-import './scenario.dart';
-import './scenario_outline.dart';
-import './tags.dart';
-import './text_line.dart';
+import 'package:gherkin/src/gherkin/runnables/tags.dart';
+import 'package:gherkin/src/gherkin/runnables/text_line.dart';
 
 class FeatureRunnable extends TaggableRunnableBlock {
   final String _name;
@@ -42,8 +41,9 @@ class FeatureRunnable extends TaggableRunnableBlock {
 
         scenarios.addAll(childScenarios);
         if (_tagsPendingAssignmentToChild.isNotEmpty) {
-          _tagsPendingAssignmentToChild
-              .forEach((t) => childScenarios.forEach((s) => s.addTag(t)));
+          for (final t in _tagsPendingAssignmentToChild) {
+            childScenarios.forEach((s) => s.addTag(t));
+          }
           _tagsPendingAssignmentToChild.clear();
         }
 
@@ -63,13 +63,14 @@ class FeatureRunnable extends TaggableRunnableBlock {
         break;
       default:
         throw Exception(
-            "Unknown runnable child given to Feature '${child.runtimeType}' - Line#${child.debug.lineText}: '${child.debug.lineText}'");
+          "Unknown runnable child given to Feature '${child.runtimeType}' - Line#${child.debug.lineText}: '${child.debug.lineText}'",
+        );
     }
   }
 
   @override
   void onTagAdded(TagsRunnable tag) {
-    for (var scenario in scenarios) {
+    for (final scenario in scenarios) {
       scenario.addTag(tag.clone(inherited: true));
     }
   }

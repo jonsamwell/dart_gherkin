@@ -1,7 +1,7 @@
-import '../messages.dart';
-import 'json_feature.dart';
-import 'json_step.dart';
-import 'json_tag.dart';
+import 'package:gherkin/src/reporters/json/json_feature.dart';
+import 'package:gherkin/src/reporters/json/json_step.dart';
+import 'package:gherkin/src/reporters/json/json_tag.dart';
+import 'package:gherkin/src/reporters/messages.dart';
 
 class JsonScenario {
   /// Target type
@@ -77,7 +77,7 @@ class JsonScenario {
   Map<String, Object?> toJson() {
     final result = {
       'keyword':
-          target == Target.scenario_outline ? 'Scenario Outline' : 'Scenario',
+          target == Target.scenarioOutline ? 'Scenario Outline' : 'Scenario',
       'type': 'scenario',
       'id': '${feature?.id};${name.toLowerCase()}',
       'name': name,

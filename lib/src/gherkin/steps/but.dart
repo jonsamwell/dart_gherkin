@@ -1,7 +1,7 @@
-import './step_configuration.dart';
-import './step_definition.dart';
-import './step_definition_implementations.dart';
-import './world.dart';
+import 'package:gherkin/src/gherkin/steps/step_configuration.dart';
+import 'package:gherkin/src/gherkin/steps/step_definition.dart';
+import 'package:gherkin/src/gherkin/steps/step_definition_implementations.dart';
+import 'package:gherkin/src/gherkin/steps/world.dart';
 
 abstract class But extends StepDefinition<World> {
   But([StepDefinitionConfiguration? configuration]) : super(configuration);

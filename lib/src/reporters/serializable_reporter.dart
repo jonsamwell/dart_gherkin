@@ -4,3 +4,5 @@ abstract class SerializableReporter<T> {
 }
 
 abstract class JsonSerializableReporter extends SerializableReporter<String> {}
+
+typedef WriteReportCallback = Future<void> Function(String report, String path);

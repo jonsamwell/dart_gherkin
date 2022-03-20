@@ -9,15 +9,13 @@ import 'package:gherkin/src/gherkin/runnables/text_line.dart';
 import 'package:test/test.dart';
 
 Iterable<String> tagsToList(Iterable<TagsRunnable> tags) sync* {
-  for (var tgs in tags) {
-    for (var tag in tgs.tags) {
-      yield tag;
-    }
+  for (final tag in tags.expand((element) => element.tags)) {
+    yield tag;
   }
 }
 
 void main() {
-  final debugInfo = RunnableDebugInformation.EMPTY();
+  final debugInfo = RunnableDebugInformation.empty();
   group('addChild', () {
     test('can add TextLineRunnable', () {
       final runnable = FeatureRunnable('', debugInfo);

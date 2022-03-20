@@ -1,9 +1,9 @@
-import '../models/table.dart';
-import '../models/table_row.dart';
-import './comment_line.dart';
-import './debug_information.dart';
-import './runnable.dart';
-import './runnable_block.dart';
+import 'package:gherkin/src/gherkin/models/table.dart';
+import 'package:gherkin/src/gherkin/models/table_row.dart';
+import 'package:gherkin/src/gherkin/runnables/comment_line.dart';
+import 'package:gherkin/src/gherkin/runnables/debug_information.dart';
+import 'package:gherkin/src/gherkin/runnables/runnable.dart';
+import 'package:gherkin/src/gherkin/runnables/runnable_block.dart';
 
 class TableRunnable extends RunnableBlock {
   final List<String> rows = <String>[];
@@ -23,7 +23,8 @@ class TableRunnable extends RunnableBlock {
         break;
       default:
         throw Exception(
-            "Unknown runnable child given to Table '${child.runtimeType}'");
+          "Unknown runnable child given to Table '${child.runtimeType}'",
+        );
     }
   }
 
@@ -34,14 +35,14 @@ class TableRunnable extends RunnableBlock {
       header = _toRow(rows.first, 0, true);
     }
 
-    for (var i = (header == null ? 0 : 1); i < rows.length; i += 1) {
+    for (var i = header == null ? 0 : 1; i < rows.length; i += 1) {
       tableRows.add(_toRow(rows.elementAt(i), i));
     }
 
     return GherkinTable(tableRows, header);
   }
 
-  TableRow _toRow(String raw, int rowIndex, [isHeaderRow = false]) {
+  TableRow _toRow(String raw, int rowIndex, [bool isHeaderRow = false]) {
     final columns = raw
         .trim()
         .split(RegExp(r'(?<!\\)\|'))
@@ -55,7 +56,7 @@ class TableRunnable extends RunnableBlock {
             growable: false,
           ),
       rowIndex,
-      isHeaderRow,
+      isHeaderRow: isHeaderRow,
     );
   }
 }

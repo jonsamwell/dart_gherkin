@@ -8,7 +8,7 @@ class FeatureFileVisitor {
     String featureFileContents,
     String path,
     LanguageService languageService,
-    Reporter reporter,
+    MessageReporter reporter,
   ) async {
     final featureFile = await GherkinParser().parseFeatureFile(
       featureFileContents,
@@ -34,14 +34,14 @@ class FeatureFileVisitor {
             : [scenario];
         var acknowledgedScenarioPosition = false;
 
-        for (var childScenario in allScenarios) {
+        for (final childScenario in allScenarios) {
           await visitScenario(
             feature.name,
             _tagsToList(feature.tags),
             childScenario.name,
             _tagsToList(childScenario.tags),
-            acknowledgedScenarioPosition ? false : isFirst,
-            acknowledgedScenarioPosition ? false : isLast,
+            isFirst: !acknowledgedScenarioPosition && isFirst,
+            isLast: !acknowledgedScenarioPosition && isLast,
           );
 
           acknowledgedScenarioPosition = true;
@@ -83,10 +83,10 @@ class FeatureFileVisitor {
     String featureName,
     Iterable<String> featureTags,
     String name,
-    Iterable<String> tags,
-    bool isFirst,
-    bool isLast,
-  ) async {}
+    Iterable<String> tags, {
+    required bool isFirst,
+    required bool isLast,
+  }) async {}
 
   Future<void> visitScenarioStep(
     String name,
@@ -95,10 +95,8 @@ class FeatureFileVisitor {
   ) async {}
 
   Iterable<String> _tagsToList(Iterable<TagsRunnable> tags) sync* {
-    for (var tgs in tags) {
-      for (var tag in tgs.tags) {
-        yield tag;
-      }
+    for (final tag in tags.expand((element) => element.tags)) {
+      yield tag;
     }
   }
 }

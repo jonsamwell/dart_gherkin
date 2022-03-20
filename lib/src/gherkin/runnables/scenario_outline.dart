@@ -1,11 +1,10 @@
+import 'package:gherkin/src/gherkin/exceptions/syntax_error.dart';
+import 'package:gherkin/src/gherkin/runnables/debug_information.dart';
+import 'package:gherkin/src/gherkin/runnables/example.dart';
+import 'package:gherkin/src/gherkin/runnables/runnable.dart';
+import 'package:gherkin/src/gherkin/runnables/scenario.dart';
 import 'package:gherkin/src/gherkin/runnables/scenario_expanded_from_outline_example.dart';
 import 'package:gherkin/src/gherkin/runnables/tags.dart';
-
-import '../exceptions/syntax_error.dart';
-import '../runnables/example.dart';
-import '../runnables/scenario.dart';
-import './debug_information.dart';
-import './runnable.dart';
 
 class ScenarioOutlineRunnable extends ScenarioRunnable {
   final List<ExampleRunnable> _examples = <ExampleRunnable>[];
@@ -48,7 +47,8 @@ class ScenarioOutlineRunnable extends ScenarioRunnable {
   Iterable<ScenarioRunnable> expandOutlinesIntoScenarios() {
     if (examples.isEmpty) {
       throw GherkinSyntaxException(
-          'Scenario outline `$name` does not contains an example block.');
+        'Scenario outline `$name` does not contains an example block.',
+      );
     }
 
     final scenarios = <ScenarioRunnable>[];
@@ -56,7 +56,7 @@ class ScenarioOutlineRunnable extends ScenarioRunnable {
       (example) {
         example.table!.asMap().toList(growable: false).asMap().forEach(
           (exampleIndex, exampleRow) {
-            var exampleName = [
+            final exampleName = [
               name,
               'Examples:',
               if (example.name.isNotEmpty) example.name,

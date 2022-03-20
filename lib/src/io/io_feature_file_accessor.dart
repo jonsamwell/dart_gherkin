@@ -1,10 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:path/path.dart';
 
 import 'package:gherkin/src/io/feature_file_matcher.dart';
-
-import 'feature_file_reader.dart';
+import 'package:gherkin/src/io/feature_file_reader.dart';
+import 'package:path/path.dart';
 
 class IoFeatureFileAccessor implements FeatureFileMatcher, FeatureFileReader {
   final Encoding encoding;
@@ -16,13 +15,13 @@ class IoFeatureFileAccessor implements FeatureFileMatcher, FeatureFileReader {
   });
 
   @override
-  Future<String> read(String path) async {
-    return await File(path).readAsString(encoding: encoding);
+  Future<String> read(String path) {
+    return File(path).readAsString(encoding: encoding);
   }
 
   @override
-  Future<List<String>> listFiles(Pattern pattern) async {
-    return await _directoryContents(
+  Future<List<String>> listFiles(Pattern pattern) {
+    return _directoryContents(
       workingDirectory ?? Directory.current,
       pattern,
     );

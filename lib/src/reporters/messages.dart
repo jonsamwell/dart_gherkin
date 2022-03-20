@@ -1,10 +1,10 @@
 import 'package:gherkin/src/gherkin/attachments/attachment.dart';
 
-import '../gherkin/models/table.dart';
-import '../gherkin/runnables/debug_information.dart';
-import '../gherkin/steps/step_run_result.dart';
+import 'package:gherkin/src/gherkin/models/table.dart';
+import 'package:gherkin/src/gherkin/runnables/debug_information.dart';
+import 'package:gherkin/src/gherkin/steps/step_run_result.dart';
 
-enum Target { run, feature, scenario, scenario_outline, step }
+enum Target { run, feature, scenario, scenarioOutline, step }
 
 class Tag {
   final String name;
@@ -15,9 +15,9 @@ class Tag {
 
   Tag(
     this.name,
-    this.lineNumber, [
+    this.lineNumber, {
     this.isInherited = false,
-  ]);
+  });
 }
 
 class StartedMessage {
@@ -55,7 +55,7 @@ class StepStartedMessage extends StartedMessage {
           Target.step,
           name,
           context,
-          Iterable.empty(),
+          const Iterable.empty(),
         );
 }
 
@@ -75,6 +75,8 @@ class ScenarioFinishedMessage extends FinishedMessage {
   final bool passed;
 
   ScenarioFinishedMessage(
-      String name, RunnableDebugInformation context, this.passed)
-      : super(Target.scenario, name, context);
+    String name,
+    RunnableDebugInformation context, {
+    required this.passed,
+  }) : super(Target.scenario, name, context);
 }

@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:gherkin/gherkin.dart';
 
-import './feature_file_runner.dart';
-import './gherkin/parser.dart';
-import './gherkin/runnables/feature_file.dart';
+import 'package:gherkin/src/feature_file_runner.dart';
+import 'package:gherkin/src/gherkin/parser.dart';
+import 'package:gherkin/src/gherkin/runnables/feature_file.dart';
 
 class GherkinRunner {
   final _reporter = AggregatedReporter();
@@ -46,14 +46,14 @@ class GherkinRunner {
     await _hook.onBeforeRun(config);
 
     try {
-      await _reporter.onTestRunStarted();
-      for (var featureFile in featureFiles) {
+      await _reporter.onTest.onStarted?.call();
+      for (final featureFile in featureFiles) {
         final runner = FeatureFileRunner(
-          config,
-          _tagExpressionEvaluator,
-          _executableSteps,
-          _reporter,
-          _hook,
+          config: config,
+          tagExpressionEvaluator: _tagExpressionEvaluator,
+          steps: _executableSteps,
+          reporter: _reporter,
+          hook: _hook,
         );
         allFeaturesPassed &= await runner.run(featureFile);
         if (config.stopAfterTestFailed && !allFeaturesPassed) {
@@ -61,13 +61,12 @@ class GherkinRunner {
         }
       }
     } finally {
-      await _reporter.onTestRunFinished();
+      await _reporter.onTest.onFinished?.call();
       await _hook.onAfterRun(config);
       await _reporter.dispose();
-
-      if (!allFeaturesPassed) {
-        throw GherkinTestRunFailedException();
-      }
+    }
+    if (!allFeaturesPassed) {
+      throw GherkinTestRunFailedException();
     }
   }
 
@@ -75,10 +74,10 @@ class GherkinRunner {
     try {
       final featureFiles = <FeatureFile>[];
 
-      for (var pattern in config.features) {
+      for (final pattern in config.features) {
         final paths = await config.featureFileMatcher.listFiles(pattern);
 
-        for (var path in paths) {
+        for (final path in paths) {
           await _reporter.message(
             "Found feature file '$path'",
             MessageLevel.verbose,
@@ -122,20 +121,19 @@ class GherkinRunner {
     Iterable<StepDefinitionGeneric>? stepDefinitions,
   ) {
     if (stepDefinitions != null) {
-      stepDefinitions.forEach(
-        (s) {
-          _executableSteps.add(
-            ExecutableStep(
-                GherkinExpression(
-                  s.pattern is RegExp
-                      ? s.pattern as RegExp
-                      : RegExp(s.pattern.toString()),
-                  _customParameters,
-                ),
-                s),
-          );
-        },
-      );
+      for (final s in stepDefinitions) {
+        _executableSteps.add(
+          ExecutableStep(
+            GherkinExpression(
+              s.pattern is RegExp
+                  ? s.pattern as RegExp
+                  : RegExp(s.pattern.toString()),
+              _customParameters,
+            ),
+            s,
+          ),
+        );
+      }
     }
   }
 
@@ -159,7 +157,9 @@ class GherkinRunner {
 
   void _registerReporters(Iterable<Reporter>? reporters) {
     if (reporters != null) {
-      reporters.forEach((r) => _reporter.addReporter(r));
+      for (final r in reporters) {
+        _reporter.addReporter(r);
+      }
     }
   }
 

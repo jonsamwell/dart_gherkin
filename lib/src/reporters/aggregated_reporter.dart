@@ -1,72 +1,58 @@
-import './serializable_reporter.dart';
-import './messages.dart';
-import './message_level.dart';
-import './reporter.dart';
+import 'package:collection/collection.dart';
+import 'package:gherkin/src/reporters/message_level.dart';
+import 'package:gherkin/src/reporters/reporter.dart';
+import 'package:gherkin/src/reporters/serializable_reporter.dart';
 
-typedef ReportInvoke = Future<void> Function(Reporter r);
-
-class AggregatedReporter extends Reporter implements JsonSerializableReporter {
+class AggregatedReporter extends FullReporter
+    with ManyRepoters
+    implements JsonSerializableReporter, ManyRepoters {
   final List<Reporter> _reporters = <Reporter>[];
 
   void addReporter(Reporter reporter) => _reporters.add(reporter);
 
   @override
-  Future<void> message(String message, MessageLevel level) =>
-      _invokeReporters((r) => r.message(message, level));
+  UnmodifiableListView<Reporter> get repoters =>
+      UnmodifiableListView(_reporters);
 
   @override
-  Future<void> onTestRunStarted() {
-    return _invokeReporters((r) => r.onTestRunStarted());
-  }
+  ReporterMap<StartedCallback, FinishedCallback> get onFeature => ReporterMap(
+        onStarted: (message) => invokeReporters<FeatureReporter>(
+          (r) => r.onFeature.onStarted?.call(message),
+        ),
+        onFinished: (message) => invokeReporters<FeatureReporter>(
+          (r) => r.onFeature.onFinished?.call(message),
+        ),
+      );
 
   @override
-  Future<void> onTestRunFinished() {
-    return _invokeReporters((r) => r.onTestRunFinished());
-  }
+  ReporterMap<StartedCallback, ScenarioFinishedCallback> get onScenario =>
+      ReporterMap(
+        onStarted: (message) => invokeReporters<ScenarioReporter>(
+          (r) => r.onScenario.onStarted?.call(message),
+        ),
+        onFinished: (message) => invokeReporters<ScenarioReporter>(
+          (r) => r.onScenario.onFinished?.call(message),
+        ),
+      );
 
   @override
-  Future<void> onFeatureStarted(StartedMessage message) {
-    return _invokeReporters((r) => r.onFeatureStarted(message));
-  }
+  ReporterMap<StepStartedCallback, StepFinishedCallback> get onStep =>
+      ReporterMap(
+        onStarted: (message) => invokeReporters<StepReporter>(
+          (r) => r.onStep.onStarted?.call(message),
+        ),
+        onFinished: (message) => invokeReporters<StepReporter>(
+          (r) => r.onStep.onFinished?.call(message),
+        ),
+      );
 
   @override
-  Future<void> onFeatureFinished(FinishedMessage message) {
-    return _invokeReporters((r) => r.onFeatureFinished(message));
-  }
-
-  @override
-  Future<void> onScenarioStarted(StartedMessage message) {
-    return _invokeReporters((r) => r.onScenarioStarted(message));
-  }
-
-  @override
-  Future<void> onScenarioFinished(ScenarioFinishedMessage message) {
-    return _invokeReporters((r) => r.onScenarioFinished(message));
-  }
-
-  @override
-  Future<void> onStepStarted(StepStartedMessage message) {
-    return _invokeReporters((r) => r.onStepStarted(message));
-  }
-
-  @override
-  Future<void> onStepFinished(StepFinishedMessage message) {
-    return _invokeReporters((r) => r.onStepFinished(message));
-  }
-
-  @override
-  Future<void> onException(Object exception, StackTrace stackTrace) {
-    return _invokeReporters((r) => r.onException(exception, stackTrace));
-  }
-
-  @override
-  Future<void> dispose() async {
-    await _invokeReporters((r) => r.dispose());
-    _reporters.clear();
-  }
-
-  Future<void> _invokeReporters(ReportInvoke invoke) =>
-      Future.wait(_reporters.map(invoke));
+  ReporterMap<FutureCallback, FutureCallback> get onTest => ReporterMap(
+        onStarted: () =>
+            invokeReporters<TestReporter>((r) => r.onTest.onStarted?.call()),
+        onFinished: () =>
+            invokeReporters<TestReporter>((r) => r.onTest.onFinished?.call()),
+      );
 
   @override
   String serialize() {
@@ -82,5 +68,21 @@ class AggregatedReporter extends Reporter implements JsonSerializableReporter {
         .join(',');
 
     return '[$jsonReports]';
+  }
+
+  @override
+  Future<void> message(String message, MessageLevel level) =>
+      invokeReporters<MessageReporter>((r) => r.message(message, level));
+
+  @override
+  Future<void> onException(Object exception, StackTrace stackTrace) =>
+      invokeReporters<ExceptionReporter>(
+        (r) => r.onException(exception, stackTrace),
+      );
+
+  @override
+  Future<void> dispose() async {
+    await invokeReporters<DisposableRepoter>((r) => r.dispose());
+    _reporters.clear();
   }
 }

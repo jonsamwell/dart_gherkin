@@ -1,8 +1,8 @@
 import 'package:gherkin/src/gherkin/languages/dialect.dart';
 
-import '../runnables/debug_information.dart';
-import '../runnables/language.dart';
-import './regex_matched_syntax.dart';
+import 'package:gherkin/src/gherkin/runnables/debug_information.dart';
+import 'package:gherkin/src/gherkin/runnables/language.dart';
+import 'package:gherkin/src/gherkin/syntax/regex_matched_syntax.dart';
 
 /// see https://docs.cucumber.io/gherkin/reference/#gherkin-dialects
 class LanguageSyntax extends RegExMatchedGherkinSyntax {

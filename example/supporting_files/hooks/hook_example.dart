@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:gherkin/gherkin.dart';
 
 class HookExample extends Hook {
@@ -47,7 +49,10 @@ class HookExample extends Hook {
   /// Run after a step has executed
   @override
   Future<void> onAfterStep(
-      World world, String step, StepResult stepResult) async {
+    World world,
+    String step,
+    StepResult stepResult,
+  ) async {
     print("running hook after step '$step'");
 
     // example of how to add a simple attachment (text, json, image) to a step that a reporter can use

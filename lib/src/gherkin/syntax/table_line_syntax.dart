@@ -1,10 +1,10 @@
 import 'package:gherkin/src/gherkin/languages/dialect.dart';
 
-import '../runnables/debug_information.dart';
-import '../runnables/table.dart';
-import './comment_syntax.dart';
-import './regex_matched_syntax.dart';
-import './syntax_matcher.dart';
+import 'package:gherkin/src/gherkin/runnables/debug_information.dart';
+import 'package:gherkin/src/gherkin/runnables/table.dart';
+import 'package:gherkin/src/gherkin/syntax/comment_syntax.dart';
+import 'package:gherkin/src/gherkin/syntax/regex_matched_syntax.dart';
+import 'package:gherkin/src/gherkin/syntax/syntax_matcher.dart';
 
 class TableLineSyntax extends RegExMatchedGherkinSyntax<TableRunnable> {
   @override

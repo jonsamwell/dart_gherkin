@@ -1,7 +1,7 @@
-import '../../gherkin/steps/step_run_result.dart';
-import '../messages.dart';
-import 'json_embedding.dart';
-import 'json_row.dart';
+import 'package:gherkin/src/gherkin/steps/step_run_result.dart';
+import 'package:gherkin/src/reporters/json/json_embedding.dart';
+import 'package:gherkin/src/reporters/json/json_row.dart';
+import 'package:gherkin/src/reporters/messages.dart';
 
 class JsonStep {
   final String name;
@@ -98,9 +98,11 @@ class JsonStep {
 
     if (message.attachments.isNotEmpty) {
       embeddings = message.attachments
-          .map((attachment) => JsonEmbedding()
-            ..data = attachment.data
-            ..mimeType = attachment.mimeType)
+          .map(
+            (attachment) => JsonEmbedding()
+              ..data = attachment.data
+              ..mimeType = attachment.mimeType,
+          )
           .toList();
     }
 
@@ -154,7 +156,8 @@ class JsonStep {
     }
 
     if (error != null && error!.isNotEmpty) {
-      (result['result'] as dynamic)['error_message'] = error;
+      final resultMap = result['result']! as Map<String, dynamic>;
+      resultMap['error_message'] = error;
     }
 
     if (rows != null && rows!.isNotEmpty) {

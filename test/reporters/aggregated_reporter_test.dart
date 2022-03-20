@@ -21,52 +21,52 @@ void main() {
       expect(reporter1.onExceptionInvocationCount, 1);
       expect(reporter2.onExceptionInvocationCount, 1);
 
-      await aggregatedReporter.onFeatureStarted(
+      await aggregatedReporter.onFeature.onStarted?.call(
         StartedMessage(
           Target.feature,
           '',
-          RunnableDebugInformation.EMPTY(),
+          RunnableDebugInformation.empty(),
           const Iterable.empty(),
         ),
       );
       expect(reporter1.onFeatureStartedInvocationCount, 1);
       expect(reporter2.onFeatureStartedInvocationCount, 1);
 
-      await aggregatedReporter.onFeatureFinished(
+      await aggregatedReporter.onFeature.onFinished?.call(
         FinishedMessage(
           Target.feature,
           '',
-          RunnableDebugInformation.EMPTY(),
+          RunnableDebugInformation.empty(),
         ),
       );
       expect(reporter1.onFeatureFinishedInvocationCount, 1);
       expect(reporter2.onFeatureFinishedInvocationCount, 1);
 
-      await aggregatedReporter.onScenarioFinished(
+      await aggregatedReporter.onScenario.onFinished?.call(
         ScenarioFinishedMessage(
           '',
-          RunnableDebugInformation.EMPTY(),
-          true,
+          RunnableDebugInformation.empty(),
+          passed: true,
         ),
       );
       expect(reporter1.onScenarioFinishedInvocationCount, 1);
       expect(reporter2.onScenarioFinishedInvocationCount, 1);
 
-      await aggregatedReporter.onScenarioStarted(
+      await aggregatedReporter.onScenario.onStarted?.call(
         StartedMessage(
           Target.feature,
           '',
-          RunnableDebugInformation.EMPTY(),
+          RunnableDebugInformation.empty(),
           const Iterable.empty(),
         ),
       );
       expect(reporter1.onScenarioStartedInvocationCount, 1);
       expect(reporter2.onScenarioStartedInvocationCount, 1);
 
-      await aggregatedReporter.onStepFinished(
+      await aggregatedReporter.onStep.onFinished?.call(
         StepFinishedMessage(
           '',
-          RunnableDebugInformation.EMPTY(),
+          RunnableDebugInformation.empty(),
           StepResult(
             0,
             StepExecutionResult.skipped,
@@ -76,21 +76,21 @@ void main() {
       expect(reporter1.onStepFinishedInvocationCount, 1);
       expect(reporter2.onStepFinishedInvocationCount, 1);
 
-      await aggregatedReporter.onStepStarted(
+      await aggregatedReporter.onStep.onStarted?.call(
         StepStartedMessage(
           '',
-          RunnableDebugInformation.EMPTY(),
+          RunnableDebugInformation.empty(),
         ),
       );
       expect(reporter1.onStepStartedInvocationCount, 1);
       expect(reporter2.onStepStartedInvocationCount, 1);
 
-      await aggregatedReporter.onTestRunFinished();
+      await aggregatedReporter.onTest.onFinished?.call();
       expect(reporter1.onTestRunFinishedInvocationCount, 1);
       expect(reporter2.onTestRunFinishedInvocationCount, 1);
 
-      await aggregatedReporter.onTestRunStarted();
-      await aggregatedReporter.onTestRunStarted();
+      await aggregatedReporter.onTest.onStarted?.call();
+      await aggregatedReporter.onTest.onStarted?.call();
       expect(reporter1.onTestRunStartedInvocationCount, 2);
       expect(reporter2.onTestRunStartedInvocationCount, 2);
 
@@ -120,8 +120,10 @@ void main() {
       aggregatedReporter.addReporter(reporter2);
       aggregatedReporter.addReporter(reporter3);
 
-      expect(aggregatedReporter.serialize(),
-          '[{"a", "b", "c": 1},{"e", "f", "g": 2}]');
+      expect(
+        aggregatedReporter.serialize(),
+        '[{"a", "b", "c": 1},{"e", "f", "g": 2}]',
+      );
     });
   });
 }

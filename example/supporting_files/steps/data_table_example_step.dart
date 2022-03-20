@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:gherkin/gherkin.dart';
 
 /// This step expects a multi-line string proceeding it
@@ -9,13 +11,15 @@ import 'package:gherkin/gherkin.dart';
 ///  | Woody     | Johnson | 28  | Male   |
 ///  | Edith     | Summers | 23  | Female |
 ///  | Megan     | Hill    | 83  | Female |
-StepDefinitionGeneric GivenIAddTheUsers() {
+StepDefinitionGeneric givenIAddTheUsers() {
   return given1<GherkinTable, World>(
     'I add the users',
     (dataTable, _) async {
-      for (var row in dataTable.rows) {
+      for (final row in dataTable.rows) {
         // do something with row
-        row.columns.forEach((columnValue) => print(columnValue));
+        for (final columnValue in row.columns) {
+          print(columnValue);
+        }
       }
 
       // or get the table as a map (column values keyed by the header)

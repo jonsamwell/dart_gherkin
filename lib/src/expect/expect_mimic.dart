@@ -1,4 +1,4 @@
-import './expect_mimic_utils.dart';
+import 'package:gherkin/src/expect/expect_mimic_utils.dart';
 import 'package:matcher/matcher.dart';
 
 /// This is an atrocity but I can't see a way around it at the moment
@@ -42,25 +42,41 @@ class ExpectMimic {
   /// you want to wait for the matcher to complete before continuing the test, you
   /// can call [expectLater] instead and `await` the result.
   void expect(
-    actualValue,
-    matcher, {
+    dynamic actualValue,
+    dynamic matcher, {
     String? reason,
   }) {
     final matchState = {};
-    matcher = wrapMatcher(matcher);
-    final result = matcher.matches(actualValue, matchState);
-    final formatter = (actual, matcher, reason, matchState, verbose) {
+    final wrappedMatcher = wrapMatcher(matcher);
+    final result = wrappedMatcher.matches(actualValue, matchState);
+    String formatter(
+      actual,
+      matcher,
+      String? reason,
+      Map<dynamic, dynamic> matchState,
+      // ignore: avoid_positional_boolean_parameters
+      bool verbose,
+    ) {
       final mismatchDescription = StringDescription();
-      matcher.describeMismatch(
-          actual, mismatchDescription, matchState, verbose);
+      wrappedMatcher.describeMismatch(
+        actual,
+        mismatchDescription,
+        matchState,
+        verbose,
+      );
 
-      return formatFailure(matcher, actual, mismatchDescription.toString(),
-          reason: reason);
-    };
+      return formatFailure(
+        wrappedMatcher,
+        actual,
+        mismatchDescription.toString(),
+        reason: reason,
+      );
+    }
 
     if (!result) {
-      throw GherkinTestFailure(formatter(
-          actualValue, matcher as Matcher, reason, matchState, false));
+      throw GherkinTestFailure(
+        formatter(actualValue, matcher, reason, matchState, false),
+      );
     }
   }
 }

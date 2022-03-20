@@ -33,17 +33,21 @@ void main() {
       test('throws exception when parameter counts mismatch', () async {
         final step = StepDefinitionMock(StepDefinitionConfiguration(), 2);
         expect(
-          () async => await step.run(
+          () => step.run(
             World(),
             ReporterMock(),
             const Duration(seconds: 1),
             const Iterable.empty(),
           ),
-          throwsA((e) =>
-              e is GherkinStepParameterMismatchException &&
-              e.message ==
-                  'StepDefinitionMock parameter count mismatch. Expect 2 parameters but got 0. '
-                      'Ensure you are extending the correct step class which would be Given'),
+          throwsA(
+            (e) =>
+                e is GherkinStepParameterMismatchException &&
+                e.message ==
+                    'StepDefinitionMock parameter count mismatch. '
+                        'Expect 2 parameters but got 0. '
+                        'Ensure you are extending the correct '
+                        'step class which would be Given',
+          ),
         );
         expect(step.invocationCount, 0);
       });
@@ -53,17 +57,19 @@ void main() {
           () async {
         final step = StepDefinitionMock(StepDefinitionConfiguration(), 2);
         expect(
-          () async => await step.run(
+          () => step.run(
             World(),
             ReporterMock(),
             const Duration(seconds: 1),
             [1],
           ),
-          throwsA((e) =>
-              e is GherkinStepParameterMismatchException &&
-              e.message ==
-                  'StepDefinitionMock parameter count mismatch. Expect 2 parameters but got 1. '
-                      'Ensure you are extending the correct step class which would be Given1<TInputType0>'),
+          throwsA(
+            (e) =>
+                e is GherkinStepParameterMismatchException &&
+                e.message ==
+                    'StepDefinitionMock parameter count mismatch. Expect 2 parameters but got 1. '
+                        'Ensure you are extending the correct step class which would be Given1<TInputType0>',
+          ),
         );
         expect(step.invocationCount, 0);
       });
@@ -84,28 +90,33 @@ void main() {
       test('when exception is throw in test it is report as an error',
           () async {
         final step = StepDefinitionMock(
-            StepDefinitionConfiguration(), 0, () async => throw Exception('1'));
+          StepDefinitionConfiguration(),
+          0,
+          () async => throw Exception('1'),
+        );
+        final result = await step.run(
+          World(),
+          ReporterMock(),
+          const Duration(milliseconds: 1),
+          const Iterable.empty(),
+        );
         expect(
-          await step.run(
-            World(),
-            ReporterMock(),
-            const Duration(milliseconds: 1),
-            const Iterable.empty(),
-          ),
-          (r) {
-            return r is ErroredStepResult &&
-                r.result == StepExecutionResult.error &&
-                r.exception is Exception &&
-                r.exception.toString() == 'Exception: 1';
-          },
+          result is ErroredStepResult &&
+              result.result == StepExecutionResult.error &&
+              result.exception is Exception &&
+              result.exception.toString() == 'Exception: 1',
+          true,
         );
       });
     });
 
     group('expectation failures reported', () {
       test('when an expectation fails the step is failed', () async {
-        final step = StepDefinitionMock(StepDefinitionConfiguration(), 0,
-            () async => throw GherkinTestFailure('1'));
+        final step = StepDefinitionMock(
+          StepDefinitionConfiguration(),
+          0,
+          () async => throw GherkinTestFailure('1'),
+        );
         expect(
           await step.run(
             World(),

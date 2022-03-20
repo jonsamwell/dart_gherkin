@@ -1,5 +1,5 @@
-import './debug_information.dart';
-import './scenario.dart';
+import 'package:gherkin/src/gherkin/runnables/debug_information.dart';
+import 'package:gherkin/src/gherkin/runnables/scenario.dart';
 
 class BackgroundRunnable extends ScenarioRunnable {
   BackgroundRunnable(String name, RunnableDebugInformation debug)

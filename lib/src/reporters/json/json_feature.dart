@@ -1,6 +1,6 @@
-import '../messages.dart';
-import 'json_scenario.dart';
-import 'json_tag.dart';
+import 'package:gherkin/src/reporters/json/json_scenario.dart';
+import 'package:gherkin/src/reporters/json/json_tag.dart';
+import 'package:gherkin/src/reporters/messages.dart';
 
 class JsonFeature {
   final String uri;
@@ -24,7 +24,7 @@ class JsonFeature {
         tags = tags ?? [];
 
   /// Convert [StartedMessage] to [JsonFeature]
-  static JsonFeature from(StartedMessage message) {
+  factory JsonFeature.from(StartedMessage message) {
     final feature = JsonFeature(
       uri: message.context.filePath,
       id: message.name.toLowerCase(),

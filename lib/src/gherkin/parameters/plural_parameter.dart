@@ -1,4 +1,4 @@
-import './custom_parameter.dart';
+import 'package:gherkin/src/gherkin/parameters/custom_parameter.dart';
 
 class PluralParameter extends CustomParameter<String> {
   PluralParameter()

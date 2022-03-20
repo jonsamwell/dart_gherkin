@@ -1,7 +1,7 @@
-import '../gherkin/steps/step_run_result.dart';
-import '../gherkin/steps/world.dart';
-import '../reporters/messages.dart';
-import '../configuration.dart';
+import 'package:gherkin/src/configuration.dart';
+import 'package:gherkin/src/gherkin/steps/step_run_result.dart';
+import 'package:gherkin/src/gherkin/steps/world.dart';
+import 'package:gherkin/src/reporters/messages.dart';
 
 /// A hook that is run during certain points in the execution cycle
 /// You can override any or none of the methods

@@ -1,5 +1,5 @@
-import '../parameters/custom_parameter.dart';
-import '../parameters/step_defined_parameter.dart';
+import 'package:gherkin/src/gherkin/parameters/custom_parameter.dart';
+import 'package:gherkin/src/gherkin/parameters/step_defined_parameter.dart';
 
 class _SortedParameterPosition {
   final int startPosition;
@@ -19,24 +19,26 @@ class GherkinExpression {
     Iterable<CustomParameter<dynamic>> customParameters,
   ) {
     var pattern = originalExpression.pattern;
-    customParameters.forEach((p) {
+    for (final p in customParameters) {
       if (originalExpression.pattern.contains(p.identifier)) {
         // we need the index in the original pattern to be able to
         // transform the parameter into the correct type later on
         // so get that then modify the new matching pattern.
         originalExpression.pattern.replaceAllMapped(
-            RegExp(_escapeIdentifier(p.identifier),
-                caseSensitive: true, multiLine: true), (m) {
+            RegExp(
+              _escapeIdentifier(p.identifier),
+              multiLine: true,
+            ), (m) {
           _sortedParameterPositions.add(_SortedParameterPosition(m.start, p));
 
           return m.input;
         });
         pattern = pattern.replaceAllMapped(
-            RegExp(_escapeIdentifier(p.identifier),
-                caseSensitive: true, multiLine: true),
-            (m) => p.pattern.pattern);
+          RegExp(_escapeIdentifier(p.identifier), multiLine: true),
+          (m) => p.pattern.pattern,
+        );
       }
-    });
+    }
 
     // check for any capture patterns that are not custom parameters
     // but defined directly in the step definition for example:
@@ -71,9 +73,11 @@ class GherkinExpression {
     }
 
     _sortedParameterPositions.sort((a, b) => a.startPosition - b.startPosition);
-    _expression = RegExp(pattern,
-        caseSensitive: originalExpression.isCaseSensitive,
-        multiLine: originalExpression.isMultiLine);
+    _expression = RegExp(
+      pattern,
+      caseSensitive: originalExpression.isCaseSensitive,
+      multiLine: originalExpression.isMultiLine,
+    );
   }
 
   String _escapeIdentifier(String identifier) =>

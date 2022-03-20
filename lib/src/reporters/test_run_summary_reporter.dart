@@ -1,42 +1,44 @@
-import './stdout_reporter.dart';
-import '../gherkin/steps/step_run_result.dart';
-import './message_level.dart';
-import './messages.dart';
+import 'package:gherkin/gherkin.dart';
 
-class TestRunSummaryReporter extends StdoutReporter {
+class TestRunSummaryReporter extends StdoutReporter
+    implements ScenarioReporter, StepReporter, TestReporter, DisposableRepoter {
   final _timer = Stopwatch();
   final List<StepFinishedMessage> _ranSteps = <StepFinishedMessage>[];
   final List<ScenarioFinishedMessage> _ranScenarios =
       <ScenarioFinishedMessage>[];
 
   @override
-  Future<void> onScenarioFinished(ScenarioFinishedMessage message) async {
-    _ranScenarios.add(message);
-  }
+  ReporterMap<StartedCallback, ScenarioFinishedCallback> get onScenario =>
+      ReporterMap(
+        onFinished: (message) async => _ranScenarios.add(message),
+      );
 
   @override
-  Future<void> onStepFinished(StepFinishedMessage message) async {
-    _ranSteps.add(message);
-  }
+  ReporterMap<StepStartedCallback, StepFinishedCallback> get onStep =>
+      ReporterMap(
+        onFinished: (message) async => _ranSteps.add(message),
+      );
+
+  @override
+  ReporterMap<FutureCallback, FutureCallback> get onTest => ReporterMap(
+        onStarted: () async => _timer.start(),
+        onFinished: () async {
+          _timer.stop();
+          printMessageLine(
+            "${_ranScenarios.length} scenario${_ranScenarios.length > 1 ? "s" : ""} (${_collectScenarioSummary(_ranScenarios)})",
+          );
+          printMessageLine(
+            "${_ranSteps.length} step${_ranSteps.length > 1 ? "s" : ""} (${_collectStepSummary(_ranSteps)})",
+          );
+          printMessageLine(
+            '${Duration(milliseconds: _timer.elapsedMilliseconds)}',
+          );
+        },
+      );
 
   @override
   Future<void> message(String message, MessageLevel level) async {
     // ignore messages
-  }
-
-  @override
-  Future<void> onTestRunStarted() async {
-    _timer.start();
-  }
-
-  @override
-  Future<void> onTestRunFinished() async {
-    _timer.stop();
-    printMessageLine(
-        "${_ranScenarios.length} scenario${_ranScenarios.length > 1 ? "s" : ""} (${_collectScenarioSummary(_ranScenarios)})");
-    printMessageLine(
-        "${_ranSteps.length} step${_ranSteps.length > 1 ? "s" : ""} (${_collectStepSummary(_ranSteps)})");
-    printMessageLine('${Duration(milliseconds: _timer.elapsedMilliseconds)}');
   }
 
   @override
@@ -50,12 +52,14 @@ class TestRunSummaryReporter extends StdoutReporter {
     final summaries = <String>[];
     if (scenarios.any((s) => s.passed)) {
       summaries.add(
-          '${StdoutReporter.PASS_COLOR}${scenarios.where((s) => s.passed).length} passed${StdoutReporter.RESET_COLOR}');
+        '${StdoutReporter.kPassColor}${scenarios.where((s) => s.passed).length} passed${StdoutReporter.kResetColor}',
+      );
     }
 
     if (scenarios.any((s) => !s.passed)) {
       summaries.add(
-          '${StdoutReporter.FAIL_COLOR}${scenarios.where((s) => !s.passed).length} failed${StdoutReporter.RESET_COLOR}');
+        '${StdoutReporter.kFailColor}${scenarios.where((s) => !s.passed).length} failed${StdoutReporter.kResetColor}',
+      );
     }
 
     return summaries.join(', ');
@@ -67,23 +71,28 @@ class TestRunSummaryReporter extends StdoutReporter {
         steps.where((s) => s.result.result == StepExecutionResult.passed);
     final skipped =
         steps.where((s) => s.result.result == StepExecutionResult.skipped);
-    final failed = steps.where((s) =>
-        s.result.result == StepExecutionResult.error ||
-        s.result.result == StepExecutionResult.fail ||
-        s.result.result == StepExecutionResult.timeout);
+    final failed = steps.where(
+      (s) =>
+          s.result.result == StepExecutionResult.error ||
+          s.result.result == StepExecutionResult.fail ||
+          s.result.result == StepExecutionResult.timeout,
+    );
     if (passed.isNotEmpty) {
       summaries.add(
-          '${StdoutReporter.PASS_COLOR}${passed.length} passed${StdoutReporter.RESET_COLOR}');
+        '${StdoutReporter.kPassColor}${passed.length} passed${StdoutReporter.kResetColor}',
+      );
     }
 
     if (skipped.isNotEmpty) {
       summaries.add(
-          '${StdoutReporter.WARN_COLOR}${skipped.length} skipped${StdoutReporter.RESET_COLOR}');
+        '${StdoutReporter.kWarnColor}${skipped.length} skipped${StdoutReporter.kResetColor}',
+      );
     }
 
     if (failed.isNotEmpty) {
       summaries.add(
-          '${StdoutReporter.FAIL_COLOR}${failed.length} failed${StdoutReporter.RESET_COLOR}');
+        '${StdoutReporter.kFailColor}${failed.length} failed${StdoutReporter.kResetColor}',
+      );
     }
 
     return summaries.join(', ');

@@ -1,17 +1,20 @@
 import 'dart:convert';
 import 'dart:io';
 
-import '../messages.dart';
-import '../reporter.dart';
-import '../serializable_reporter.dart';
-import 'json_feature.dart';
-import 'json_scenario.dart';
-import 'json_step.dart';
+import 'package:gherkin/src/reporters/json/json_feature.dart';
+import 'package:gherkin/src/reporters/json/json_scenario.dart';
+import 'package:gherkin/src/reporters/json/json_step.dart';
+import 'package:gherkin/src/reporters/reporter.dart';
+import 'package:gherkin/src/reporters/serializable_reporter.dart';
 
-typedef WriteReportCallback = Future<void> Function(
-    String jsonReport, String path);
-
-class JsonReporter extends Reporter implements JsonSerializableReporter {
+class JsonReporter
+    implements
+        JsonSerializableReporter,
+        TestReporter,
+        FeatureReporter,
+        ScenarioReporter,
+        StepReporter,
+        ExceptionReporter {
   final List<JsonFeature> _features;
   final String path;
   final WriteReportCallback? writeReport;
@@ -21,24 +24,12 @@ class JsonReporter extends Reporter implements JsonSerializableReporter {
     this.writeReport,
   }) : _features = [];
 
-  @override
-  Future<void> onFeatureStarted(StartedMessage message) async {
-    _features.add(JsonFeature.from(message));
-  }
+  JsonFeature get _currentFeature {
+    if (_features.isEmpty) {
+      _features.add(JsonFeature.empty);
+    }
 
-  @override
-  Future<void> onScenarioStarted(StartedMessage message) async {
-    _currentFeature.add(JsonScenario.from(message));
-  }
-
-  @override
-  Future<void> onStepStarted(StepStartedMessage message) async {
-    _currentFeature.currentScenario.add(JsonStep.from(message));
-  }
-
-  @override
-  Future<void> onStepFinished(StepFinishedMessage message) async {
-    _currentFeature.currentScenario.currentStep.onFinish(message);
+    return _features.last;
   }
 
   @override
@@ -46,9 +37,6 @@ class JsonReporter extends Reporter implements JsonSerializableReporter {
     _currentFeature.currentScenario.currentStep
         .onException(exception, stackTrace);
   }
-
-  @override
-  Future<void> onTestRunFinished() => _generateReport(path);
 
   Future<void> onSaveReport(String jsonReport, String path) async {
     final file = File(path);
@@ -68,13 +56,30 @@ class JsonReporter extends Reporter implements JsonSerializableReporter {
     }
   }
 
-  JsonFeature get _currentFeature {
-    if (_features.isEmpty) {
-      _features.add(JsonFeature.empty);
-    }
+  @override
+  ReporterMap<StartedCallback, FinishedCallback> get onFeature => ReporterMap(
+        onStarted: (message) async => _features.add(JsonFeature.from(message)),
+      );
 
-    return _features.last;
-  }
+  @override
+  ReporterMap<StartedCallback, ScenarioFinishedCallback> get onScenario =>
+      ReporterMap(
+        onStarted: (message) async =>
+            _currentFeature.add(JsonScenario.from(message)),
+      );
+
+  @override
+  ReporterMap<StepStartedCallback, StepFinishedCallback> get onStep =>
+      ReporterMap(
+        onStarted: (message) async =>
+            _currentFeature.currentScenario.add(JsonStep.from(message)),
+        onFinished: (message) async =>
+            _currentFeature.currentScenario.currentStep.onFinish(message),
+      );
+
+  @override
+  ReporterMap<FutureCallback, FutureCallback> get onTest =>
+      ReporterMap(onFinished: () async => _generateReport(path));
 
   @override
   String serialize() {

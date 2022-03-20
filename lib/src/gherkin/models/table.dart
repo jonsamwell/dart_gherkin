@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import '../models/table_row.dart';
+import 'package:gherkin/src/gherkin/models/table_row.dart';
 
 class GherkinTable {
   final Iterable<TableRow> rows;
@@ -15,11 +15,9 @@ class GherkinTable {
     String parameterName,
     String value,
   ) {
-    rows.forEach(
-      (row) {
-        row.setStepParameter(parameterName, value);
-      },
-    );
+    for (final row in rows) {
+      row.setStepParameter(parameterName, value);
+    }
   }
 
   /// Returns the table as a iterable of maps.  With a single map representing a row in the table
@@ -49,16 +47,16 @@ class GherkinTable {
     ];
   }
 
-  String toJson() {
-    return '${jsonEncode(asMap())}';
-  }
+  String toJson() => jsonEncode(asMap());
 
-  static GherkinTable fromJson(String json) {
+  factory GherkinTable.fromJson(String json) {
     final data = (jsonDecode(json) as List<dynamic>)
         .map((x) => x as Map<String, dynamic>);
-    final headerRow =
-        data.isNotEmpty ? TableRow(data.first.keys, 1, true) : null;
-    final rows = data.map((x) => TableRow(x.values.cast<String>(), 1, false));
+    final headerRow = data.isNotEmpty
+        ? TableRow(data.first.keys, 1, isHeaderRow: true)
+        : null;
+    final rows = data
+        .map((x) => TableRow(x.values.cast<String>(), 1, isHeaderRow: false));
     final table = GherkinTable(rows, headerRow);
 
     return table;

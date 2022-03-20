@@ -1,12 +1,19 @@
 # Defines a default set of lint rules enforced for
 # projects at Google. For details and rationale,
 # see https://github.com/dart-lang/pedantic#enabled-lints.
-include: package:pedantic/analysis_options.yaml
+include: package:lint/analysis_options.yaml
 
 # For lint rules and documentation, see http://dart-lang.github.io/linter/lints.
 linter:
   rules:
     await_only_futures: true
+    avoid_function_literals_in_foreach_calls: false
+    avoid_redundant_argument_values: false
+    use_setters_to_change_properties: false
+    sort_pub_dependencies: false
+    prefer_constructors_over_static_methods: false
+    avoid_print: false
+    avoid_classes_with_only_static_members: false
 
 # analyzer:
 #   exclude:

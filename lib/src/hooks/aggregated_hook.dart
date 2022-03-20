@@ -1,8 +1,8 @@
-import '../gherkin/steps/step_run_result.dart';
-import '../gherkin/steps/world.dart';
-import '../reporters/messages.dart';
-import '../configuration.dart';
-import './hook.dart';
+import 'package:gherkin/src/configuration.dart';
+import 'package:gherkin/src/gherkin/steps/step_run_result.dart';
+import 'package:gherkin/src/gherkin/steps/world.dart';
+import 'package:gherkin/src/hooks/hook.dart';
+import 'package:gherkin/src/reporters/messages.dart';
 
 class AggregatedHook extends Hook {
   Iterable<Hook>? _orderedHooks;
@@ -15,21 +15,21 @@ class AggregatedHook extends Hook {
   }
 
   @override
-  Future<void> onBeforeRun(TestConfiguration config) async =>
-      await _invokeHooks((h) => h.onBeforeRun(config));
+  Future<void> onBeforeRun(TestConfiguration config) =>
+      _invokeHooks((h) => h.onBeforeRun(config));
 
   /// Run after all scenarios in a test run have completed
   @override
-  Future<void> onAfterRun(TestConfiguration config) async =>
-      await _invokeHooks((h) => h.onAfterRun(config));
+  Future<void> onAfterRun(TestConfiguration config) =>
+      _invokeHooks((h) => h.onAfterRun(config));
 
   @override
   Future<void> onAfterScenarioWorldCreated(
     World world,
     String scenario,
     Iterable<Tag> tags,
-  ) async =>
-      await _invokeHooks(
+  ) =>
+      _invokeHooks(
         (h) => h.onAfterScenarioWorldCreated(
           world,
           scenario,
@@ -43,8 +43,8 @@ class AggregatedHook extends Hook {
     TestConfiguration config,
     String scenario,
     Iterable<Tag> tags,
-  ) async =>
-      await _invokeHooks(
+  ) =>
+      _invokeHooks(
         (h) => h.onBeforeScenario(
           config,
           scenario,
@@ -58,8 +58,8 @@ class AggregatedHook extends Hook {
     TestConfiguration config,
     String scenario,
     Iterable<Tag> tags,
-  ) async =>
-      await _invokeHooks(
+  ) =>
+      _invokeHooks(
         (h) => h.onAfterScenario(
           config,
           scenario,
@@ -72,8 +72,8 @@ class AggregatedHook extends Hook {
   Future<void> onBeforeStep(
     World world,
     String step,
-  ) async =>
-      await _invokeHooks((h) => h.onBeforeStep(world, step));
+  ) =>
+      _invokeHooks((h) => h.onBeforeStep(world, step));
 
   /// Run after a step has executed
   @override
@@ -81,14 +81,14 @@ class AggregatedHook extends Hook {
     World world,
     String step,
     StepResult result,
-  ) async =>
-      await _invokeHooks((h) => h.onAfterStep(world, step, result));
+  ) =>
+      _invokeHooks((h) => h.onAfterStep(world, step, result));
 
   Future<void> _invokeHooks(
     Future<void> Function(Hook h) invoke,
   ) async {
     if (_orderedHooks != null && _orderedHooks!.isNotEmpty) {
-      for (var hook in _orderedHooks!) {
+      for (final hook in _orderedHooks!) {
         await invoke(hook);
       }
     }

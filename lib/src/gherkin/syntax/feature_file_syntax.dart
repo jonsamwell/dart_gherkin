@@ -1,8 +1,7 @@
 import 'package:gherkin/src/gherkin/languages/dialect.dart';
-import 'package:gherkin/src/gherkin/runnables/runnable.dart';
 import 'package:gherkin/src/gherkin/runnables/debug_information.dart';
-
-import '../syntax/syntax_matcher.dart';
+import 'package:gherkin/src/gherkin/runnables/runnable.dart';
+import 'package:gherkin/src/gherkin/syntax/syntax_matcher.dart';
 
 class FeatureFileSyntax extends SyntaxMatcher {
   @override

@@ -1,8 +1,8 @@
 import 'package:gherkin/src/gherkin/languages/dialect.dart';
 import 'package:gherkin/src/gherkin/languages/language_service.dart';
 
-import './debug_information.dart';
-import 'dialect_block.dart';
+import 'package:gherkin/src/gherkin/runnables/debug_information.dart';
+import 'package:gherkin/src/gherkin/runnables/dialect_block.dart';
 
 class LanguageRunnable extends DialectBlock {
   late String language;

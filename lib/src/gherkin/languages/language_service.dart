@@ -1,7 +1,7 @@
 import 'package:gherkin/src/gherkin/exceptions/dialect_not_supported.dart';
 
-import 'dialect.dart';
-import 'languages.dart';
+import 'package:gherkin/src/gherkin/languages/dialect.dart';
+import 'package:gherkin/src/gherkin/languages/languages.dart';
 
 class LanguageService {
   String _defaultLanguage = 'en';
@@ -27,8 +27,11 @@ class LanguageService {
     // final langFile = File.fromUri(uri);
     // Map<String, dynamic> languagesJson =
     //     json.decode(langFile.readAsStringSync());
-    LANGUAGES_JSON.forEach((key, values) {
-      final dialect = GherkinDialect.fromJSON(values)..languageCode = key;
+    kLanguagesJson.forEach((key, values) {
+      final dialect =
+          GherkinDialect.fromJson(values as Map<String, dynamic>).copyWith(
+        languageCode: key,
+      );
       setDialect(key, dialect);
     });
   }

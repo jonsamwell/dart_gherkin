@@ -2,7 +2,7 @@ import 'package:gherkin/gherkin.dart';
 
 typedef OnStepFinished = void Function(StepFinishedMessage message);
 
-class ReporterMock extends Reporter {
+class ReporterMock extends FullReporter {
   int onTestRunStartedInvocationCount = 0;
   int onTestRunFinishedInvocationCount = 0;
   int onFeatureStartedInvocationCount = 0;
@@ -18,33 +18,34 @@ class ReporterMock extends Reporter {
   OnStepFinished? onStepFinishedFn;
 
   @override
-  Future<void> onTestRunStarted() async => onTestRunStartedInvocationCount += 1;
-  @override
-  Future<void> onTestRunFinished() async =>
-      onTestRunFinishedInvocationCount += 1;
-  @override
-  Future<void> onFeatureStarted(StartedMessage message) async =>
-      onFeatureStartedInvocationCount += 1;
-  @override
-  Future<void> onFeatureFinished(FinishedMessage message) async =>
-      onFeatureFinishedInvocationCount += 1;
-  @override
-  Future<void> onScenarioStarted(StartedMessage message) async =>
-      onScenarioStartedInvocationCount += 1;
-  @override
-  Future<void> onScenarioFinished(FinishedMessage message) async =>
-      onScenarioFinishedInvocationCount += 1;
-  @override
-  Future<void> onStepStarted(StepStartedMessage message) async =>
-      onStepStartedInvocationCount += 1;
-  @override
-  Future<void> onStepFinished(StepFinishedMessage message) async {
-    if (onStepFinishedFn != null) {
-      onStepFinishedFn!(message);
-    }
+  ReporterMap<FutureCallback, FutureCallback> get onTest => ReporterMap(
+        onStarted: () async => onTestRunStartedInvocationCount += 1,
+        onFinished: () async => onTestRunFinishedInvocationCount += 1,
+      );
 
-    onStepFinishedInvocationCount += 1;
-  }
+  @override
+  ReporterMap<StartedCallback, FinishedCallback> get onFeature => ReporterMap(
+        onStarted: (message) async => onFeatureStartedInvocationCount += 1,
+        onFinished: (message) async => onFeatureFinishedInvocationCount += 1,
+      );
+
+  @override
+  ReporterMap<StartedCallback, ScenarioFinishedCallback> get onScenario =>
+      ReporterMap(
+        onStarted: (message) async => onScenarioStartedInvocationCount += 1,
+        onFinished: (message) async => onScenarioFinishedInvocationCount += 1,
+      );
+
+  @override
+  ReporterMap<StepStartedCallback, StepFinishedCallback> get onStep =>
+      ReporterMap(
+        onStarted: (message) async => onStepStartedInvocationCount += 1,
+        onFinished: (message) async {
+          onStepFinishedFn?.call(message);
+
+          onStepFinishedInvocationCount += 1;
+        },
+      );
 
   @override
   Future<void> onException(Object exception, StackTrace stackTrace) async =>

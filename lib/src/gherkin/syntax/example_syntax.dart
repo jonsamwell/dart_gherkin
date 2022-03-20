@@ -1,11 +1,10 @@
 import 'package:gherkin/src/gherkin/languages/dialect.dart';
-
-import '../runnables/example.dart';
-import '../runnables/debug_information.dart';
-import '../runnables/runnable.dart';
-import './regex_matched_syntax.dart';
-import './syntax_matcher.dart';
-import './table_line_syntax.dart';
+import 'package:gherkin/src/gherkin/runnables/debug_information.dart';
+import 'package:gherkin/src/gherkin/runnables/example.dart';
+import 'package:gherkin/src/gherkin/runnables/runnable.dart';
+import 'package:gherkin/src/gherkin/syntax/regex_matched_syntax.dart';
+import 'package:gherkin/src/gherkin/syntax/syntax_matcher.dart';
+import 'package:gherkin/src/gherkin/syntax/table_line_syntax.dart';
 
 class ExampleSyntax extends RegExMatchedGherkinSyntax {
   @override

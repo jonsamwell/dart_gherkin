@@ -1,44 +1,48 @@
 import 'dart:async';
-import 'package:gherkin/src/gherkin/runnables/scenario_type_enum.dart';
-import 'package:collection/collection.dart';
 
-import './reporters/message_level.dart';
-import './hooks/hook.dart';
-import './reporters/reporter.dart';
-import './configuration.dart';
-import './gherkin/exceptions/step_not_defined_error.dart';
-import './gherkin/expressions/tag_expression.dart';
-import './gherkin/runnables/background.dart';
-import './gherkin/runnables/debug_information.dart';
-import './gherkin/runnables/feature.dart';
-import './gherkin/runnables/feature_file.dart';
-import './gherkin/runnables/scenario.dart';
-import './gherkin/runnables/step.dart';
-import './gherkin/steps/executable_step.dart';
-import './gherkin/steps/step_run_result.dart';
-import './gherkin/steps/world.dart';
-import './reporters/messages.dart';
-import './gherkin/attachments/attachment_manager.dart';
-import 'gherkin/exceptions/gherkin_exception.dart';
+import 'package:collection/collection.dart';
+import 'package:gherkin/src/configuration.dart';
+import 'package:gherkin/src/gherkin/attachments/attachment_manager.dart';
+import 'package:gherkin/src/gherkin/exceptions/gherkin_exception.dart';
+import 'package:gherkin/src/gherkin/exceptions/step_not_defined_error.dart';
+import 'package:gherkin/src/gherkin/expressions/tag_expression.dart';
+import 'package:gherkin/src/gherkin/runnables/background.dart';
+import 'package:gherkin/src/gherkin/runnables/debug_information.dart';
+import 'package:gherkin/src/gherkin/runnables/feature.dart';
+import 'package:gherkin/src/gherkin/runnables/feature_file.dart';
+import 'package:gherkin/src/gherkin/runnables/scenario.dart';
+import 'package:gherkin/src/gherkin/runnables/scenario_type_enum.dart';
+import 'package:gherkin/src/gherkin/runnables/step.dart';
+import 'package:gherkin/src/gherkin/steps/executable_step.dart';
+import 'package:gherkin/src/gherkin/steps/step_run_result.dart';
+import 'package:gherkin/src/gherkin/steps/world.dart';
+import 'package:gherkin/src/hooks/hook.dart';
+import 'package:gherkin/src/reporters/message_level.dart';
+import 'package:gherkin/src/reporters/messages.dart';
+import 'package:gherkin/src/reporters/reporter.dart';
 
 class FeatureFileRunner {
   final TestConfiguration _config;
   final TagExpressionEvaluator _tagExpressionEvaluator;
   final Iterable<ExecutableStep> _steps;
-  final Reporter _reporter;
+  final FullReporter _reporter;
   final Hook _hook;
 
-  FeatureFileRunner(
-    this._config,
-    this._tagExpressionEvaluator,
-    this._steps,
-    this._reporter,
-    this._hook,
-  );
+  FeatureFileRunner({
+    required TestConfiguration config,
+    required TagExpressionEvaluator tagExpressionEvaluator,
+    required Iterable<ExecutableStep> steps,
+    required FullReporter reporter,
+    required Hook hook,
+  })  : _config = config,
+        _tagExpressionEvaluator = tagExpressionEvaluator,
+        _steps = steps,
+        _reporter = reporter,
+        _hook = hook;
 
   Future<bool> run(FeatureFile featureFile) async {
     var haveAllFeaturesPassed = true;
-    for (var feature in featureFile.features) {
+    for (final feature in featureFile.features) {
       haveAllFeaturesPassed &= await _runFeature(feature);
       if (_config.stopAfterTestFailed && !haveAllFeaturesPassed) {
         break;
@@ -51,19 +55,27 @@ class FeatureFileRunner {
   Future<bool> _runFeature(FeatureRunnable feature) async {
     var haveAllScenariosPassed = true;
     try {
-      await _reporter.onFeatureStarted(
+      await _reporter.onFeature.onStarted?.call(
         StartedMessage(
           Target.feature,
           feature.name,
           feature.debug,
           feature.tags.isNotEmpty
               ? feature.tags
-                  .map((t) => t.tags
-                      .map((c) => Tag(c, t.debug.lineNumber, t.isInherited))
-                      .toList())
+                  .map(
+                    (t) => t.tags
+                        .map(
+                          (c) => Tag(
+                            c,
+                            t.debug.lineNumber,
+                            isInherited: t.isInherited,
+                          ),
+                        )
+                        .toList(),
+                  )
                   .reduce((a, b) => a..addAll(b))
                   .toList()
-              : Iterable<Tag>.empty().toList(),
+              : const Iterable<Tag>.empty().toList(),
         ),
       );
       await _log(
@@ -87,6 +99,7 @@ class FeatureFileRunner {
           );
         }
       }
+      // ignore: avoid_catching_errors
     } on Error catch (err, st) {
       await _log(
         "Fatal error encountered while running feature '${feature.name}'\n$err\n$st",
@@ -104,7 +117,7 @@ class FeatureFileRunner {
 
       rethrow;
     } finally {
-      await _reporter.onFeatureFinished(
+      await _reporter.onFeature.onFinished?.call(
         FinishedMessage(
           Target.feature,
           feature.name,
@@ -125,17 +138,19 @@ class FeatureFileRunner {
     String? tagExpression,
     ScenarioRunnable scenario,
   ) {
-    return tagExpression == null
-        ? true
-        : _tagExpressionEvaluator.evaluate(
-            tagExpression,
-            scenario.tags.isNotEmpty
-                ? scenario.tags
-                    .map((t) => t.tags.toList())
-                    .reduce((a, b) => a..addAll(b))
-                    .toList()
-                : Iterable<String>.empty().toList(),
-          );
+    if (tagExpression == null) {
+      return true;
+    } else {
+      return _tagExpressionEvaluator.evaluate(
+        tagExpression,
+        scenario.tags.isNotEmpty
+            ? scenario.tags
+                .map((t) => t.tags.toList())
+                .reduce((a, b) => a..addAll(b))
+                .toList()
+            : const Iterable<String>.empty().toList(),
+      );
+    }
   }
 
   Future<bool> _runScenarioInZone(
@@ -151,7 +166,7 @@ class FeatureFileRunner {
           completer.complete(result);
         }
       },
-      (dynamic error, dynamic stack) {
+      (error, stack) {
         if (!completer.isCompleted) {
           // this is a special type of exception that indicates something is wrong
           // with the test rather than the test execution so fail the whole run as
@@ -181,12 +196,20 @@ class FeatureFileRunner {
     var scenarioPassed = true;
     final tags = scenario.tags.isNotEmpty
         ? scenario.tags
-            .map((t) => t.tags
-                .map((tag) => Tag(tag, t.debug.lineNumber, t.isInherited))
-                .toList())
+            .map(
+              (t) => t.tags
+                  .map(
+                    (tag) => Tag(
+                      tag,
+                      t.debug.lineNumber,
+                      isInherited: t.isInherited,
+                    ),
+                  )
+                  .toList(),
+            )
             .reduce((a, b) => a..addAll(b))
             .toList()
-        : Iterable<Tag>.empty();
+        : const Iterable<Tag>.empty();
 
     try {
       if (_config.createWorld != null) {
@@ -209,21 +232,29 @@ class FeatureFileRunner {
 
       await _hook.onBeforeScenario(_config, scenario.name, tags);
 
-      await _reporter.onScenarioStarted(
+      await _reporter.onScenario.onStarted?.call(
         StartedMessage(
-          scenario.scenarioType == ScenarioType.scenario_outline
-              ? Target.scenario_outline
+          scenario.scenarioType == ScenarioType.scenarioOutline
+              ? Target.scenarioOutline
               : Target.scenario,
           scenario.name,
           scenario.debug,
           scenario.tags.isNotEmpty
               ? scenario.tags
-                  .map((t) => t.tags
-                      .map((tag) => Tag(tag, t.debug.lineNumber, t.isInherited))
-                      .toList())
+                  .map(
+                    (t) => t.tags
+                        .map(
+                          (tag) => Tag(
+                            tag,
+                            t.debug.lineNumber,
+                            isInherited: t.isInherited,
+                          ),
+                        )
+                        .toList(),
+                  )
                   .reduce((a, b) => a..addAll(b))
                   .toList()
-              : Iterable<Tag>.empty().toList(growable: false),
+              : const Iterable<Tag>.empty().toList(growable: false),
         ),
       );
 
@@ -233,7 +264,7 @@ class FeatureFileRunner {
           scenario.debug,
           MessageLevel.info,
         );
-        for (var step in background.steps) {
+        for (final step in background.steps) {
           final result = await _runStep(
             step,
             world,
@@ -252,7 +283,7 @@ class FeatureFileRunner {
         }
       }
 
-      for (var step in scenario.steps) {
+      for (final step in scenario.steps) {
         final result = await _runStep(
           step,
           world,
@@ -273,11 +304,11 @@ class FeatureFileRunner {
       await _reporter.onException(e, st);
       rethrow;
     } finally {
-      await _reporter.onScenarioFinished(
+      await _reporter.onScenario.onFinished?.call(
         ScenarioFinishedMessage(
           scenario.name,
           scenario.debug,
-          scenarioPassed,
+          passed: scenarioPassed,
         ),
       );
       await _hook.onAfterScenario(
@@ -315,7 +346,7 @@ class FeatureFileRunner {
       MessageLevel.info,
     );
     await _hook.onBeforeStep(world, step.name);
-    await _reporter.onStepStarted(
+    await _reporter.onStep.onStarted?.call(
       StepStartedMessage(
         step.name,
         step.debug,
@@ -343,7 +374,7 @@ class FeatureFileRunner {
     }
 
     await _hook.onAfterStep(world, step.name, result);
-    await _reporter.onStepFinished(
+    await _reporter.onStep.onFinished?.call(
       StepFinishedMessage(
         step.name,
         step.debug,
@@ -395,7 +426,7 @@ class FeatureFileRunner {
       /// For example: `When4<String, bool, int, num>`
       /// You can also specify the type of world context you want
       /// `When4WithWorld<String, bool, int, num, MyWorld>`
-      class Given_${step.debug.lineText.trim().replaceAll(RegExp(r'[^a-zA-Z0-9]'), '_')} extends Given1<String> {
+      class Given_${step.debug.lineText.trim().replaceAll(RegExp('[^a-zA-Z0-9]'), '_')} extends Given1<String> {
         @override
         RegExp get pattern => RegExp(r"${step.debug.lineText.trim().split(' ').skip(1).join(' ')}");
 

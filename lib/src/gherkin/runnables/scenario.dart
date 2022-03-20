@@ -1,10 +1,10 @@
-import './comment_line.dart';
-import './debug_information.dart';
-import './empty_line.dart';
-import './runnable.dart';
-import './step.dart';
-import 'scenario_type_enum.dart';
-import 'taggable_runnable_block.dart';
+import 'package:gherkin/src/gherkin/runnables/comment_line.dart';
+import 'package:gherkin/src/gherkin/runnables/debug_information.dart';
+import 'package:gherkin/src/gherkin/runnables/empty_line.dart';
+import 'package:gherkin/src/gherkin/runnables/runnable.dart';
+import 'package:gherkin/src/gherkin/runnables/scenario_type_enum.dart';
+import 'package:gherkin/src/gherkin/runnables/step.dart';
+import 'package:gherkin/src/gherkin/runnables/taggable_runnable_block.dart';
 
 class ScenarioRunnable extends TaggableRunnableBlock {
   final String _name;
@@ -31,7 +31,8 @@ class ScenarioRunnable extends TaggableRunnableBlock {
         break;
       default:
         throw Exception(
-            "Unknown runnable child given to Scenario '${child.runtimeType}'");
+          "Unknown runnable child given to Scenario '${child.runtimeType}'",
+        );
     }
   }
 }
