@@ -1,7 +1,7 @@
-import 'package:gherkin/src/gherkin/languages/dialect.dart';
+import '../languages/dialect.dart';
 
-import 'package:gherkin/src/gherkin/runnables/debug_information.dart';
-import 'package:gherkin/src/gherkin/runnables/runnable.dart';
+import '../runnables/debug_information.dart';
+import '../runnables/runnable.dart';
 
 enum EndBlockHandling { ignore, continueProcessing }
 

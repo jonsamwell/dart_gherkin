@@ -1,8 +1,8 @@
-import 'package:gherkin/src/gherkin/attachments/attachment.dart';
+import '../gherkin/attachments/attachment.dart';
 
-import 'package:gherkin/src/gherkin/models/table.dart';
-import 'package:gherkin/src/gherkin/runnables/debug_information.dart';
-import 'package:gherkin/src/gherkin/steps/step_run_result.dart';
+import '../gherkin/models/table.dart';
+import '../gherkin/runnables/debug_information.dart';
+import '../gherkin/steps/step_run_result.dart';
 
 enum Target { run, feature, scenario, scenarioOutline, step }
 

@@ -14,6 +14,8 @@ linter:
     prefer_constructors_over_static_methods: false
     avoid_print: false
     avoid_classes_with_only_static_members: false
+    always_use_package_imports: false
+    prefer_relative_imports: true
 
 # analyzer:
 #   exclude:

@@ -1,4 +1,4 @@
-import 'package:gherkin/src/gherkin/exceptions/gherkin_exception.dart';
+import 'gherkin_exception.dart';
 
 class GherkinSyntaxException implements GherkinException {
   final String message;

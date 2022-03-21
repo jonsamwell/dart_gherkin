@@ -1,5 +1,6 @@
-import 'package:gherkin/src/expect/expect_mimic_utils.dart';
 import 'package:matcher/matcher.dart';
+
+import 'expect_mimic_utils.dart';
 
 /// This is an atrocity but I can't see a way around it at the moment
 /// To use the expect() it must be called within a test() or this happens:

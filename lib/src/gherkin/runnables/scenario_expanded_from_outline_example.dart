@@ -1,6 +1,6 @@
-import 'package:gherkin/src/gherkin/runnables/debug_information.dart';
-import 'package:gherkin/src/gherkin/runnables/scenario.dart';
-import 'package:gherkin/src/gherkin/runnables/scenario_type_enum.dart';
+import 'debug_information.dart';
+import 'scenario.dart';
+import 'scenario_type_enum.dart';
 
 class ScenarioExpandedFromOutlineExampleRunnable extends ScenarioRunnable {
   String _name;

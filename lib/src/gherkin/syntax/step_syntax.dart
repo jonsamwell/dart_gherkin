@@ -1,11 +1,11 @@
-import 'package:gherkin/src/gherkin/languages/dialect.dart';
+import '../languages/dialect.dart';
 
-import 'package:gherkin/src/gherkin/runnables/debug_information.dart';
-import 'package:gherkin/src/gherkin/runnables/step.dart';
-import 'package:gherkin/src/gherkin/syntax/multiline_string_syntax.dart';
-import 'package:gherkin/src/gherkin/syntax/regex_matched_syntax.dart';
-import 'package:gherkin/src/gherkin/syntax/syntax_matcher.dart';
-import 'package:gherkin/src/gherkin/syntax/table_line_syntax.dart';
+import '../runnables/debug_information.dart';
+import '../runnables/step.dart';
+import 'multiline_string_syntax.dart';
+import 'regex_matched_syntax.dart';
+import 'syntax_matcher.dart';
+import 'table_line_syntax.dart';
 
 class StepSyntax extends RegExMatchedGherkinSyntax<StepRunnable> {
   @override

@@ -1,6 +1,6 @@
 import 'dart:io';
-import 'package:gherkin/src/reporters/message_level.dart';
-import 'package:gherkin/src/reporters/reporter.dart';
+import 'message_level.dart';
+import 'reporter.dart';
 
 class StdoutReporter implements InfoReporter {
   static const String kNeutralColor = '\u001b[33;34m'; // blue

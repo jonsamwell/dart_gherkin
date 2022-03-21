@@ -1,65 +1,94 @@
+import 'dart:async';
+
 import 'package:collection/collection.dart';
 
-import 'package:gherkin/src/reporters/message_level.dart';
-import 'package:gherkin/src/reporters/messages.dart';
+import 'message_level.dart';
+import 'messages.dart';
 
-typedef StartedCallback = Future<void> Function(StartedMessage message);
-typedef FinishedCallback = Future<void> Function(FinishedMessage message);
-typedef ScenarioFinishedCallback = Future<void> Function(
-  ScenarioFinishedMessage message,
-);
-typedef StepStartedCallback = Future<void> Function(StepStartedMessage message);
-typedef StepFinishedCallback = Future<void> Function(
-  StepFinishedMessage message,
-);
+typedef VoidCallback = void Function();
 
-typedef ReportInvoke<T extends Reporter> = Future<void>? Function(T r);
+typedef ReportInvoke<T extends Reporter> = Future<void>? Function(T report);
 
-typedef FutureCallback = Future<void> Function();
+typedef FutureAction = Future<void> Function();
 
-/// {@template reporter.repotermap}
+typedef ActionReport<T> = Future<void> Function([T? message]);
+
+typedef FutureValueAction<T> = Future<void> Function(T message);
+
+/// {@template reporter.reporteractionhandler}
 /// Auxiliary class for setting the start and end functions
 /// {@endtemplate}
-class ReporterMap<S extends Function, F extends Function> {
-  final S? onStarted;
-  final F? onFinished;
+class ReportActionHandler<S extends Object?, F extends Object?> {
+  /// Provides interaction with the function after the start of a certain action
+  ///
+  final StateAction<S> onStarted;
+  final StateAction<F> onFinished;
 
-  const ReporterMap({
-    this.onStarted,
-    this.onFinished,
-  });
+  /// {@macro reporter.reporteractionhandler}
+  ReportActionHandler({
+    ActionReport<S>? onStarted,
+    ActionReport<F>? onFinished,
+  })  : onStarted = StateAction<S>(action: onStarted),
+        onFinished = StateAction<F>(action: onFinished);
 
-  static ReporterMap get empty => const ReporterMap();
+  List<StateAction> get stateActions => [onStarted, onFinished];
+
+  factory ReportActionHandler.empty() => ReportActionHandler<S, F>();
 }
 
+/// {@template reporter.stateaction}
+/// Auxiliary class for performing various actions
+/// {@endtemplate}
+class StateAction<T extends Object?> {
+  final ActionReport<T>? _action;
+
+  /// {@macro reporter.stateaction}
+  ///
+  /// [action] - an action is a callback function
+  StateAction({
+    ActionReport<T>? action,
+  }) : _action = action;
+
+  /// The function of safely calling an action.
+  /// Inside notifies listeners (calls [notifyListeners]).
+  Future<void> maybeCall([T? value]) async {
+    if (_action != null) {
+      await _action!.call(value);
+    }
+  }
+}
+
+/// {@template reporter.reporter}
+/// An abstract class both for all reporters
+/// {@endtemplate}
 abstract class Reporter {}
 
 /// {@template reporter.testrepoter}
 /// An abstract class that allows you to track the status of the start of tests.
 /// {@endtemplate}
 abstract class TestReporter implements Reporter {
-  ReporterMap<FutureCallback, FutureCallback> get onTest;
+  ReportActionHandler<void, void> get test;
 }
 
 /// {@template reporter.featurerepoter}
 /// An abstract class that allows you to track the status of features.
 /// {@endtemplate}
 abstract class FeatureReporter implements Reporter {
-  ReporterMap<StartedCallback, FinishedCallback> get onFeature;
+  ReportActionHandler<StartedMessage, FinishedMessage> get feature;
 }
 
 /// {@template reporter.scenariorepoter}
 /// An abstract class that allows you to track the status of scenarios.
 /// {@endtemplate}
 abstract class ScenarioReporter implements Reporter {
-  ReporterMap<StartedCallback, ScenarioFinishedCallback> get onScenario;
+  ReportActionHandler<StartedMessage, ScenarioFinishedMessage> get scenario;
 }
 
 /// {@template reporter.steprepoter}
 /// An abstract class that allows you to track the status of steps.
 /// {@endtemplate}
 abstract class StepReporter implements Reporter {
-  ReporterMap<StepStartedCallback, StepFinishedCallback> get onStep;
+  ReportActionHandler<StepStartedMessage, StepFinishedMessage> get step;
 }
 
 /// {@template reporter.exceptionrepoter}
@@ -76,6 +105,9 @@ abstract class MessageReporter implements Reporter {
   Future<void> message(String message, MessageLevel level);
 }
 
+/// {@template reporter.messagerepoter}
+/// An abstract class that allows you to send messages and intercept them.
+/// {@endtemplate}
 abstract class DisposableRepoter implements Reporter {
   Future<void> dispose();
 }
@@ -93,6 +125,10 @@ abstract class FullReporter
         ScenarioReporter,
         DisposableRepoter {}
 
+/// {@template reporter.fullfeature}
+/// This is an abstraction for the implementation
+/// of all methods for generating reports without [TestReporter]
+/// {@endtemplate}
 abstract class FullFeatureReporter
     implements
         FeatureReporter,
@@ -101,12 +137,16 @@ abstract class FullFeatureReporter
         ScenarioReporter,
         DisposableRepoter {}
 
+/// {@template reporter.fullrepoter}
+/// This interface is necessary for tracking errors and displaying
+/// various messages in the reporter
+/// {@endtemplate}
 abstract class InfoReporter implements MessageReporter, ExceptionReporter {}
 
-/// {@template reporter.manyrepoters}
-/// This abstraction allows you to create aggregating reporters.
+/// {@template reporter.allreporters}
+/// This mixin allows you to create aggregating reporters.
 /// {@endtemplate}
-mixin ManyRepoters implements Reporter {
+mixin AllReporters implements Reporter {
   /// Get repoters
   UnmodifiableListView<Reporter> get repoters;
 

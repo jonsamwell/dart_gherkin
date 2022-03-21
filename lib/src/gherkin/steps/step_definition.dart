@@ -1,12 +1,12 @@
 import 'dart:async';
 
-import 'package:gherkin/src/expect/expect_mimic.dart';
-import 'package:gherkin/src/gherkin/exceptions/parameter_count_mismatch_error.dart';
-import 'package:gherkin/src/gherkin/steps/step_configuration.dart';
-import 'package:gherkin/src/gherkin/steps/step_run_result.dart';
-import 'package:gherkin/src/gherkin/steps/world.dart';
-import 'package:gherkin/src/reporters/reporter.dart';
-import 'package:gherkin/src/utils/perf.dart';
+import '../../expect/expect_mimic.dart';
+import '../../reporters/reporter.dart';
+import '../../utils/perf.dart';
+import '../exceptions/parameter_count_mismatch_error.dart';
+import 'step_configuration.dart';
+import 'step_run_result.dart';
+import 'world.dart';
 
 abstract class StepDefinitionGeneric<TWorld extends World> {
   final StepDefinitionConfiguration? config;

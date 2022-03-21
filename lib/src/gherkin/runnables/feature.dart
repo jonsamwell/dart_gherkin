@@ -1,14 +1,14 @@
-import 'package:gherkin/src/gherkin/exceptions/syntax_error.dart';
-import 'package:gherkin/src/gherkin/runnables/background.dart';
-import 'package:gherkin/src/gherkin/runnables/comment_line.dart';
-import 'package:gherkin/src/gherkin/runnables/debug_information.dart';
-import 'package:gherkin/src/gherkin/runnables/empty_line.dart';
-import 'package:gherkin/src/gherkin/runnables/runnable.dart';
-import 'package:gherkin/src/gherkin/runnables/scenario.dart';
-import 'package:gherkin/src/gherkin/runnables/scenario_outline.dart';
-import 'package:gherkin/src/gherkin/runnables/taggable_runnable_block.dart';
-import 'package:gherkin/src/gherkin/runnables/tags.dart';
-import 'package:gherkin/src/gherkin/runnables/text_line.dart';
+import '../exceptions/syntax_error.dart';
+import 'background.dart';
+import 'comment_line.dart';
+import 'debug_information.dart';
+import 'empty_line.dart';
+import 'runnable.dart';
+import 'scenario.dart';
+import 'scenario_outline.dart';
+import 'taggable_runnable_block.dart';
+import 'tags.dart';
+import 'text_line.dart';
 
 class FeatureRunnable extends TaggableRunnableBlock {
   final String _name;

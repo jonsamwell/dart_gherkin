@@ -1,5 +1,6 @@
 import 'dart:collection';
-import 'package:gherkin/src/gherkin/exceptions/syntax_error.dart';
+
+import '../exceptions/syntax_error.dart';
 
 /// Evaluates tag expression lexicon such as
 /// @smoke and @perf

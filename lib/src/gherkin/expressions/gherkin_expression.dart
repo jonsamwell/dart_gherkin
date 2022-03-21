@@ -1,5 +1,5 @@
-import 'package:gherkin/src/gherkin/parameters/custom_parameter.dart';
-import 'package:gherkin/src/gherkin/parameters/step_defined_parameter.dart';
+import '../parameters/custom_parameter.dart';
+import '../parameters/step_defined_parameter.dart';
 
 class _SortedParameterPosition {
   final int startPosition;

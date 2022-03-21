@@ -1,11 +1,12 @@
 import 'package:collection/collection.dart';
-import 'package:gherkin/src/reporters/message_level.dart';
-import 'package:gherkin/src/reporters/reporter.dart';
-import 'package:gherkin/src/reporters/serializable_reporter.dart';
+import 'message_level.dart';
+import 'messages.dart';
+import 'reporter.dart';
+import 'serializable_reporter.dart';
 
 class AggregatedReporter extends FullReporter
-    with ManyRepoters
-    implements JsonSerializableReporter, ManyRepoters {
+    with AllReporters
+    implements JsonSerializableReporter {
   final List<Reporter> _reporters = <Reporter>[];
 
   void addReporter(Reporter reporter) => _reporters.add(reporter);
@@ -15,43 +16,46 @@ class AggregatedReporter extends FullReporter
       UnmodifiableListView(_reporters);
 
   @override
-  ReporterMap<StartedCallback, FinishedCallback> get onFeature => ReporterMap(
-        onStarted: (message) => invokeReporters<FeatureReporter>(
-          (r) => r.onFeature.onStarted?.call(message),
+  ReportActionHandler<StartedMessage, FinishedMessage> get feature =>
+      ReportActionHandler(
+        onStarted: ([value]) => invokeReporters<FeatureReporter>(
+          (r) => r.feature.onStarted.maybeCall(value),
         ),
-        onFinished: (message) => invokeReporters<FeatureReporter>(
-          (r) => r.onFeature.onFinished?.call(message),
-        ),
-      );
-
-  @override
-  ReporterMap<StartedCallback, ScenarioFinishedCallback> get onScenario =>
-      ReporterMap(
-        onStarted: (message) => invokeReporters<ScenarioReporter>(
-          (r) => r.onScenario.onStarted?.call(message),
-        ),
-        onFinished: (message) => invokeReporters<ScenarioReporter>(
-          (r) => r.onScenario.onFinished?.call(message),
+        onFinished: ([message]) => invokeReporters<FeatureReporter>(
+          (report) => report.feature.onFinished.maybeCall(message),
         ),
       );
 
   @override
-  ReporterMap<StepStartedCallback, StepFinishedCallback> get onStep =>
-      ReporterMap(
-        onStarted: (message) => invokeReporters<StepReporter>(
-          (r) => r.onStep.onStarted?.call(message),
+  ReportActionHandler<StartedMessage, ScenarioFinishedMessage> get scenario =>
+      ReportActionHandler(
+        onStarted: ([message]) => invokeReporters<ScenarioReporter>(
+          (r) => r.scenario.onStarted.maybeCall(message),
         ),
-        onFinished: (message) => invokeReporters<StepReporter>(
-          (r) => r.onStep.onFinished?.call(message),
+        onFinished: ([message]) => invokeReporters<ScenarioReporter>(
+          (r) => r.scenario.onFinished.maybeCall(message),
         ),
       );
 
   @override
-  ReporterMap<FutureCallback, FutureCallback> get onTest => ReporterMap(
-        onStarted: () =>
-            invokeReporters<TestReporter>((r) => r.onTest.onStarted?.call()),
-        onFinished: () =>
-            invokeReporters<TestReporter>((r) => r.onTest.onFinished?.call()),
+  ReportActionHandler<StepStartedMessage, StepFinishedMessage> get step =>
+      ReportActionHandler(
+        onStarted: ([message]) => invokeReporters<StepReporter>(
+          (r) => r.step.onStarted.maybeCall(message),
+        ),
+        onFinished: ([message]) => invokeReporters<StepReporter>(
+          (r) => r.step.onFinished.maybeCall(message),
+        ),
+      );
+
+  @override
+  ReportActionHandler<void, void> get test => ReportActionHandler(
+        onStarted: ([_]) => invokeReporters<TestReporter>(
+          (r) => r.test.onStarted.maybeCall(),
+        ),
+        onFinished: ([_]) => invokeReporters<TestReporter>(
+          (r) => r.test.onFinished.maybeCall(),
+        ),
       );
 
   @override

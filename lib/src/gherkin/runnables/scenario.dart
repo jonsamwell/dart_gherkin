@@ -1,10 +1,10 @@
-import 'package:gherkin/src/gherkin/runnables/comment_line.dart';
-import 'package:gherkin/src/gherkin/runnables/debug_information.dart';
-import 'package:gherkin/src/gherkin/runnables/empty_line.dart';
-import 'package:gherkin/src/gherkin/runnables/runnable.dart';
-import 'package:gherkin/src/gherkin/runnables/scenario_type_enum.dart';
-import 'package:gherkin/src/gherkin/runnables/step.dart';
-import 'package:gherkin/src/gherkin/runnables/taggable_runnable_block.dart';
+import 'comment_line.dart';
+import 'debug_information.dart';
+import 'empty_line.dart';
+import 'runnable.dart';
+import 'scenario_type_enum.dart';
+import 'step.dart';
+import 'taggable_runnable_block.dart';
 
 class ScenarioRunnable extends TaggableRunnableBlock {
   final String _name;

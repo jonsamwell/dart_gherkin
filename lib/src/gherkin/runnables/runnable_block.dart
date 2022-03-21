@@ -1,5 +1,5 @@
-import 'package:gherkin/src/gherkin/runnables/debug_information.dart';
-import 'package:gherkin/src/gherkin/runnables/runnable.dart';
+import 'debug_information.dart';
+import 'runnable.dart';
 
 abstract class RunnableBlock extends Runnable {
   RunnableBlock(RunnableDebugInformation debug) : super(debug);

@@ -1,9 +1,9 @@
-import 'package:gherkin/src/gherkin/models/table.dart';
-import 'package:gherkin/src/gherkin/models/table_row.dart';
-import 'package:gherkin/src/gherkin/runnables/comment_line.dart';
-import 'package:gherkin/src/gherkin/runnables/debug_information.dart';
-import 'package:gherkin/src/gherkin/runnables/runnable.dart';
-import 'package:gherkin/src/gherkin/runnables/runnable_block.dart';
+import '../models/table.dart';
+import '../models/table_row.dart';
+import 'comment_line.dart';
+import 'debug_information.dart';
+import 'runnable.dart';
+import 'runnable_block.dart';
 
 class TableRunnable extends RunnableBlock {
   final List<String> rows = <String>[];

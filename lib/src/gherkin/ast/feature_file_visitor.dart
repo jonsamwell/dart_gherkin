@@ -1,7 +1,7 @@
-import 'package:gherkin/gherkin.dart';
-import 'package:gherkin/src/gherkin/parser.dart';
-import 'package:gherkin/src/gherkin/runnables/scenario_outline.dart';
-import 'package:gherkin/src/gherkin/runnables/tags.dart';
+import '../../../gherkin.dart';
+import '../parser.dart';
+import '../runnables/scenario_outline.dart';
+import '../runnables/tags.dart';
 
 class FeatureFileVisitor {
   Future<void> visit(

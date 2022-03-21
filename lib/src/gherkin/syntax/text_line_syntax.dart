@@ -1,8 +1,8 @@
-import 'package:gherkin/src/gherkin/languages/dialect.dart';
+import '../languages/dialect.dart';
 
-import 'package:gherkin/src/gherkin/runnables/debug_information.dart';
-import 'package:gherkin/src/gherkin/runnables/text_line.dart';
-import 'package:gherkin/src/gherkin/syntax/regex_matched_syntax.dart';
+import '../runnables/debug_information.dart';
+import '../runnables/text_line.dart';
+import 'regex_matched_syntax.dart';
 
 class TextLineSyntax extends RegExMatchedGherkinSyntax<TextLineRunnable> {
   @override

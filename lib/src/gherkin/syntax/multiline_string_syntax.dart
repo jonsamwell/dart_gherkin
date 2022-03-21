@@ -1,12 +1,12 @@
-import 'package:gherkin/src/gherkin/exceptions/syntax_error.dart';
-import 'package:gherkin/src/gherkin/languages/dialect.dart';
-import 'package:gherkin/src/gherkin/runnables/debug_information.dart';
-import 'package:gherkin/src/gherkin/runnables/multi_line_string.dart';
-import 'package:gherkin/src/gherkin/syntax/comment_syntax.dart';
-import 'package:gherkin/src/gherkin/syntax/empty_line_syntax.dart';
-import 'package:gherkin/src/gherkin/syntax/regex_matched_syntax.dart';
-import 'package:gherkin/src/gherkin/syntax/syntax_matcher.dart';
-import 'package:gherkin/src/gherkin/syntax/text_line_syntax.dart';
+import '../exceptions/syntax_error.dart';
+import '../languages/dialect.dart';
+import '../runnables/debug_information.dart';
+import '../runnables/multi_line_string.dart';
+import 'comment_syntax.dart';
+import 'empty_line_syntax.dart';
+import 'regex_matched_syntax.dart';
+import 'syntax_matcher.dart';
+import 'text_line_syntax.dart';
 
 class MultilineStringSyntax
     extends RegExMatchedGherkinSyntax<MultilineStringRunnable> {

@@ -1,7 +1,6 @@
-import 'package:gherkin/src/gherkin/exceptions/dialect_not_supported.dart';
-
-import 'package:gherkin/src/gherkin/languages/dialect.dart';
-import 'package:gherkin/src/gherkin/languages/languages.dart';
+import '../exceptions/dialect_not_supported.dart';
+import 'dialect.dart';
+import 'languages.dart';
 
 class LanguageService {
   String _defaultLanguage = 'en';

@@ -1,10 +1,9 @@
 import 'dart:async';
 
-import 'package:gherkin/gherkin.dart';
-
-import 'package:gherkin/src/feature_file_runner.dart';
-import 'package:gherkin/src/gherkin/parser.dart';
-import 'package:gherkin/src/gherkin/runnables/feature_file.dart';
+import '../gherkin.dart';
+import 'feature_file_runner.dart';
+import 'gherkin/parser.dart';
+import 'gherkin/runnables/feature_file.dart';
 
 class GherkinRunner {
   final _reporter = AggregatedReporter();
@@ -46,7 +45,7 @@ class GherkinRunner {
     await _hook.onBeforeRun(config);
 
     try {
-      await _reporter.onTest.onStarted?.call();
+      await _reporter.test.onStarted.maybeCall();
       for (final featureFile in featureFiles) {
         final runner = FeatureFileRunner(
           config: config,
@@ -61,7 +60,7 @@ class GherkinRunner {
         }
       }
     } finally {
-      await _reporter.onTest.onFinished?.call();
+      await _reporter.test.onFinished.maybeCall();
       await _hook.onAfterRun(config);
       await _reporter.dispose();
     }

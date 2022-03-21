@@ -18,30 +18,33 @@ class ReporterMock extends FullReporter {
   OnStepFinished? onStepFinishedFn;
 
   @override
-  ReporterMap<FutureCallback, FutureCallback> get onTest => ReporterMap(
-        onStarted: () async => onTestRunStartedInvocationCount += 1,
-        onFinished: () async => onTestRunFinishedInvocationCount += 1,
+  ReportActionHandler<void, void> get test => ReportActionHandler<void, void>(
+        onStarted: ([massage]) async => onTestRunStartedInvocationCount += 1,
+        onFinished: ([massage]) async => onTestRunFinishedInvocationCount += 1,
       );
 
   @override
-  ReporterMap<StartedCallback, FinishedCallback> get onFeature => ReporterMap(
-        onStarted: (message) async => onFeatureStartedInvocationCount += 1,
-        onFinished: (message) async => onFeatureFinishedInvocationCount += 1,
+  ReportActionHandler<StartedMessage, FinishedMessage> get feature =>
+      ReportActionHandler(
+        onStarted: ([message]) async => onFeatureStartedInvocationCount += 1,
+        onFinished: ([message]) async => onFeatureFinishedInvocationCount += 1,
       );
 
   @override
-  ReporterMap<StartedCallback, ScenarioFinishedCallback> get onScenario =>
-      ReporterMap(
-        onStarted: (message) async => onScenarioStartedInvocationCount += 1,
-        onFinished: (message) async => onScenarioFinishedInvocationCount += 1,
+  ReportActionHandler<StartedMessage, ScenarioFinishedMessage> get scenario =>
+      ReportActionHandler(
+        onStarted: ([message]) async => onScenarioStartedInvocationCount += 1,
+        onFinished: ([message]) async => onScenarioFinishedInvocationCount += 1,
       );
 
   @override
-  ReporterMap<StepStartedCallback, StepFinishedCallback> get onStep =>
-      ReporterMap(
-        onStarted: (message) async => onStepStartedInvocationCount += 1,
-        onFinished: (message) async {
-          onStepFinishedFn?.call(message);
+  ReportActionHandler<StepStartedMessage, StepFinishedMessage> get step =>
+      ReportActionHandler(
+        onStarted: ([message]) async => onStepStartedInvocationCount += 1,
+        onFinished: ([message]) async {
+          if (message != null && onStepFinishedFn != null) {
+            onStepFinishedFn!(message);
+          }
 
           onStepFinishedInvocationCount += 1;
         },

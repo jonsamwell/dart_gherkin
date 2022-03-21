@@ -1,4 +1,4 @@
-import 'package:gherkin/src/reporters/messages.dart';
+import '../messages.dart';
 
 class JsonTag {
   final String name;

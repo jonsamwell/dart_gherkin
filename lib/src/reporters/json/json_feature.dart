@@ -1,6 +1,6 @@
-import 'package:gherkin/src/reporters/json/json_scenario.dart';
-import 'package:gherkin/src/reporters/json/json_tag.dart';
-import 'package:gherkin/src/reporters/messages.dart';
+import '../messages.dart';
+import 'json_scenario.dart';
+import 'json_tag.dart';
 
 class JsonFeature {
   final String uri;

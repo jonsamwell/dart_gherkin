@@ -1,5 +1,5 @@
-import 'package:gherkin/src/gherkin/runnables/debug_information.dart';
-import 'package:gherkin/src/gherkin/runnables/runnable.dart';
+import 'debug_information.dart';
+import 'runnable.dart';
 
 class EmptyLineRunnable extends Runnable {
   @override

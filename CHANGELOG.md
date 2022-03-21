@@ -1,3 +1,69 @@
+## [3.0.0] - 22/03/2022
+
+* BREAKING CHANGE:
+  -  `TestConfiguration` is now not mutable. You can create an instance like this:
+  ```dart
+  final steps = [
+    givenTheNumbers(),
+    givenThePowersOfTwo(),
+    givenTheCharacters(),
+    whenTheStoredNumbersAreAdded(),
+    whenTheCharactersAreCounted(),
+    thenExpectNumericResult()
+  ];
+  final featuresPath = buildFeaturesPathRegex();
+
+  var config = TestConfiguration(
+    features: [RegExp(featuresPath)],
+    stepDefinitions: steps,
+    tagExpression: 'not @skip',
+    hooks: [HookExample()],
+    customStepParameterDefinitions: [PowerOfTwoParameter()],
+    createWorld: (config) => Future.value(CalculatorWorld()),
+  );
+
+  // or
+
+  config = TestConfiguration.standard(
+    steps,
+    featurePath: featuresPath,
+    tagExpression: 'not @skip',
+    hooks: [HookExample()],
+    customStepParameterDefinitions: [PowerOfTwoParameter()],
+    createWorld: (config) => Future.value(CalculatorWorld()),
+  );
+
+  return GherkinRunner().execute(config);
+  ```
+
+  - All reporters implement (do not extend) separated interfaces:
+
+     - `TestReporter`
+     - `FeatureReporter`
+     - `ScenarioReporter`
+     - `StepReporter`
+     - `ExceptionReporter`
+     - `MessageReporter`
+     - `DisposableRepoter`
+  
+   and interfaces that store sets of interfaces:
+   
+     - `FullReporter`
+     - `FullFeatureReporter`
+     - `InfoReporter`
+   - Now to create your own reporters, you need to implement getters, the example below.
+  ```dart
+  class MyTestReporter implements TestReporter {
+    @override
+    ReportActionHandler<FutureCallback, FutureCallback> get test => ReportActionHandler(
+            onStarted: () async => print('onStartedTest'),
+        );
+  }
+  ```
+
+  For more information, see this [file](lib\src\reporters\reporter.dart).
+
+
 ## [2.0.8] - 24/11/2021
 
 * Fixed issue checking ANSI support on web environments in the StdoutReporter

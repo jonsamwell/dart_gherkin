@@ -1,9 +1,9 @@
-import 'package:gherkin/src/gherkin/languages/dialect.dart';
-import 'package:gherkin/src/gherkin/runnables/debug_information.dart';
-import 'package:gherkin/src/gherkin/runnables/feature.dart';
-import 'package:gherkin/src/gherkin/runnables/runnable.dart';
-import 'package:gherkin/src/gherkin/syntax/regex_matched_syntax.dart';
-import 'package:gherkin/src/gherkin/syntax/syntax_matcher.dart';
+import '../languages/dialect.dart';
+import '../runnables/debug_information.dart';
+import '../runnables/feature.dart';
+import '../runnables/runnable.dart';
+import 'regex_matched_syntax.dart';
+import 'syntax_matcher.dart';
 
 class FeatureSyntax extends RegExMatchedGherkinSyntax {
   @override

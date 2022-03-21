@@ -1,9 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:gherkin/src/io/feature_file_matcher.dart';
-import 'package:gherkin/src/io/feature_file_reader.dart';
 import 'package:path/path.dart';
+
+import 'feature_file_matcher.dart';
+import 'feature_file_reader.dart';
 
 class IoFeatureFileAccessor implements FeatureFileMatcher, FeatureFileReader {
   final Encoding encoding;

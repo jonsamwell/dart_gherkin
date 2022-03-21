@@ -1,11 +1,11 @@
-import 'package:gherkin/src/gherkin/runnables/comment_line.dart';
-import 'package:gherkin/src/gherkin/runnables/debug_information.dart';
-import 'package:gherkin/src/gherkin/runnables/empty_line.dart';
-import 'package:gherkin/src/gherkin/runnables/feature.dart';
-import 'package:gherkin/src/gherkin/runnables/language.dart';
-import 'package:gherkin/src/gherkin/runnables/runnable.dart';
-import 'package:gherkin/src/gherkin/runnables/runnable_block.dart';
-import 'package:gherkin/src/gherkin/runnables/tags.dart';
+import 'comment_line.dart';
+import 'debug_information.dart';
+import 'empty_line.dart';
+import 'feature.dart';
+import 'language.dart';
+import 'runnable.dart';
+import 'runnable_block.dart';
+import 'tags.dart';
 
 class FeatureFile extends RunnableBlock {
   String _language = 'en';

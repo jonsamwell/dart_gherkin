@@ -1,27 +1,39 @@
-import 'package:gherkin/gherkin.dart';
+import '../../gherkin.dart';
 
 class ProgressReporter extends StdoutReporter
     implements ScenarioReporter, StepReporter {
   @override
-  ReporterMap<StartedCallback, ScenarioFinishedCallback> get onScenario =>
-      ReporterMap(
-        onStarted: (message) async => printMessageLine(
-          'Running scenario: ${_getNameAndContext(message.name, message.context)}',
-          StdoutReporter.kWarnColor,
-        ),
-        onFinished: (message) async => printMessageLine(
-          "${message.passed ? 'PASSED' : 'FAILED'}: Scenario ${_getNameAndContext(message.name, message.context)}",
-          message.passed
-              ? StdoutReporter.kPassColor
-              : StdoutReporter.kFailColor,
-        ),
+  ReportActionHandler<StartedMessage, ScenarioFinishedMessage> get scenario =>
+      ReportActionHandler(
+        onStarted: ([message]) async {
+          if (message == null) {
+            return;
+          }
+          printMessageLine(
+            'Running scenario: ${_getNameAndContext(message.name, message.context)}',
+            StdoutReporter.kWarnColor,
+          );
+        },
+        onFinished: ([message]) async {
+          if (message == null) {
+            return;
+          }
+          printMessageLine(
+            "${message.passed ? 'PASSED' : 'FAILED'}: Scenario ${_getNameAndContext(message.name, message.context)}",
+            message.passed
+                ? StdoutReporter.kPassColor
+                : StdoutReporter.kFailColor,
+          );
+        },
       );
 
   @override
-  // TODO: implement onStep
-  ReporterMap<StepStartedCallback, StepFinishedCallback> get onStep =>
-      ReporterMap(
-        onFinished: (message) async {
+  ReportActionHandler<StepStartedMessage, StepFinishedMessage> get step =>
+      ReportActionHandler(
+        onFinished: ([message]) async {
+          if (message == null) {
+            return;
+          }
           printMessageLine(
             [
               '  ',

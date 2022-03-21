@@ -25,21 +25,19 @@ void main() {
 
       final aggregatedHook = AggregatedHook();
       aggregatedHook.addHooks([hookOne, hookTwo, hookThree, hookFour]);
-      await aggregatedHook
-          .onBeforeRun(TestConfiguration.defaultConfiguration([]));
+      await aggregatedHook.onBeforeRun(TestConfiguration.standard([]));
       expect(executionOrder, [1, 2, 3, 4]);
       expect(hookOne.onBeforeRunInvocationCount, 1);
       expect(hookTwo.onBeforeRunInvocationCount, 1);
       expect(hookThree.onBeforeRunInvocationCount, 1);
       expect(hookFour.onBeforeRunInvocationCount, 1);
-      await aggregatedHook
-          .onAfterRun(TestConfiguration.defaultConfiguration([]));
+      await aggregatedHook.onAfterRun(TestConfiguration.standard([]));
       expect(hookOne.onAfterRunInvocationCount, 1);
       expect(hookTwo.onAfterRunInvocationCount, 1);
       expect(hookThree.onAfterRunInvocationCount, 1);
       expect(hookFour.onAfterRunInvocationCount, 1);
       await aggregatedHook.onBeforeScenario(
-        TestConfiguration.defaultConfiguration([]),
+        TestConfiguration.standard([]),
         '',
         const Iterable.empty(),
       );

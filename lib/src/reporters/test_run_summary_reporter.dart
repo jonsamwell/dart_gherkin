@@ -1,4 +1,4 @@
-import 'package:gherkin/gherkin.dart';
+import '../../gherkin.dart';
 
 class TestRunSummaryReporter extends StdoutReporter
     implements ScenarioReporter, StepReporter, TestReporter, DisposableRepoter {
@@ -8,21 +8,31 @@ class TestRunSummaryReporter extends StdoutReporter
       <ScenarioFinishedMessage>[];
 
   @override
-  ReporterMap<StartedCallback, ScenarioFinishedCallback> get onScenario =>
-      ReporterMap(
-        onFinished: (message) async => _ranScenarios.add(message),
+  ReportActionHandler<StartedMessage, ScenarioFinishedMessage> get scenario =>
+      ReportActionHandler(
+        onFinished: ([message]) async {
+          if (message == null) {
+            return;
+          }
+          _ranScenarios.add(message);
+        },
       );
 
   @override
-  ReporterMap<StepStartedCallback, StepFinishedCallback> get onStep =>
-      ReporterMap(
-        onFinished: (message) async => _ranSteps.add(message),
+  ReportActionHandler<StepStartedMessage, StepFinishedMessage> get step =>
+      ReportActionHandler(
+        onFinished: ([message]) async {
+          if (message == null) {
+            return;
+          }
+          _ranSteps.add(message);
+        },
       );
 
   @override
-  ReporterMap<FutureCallback, FutureCallback> get onTest => ReporterMap(
-        onStarted: () async => _timer.start(),
-        onFinished: () async {
+  ReportActionHandler<void, void> get test => ReportActionHandler(
+        onStarted: ([message]) async => _timer.start(),
+        onFinished: ([message]) async {
           _timer.stop();
           printMessageLine(
             "${_ranScenarios.length} scenario${_ranScenarios.length > 1 ? "s" : ""} (${_collectScenarioSummary(_ranScenarios)})",

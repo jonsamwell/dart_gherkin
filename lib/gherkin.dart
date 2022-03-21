@@ -48,7 +48,6 @@ export 'src/io/io_feature_file_accessor.dart';
 // Process Handler
 export 'src/processes/process_handler.dart';
 export 'src/reporters/aggregated_reporter.dart';
-export 'src/reporters/html/html_reporter.dart';
 export 'src/reporters/json/json_reporter.dart';
 export 'src/reporters/message_level.dart';
 export 'src/reporters/messages.dart';

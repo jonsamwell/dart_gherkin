@@ -1,17 +1,17 @@
-import 'package:gherkin/src/gherkin/attachments/attachment_manager.dart';
-import 'package:gherkin/src/gherkin/parameters/custom_parameter.dart';
-import 'package:gherkin/src/gherkin/steps/step_definition.dart';
-import 'package:gherkin/src/gherkin/steps/world.dart';
-import 'package:gherkin/src/hooks/hook.dart';
-import 'package:gherkin/src/io/feature_file_matcher.dart';
-import 'package:gherkin/src/io/feature_file_reader.dart';
-import 'package:gherkin/src/io/io_feature_file_accessor.dart';
-import 'package:gherkin/src/reporters/json/json_reporter.dart';
-import 'package:gherkin/src/reporters/message_level.dart';
-import 'package:gherkin/src/reporters/progress_reporter.dart';
-import 'package:gherkin/src/reporters/reporter.dart';
-import 'package:gherkin/src/reporters/stdout_reporter.dart';
-import 'package:gherkin/src/reporters/test_run_summary_reporter.dart';
+import 'gherkin/attachments/attachment_manager.dart';
+import 'gherkin/parameters/custom_parameter.dart';
+import 'gherkin/steps/step_definition.dart';
+import 'gherkin/steps/world.dart';
+import 'hooks/hook.dart';
+import 'io/feature_file_matcher.dart';
+import 'io/feature_file_reader.dart';
+import 'io/io_feature_file_accessor.dart';
+import 'reporters/json/json_reporter.dart';
+import 'reporters/message_level.dart';
+import 'reporters/progress_reporter.dart';
+import 'reporters/reporter.dart';
+import 'reporters/stdout_reporter.dart';
+import 'reporters/test_run_summary_reporter.dart';
 
 typedef CreateWorld = Future<World> Function(TestConfiguration config);
 typedef CreateAttachmentManager = Future<AttachmentManager> Function(
@@ -53,8 +53,8 @@ class TestConfiguration {
   ///   - ProgressReporter
   ///   - TestRunSummaryReporter
   ///   - JsonReporter
-  /// Custom reporters can be created by extending (or implementing) Reporter.dart
-  final Iterable<Reporter>? reporters;
+  /// Custom reporters can be created by implementing [Reporter]
+  final Iterable<Reporter> reporters;
 
   /// An optional function to create a world object for each scenario.
   final CreateWorld? createWorld;
@@ -81,7 +81,7 @@ class TestConfiguration {
     this.stepDefinitions,
     this.customStepParameterDefinitions,
     this.hooks,
-    this.reporters,
+    this.reporters = const [],
     this.createWorld,
   });
 
@@ -94,7 +94,7 @@ class TestConfiguration {
 
   /// Provide a configuration object with default settings such as the reports and feature file location
   /// Additional setting on the configuration object can be set on the returned instance.
-  TestConfiguration.defaultConfiguration(
+  TestConfiguration.standard(
     Iterable<StepDefinitionGeneric<World>> steps, {
     String featurePath = r'features\\.*\.feature',
     this.featureDefaultLanguage = 'en',
@@ -115,17 +115,4 @@ class TestConfiguration {
           JsonReporter(),
         ],
         stepDefinitions = steps;
-
-  // {
-  //   return TestConfiguration(
-  //     features: [RegExp(featurePath)],
-  //     reporters: [
-  //       StdoutReporter(MessageLevel.error),
-  //       ProgressReporter(),
-  //       TestRunSummaryReporter(),
-  //       JsonReporter()
-  //     ],
-  //     stepDefinitions: steps,
-  //   );
-  // }
 }

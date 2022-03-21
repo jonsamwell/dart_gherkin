@@ -1,8 +1,8 @@
-import 'package:gherkin/src/configuration.dart';
-import 'package:gherkin/src/gherkin/steps/step_run_result.dart';
-import 'package:gherkin/src/gherkin/steps/world.dart';
-import 'package:gherkin/src/hooks/hook.dart';
-import 'package:gherkin/src/reporters/messages.dart';
+import '../configuration.dart';
+import '../gherkin/steps/step_run_result.dart';
+import '../gherkin/steps/world.dart';
+import '../reporters/messages.dart';
+import 'hook.dart';
 
 class AggregatedHook extends Hook {
   Iterable<Hook>? _orderedHooks;

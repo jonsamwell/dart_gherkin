@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:gherkin/src/gherkin/models/table_row.dart';
+import 'table_row.dart';
 
 class GherkinTable {
   final Iterable<TableRow> rows;

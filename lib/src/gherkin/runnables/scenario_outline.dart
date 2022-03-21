@@ -1,10 +1,10 @@
-import 'package:gherkin/src/gherkin/exceptions/syntax_error.dart';
-import 'package:gherkin/src/gherkin/runnables/debug_information.dart';
-import 'package:gherkin/src/gherkin/runnables/example.dart';
-import 'package:gherkin/src/gherkin/runnables/runnable.dart';
-import 'package:gherkin/src/gherkin/runnables/scenario.dart';
-import 'package:gherkin/src/gherkin/runnables/scenario_expanded_from_outline_example.dart';
-import 'package:gherkin/src/gherkin/runnables/tags.dart';
+import '../exceptions/syntax_error.dart';
+import 'debug_information.dart';
+import 'example.dart';
+import 'runnable.dart';
+import 'scenario.dart';
+import 'scenario_expanded_from_outline_example.dart';
+import 'tags.dart';
 
 class ScenarioOutlineRunnable extends ScenarioRunnable {
   final List<ExampleRunnable> _examples = <ExampleRunnable>[];

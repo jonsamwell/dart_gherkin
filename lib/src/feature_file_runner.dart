@@ -1,25 +1,25 @@
 import 'dart:async';
 
 import 'package:collection/collection.dart';
-import 'package:gherkin/src/configuration.dart';
-import 'package:gherkin/src/gherkin/attachments/attachment_manager.dart';
-import 'package:gherkin/src/gherkin/exceptions/gherkin_exception.dart';
-import 'package:gherkin/src/gherkin/exceptions/step_not_defined_error.dart';
-import 'package:gherkin/src/gherkin/expressions/tag_expression.dart';
-import 'package:gherkin/src/gherkin/runnables/background.dart';
-import 'package:gherkin/src/gherkin/runnables/debug_information.dart';
-import 'package:gherkin/src/gherkin/runnables/feature.dart';
-import 'package:gherkin/src/gherkin/runnables/feature_file.dart';
-import 'package:gherkin/src/gherkin/runnables/scenario.dart';
-import 'package:gherkin/src/gherkin/runnables/scenario_type_enum.dart';
-import 'package:gherkin/src/gherkin/runnables/step.dart';
-import 'package:gherkin/src/gherkin/steps/executable_step.dart';
-import 'package:gherkin/src/gherkin/steps/step_run_result.dart';
-import 'package:gherkin/src/gherkin/steps/world.dart';
-import 'package:gherkin/src/hooks/hook.dart';
-import 'package:gherkin/src/reporters/message_level.dart';
-import 'package:gherkin/src/reporters/messages.dart';
-import 'package:gherkin/src/reporters/reporter.dart';
+import 'configuration.dart';
+import 'gherkin/attachments/attachment_manager.dart';
+import 'gherkin/exceptions/gherkin_exception.dart';
+import 'gherkin/exceptions/step_not_defined_error.dart';
+import 'gherkin/expressions/tag_expression.dart';
+import 'gherkin/runnables/background.dart';
+import 'gherkin/runnables/debug_information.dart';
+import 'gherkin/runnables/feature.dart';
+import 'gherkin/runnables/feature_file.dart';
+import 'gherkin/runnables/scenario.dart';
+import 'gherkin/runnables/scenario_type_enum.dart';
+import 'gherkin/runnables/step.dart';
+import 'gherkin/steps/executable_step.dart';
+import 'gherkin/steps/step_run_result.dart';
+import 'gherkin/steps/world.dart';
+import 'hooks/hook.dart';
+import 'reporters/message_level.dart';
+import 'reporters/messages.dart';
+import 'reporters/reporter.dart';
 
 class FeatureFileRunner {
   final TestConfiguration _config;
@@ -55,7 +55,7 @@ class FeatureFileRunner {
   Future<bool> _runFeature(FeatureRunnable feature) async {
     var haveAllScenariosPassed = true;
     try {
-      await _reporter.onFeature.onStarted?.call(
+      await _reporter.feature.onStarted.maybeCall(
         StartedMessage(
           Target.feature,
           feature.name,
@@ -117,7 +117,7 @@ class FeatureFileRunner {
 
       rethrow;
     } finally {
-      await _reporter.onFeature.onFinished?.call(
+      await _reporter.feature.onFinished.maybeCall(
         FinishedMessage(
           Target.feature,
           feature.name,
@@ -232,7 +232,7 @@ class FeatureFileRunner {
 
       await _hook.onBeforeScenario(_config, scenario.name, tags);
 
-      await _reporter.onScenario.onStarted?.call(
+      await _reporter.scenario.onStarted.maybeCall(
         StartedMessage(
           scenario.scenarioType == ScenarioType.scenarioOutline
               ? Target.scenarioOutline
@@ -304,7 +304,7 @@ class FeatureFileRunner {
       await _reporter.onException(e, st);
       rethrow;
     } finally {
-      await _reporter.onScenario.onFinished?.call(
+      await _reporter.scenario.onFinished.maybeCall(
         ScenarioFinishedMessage(
           scenario.name,
           scenario.debug,
@@ -346,7 +346,7 @@ class FeatureFileRunner {
       MessageLevel.info,
     );
     await _hook.onBeforeStep(world, step.name);
-    await _reporter.onStep.onStarted?.call(
+    await _reporter.step.onStarted.maybeCall(
       StepStartedMessage(
         step.name,
         step.debug,
@@ -374,7 +374,7 @@ class FeatureFileRunner {
     }
 
     await _hook.onAfterStep(world, step.name, result);
-    await _reporter.onStep.onFinished?.call(
+    await _reporter.step.onFinished.maybeCall(
       StepFinishedMessage(
         step.name,
         step.debug,

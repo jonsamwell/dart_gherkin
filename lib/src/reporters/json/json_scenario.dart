@@ -1,7 +1,7 @@
-import 'package:gherkin/src/reporters/json/json_feature.dart';
-import 'package:gherkin/src/reporters/json/json_step.dart';
-import 'package:gherkin/src/reporters/json/json_tag.dart';
-import 'package:gherkin/src/reporters/messages.dart';
+import '../messages.dart';
+import 'json_feature.dart';
+import 'json_step.dart';
+import 'json_tag.dart';
 
 class JsonScenario {
   /// Target type

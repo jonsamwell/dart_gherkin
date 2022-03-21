@@ -1,10 +1,10 @@
-import 'package:gherkin/src/gherkin/languages/dialect.dart';
-import 'package:gherkin/src/gherkin/runnables/debug_information.dart';
-import 'package:gherkin/src/gherkin/runnables/scenario_outline.dart';
-import 'package:gherkin/src/gherkin/syntax/regex_matched_syntax.dart';
-import 'package:gherkin/src/gherkin/syntax/scenario_syntax.dart';
-import 'package:gherkin/src/gherkin/syntax/syntax_matcher.dart';
-import 'package:gherkin/src/gherkin/syntax/tag_syntax.dart';
+import '../languages/dialect.dart';
+import '../runnables/debug_information.dart';
+import '../runnables/scenario_outline.dart';
+import 'regex_matched_syntax.dart';
+import 'scenario_syntax.dart';
+import 'syntax_matcher.dart';
+import 'tag_syntax.dart';
 
 class ScenarioOutlineSyntax
     extends RegExMatchedGherkinSyntax<ScenarioOutlineRunnable> {

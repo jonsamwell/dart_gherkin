@@ -1,4 +1,4 @@
-import 'package:gherkin/src/gherkin/parameters/custom_parameter.dart';
+import 'custom_parameter.dart';
 
 class UserDefinedStepParameterParameter extends CustomParameter<String> {
   UserDefinedStepParameterParameter()

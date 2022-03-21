@@ -1,11 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:gherkin/src/reporters/json/json_feature.dart';
-import 'package:gherkin/src/reporters/json/json_scenario.dart';
-import 'package:gherkin/src/reporters/json/json_step.dart';
-import 'package:gherkin/src/reporters/reporter.dart';
-import 'package:gherkin/src/reporters/serializable_reporter.dart';
+import '../../../gherkin.dart';
+import 'json_feature.dart';
+import 'json_scenario.dart';
+import 'json_step.dart';
 
 class JsonReporter
     implements
@@ -57,29 +56,31 @@ class JsonReporter
   }
 
   @override
-  ReporterMap<StartedCallback, FinishedCallback> get onFeature => ReporterMap(
-        onStarted: (message) async => _features.add(JsonFeature.from(message)),
+  ReportActionHandler<StartedMessage, FinishedMessage> get feature =>
+      ReportActionHandler(
+        onStarted: ([message]) async =>
+            _features.add(JsonFeature.from(message!)),
       );
 
   @override
-  ReporterMap<StartedCallback, ScenarioFinishedCallback> get onScenario =>
-      ReporterMap(
-        onStarted: (message) async =>
-            _currentFeature.add(JsonScenario.from(message)),
+  ReportActionHandler<StartedMessage, ScenarioFinishedMessage> get scenario =>
+      ReportActionHandler(
+        onStarted: ([message]) async =>
+            _currentFeature.add(JsonScenario.from(message!)),
       );
 
   @override
-  ReporterMap<StepStartedCallback, StepFinishedCallback> get onStep =>
-      ReporterMap(
-        onStarted: (message) async =>
-            _currentFeature.currentScenario.add(JsonStep.from(message)),
-        onFinished: (message) async =>
-            _currentFeature.currentScenario.currentStep.onFinish(message),
+  ReportActionHandler<StepStartedMessage, StepFinishedMessage> get step =>
+      ReportActionHandler(
+        onStarted: ([message]) async =>
+            _currentFeature.currentScenario.add(JsonStep.from(message!)),
+        onFinished: ([message]) async =>
+            _currentFeature.currentScenario.currentStep.onFinish(message!),
       );
 
   @override
-  ReporterMap<FutureCallback, FutureCallback> get onTest =>
-      ReporterMap(onFinished: () async => _generateReport(path));
+  ReportActionHandler<void, void> get test =>
+      ReportActionHandler(onFinished: ([message]) => _generateReport(path));
 
   @override
   String serialize() {

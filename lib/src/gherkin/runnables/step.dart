@@ -1,10 +1,10 @@
-import 'package:gherkin/src/gherkin/exceptions/syntax_error.dart';
-import 'package:gherkin/src/gherkin/models/table.dart';
-import 'package:gherkin/src/gherkin/runnables/debug_information.dart';
-import 'package:gherkin/src/gherkin/runnables/multi_line_string.dart';
-import 'package:gherkin/src/gherkin/runnables/runnable.dart';
-import 'package:gherkin/src/gherkin/runnables/runnable_block.dart';
-import 'package:gherkin/src/gherkin/runnables/table.dart';
+import '../exceptions/syntax_error.dart';
+import '../models/table.dart';
+import 'debug_information.dart';
+import 'multi_line_string.dart';
+import 'runnable.dart';
+import 'runnable_block.dart';
+import 'table.dart';
 
 class StepRunnable extends RunnableBlock {
   String _name;

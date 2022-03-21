@@ -1,7 +1,7 @@
-import 'package:gherkin/src/gherkin/steps/step_run_result.dart';
-import 'package:gherkin/src/reporters/json/json_embedding.dart';
-import 'package:gherkin/src/reporters/json/json_row.dart';
-import 'package:gherkin/src/reporters/messages.dart';
+import '../../gherkin/steps/step_run_result.dart';
+import '../messages.dart';
+import 'json_embedding.dart';
+import 'json_row.dart';
 
 class JsonStep {
   final String name;

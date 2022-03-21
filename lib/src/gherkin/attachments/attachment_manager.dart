@@ -1,4 +1,4 @@
-import 'package:gherkin/src/gherkin/attachments/attachment.dart';
+import 'attachment.dart';
 
 class AttachmentManager {
   final List<Attachment> _attachments = [];

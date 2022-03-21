@@ -1,10 +1,10 @@
-import 'package:gherkin/src/gherkin/exceptions/syntax_error.dart';
-import 'package:gherkin/src/gherkin/models/table.dart';
-import 'package:gherkin/src/gherkin/runnables/debug_information.dart';
-import 'package:gherkin/src/gherkin/runnables/runnable.dart';
-import 'package:gherkin/src/gherkin/runnables/table.dart';
-import 'package:gherkin/src/gherkin/runnables/taggable_runnable_block.dart';
-import 'package:gherkin/src/gherkin/runnables/tags.dart';
+import '../exceptions/syntax_error.dart';
+import '../models/table.dart';
+import 'debug_information.dart';
+import 'runnable.dart';
+import 'table.dart';
+import 'taggable_runnable_block.dart';
+import 'tags.dart';
 
 class ExampleRunnable extends TaggableRunnableBlock {
   final String _name;

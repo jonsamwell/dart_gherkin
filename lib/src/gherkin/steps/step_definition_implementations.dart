@@ -1,8 +1,8 @@
-import 'package:gherkin/src/expect/expect_mimic.dart';
-import 'package:gherkin/src/gherkin/steps/step_configuration.dart';
-import 'package:gherkin/src/gherkin/steps/step_definition.dart';
-import 'package:gherkin/src/gherkin/steps/world.dart';
-import 'package:gherkin/src/reporters/reporter.dart';
+import '../../expect/expect_mimic.dart';
+import '../../reporters/reporter.dart';
+import 'step_configuration.dart';
+import 'step_definition.dart';
+import 'world.dart';
 
 abstract class StepDefinitionBase<TWorld extends World>
     extends StepDefinitionGeneric<TWorld> {

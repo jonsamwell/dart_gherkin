@@ -23,7 +23,7 @@ void main() {
   group('report', () {
     test('correct report with one passing step', () async {
       final reporter = TestableJsonReporter();
-      await reporter.onFeature.onStarted?.call(
+      await reporter.feature.onStarted.maybeCall(
         StartedMessage(
           Target.feature,
           'Feature 1',
@@ -32,7 +32,7 @@ void main() {
         ),
       );
 
-      await reporter.onScenario.onStarted?.call(
+      await reporter.scenario.onStarted.maybeCall(
         StartedMessage(
           Target.scenario,
           'Scenario 1',
@@ -41,14 +41,14 @@ void main() {
         ),
       );
 
-      await reporter.onStep.onStarted?.call(
+      await reporter.step.onStarted.maybeCall(
         StepStartedMessage(
           'Step 1',
           RunnableDebugInformation('filepath', 5, 'linetext5'),
         ),
       );
 
-      await reporter.onStep.onFinished?.call(
+      await reporter.step.onFinished.maybeCall(
         StepFinishedMessage(
           'Step 1',
           RunnableDebugInformation('filepath', 5, 'linetext5'),
@@ -56,7 +56,7 @@ void main() {
         ),
       );
 
-      await reporter.onScenario.onFinished?.call(
+      await reporter.scenario.onFinished.maybeCall(
         ScenarioFinishedMessage(
           'Scenario 1',
           RunnableDebugInformation('filepath', 4, 'linetext4'),
@@ -64,7 +64,7 @@ void main() {
         ),
       );
 
-      await reporter.onFeature.onFinished?.call(
+      await reporter.feature.onFinished.maybeCall(
         FinishedMessage(
           Target.feature,
           'Feature 1',
@@ -72,7 +72,7 @@ void main() {
         ),
       );
 
-      await reporter.onTest.onFinished?.call();
+      await reporter.test.onFinished.maybeCall();
       final expectedJson =
           File.fromUri(Uri.file('./test/reporters/json_reports/report_1.json'))
               .readAsStringSync();
@@ -84,7 +84,7 @@ void main() {
 
     test('correct report with one passing step with doc string', () async {
       final reporter = TestableJsonReporter();
-      await reporter.onFeature.onStarted?.call(
+      await reporter.feature.onStarted.maybeCall(
         StartedMessage(
           Target.feature,
           'Feature 1',
@@ -93,7 +93,7 @@ void main() {
         ),
       );
 
-      await reporter.onScenario.onStarted?.call(
+      await reporter.scenario.onStarted.maybeCall(
         StartedMessage(
           Target.scenario,
           'Scenario 1',
@@ -102,7 +102,7 @@ void main() {
         ),
       );
 
-      await reporter.onStep.onStarted?.call(
+      await reporter.step.onStarted.maybeCall(
         StepStartedMessage(
           'Step 1',
           RunnableDebugInformation('filepath', 5, 'linetext5'),
@@ -110,7 +110,7 @@ void main() {
         ),
       );
 
-      await reporter.onStep.onFinished?.call(
+      await reporter.step.onFinished.maybeCall(
         StepFinishedMessage(
           'Step 1',
           RunnableDebugInformation('filepath', 5, 'linetext5'),
@@ -118,7 +118,7 @@ void main() {
         ),
       );
 
-      await reporter.onScenario.onFinished?.call(
+      await reporter.scenario.onFinished.maybeCall(
         ScenarioFinishedMessage(
           'Scenario 1',
           RunnableDebugInformation('filepath', 4, 'linetext4'),
@@ -126,7 +126,7 @@ void main() {
         ),
       );
 
-      await reporter.onFeature.onFinished?.call(
+      await reporter.feature.onFinished.maybeCall(
         FinishedMessage(
           Target.feature,
           'Feature 1',
@@ -134,7 +134,7 @@ void main() {
         ),
       );
 
-      await reporter.onTest.onFinished?.call();
+      await reporter.test.onFinished.maybeCall();
 
       expect(
         reporter.report,
@@ -147,7 +147,7 @@ void main() {
 
     test('correct report with one passing and one failing step', () async {
       final reporter = TestableJsonReporter();
-      await reporter.onFeature.onStarted?.call(
+      await reporter.feature.onStarted.maybeCall(
         StartedMessage(
           Target.feature,
           'Feature 1',
@@ -156,7 +156,7 @@ void main() {
         ),
       );
 
-      await reporter.onScenario.onStarted?.call(
+      await reporter.scenario.onStarted.maybeCall(
         StartedMessage(
           Target.scenario,
           'Scenario 1',
@@ -168,14 +168,14 @@ void main() {
         ),
       );
 
-      await reporter.onStep.onStarted?.call(
+      await reporter.step.onStarted.maybeCall(
         StepStartedMessage(
           'Step 1',
           RunnableDebugInformation('filepath', 5, 'linetext5'),
         ),
       );
 
-      await reporter.onStep.onFinished?.call(
+      await reporter.step.onFinished.maybeCall(
         StepFinishedMessage(
           'Step 1',
           RunnableDebugInformation('filepath', 5, 'linetext5'),
@@ -183,14 +183,14 @@ void main() {
         ),
       );
 
-      await reporter.onStep.onStarted?.call(
+      await reporter.step.onStarted.maybeCall(
         StepStartedMessage(
           'Step 2',
           RunnableDebugInformation('filepath', 6, 'linetext6'),
         ),
       );
 
-      await reporter.onStep.onFinished?.call(
+      await reporter.step.onFinished.maybeCall(
         StepFinishedMessage(
           'Step 2',
           RunnableDebugInformation('filepath', 6, 'linetext6'),
@@ -198,7 +198,7 @@ void main() {
         ),
       );
 
-      await reporter.onScenario.onFinished?.call(
+      await reporter.scenario.onFinished.maybeCall(
         ScenarioFinishedMessage(
           'Scenario 1',
           RunnableDebugInformation('filepath', 4, 'linetext4'),
@@ -206,7 +206,7 @@ void main() {
         ),
       );
 
-      await reporter.onFeature.onFinished?.call(
+      await reporter.feature.onFinished.maybeCall(
         FinishedMessage(
           Target.feature,
           'Feature 1',
@@ -214,7 +214,7 @@ void main() {
         ),
       );
 
-      await reporter.onTest.onFinished?.call();
+      await reporter.test.onFinished.maybeCall();
 
       expect(
         reporter.report,
@@ -228,7 +228,7 @@ void main() {
     test('correct report with one passing, one failing and one skipped step',
         () async {
       final reporter = TestableJsonReporter();
-      await reporter.onFeature.onStarted?.call(
+      await reporter.feature.onStarted.maybeCall(
         StartedMessage(
           Target.feature,
           'Feature 1',
@@ -237,7 +237,7 @@ void main() {
         ),
       );
 
-      await reporter.onScenario.onStarted?.call(
+      await reporter.scenario.onStarted.maybeCall(
         StartedMessage(
           Target.scenario,
           'Scenario 1',
@@ -249,14 +249,14 @@ void main() {
         ),
       );
 
-      await reporter.onStep.onStarted?.call(
+      await reporter.step.onStarted.maybeCall(
         StepStartedMessage(
           'Step 1',
           RunnableDebugInformation('filepath', 5, 'linetext5'),
         ),
       );
 
-      await reporter.onStep.onFinished?.call(
+      await reporter.step.onFinished.maybeCall(
         StepFinishedMessage(
           'Step 1',
           RunnableDebugInformation('filepath', 5, 'linetext5'),
@@ -264,14 +264,14 @@ void main() {
         ),
       );
 
-      await reporter.onStep.onStarted?.call(
+      await reporter.step.onStarted.maybeCall(
         StepStartedMessage(
           'Step 2',
           RunnableDebugInformation('filepath', 6, 'linetext6'),
         ),
       );
 
-      await reporter.onStep.onFinished?.call(
+      await reporter.step.onFinished.maybeCall(
         StepFinishedMessage(
           'Step 2',
           RunnableDebugInformation('filepath', 6, 'linetext6'),
@@ -279,14 +279,14 @@ void main() {
         ),
       );
 
-      await reporter.onStep.onStarted?.call(
+      await reporter.step.onStarted.maybeCall(
         StepStartedMessage(
           'Step 3',
           RunnableDebugInformation('filepath', 7, 'linetext7'),
         ),
       );
 
-      await reporter.onStep.onFinished?.call(
+      await reporter.step.onFinished.maybeCall(
         StepFinishedMessage(
           'Step 3',
           RunnableDebugInformation('filepath', 7, 'linetext7'),
@@ -294,7 +294,7 @@ void main() {
         ),
       );
 
-      await reporter.onScenario.onFinished?.call(
+      await reporter.scenario.onFinished.maybeCall(
         ScenarioFinishedMessage(
           'Scenario 1',
           RunnableDebugInformation('filepath', 4, 'linetext4'),
@@ -302,7 +302,7 @@ void main() {
         ),
       );
 
-      await reporter.onFeature.onFinished?.call(
+      await reporter.feature.onFinished.maybeCall(
         FinishedMessage(
           Target.feature,
           'Feature 1',
@@ -310,7 +310,7 @@ void main() {
         ),
       );
 
-      await reporter.onTest.onFinished?.call();
+      await reporter.test.onFinished.maybeCall();
 
       expect(
         reporter.report,
@@ -324,7 +324,7 @@ void main() {
     test('correct report with one passing and one failing step with attachment',
         () async {
       final reporter = TestableJsonReporter();
-      await reporter.onFeature.onStarted?.call(
+      await reporter.feature.onStarted.maybeCall(
         StartedMessage(
           Target.feature,
           'Feature 1',
@@ -333,7 +333,7 @@ void main() {
         ),
       );
 
-      await reporter.onScenario.onStarted?.call(
+      await reporter.scenario.onStarted.maybeCall(
         StartedMessage(
           Target.scenario,
           'Scenario 1',
@@ -345,14 +345,14 @@ void main() {
         ),
       );
 
-      await reporter.onStep.onStarted?.call(
+      await reporter.step.onStarted.maybeCall(
         StepStartedMessage(
           'Step 1',
           RunnableDebugInformation('filepath', 5, 'linetext5'),
         ),
       );
 
-      await reporter.onStep.onFinished?.call(
+      await reporter.step.onFinished.maybeCall(
         StepFinishedMessage(
           'Step 1',
           RunnableDebugInformation('filepath', 5, 'linetext5'),
@@ -360,14 +360,14 @@ void main() {
         ),
       );
 
-      await reporter.onStep.onStarted?.call(
+      await reporter.step.onStarted.maybeCall(
         StepStartedMessage(
           'Step 2',
           RunnableDebugInformation('filepath', 6, 'linetext6'),
         ),
       );
 
-      await reporter.onStep.onFinished?.call(
+      await reporter.step.onFinished.maybeCall(
         StepFinishedMessage(
           'Step 2',
           RunnableDebugInformation('filepath', 6, 'linetext6'),
@@ -376,7 +376,7 @@ void main() {
         ),
       );
 
-      await reporter.onScenario.onFinished?.call(
+      await reporter.scenario.onFinished.maybeCall(
         ScenarioFinishedMessage(
           'Scenario 1',
           RunnableDebugInformation('filepath', 4, 'linetext4'),
@@ -384,7 +384,7 @@ void main() {
         ),
       );
 
-      await reporter.onFeature.onFinished?.call(
+      await reporter.feature.onFinished.maybeCall(
         FinishedMessage(
           Target.feature,
           'Feature 1',
@@ -392,7 +392,7 @@ void main() {
         ),
       );
 
-      await reporter.onTest.onFinished?.call();
+      await reporter.test.onFinished.maybeCall();
 
       expect(
         reporter.report,
@@ -405,7 +405,7 @@ void main() {
 
     test('correct report with scenario outlines', () async {
       final reporter = TestableJsonReporter();
-      await reporter.onFeature.onStarted?.call(
+      await reporter.feature.onStarted.maybeCall(
         StartedMessage(
           Target.feature,
           'Feature 1',
@@ -414,7 +414,7 @@ void main() {
         ),
       );
 
-      await reporter.onScenario.onStarted?.call(
+      await reporter.scenario.onStarted.maybeCall(
         StartedMessage(
           Target.scenarioOutline,
           'Scenario Outline 1',
@@ -426,14 +426,14 @@ void main() {
         ),
       );
 
-      await reporter.onStep.onStarted?.call(
+      await reporter.step.onStarted.maybeCall(
         StepStartedMessage(
           'Step 1',
           RunnableDebugInformation('filepath', 5, 'linetext5'),
         ),
       );
 
-      await reporter.onStep.onFinished?.call(
+      await reporter.step.onFinished.maybeCall(
         StepFinishedMessage(
           'Step 1',
           RunnableDebugInformation('filepath', 5, 'linetext5'),
@@ -441,14 +441,14 @@ void main() {
         ),
       );
 
-      await reporter.onStep.onStarted?.call(
+      await reporter.step.onStarted.maybeCall(
         StepStartedMessage(
           'Step 2',
           RunnableDebugInformation('filepath', 6, 'linetext6'),
         ),
       );
 
-      await reporter.onStep.onFinished?.call(
+      await reporter.step.onFinished.maybeCall(
         StepFinishedMessage(
           'Step 2',
           RunnableDebugInformation('filepath', 6, 'linetext6'),
@@ -457,7 +457,7 @@ void main() {
         ),
       );
 
-      await reporter.onScenario.onFinished?.call(
+      await reporter.scenario.onFinished.maybeCall(
         ScenarioFinishedMessage(
           'Scenario 1',
           RunnableDebugInformation('filepath', 4, 'linetext4'),
@@ -465,7 +465,7 @@ void main() {
         ),
       );
 
-      await reporter.onFeature.onFinished?.call(
+      await reporter.feature.onFinished.maybeCall(
         FinishedMessage(
           Target.feature,
           'Feature 1',
@@ -473,7 +473,7 @@ void main() {
         ),
       );
 
-      await reporter.onTest.onFinished?.call();
+      await reporter.test.onFinished.maybeCall();
 
       expect(
         reporter.report,
@@ -487,7 +487,7 @@ void main() {
     test('can add exception before any features has run', () async {
       final reporter = TestableJsonReporter();
       await reporter.onException(Exception('Test exception'), StackTrace.empty);
-      await reporter.onTest.onFinished?.call();
+      await reporter.test.onFinished.maybeCall();
 
       expect(
         reporter.report,
@@ -500,7 +500,7 @@ void main() {
 
     test('correct report with two features', () async {
       final reporter = TestableJsonReporter();
-      await reporter.onFeature.onStarted?.call(
+      await reporter.feature.onStarted.maybeCall(
         StartedMessage(
           Target.feature,
           'Feature 1',
@@ -509,7 +509,7 @@ void main() {
         ),
       );
 
-      await reporter.onScenario.onStarted?.call(
+      await reporter.scenario.onStarted.maybeCall(
         StartedMessage(
           Target.scenario,
           'Scenario 1',
@@ -521,14 +521,14 @@ void main() {
         ),
       );
 
-      await reporter.onStep.onStarted?.call(
+      await reporter.step.onStarted.maybeCall(
         StepStartedMessage(
           'Step 1',
           RunnableDebugInformation('filepath', 5, 'linetext5'),
         ),
       );
 
-      await reporter.onStep.onFinished?.call(
+      await reporter.step.onFinished.maybeCall(
         StepFinishedMessage(
           'Step 1',
           RunnableDebugInformation('filepath', 5, 'linetext5'),
@@ -536,14 +536,14 @@ void main() {
         ),
       );
 
-      await reporter.onStep.onStarted?.call(
+      await reporter.step.onStarted.maybeCall(
         StepStartedMessage(
           'Step 2',
           RunnableDebugInformation('filepath', 6, 'linetext6'),
         ),
       );
 
-      await reporter.onStep.onFinished?.call(
+      await reporter.step.onFinished.maybeCall(
         StepFinishedMessage(
           'Step 2',
           RunnableDebugInformation('filepath', 6, 'linetext6'),
@@ -551,7 +551,7 @@ void main() {
         ),
       );
 
-      await reporter.onScenario.onFinished?.call(
+      await reporter.scenario.onFinished.maybeCall(
         ScenarioFinishedMessage(
           'Scenario 1',
           RunnableDebugInformation('filepath', 4, 'linetext4'),
@@ -559,7 +559,7 @@ void main() {
         ),
       );
 
-      await reporter.onFeature.onFinished?.call(
+      await reporter.feature.onFinished.maybeCall(
         FinishedMessage(
           Target.feature,
           'Feature 1',
@@ -567,7 +567,7 @@ void main() {
         ),
       );
 
-      await reporter.onFeature.onStarted?.call(
+      await reporter.feature.onStarted.maybeCall(
         StartedMessage(
           Target.feature,
           'Feature 2',
@@ -576,7 +576,7 @@ void main() {
         ),
       );
 
-      await reporter.onScenario.onStarted?.call(
+      await reporter.scenario.onStarted.maybeCall(
         StartedMessage(
           Target.scenario,
           'Scenario 2',
@@ -588,14 +588,14 @@ void main() {
         ),
       );
 
-      await reporter.onStep.onStarted?.call(
+      await reporter.step.onStarted.maybeCall(
         StepStartedMessage(
           'Step 1',
           RunnableDebugInformation('filepath', 5, 'linetext5'),
         ),
       );
 
-      await reporter.onStep.onFinished?.call(
+      await reporter.step.onFinished.maybeCall(
         StepFinishedMessage(
           'Step 1',
           RunnableDebugInformation('filepath', 5, 'linetext5'),
@@ -603,7 +603,7 @@ void main() {
         ),
       );
 
-      await reporter.onScenario.onFinished?.call(
+      await reporter.scenario.onFinished.maybeCall(
         ScenarioFinishedMessage(
           'Scenario 2',
           RunnableDebugInformation('filepath', 4, 'linetext4'),
@@ -611,7 +611,7 @@ void main() {
         ),
       );
 
-      await reporter.onFeature.onFinished?.call(
+      await reporter.feature.onFinished.maybeCall(
         FinishedMessage(
           Target.feature,
           'Feature 2',
@@ -619,7 +619,7 @@ void main() {
         ),
       );
 
-      await reporter.onTest.onFinished?.call();
+      await reporter.test.onFinished.maybeCall();
 
       expect(
         reporter.report,

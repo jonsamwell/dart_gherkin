@@ -17,56 +17,56 @@ void main() {
     test('provides correct output', () async {
       final reporter = TestableTestRunSummaryReporter();
 
-      await reporter.onStep.onFinished?.call(
+      await reporter.step.onFinished.maybeCall(
         StepFinishedMessage(
           '',
           RunnableDebugInformation.empty(),
           StepResult(0, StepExecutionResult.passed),
         ),
       );
-      await reporter.onStep.onFinished?.call(
+      await reporter.step.onFinished.maybeCall(
         StepFinishedMessage(
           '',
           RunnableDebugInformation.empty(),
           StepResult(0, StepExecutionResult.fail),
         ),
       );
-      await reporter.onStep.onFinished?.call(
+      await reporter.step.onFinished.maybeCall(
         StepFinishedMessage(
           '',
           RunnableDebugInformation.empty(),
           StepResult(0, StepExecutionResult.skipped),
         ),
       );
-      await reporter.onStep.onFinished?.call(
+      await reporter.step.onFinished.maybeCall(
         StepFinishedMessage(
           '',
           RunnableDebugInformation.empty(),
           StepResult(0, StepExecutionResult.skipped),
         ),
       );
-      await reporter.onStep.onFinished?.call(
+      await reporter.step.onFinished.maybeCall(
         StepFinishedMessage(
           '',
           RunnableDebugInformation.empty(),
           StepResult(0, StepExecutionResult.passed),
         ),
       );
-      await reporter.onStep.onFinished?.call(
+      await reporter.step.onFinished.maybeCall(
         StepFinishedMessage(
           '',
           RunnableDebugInformation.empty(),
           StepResult(0, StepExecutionResult.error),
         ),
       );
-      await reporter.onStep.onFinished?.call(
+      await reporter.step.onFinished.maybeCall(
         StepFinishedMessage(
           '',
           RunnableDebugInformation.empty(),
           StepResult(0, StepExecutionResult.passed),
         ),
       );
-      await reporter.onStep.onFinished?.call(
+      await reporter.step.onFinished.maybeCall(
         StepFinishedMessage(
           '',
           RunnableDebugInformation.empty(),
@@ -74,28 +74,28 @@ void main() {
         ),
       );
 
-      await reporter.onScenario.onFinished?.call(
+      await reporter.scenario.onFinished.maybeCall(
         ScenarioFinishedMessage(
           '',
           RunnableDebugInformation.empty(),
           passed: true,
         ),
       );
-      await reporter.onScenario.onFinished?.call(
+      await reporter.scenario.onFinished.maybeCall(
         ScenarioFinishedMessage(
           '',
           RunnableDebugInformation.empty(),
           passed: false,
         ),
       );
-      await reporter.onScenario.onFinished?.call(
+      await reporter.scenario.onFinished.maybeCall(
         ScenarioFinishedMessage(
           '',
           RunnableDebugInformation.empty(),
           passed: false,
         ),
       );
-      await reporter.onScenario.onFinished?.call(
+      await reporter.scenario.onFinished.maybeCall(
         ScenarioFinishedMessage(
           '',
           RunnableDebugInformation.empty(),
@@ -103,7 +103,7 @@ void main() {
         ),
       );
 
-      await reporter.onTest.onFinished?.call();
+      await reporter.test.onFinished.maybeCall();
       expect(reporter.output, [
         '4 scenarios (\x1B[33;32m2 passed\x1B[33;0m, \x1B[33;31m2 failed\x1B[33;0m)',
         '8 steps (\x1B[33;32m3 passed\x1B[33;0m, \x1B[33;10m2 skipped\x1B[33;0m, \x1B[33;31m3 failed\x1B[33;0m)',
