@@ -22,52 +22,47 @@ void main() {
       expect(reporter2.onExceptionInvocationCount, 1);
 
       await aggregatedReporter.feature.onStarted.maybeCall(
-        StartedMessage(
-          Target.feature,
-          '',
-          RunnableDebugInformation.empty(),
-          const Iterable.empty(),
+        FeatureMessage(
+          name: '',
+          context: RunnableDebugInformation.empty(),
         ),
       );
       expect(reporter1.onFeatureStartedInvocationCount, 1);
       expect(reporter2.onFeatureStartedInvocationCount, 1);
 
       await aggregatedReporter.feature.onFinished.maybeCall(
-        FinishedMessage(
-          Target.feature,
-          '',
-          RunnableDebugInformation.empty(),
+        FeatureMessage(
+          name: '',
+          context: RunnableDebugInformation.empty(),
         ),
       );
       expect(reporter1.onFeatureFinishedInvocationCount, 1);
       expect(reporter2.onFeatureFinishedInvocationCount, 1);
 
       await aggregatedReporter.scenario.onFinished.maybeCall(
-        ScenarioFinishedMessage(
-          '',
-          RunnableDebugInformation.empty(),
-          passed: true,
+        ScenarioMessage(
+          name: '',
+          context: RunnableDebugInformation.empty(),
+          isPassed: true,
         ),
       );
       expect(reporter1.onScenarioFinishedInvocationCount, 1);
       expect(reporter2.onScenarioFinishedInvocationCount, 1);
 
       await aggregatedReporter.scenario.onStarted.maybeCall(
-        StartedMessage(
-          Target.feature,
-          '',
-          RunnableDebugInformation.empty(),
-          const Iterable.empty(),
+        ScenarioMessage(
+          name: '',
+          context: RunnableDebugInformation.empty(),
         ),
       );
       expect(reporter1.onScenarioStartedInvocationCount, 1);
       expect(reporter2.onScenarioStartedInvocationCount, 1);
 
       await aggregatedReporter.step.onFinished.maybeCall(
-        StepFinishedMessage(
-          '',
-          RunnableDebugInformation.empty(),
-          StepResult(
+        StepMessage(
+          name: '',
+          context: RunnableDebugInformation.empty(),
+          result: StepResult(
             0,
             StepExecutionResult.skipped,
           ),
@@ -77,9 +72,9 @@ void main() {
       expect(reporter2.onStepFinishedInvocationCount, 1);
 
       await aggregatedReporter.step.onStarted.maybeCall(
-        StepStartedMessage(
-          '',
-          RunnableDebugInformation.empty(),
+        StepMessage(
+          name: '',
+          context: RunnableDebugInformation.empty(),
         ),
       );
       expect(reporter1.onStepStartedInvocationCount, 1);

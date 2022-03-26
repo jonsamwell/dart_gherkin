@@ -498,7 +498,7 @@ void main() {
       });
 
       test('step reported with correct finishing value when passing', () async {
-        late StepFinishedMessage finishedMessage;
+        late StepMessage finishedMessage;
         final reporterMock = ReporterMock();
         reporterMock.onStepFinishedFn = (message) => finishedMessage = message;
         final stepDefinition = MockStepDefinition();
@@ -523,16 +523,15 @@ void main() {
         final featureFile = FeatureFile(emptyDebuggable)..features.add(feature);
         await runner.run(featureFile);
         expect(stepDefinition.hasRun, true);
-        expect(finishedMessage, (StepFinishedMessage m) => m.name == 'Step 1');
+        expect(finishedMessage, (StepMessage m) => m.name == 'Step 1');
         expect(
           finishedMessage,
-          (StepFinishedMessage m) =>
-              m.result.result == StepExecutionResult.passed,
+          (StepMessage m) => m.result!.result == StepExecutionResult.passed,
         );
       });
 
       test('step reported with correct finishing value when failing', () async {
-        late StepFinishedMessage finishedMessage;
+        late StepMessage finishedMessage;
         final testFailureException = GherkinTestFailure('FAILED');
         final reporterMock = ReporterMock();
         reporterMock.onStepFinishedFn = (message) => finishedMessage = message;
@@ -559,18 +558,17 @@ void main() {
         final featureFile = FeatureFile(emptyDebuggable)..features.add(feature);
         await runner.run(featureFile);
         expect(stepDefinition.hasRun, true);
-        expect(finishedMessage, (StepFinishedMessage m) => m.name == 'Step 1');
+        expect(finishedMessage, (StepMessage m) => m.name == 'Step 1');
         expect(
           finishedMessage,
-          (StepFinishedMessage m) =>
-              m.result.result == StepExecutionResult.fail,
+          (StepMessage m) => m.result!.result == StepExecutionResult.fail,
         );
       });
 
       test(
           'step reported with correct finishing value when unhandled exception raised',
           () async {
-        late StepFinishedMessage finishedMessage;
+        late StepMessage finishedMessage;
         final reporterMock = ReporterMock();
         reporterMock.onStepFinishedFn = (message) => finishedMessage = message;
         final stepDefinition = MockStepDefinition(
@@ -599,16 +597,15 @@ void main() {
         final featureFile = FeatureFile(emptyDebuggable)..features.add(feature);
         await runner.run(featureFile);
         expect(stepDefinition.hasRun, true);
-        expect(finishedMessage, (StepFinishedMessage m) => m.name == 'Step 1');
+        expect(finishedMessage, (StepMessage m) => m.name == 'Step 1');
         expect(
           finishedMessage,
-          (StepFinishedMessage m) =>
-              m.result.result == StepExecutionResult.timeout,
+          (StepMessage m) => m.result!.result == StepExecutionResult.timeout,
         );
       });
 
       test('skipped step reported correctly', () async {
-        final finishedMessages = <StepFinishedMessage>[];
+        final finishedMessages = <StepMessage>[];
         final reporterMock = ReporterMock();
         reporterMock.onStepFinishedFn =
             (message) => finishedMessages.add(message);
@@ -664,15 +661,15 @@ void main() {
         expect(stepDefinition.hasRun, true);
         expect(finishedMessages.length, 3);
         expect(
-          finishedMessages.elementAt(0).result.result,
+          finishedMessages.elementAt(0).result!.result,
           StepExecutionResult.error,
         );
         expect(
-          finishedMessages.elementAt(1).result.result,
+          finishedMessages.elementAt(1).result!.result,
           StepExecutionResult.skipped,
         );
         expect(
-          finishedMessages.elementAt(2).result.result,
+          finishedMessages.elementAt(2).result!.result,
           StepExecutionResult.skipped,
         );
       });

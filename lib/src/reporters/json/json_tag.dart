@@ -1,4 +1,4 @@
-import '../messages.dart';
+import '../messages/messages.dart';
 
 class JsonTag {
   final String name;

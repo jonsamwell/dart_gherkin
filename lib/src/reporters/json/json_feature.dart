@@ -1,4 +1,4 @@
-import '../messages.dart';
+import '../messages/messages.dart';
 import 'json_scenario.dart';
 import 'json_tag.dart';
 
@@ -24,7 +24,7 @@ class JsonFeature {
         tags = tags ?? [];
 
   /// Convert [StartedMessage] to [JsonFeature]
-  factory JsonFeature.from(StartedMessage message) {
+  factory JsonFeature.from(FeatureMessage message) {
     final feature = JsonFeature(
       uri: message.context.filePath,
       id: message.name.toLowerCase(),

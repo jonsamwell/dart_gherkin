@@ -18,7 +18,7 @@ import 'gherkin/steps/step_run_result.dart';
 import 'gherkin/steps/world.dart';
 import 'hooks/hook.dart';
 import 'reporters/message_level.dart';
-import 'reporters/messages.dart';
+import 'reporters/messages/messages.dart';
 import 'reporters/reporter.dart';
 
 class FeatureFileRunner {
@@ -56,12 +56,12 @@ class FeatureFileRunner {
     var haveAllScenariosPassed = true;
     try {
       await _reporter.feature.onStarted.maybeCall(
-        StartedMessage(
-          Target.feature,
-          feature.name,
-          feature.debug,
-          feature.tags.isNotEmpty
-              ? feature.tags
+        FeatureMessage(
+          name: feature.name,
+          context: feature.debug,
+          tags: feature.tags.isEmpty
+              ? []
+              : feature.tags
                   .map(
                     (t) => t.tags
                         .map(
@@ -74,8 +74,7 @@ class FeatureFileRunner {
                         .toList(),
                   )
                   .reduce((a, b) => a..addAll(b))
-                  .toList()
-              : const Iterable<Tag>.empty().toList(),
+                  .toList(),
         ),
       );
       await _log(
@@ -118,10 +117,9 @@ class FeatureFileRunner {
       rethrow;
     } finally {
       await _reporter.feature.onFinished.maybeCall(
-        FinishedMessage(
-          Target.feature,
-          feature.name,
-          feature.debug,
+        FeatureMessage(
+          name: feature.name,
+          context: feature.debug,
         ),
       );
       await _log(
@@ -233,14 +231,15 @@ class FeatureFileRunner {
       await _hook.onBeforeScenario(_config, scenario.name, tags);
 
       await _reporter.scenario.onStarted.maybeCall(
-        StartedMessage(
-          scenario.scenarioType == ScenarioType.scenarioOutline
+        ScenarioMessage(
+          target: scenario.scenarioType == ScenarioType.scenarioOutline
               ? Target.scenarioOutline
               : Target.scenario,
-          scenario.name,
-          scenario.debug,
-          scenario.tags.isNotEmpty
-              ? scenario.tags
+          name: scenario.name,
+          context: scenario.debug,
+          tags: scenario.tags.isEmpty
+              ? []
+              : scenario.tags
                   .map(
                     (t) => t.tags
                         .map(
@@ -253,8 +252,7 @@ class FeatureFileRunner {
                         .toList(),
                   )
                   .reduce((a, b) => a..addAll(b))
-                  .toList()
-              : const Iterable<Tag>.empty().toList(growable: false),
+                  .toList(),
         ),
       );
 
@@ -305,10 +303,10 @@ class FeatureFileRunner {
       rethrow;
     } finally {
       await _reporter.scenario.onFinished.maybeCall(
-        ScenarioFinishedMessage(
-          scenario.name,
-          scenario.debug,
-          passed: scenarioPassed,
+        ScenarioMessage(
+          name: scenario.name,
+          context: scenario.debug,
+          isPassed: scenarioPassed,
         ),
       );
       await _hook.onAfterScenario(
@@ -347,9 +345,9 @@ class FeatureFileRunner {
     );
     await _hook.onBeforeStep(world, step.name);
     await _reporter.step.onStarted.maybeCall(
-      StepStartedMessage(
-        step.name,
-        step.debug,
+      StepMessage(
+        name: step.name,
+        context: step.debug,
         table: step.table,
         multilineString: step.multilineStrings.isNotEmpty
             ? step.multilineStrings.first
@@ -375,11 +373,12 @@ class FeatureFileRunner {
 
     await _hook.onAfterStep(world, step.name, result);
     await _reporter.step.onFinished.maybeCall(
-      StepFinishedMessage(
-        step.name,
-        step.debug,
-        result,
-        attachmentManager.getAttachmentsForContext(step.name),
+      StepMessage(
+        name: step.name,
+        context: step.debug,
+        result: result,
+        attachments:
+            attachmentManager.getAttachmentsForContext(step.name).toList(),
       ),
     );
 

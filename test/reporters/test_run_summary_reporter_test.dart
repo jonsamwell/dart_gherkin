@@ -18,88 +18,88 @@ void main() {
       final reporter = TestableTestRunSummaryReporter();
 
       await reporter.step.onFinished.maybeCall(
-        StepFinishedMessage(
-          '',
-          RunnableDebugInformation.empty(),
-          StepResult(0, StepExecutionResult.passed),
+        StepMessage(
+          name: '',
+          context: RunnableDebugInformation.empty(),
+          result: StepResult(0, StepExecutionResult.passed),
         ),
       );
       await reporter.step.onFinished.maybeCall(
-        StepFinishedMessage(
-          '',
-          RunnableDebugInformation.empty(),
-          StepResult(0, StepExecutionResult.fail),
+        StepMessage(
+          name: '',
+          context: RunnableDebugInformation.empty(),
+          result: StepResult(0, StepExecutionResult.fail),
         ),
       );
       await reporter.step.onFinished.maybeCall(
-        StepFinishedMessage(
-          '',
-          RunnableDebugInformation.empty(),
-          StepResult(0, StepExecutionResult.skipped),
+        StepMessage(
+          name: '',
+          context: RunnableDebugInformation.empty(),
+          result: StepResult(0, StepExecutionResult.skipped),
         ),
       );
       await reporter.step.onFinished.maybeCall(
-        StepFinishedMessage(
-          '',
-          RunnableDebugInformation.empty(),
-          StepResult(0, StepExecutionResult.skipped),
+        StepMessage(
+          name: '',
+          context: RunnableDebugInformation.empty(),
+          result: StepResult(0, StepExecutionResult.skipped),
         ),
       );
       await reporter.step.onFinished.maybeCall(
-        StepFinishedMessage(
-          '',
-          RunnableDebugInformation.empty(),
-          StepResult(0, StepExecutionResult.passed),
+        StepMessage(
+          name: '',
+          context: RunnableDebugInformation.empty(),
+          result: StepResult(0, StepExecutionResult.passed),
         ),
       );
       await reporter.step.onFinished.maybeCall(
-        StepFinishedMessage(
-          '',
-          RunnableDebugInformation.empty(),
-          StepResult(0, StepExecutionResult.error),
+        StepMessage(
+          name: '',
+          context: RunnableDebugInformation.empty(),
+          result: StepResult(0, StepExecutionResult.error),
         ),
       );
       await reporter.step.onFinished.maybeCall(
-        StepFinishedMessage(
-          '',
-          RunnableDebugInformation.empty(),
-          StepResult(0, StepExecutionResult.passed),
+        StepMessage(
+          name: '',
+          context: RunnableDebugInformation.empty(),
+          result: StepResult(0, StepExecutionResult.passed),
         ),
       );
       await reporter.step.onFinished.maybeCall(
-        StepFinishedMessage(
-          '',
-          RunnableDebugInformation.empty(),
-          StepResult(0, StepExecutionResult.timeout),
+        StepMessage(
+          name: '',
+          context: RunnableDebugInformation.empty(),
+          result: StepResult(0, StepExecutionResult.timeout),
         ),
       );
 
       await reporter.scenario.onFinished.maybeCall(
-        ScenarioFinishedMessage(
-          '',
-          RunnableDebugInformation.empty(),
-          passed: true,
+        ScenarioMessage(
+          name: '',
+          context: RunnableDebugInformation.empty(),
+          isPassed: true,
         ),
       );
       await reporter.scenario.onFinished.maybeCall(
-        ScenarioFinishedMessage(
-          '',
-          RunnableDebugInformation.empty(),
-          passed: false,
+        ScenarioMessage(
+          name: '',
+          context: RunnableDebugInformation.empty(),
+          isPassed: false,
         ),
       );
       await reporter.scenario.onFinished.maybeCall(
-        ScenarioFinishedMessage(
-          '',
-          RunnableDebugInformation.empty(),
-          passed: false,
+        ScenarioMessage(
+          name: '',
+          context: RunnableDebugInformation.empty(),
+          isPassed: false,
         ),
       );
       await reporter.scenario.onFinished.maybeCall(
-        ScenarioFinishedMessage(
-          '',
-          RunnableDebugInformation.empty(),
-          passed: true,
+        ScenarioMessage(
+          name: '',
+          context: RunnableDebugInformation.empty(),
+          isPassed: true,
         ),
       );
 

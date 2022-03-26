@@ -1,7 +1,7 @@
 import '../configuration.dart';
 import '../gherkin/steps/step_run_result.dart';
 import '../gherkin/steps/world.dart';
-import '../reporters/messages.dart';
+import '../reporters/messages/messages.dart';
 import 'hook.dart';
 
 class AggregatedHook extends Hook {

@@ -3,8 +3,7 @@ import '../../gherkin.dart';
 class ProgressReporter extends StdoutReporter
     implements ScenarioReporter, StepReporter {
   @override
-  ReportActionHandler<StartedMessage, ScenarioFinishedMessage> get scenario =>
-      ReportActionHandler(
+  ReportActionHandler<ScenarioMessage> get scenario => ReportActionHandler(
         onStarted: ([message]) async {
           if (message == null) {
             return;
@@ -19,8 +18,8 @@ class ProgressReporter extends StdoutReporter
             return;
           }
           printMessageLine(
-            "${message.passed ? 'PASSED' : 'FAILED'}: Scenario ${_getNameAndContext(message.name, message.context)}",
-            message.passed
+            "${message.isPassed ? 'PASSED' : 'FAILED'}: Scenario ${_getNameAndContext(message.name, message.context)}",
+            message.isPassed
                 ? StdoutReporter.kPassColor
                 : StdoutReporter.kFailColor,
           );
@@ -28,8 +27,7 @@ class ProgressReporter extends StdoutReporter
       );
 
   @override
-  ReportActionHandler<StepStartedMessage, StepFinishedMessage> get step =>
-      ReportActionHandler(
+  ReportActionHandler<StepMessage> get step => ReportActionHandler(
         onFinished: ([message]) async {
           if (message == null) {
             return;
@@ -37,17 +35,17 @@ class ProgressReporter extends StdoutReporter
           printMessageLine(
             [
               '  ',
-              _getStatePrefixIcon(message.result.result),
+              _getStatePrefixIcon(message.result!.result),
               _getNameAndContext(message.name, message.context),
-              _getExecutionDuration(message.result),
-              _getReasonMessage(message.result),
-              _getErrorMessage(message.result)
+              _getExecutionDuration(message.result!),
+              _getReasonMessage(message.result!),
+              _getErrorMessage(message.result!)
             ].join(' ').trimRight(),
-            _getMessageColour(message.result.result),
+            _getMessageColour(message.result!.result),
           );
 
-          if (message.attachments.isNotEmpty) {
-            message.attachments.forEach(
+          if (message.attachments != null && message.attachments!.isNotEmpty) {
+            message.attachments!.forEach(
               (attachment) {
                 final attachment2 = attachment;
                 printMessageLine(

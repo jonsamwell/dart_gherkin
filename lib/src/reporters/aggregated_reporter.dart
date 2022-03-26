@@ -1,6 +1,6 @@
 import 'package:collection/collection.dart';
 import 'message_level.dart';
-import 'messages.dart';
+import 'messages/messages.dart';
 import 'reporter.dart';
 import 'serializable_reporter.dart';
 
@@ -16,8 +16,17 @@ class AggregatedReporter extends FullReporter
       UnmodifiableListView(_reporters);
 
   @override
-  ReportActionHandler<StartedMessage, FinishedMessage> get feature =>
-      ReportActionHandler(
+  ReportActionHandler<TestMessage> get test => ReportActionHandler(
+        onStarted: ([_]) => invokeReporters<TestReporter>(
+          (r) => r.test.onStarted.maybeCall(),
+        ),
+        onFinished: ([_]) => invokeReporters<TestReporter>(
+          (r) => r.test.onFinished.maybeCall(),
+        ),
+      );
+
+  @override
+  ReportActionHandler<FeatureMessage> get feature => ReportActionHandler(
         onStarted: ([value]) => invokeReporters<FeatureReporter>(
           (r) => r.feature.onStarted.maybeCall(value),
         ),
@@ -27,8 +36,7 @@ class AggregatedReporter extends FullReporter
       );
 
   @override
-  ReportActionHandler<StartedMessage, ScenarioFinishedMessage> get scenario =>
-      ReportActionHandler(
+  ReportActionHandler<ScenarioMessage> get scenario => ReportActionHandler(
         onStarted: ([message]) => invokeReporters<ScenarioReporter>(
           (r) => r.scenario.onStarted.maybeCall(message),
         ),
@@ -38,23 +46,12 @@ class AggregatedReporter extends FullReporter
       );
 
   @override
-  ReportActionHandler<StepStartedMessage, StepFinishedMessage> get step =>
-      ReportActionHandler(
+  ReportActionHandler<StepMessage> get step => ReportActionHandler(
         onStarted: ([message]) => invokeReporters<StepReporter>(
           (r) => r.step.onStarted.maybeCall(message),
         ),
         onFinished: ([message]) => invokeReporters<StepReporter>(
           (r) => r.step.onFinished.maybeCall(message),
-        ),
-      );
-
-  @override
-  ReportActionHandler<void, void> get test => ReportActionHandler(
-        onStarted: ([_]) => invokeReporters<TestReporter>(
-          (r) => r.test.onStarted.maybeCall(),
-        ),
-        onFinished: ([_]) => invokeReporters<TestReporter>(
-          (r) => r.test.onFinished.maybeCall(),
         ),
       );
 

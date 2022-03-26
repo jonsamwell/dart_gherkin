@@ -1,6 +1,6 @@
 import 'package:gherkin/gherkin.dart';
 
-typedef OnStepFinished = void Function(StepFinishedMessage message);
+typedef OnStepFinished = void Function(StepMessage message);
 
 class ReporterMock extends FullReporter {
   int onTestRunStartedInvocationCount = 0;
@@ -18,28 +18,30 @@ class ReporterMock extends FullReporter {
   OnStepFinished? onStepFinishedFn;
 
   @override
-  ReportActionHandler<void, void> get test => ReportActionHandler<void, void>(
-        onStarted: ([massage]) async => onTestRunStartedInvocationCount += 1,
-        onFinished: ([massage]) async => onTestRunFinishedInvocationCount += 1,
+  Future<void> onException(Object exception, StackTrace stackTrace) async =>
+      onExceptionInvocationCount += 1;
+
+  @override
+  Future<void> message(String message, MessageLevel level) async =>
+      messageInvocationCount += 1;
+
+  @override
+  Future<void> dispose() async => disposeInvocationCount += 1;
+
+  @override
+  ReportActionHandler<FeatureMessage> get feature => ReportActionHandler(
+        onStarted: ([_]) async => onFeatureStartedInvocationCount += 1,
+        onFinished: ([_]) async => onFeatureFinishedInvocationCount += 1,
       );
 
   @override
-  ReportActionHandler<StartedMessage, FinishedMessage> get feature =>
-      ReportActionHandler(
-        onStarted: ([message]) async => onFeatureStartedInvocationCount += 1,
-        onFinished: ([message]) async => onFeatureFinishedInvocationCount += 1,
-      );
-
-  @override
-  ReportActionHandler<StartedMessage, ScenarioFinishedMessage> get scenario =>
-      ReportActionHandler(
+  ReportActionHandler<ScenarioMessage> get scenario => ReportActionHandler(
         onStarted: ([message]) async => onScenarioStartedInvocationCount += 1,
         onFinished: ([message]) async => onScenarioFinishedInvocationCount += 1,
       );
 
   @override
-  ReportActionHandler<StepStartedMessage, StepFinishedMessage> get step =>
-      ReportActionHandler(
+  ReportActionHandler<StepMessage> get step => ReportActionHandler(
         onStarted: ([message]) async => onStepStartedInvocationCount += 1,
         onFinished: ([message]) async {
           if (message != null && onStepFinishedFn != null) {
@@ -51,15 +53,10 @@ class ReporterMock extends FullReporter {
       );
 
   @override
-  Future<void> onException(Object exception, StackTrace stackTrace) async =>
-      onExceptionInvocationCount += 1;
-
-  @override
-  Future<void> message(String message, MessageLevel level) async =>
-      messageInvocationCount += 1;
-
-  @override
-  Future<void> dispose() async => disposeInvocationCount += 1;
+  ReportActionHandler<TestMessage> get test => ReportActionHandler(
+        onStarted: ([massage]) async => onTestRunStartedInvocationCount += 1,
+        onFinished: ([massage]) async => onTestRunFinishedInvocationCount += 1,
+      );
 }
 
 class SerializableReporterMock extends Reporter

@@ -32,6 +32,30 @@ class JsonReporter
   }
 
   @override
+  ReportActionHandler<TestMessage> get test =>
+      ReportActionHandler(onFinished: ([message]) => _generateReport(path));
+
+  @override
+  ReportActionHandler<FeatureMessage> get feature => ReportActionHandler(
+        onStarted: ([message]) async =>
+            _features.add(JsonFeature.from(message!)),
+      );
+
+  @override
+  ReportActionHandler<ScenarioMessage> get scenario => ReportActionHandler(
+        onStarted: ([message]) async =>
+            _currentFeature.add(JsonScenario.from(message!)),
+      );
+
+  @override
+  ReportActionHandler<StepMessage> get step => ReportActionHandler(
+        onStarted: ([message]) async =>
+            _currentFeature.currentScenario.add(JsonStep.from(message!)),
+        onFinished: ([message]) async =>
+            _currentFeature.currentScenario.currentStep.onFinish(message!),
+      );
+
+  @override
   Future<void> onException(Object exception, StackTrace stackTrace) async {
     _currentFeature.currentScenario.currentStep
         .onException(exception, stackTrace);
@@ -54,33 +78,6 @@ class JsonReporter
       print('Failed to generate json report: $e');
     }
   }
-
-  @override
-  ReportActionHandler<StartedMessage, FinishedMessage> get feature =>
-      ReportActionHandler(
-        onStarted: ([message]) async =>
-            _features.add(JsonFeature.from(message!)),
-      );
-
-  @override
-  ReportActionHandler<StartedMessage, ScenarioFinishedMessage> get scenario =>
-      ReportActionHandler(
-        onStarted: ([message]) async =>
-            _currentFeature.add(JsonScenario.from(message!)),
-      );
-
-  @override
-  ReportActionHandler<StepStartedMessage, StepFinishedMessage> get step =>
-      ReportActionHandler(
-        onStarted: ([message]) async =>
-            _currentFeature.currentScenario.add(JsonStep.from(message!)),
-        onFinished: ([message]) async =>
-            _currentFeature.currentScenario.currentStep.onFinish(message!),
-      );
-
-  @override
-  ReportActionHandler<void, void> get test =>
-      ReportActionHandler(onFinished: ([message]) => _generateReport(path));
 
   @override
   String serialize() {

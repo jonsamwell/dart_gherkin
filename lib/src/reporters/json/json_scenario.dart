@@ -1,4 +1,4 @@
-import '../messages.dart';
+import '../messages/messages.dart';
 import 'json_feature.dart';
 import 'json_step.dart';
 import 'json_tag.dart';
@@ -39,7 +39,7 @@ class JsonScenario {
   /// Convert [StartedMessage] to [JsonScenario].
   ///
   /// Only those [message.tags] with the `isInherited` flag are converted
-  static JsonScenario from(StartedMessage message) => JsonScenario(
+  static JsonScenario from(ScenarioMessage message) => JsonScenario(
         target: message.target,
         name: message.name,
         line: message.context.nonZeroAdjustedLineNumber,

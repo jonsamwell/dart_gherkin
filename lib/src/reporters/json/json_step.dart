@@ -1,5 +1,5 @@
 import '../../gherkin/steps/step_run_result.dart';
-import '../messages.dart';
+import '../messages/messages.dart';
 import 'json_embedding.dart';
 import 'json_row.dart';
 
@@ -40,7 +40,7 @@ class JsonStep {
         line: 0,
       );
 
-  static JsonStep from(StepStartedMessage message) {
+  static JsonStep from(StepMessage message) {
     final index = message.name.indexOf(' ');
     final keyword = message.name.substring(0, index + 1);
     final name = message.name.substring(index + 1, message.name.length);
@@ -89,15 +89,15 @@ class JsonStep {
     }
   }
 
-  void onFinish(StepFinishedMessage message) {
-    duration = message.result.elapsedMilliseconds * 1000000;
-    final newStatus = _statusMapper(message.result.result);
+  void onFinish(StepMessage message) {
+    duration = message.result!.elapsedMilliseconds * 1000000;
+    final newStatus = _statusMapper(message.result!.result);
     if (newStatus != null) {
       status = newStatus;
     }
 
-    if (message.attachments.isNotEmpty) {
-      embeddings = message.attachments
+    if (message.attachments != null && message.attachments!.isNotEmpty) {
+      embeddings = message.attachments!
           .map(
             (attachment) => JsonEmbedding()
               ..data = attachment.data
@@ -106,7 +106,7 @@ class JsonStep {
           .toList();
     }
 
-    _trackError(message.result.resultReason);
+    _trackError(message.result!.resultReason);
   }
 
   void onException(

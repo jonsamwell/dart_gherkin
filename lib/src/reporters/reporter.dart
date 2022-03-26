@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:collection/collection.dart';
 
 import 'message_level.dart';
-import 'messages.dart';
+import 'messages/messages.dart';
 
 typedef VoidCallback = void Function();
 
@@ -16,30 +16,31 @@ typedef ActionReport<T> = Future<void> Function([T? message]);
 typedef FutureValueAction<T> = Future<void> Function(T message);
 
 /// {@template reporter.reporteractionhandler}
-/// Auxiliary class for setting the start and end functions
+/// Auxiliary class for customizing the actions of features
 /// {@endtemplate}
-class ReportActionHandler<S extends Object?, F extends Object?> {
+class ReportActionHandler<S extends ActionMessage> {
   /// Provides interaction with the function after the start of a certain action
-  ///
   final StateAction<S> onStarted;
-  final StateAction<F> onFinished;
+
+  /// Provides interaction with the function after the finish of a certain action
+  final StateAction<S> onFinished;
 
   /// {@macro reporter.reporteractionhandler}
   ReportActionHandler({
     ActionReport<S>? onStarted,
-    ActionReport<F>? onFinished,
+    ActionReport<S>? onFinished,
   })  : onStarted = StateAction<S>(action: onStarted),
-        onFinished = StateAction<F>(action: onFinished);
+        onFinished = StateAction<S>(action: onFinished);
 
   List<StateAction> get stateActions => [onStarted, onFinished];
 
-  factory ReportActionHandler.empty() => ReportActionHandler<S, F>();
+  factory ReportActionHandler.empty() => ReportActionHandler<S>();
 }
 
 /// {@template reporter.stateaction}
 /// Auxiliary class for performing various actions
 /// {@endtemplate}
-class StateAction<T extends Object?> {
+class StateAction<T extends ActionMessage> {
   final ActionReport<T>? _action;
 
   /// {@macro reporter.stateaction}
@@ -67,28 +68,28 @@ abstract class Reporter {}
 /// An abstract class that allows you to track the status of the start of tests.
 /// {@endtemplate}
 abstract class TestReporter implements Reporter {
-  ReportActionHandler<void, void> get test;
+  ReportActionHandler<TestMessage> get test;
 }
 
 /// {@template reporter.featurerepoter}
 /// An abstract class that allows you to track the status of features.
 /// {@endtemplate}
 abstract class FeatureReporter implements Reporter {
-  ReportActionHandler<StartedMessage, FinishedMessage> get feature;
+  ReportActionHandler<FeatureMessage> get feature;
 }
 
 /// {@template reporter.scenariorepoter}
 /// An abstract class that allows you to track the status of scenarios.
 /// {@endtemplate}
 abstract class ScenarioReporter implements Reporter {
-  ReportActionHandler<StartedMessage, ScenarioFinishedMessage> get scenario;
+  ReportActionHandler<ScenarioMessage> get scenario;
 }
 
 /// {@template reporter.steprepoter}
 /// An abstract class that allows you to track the status of steps.
 /// {@endtemplate}
 abstract class StepReporter implements Reporter {
-  ReportActionHandler<StepStartedMessage, StepFinishedMessage> get step;
+  ReportActionHandler<StepMessage> get step;
 }
 
 /// {@template reporter.exceptionrepoter}

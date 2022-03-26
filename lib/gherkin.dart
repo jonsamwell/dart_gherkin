@@ -50,7 +50,7 @@ export 'src/processes/process_handler.dart';
 export 'src/reporters/aggregated_reporter.dart';
 export 'src/reporters/json/json_reporter.dart';
 export 'src/reporters/message_level.dart';
-export 'src/reporters/messages.dart';
+export 'src/reporters/messages/messages.dart';
 export 'src/reporters/progress_reporter.dart';
 // Reporters
 export 'src/reporters/reporter.dart';

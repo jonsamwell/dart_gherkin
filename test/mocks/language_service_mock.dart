@@ -2,7 +2,7 @@ import 'package:gherkin/gherkin.dart';
 
 import 'en_dialect_mock.dart';
 
-typedef OnStepFinished = void Function(StepFinishedMessage message);
+typedef OnStepFinished = void Function(StepMessage message);
 
 class LanguageServiceMock extends LanguageService {
   String _defaultLangauge = 'en';

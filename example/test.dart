@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 import 'package:gherkin/gherkin.dart';
 import 'supporting_files/hooks/hook_example.dart';
@@ -30,7 +29,6 @@ Future<void> main() {
     whenTheCharactersAreCounted(),
     thenExpectNumericResult()
   ];
-  final featuresPath = buildFeaturesPathRegex();
 
   final config = TestConfiguration(
     features: [RegExp(r"features/.*\.feature")],
@@ -42,20 +40,14 @@ Future<void> main() {
     hooks: [HookExample()],
     customStepParameterDefinitions: [PowerOfTwoParameter()],
     createWorld: (config) => Future.value(CalculatorWorld()),
-    stepDefinitions: [
-      givenTheNumbers(),
-      givenThePowersOfTwo(),
-      whenTheStoredNumbersAreAdded(),
-      thenExpectNumericResult(),
-    ],
+    stepDefinitions: steps,
     stopAfterTestFailed: true,
   );
 
   // or
 
-  // final configTwo = TestConfiguration.standard(
+  // final config = TestConfiguration.standard(
   //   steps,
-  //   featurePath: featuresPath,
   //   tagExpression: 'not @skip',
   //   hooks: [HookExample()],
   //   customStepParameterDefinitions: [PowerOfTwoParameter()],
