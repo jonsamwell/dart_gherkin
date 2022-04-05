@@ -8,7 +8,7 @@ import 'package:gherkin/gherkin.dart';
 ///  """
 ///  Some comment
 ///  """
-StepDefinitionGeneric GivenTheMultiLineComment() {
+StepDefinitionGeneric givenTheMultiLineComment() {
   return given2(
     'I provide the following {string} comment',
     (commentType, comment, _) async {

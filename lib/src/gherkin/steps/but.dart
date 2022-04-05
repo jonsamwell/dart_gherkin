@@ -1,7 +1,7 @@
-import './step_configuration.dart';
-import './step_definition.dart';
-import './step_definition_implementations.dart';
-import './world.dart';
+import 'step_configuration.dart';
+import 'step_definition.dart';
+import 'step_definition_implementations.dart';
+import 'world.dart';
 
 abstract class But extends StepDefinition<World> {
   But([StepDefinitionConfiguration? configuration]) : super(configuration);

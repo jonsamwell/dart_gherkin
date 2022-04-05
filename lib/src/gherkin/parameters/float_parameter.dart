@@ -1,4 +1,4 @@
-import './custom_parameter.dart';
+import 'custom_parameter.dart';
 
 class FloatParameterBase extends CustomParameter<num> {
   FloatParameterBase(String name)

@@ -1,55 +1,66 @@
-import './stdout_reporter.dart';
-import '../gherkin/runnables/debug_information.dart';
-import '../gherkin/steps/step_run_result.dart';
-import './message_level.dart';
-import './messages.dart';
+import '../../gherkin.dart';
 
-class ProgressReporter extends StdoutReporter {
+class ProgressReporter extends StdoutReporter
+    implements ScenarioReporter, StepReporter {
   @override
-  Future<void> onScenarioStarted(StartedMessage message) async {
-    printMessageLine(
-        'Running scenario: ${_getNameAndContext(message.name, message.context)}',
-        StdoutReporter.WARN_COLOR);
-  }
-
-  @override
-  Future<void> onScenarioFinished(ScenarioFinishedMessage message) async {
-    printMessageLine(
-      "${message.passed ? 'PASSED' : 'FAILED'}: Scenario ${_getNameAndContext(message.name, message.context)}",
-      message.passed ? StdoutReporter.PASS_COLOR : StdoutReporter.FAIL_COLOR,
-    );
-  }
-
-  @override
-  Future<void> onStepFinished(StepFinishedMessage message) async {
-    printMessageLine(
-      [
-        '  ',
-        _getStatePrefixIcon(message.result.result),
-        _getNameAndContext(message.name, message.context),
-        _getExecutionDuration(message.result),
-        _getReasonMessage(message.result),
-        _getErrorMessage(message.result)
-      ].join((' ')).trimRight(),
-      _getMessageColour(message.result.result),
-    );
-
-    if (message.attachments.isNotEmpty) {
-      message.attachments.forEach(
-        (attachment) {
-          var attachment2 = attachment;
+  ReportActionHandler<ScenarioMessage> get scenario => ReportActionHandler(
+        onStarted: ([message]) async {
+          if (message == null) {
+            return;
+          }
           printMessageLine(
-            [
-              '    ',
-              'Attachment',
-              "(${attachment2.mimeType})${attachment.mimeType == 'text/plain' ? ': ${attachment.data}' : ''}"
-            ].join((' ')).trimRight(),
-            StdoutReporter.RESET_COLOR,
+            'Running scenario: ${_getNameAndContext(message.name, message.context)}',
+            StdoutReporter.kWarnColor,
+          );
+        },
+        onFinished: ([message]) async {
+          if (message == null) {
+            return;
+          }
+          printMessageLine(
+            "${message.isPassed ? 'PASSED' : 'FAILED'}: Scenario ${_getNameAndContext(message.name, message.context)}",
+            message.isPassed
+                ? StdoutReporter.kPassColor
+                : StdoutReporter.kFailColor,
           );
         },
       );
-    }
-  }
+
+  @override
+  ReportActionHandler<StepMessage> get step => ReportActionHandler(
+        onFinished: ([message]) async {
+          if (message == null) {
+            return;
+          }
+          printMessageLine(
+            [
+              '  ',
+              _getStatePrefixIcon(message.result!.result),
+              _getNameAndContext(message.name, message.context),
+              _getExecutionDuration(message.result!),
+              _getReasonMessage(message.result!),
+              _getErrorMessage(message.result!)
+            ].join(' ').trimRight(),
+            _getMessageColour(message.result!.result),
+          );
+
+          if (message.attachments != null && message.attachments!.isNotEmpty) {
+            message.attachments!.forEach(
+              (attachment) {
+                final attachment2 = attachment;
+                printMessageLine(
+                  [
+                    '    ',
+                    'Attachment',
+                    "(${attachment2.mimeType})${attachment.mimeType == 'text/plain' ? ': ${attachment.data}' : ''}"
+                  ].join(' ').trimRight(),
+                  StdoutReporter.kResetColor,
+                );
+              },
+            );
+          }
+        },
+      );
 
   @override
   Future<void> message(String message, MessageLevel level) async {
@@ -83,7 +94,7 @@ class ProgressReporter extends StdoutReporter {
 
   String _getStatePrefixIcon(StepExecutionResult result) {
     switch (result) {
-      case StepExecutionResult.pass:
+      case StepExecutionResult.passed:
         return '√';
       case StepExecutionResult.error:
       case StepExecutionResult.fail:
@@ -96,18 +107,18 @@ class ProgressReporter extends StdoutReporter {
 
   String _getMessageColour(StepExecutionResult result) {
     switch (result) {
-      case StepExecutionResult.pass:
-        return StdoutReporter.PASS_COLOR;
+      case StepExecutionResult.passed:
+        return StdoutReporter.kPassColor;
       case StepExecutionResult.fail:
-        return StdoutReporter.FAIL_COLOR;
+        return StdoutReporter.kFailColor;
       case StepExecutionResult.error:
-        return StdoutReporter.FAIL_COLOR;
+        return StdoutReporter.kFailColor;
       case StepExecutionResult.skipped:
-        return StdoutReporter.WARN_COLOR;
+        return StdoutReporter.kWarnColor;
       case StepExecutionResult.timeout:
-        return StdoutReporter.FAIL_COLOR;
+        return StdoutReporter.kFailColor;
       default:
-        return StdoutReporter.RESET_COLOR;
+        return StdoutReporter.kResetColor;
     }
   }
 }

@@ -10,45 +10,51 @@ void main() {
     test('matches correctly', () {
       final syntax = ScenarioOutlineSyntax();
       expect(
-          syntax.isMatch(
-            'Scenario outline:',
-            EnDialectMock(),
-          ),
-          true);
+        syntax.isMatch(
+          'Scenario outline:',
+          EnDialectMock(),
+        ),
+        true,
+      );
       expect(
-          syntax.isMatch(
-            'Scenario outline:   ',
-            EnDialectMock(),
-          ),
-          true);
+        syntax.isMatch(
+          'Scenario outline:   ',
+          EnDialectMock(),
+        ),
+        true,
+      );
       expect(
-          syntax.isMatch(
-            'Scenario outline: something',
-            EnDialectMock(),
-          ),
-          true);
+        syntax.isMatch(
+          'Scenario outline: something',
+          EnDialectMock(),
+        ),
+        true,
+      );
       expect(
-          syntax.isMatch(
-            ' Scenario Outline:   something',
-            EnDialectMock(),
-          ),
-          true);
+        syntax.isMatch(
+          ' Scenario Outline:   something',
+          EnDialectMock(),
+        ),
+        true,
+      );
     });
 
     test('does not match', () {
       final syntax = ScenarioOutlineSyntax();
       expect(
-          syntax.isMatch(
-            'Scenario outline something',
-            EnDialectMock(),
-          ),
-          false);
+        syntax.isMatch(
+          'Scenario outline something',
+          EnDialectMock(),
+        ),
+        false,
+      );
       expect(
-          syntax.isMatch(
-            '#Scenario Outline: something',
-            EnDialectMock(),
-          ),
-          false);
+        syntax.isMatch(
+          '#Scenario Outline: something',
+          EnDialectMock(),
+        ),
+        false,
+      );
     });
   });
 
@@ -57,7 +63,7 @@ void main() {
       final keyword = ScenarioOutlineSyntax();
       final runnable = keyword.toRunnable(
         'Scenario Outline: A scenario outline 123',
-        RunnableDebugInformation.EMPTY(),
+        RunnableDebugInformation.empty(),
         EnDialectMock(),
       );
       expect(runnable, isNotNull);

@@ -1,3 +1,75 @@
+## [3.0.0] - 26/03/2022
+
+* BREAKING CHANGE:
+  -  `TestConfiguration` is now not mutable. You can create an instance like this:
+      ```dart
+      final steps = [
+        givenTheNumbers(),
+        givenThePowersOfTwo(),
+        givenTheCharacters(),
+        whenTheStoredNumbersAreAdded(),
+        whenTheCharactersAreCounted(),
+        thenExpectNumericResult()
+      ];
+      final featuresPath = buildFeaturesPathRegex();
+
+      var config = TestConfiguration(
+        features: [RegExp(featuresPath)],
+        stepDefinitions: steps,
+        tagExpression: 'not @skip',
+        hooks: [HookExample()],
+        customStepParameterDefinitions: [PowerOfTwoParameter()],
+        createWorld: (config) => Future.value(CalculatorWorld()),
+      );
+
+      // or
+
+      config = TestConfiguration.standard(
+        steps,
+        featurePath: featuresPath,
+        tagExpression: 'not @skip',
+        hooks: [HookExample()],
+        customStepParameterDefinitions: [PowerOfTwoParameter()],
+        createWorld: (config) => Future.value(CalculatorWorld()),
+      );
+
+      return GherkinRunner().execute(config);
+      ```
+
+  - `NEW API FOR REPORTERS`: All reporters implement (do not extend) separated interfaces:
+
+     - `TestReporter`
+     - `FeatureReporter`
+     - `ScenarioReporter`
+     - `StepReporter`
+     - `ExceptionReporter`
+     - `MessageReporter`
+     - `DisposableRepoter`
+  
+   and interfaces that store sets of interfaces:
+   
+     - `FullReporter`
+     - `FullFeatureReporter`
+     - `InfoReporter`
+   - Now to create your own reporters, you need to implement getters, the example below.
+      ```dart
+      class MyTestReporter implements TestReporter {
+        @override
+        ReportActionHandler<TestMessage> get test => ReportActionHandler(
+              onStarted: ([message]) async => print('onStartedTest'),
+            );
+      }
+      ```
+
+  For more information, see this [file](lib\src\reporters\reporter.dart).
+
+  > You: Why is this new API for reporters?
+
+  > Author: This architecture and abstraction is due to the fact that you can implement your reporters yourself in your projects just by implementing interfaces. In addition, those who want to contribute to the development of reporters through PR, you will also only need to implement these interfaces.
+
+  - Classes of the type `StartedMessage, Finished Message` have now been replaced with classes that relate to the type of test itself - `StepMessage`, `ScenarioMessage`, `FeatureMessage`, `TestMessage`. Here the [SRP](https://en.wikipedia.org/wiki/Single-responsibility_principle) principle comes into force.
+
+
 ## [2.0.8] - 24/11/2021
 
 * Fixed issue checking ANSI support on web environments in the StdoutReporter

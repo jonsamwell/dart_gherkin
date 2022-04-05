@@ -1,7 +1,7 @@
-import 'package:gherkin/src/gherkin/languages/dialect.dart';
-import 'package:gherkin/src/gherkin/runnables/runnable.dart';
+import '../languages/dialect.dart';
+import '../runnables/runnable.dart';
 
-import './syntax_matcher.dart';
+import 'syntax_matcher.dart';
 
 abstract class RegExMatchedGherkinSyntax<TRunnable extends Runnable>
     extends SyntaxMatcher<TRunnable> {

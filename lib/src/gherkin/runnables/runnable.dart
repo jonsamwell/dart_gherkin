@@ -1,13 +1,8 @@
-import './debug_information.dart';
+import 'debug_information.dart';
 
 abstract class Runnable {
-  RunnableDebugInformation _debug;
-  RunnableDebugInformation get debug => _debug;
+  RunnableDebugInformation debug;
   String get name;
 
-  Runnable(this._debug);
-
-  void updateDebugInformation(RunnableDebugInformation debugInformation) {
-    _debug = debugInformation;
-  }
+  Runnable(this.debug);
 }

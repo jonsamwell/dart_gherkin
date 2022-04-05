@@ -1,5 +1,5 @@
-import './debug_information.dart';
-import './runnable.dart';
+import 'debug_information.dart';
+import 'runnable.dart';
 
 class CommentLineRunnable extends Runnable {
   final String comment;

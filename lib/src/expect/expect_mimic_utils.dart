@@ -4,12 +4,12 @@ import 'package:matcher/matcher.dart';
 ///
 /// The matcher package doesn't expose its pretty-print function directly, but
 /// we can use it through StringDescription.
-String prettyPrint(value) =>
+String prettyPrint(Object? value) =>
     StringDescription().addDescriptionOf(value).toString();
 
 String formatFailure(
   Matcher expected,
-  actual,
+  Object? actual,
   String which, {
   String? reason,
 }) {

@@ -1,30 +1,30 @@
-import 'package:gherkin/src/gherkin/languages/language_service.dart';
-import 'package:gherkin/src/gherkin/runnables/dialect_block.dart';
-import 'package:gherkin/src/gherkin/runnables/multi_line_string.dart';
 import 'package:collection/collection.dart';
 
-import './exceptions/syntax_error.dart';
-import './runnables/debug_information.dart';
-import './runnables/feature_file.dart';
-import './runnables/runnable_block.dart';
-import './syntax/background_syntax.dart';
-import './syntax/comment_syntax.dart';
-import './syntax/empty_line_syntax.dart';
-import './syntax/feature_file_syntax.dart';
-import './syntax/feature_syntax.dart';
-import './syntax/language_syntax.dart';
-import './syntax/multiline_string_syntax.dart';
-import './syntax/scenario_syntax.dart';
-import './syntax/scenario_outline_syntax.dart';
-import './syntax/step_syntax.dart';
-import './syntax/syntax_matcher.dart';
-import './syntax/table_line_syntax.dart';
-import './syntax/tag_syntax.dart';
-import './syntax/text_line_syntax.dart';
 import '../reporters/message_level.dart';
 import '../reporters/reporter.dart';
-import './syntax/example_syntax.dart';
-import './languages/dialect.dart';
+import 'exceptions/syntax_error.dart';
+import 'languages/dialect.dart';
+import 'languages/language_service.dart';
+import 'runnables/debug_information.dart';
+import 'runnables/dialect_block.dart';
+import 'runnables/feature_file.dart';
+import 'runnables/multi_line_string.dart';
+import 'runnables/runnable_block.dart';
+import 'syntax/background_syntax.dart';
+import 'syntax/comment_syntax.dart';
+import 'syntax/empty_line_syntax.dart';
+import 'syntax/example_syntax.dart';
+import 'syntax/feature_file_syntax.dart';
+import 'syntax/feature_syntax.dart';
+import 'syntax/language_syntax.dart';
+import 'syntax/multiline_string_syntax.dart';
+import 'syntax/scenario_outline_syntax.dart';
+import 'syntax/scenario_syntax.dart';
+import 'syntax/step_syntax.dart';
+import 'syntax/syntax_matcher.dart';
+import 'syntax/table_line_syntax.dart';
+import 'syntax/tag_syntax.dart';
+import 'syntax/text_line_syntax.dart';
 
 class GherkinParser {
   final Iterable<SyntaxMatcher> syntaxMatchers = [
@@ -46,7 +46,7 @@ class GherkinParser {
   Future<FeatureFile> parseFeatureFile(
     String contents,
     String path,
-    Reporter reporter,
+    MessageReporter reporter,
     LanguageService languageService,
   ) async {
     final featureFile = FeatureFile(
@@ -124,11 +124,12 @@ class GherkinParser {
             parentBlock is MultilineStringRunnable;
         final runnable = matcher.toRunnable(
           useUntrimmedLines ? lines.elementAt(i) : line,
-          parentBlock.debug.copyWith(i, line),
+          parentBlock.debug.copyWith(lineNumber: i, lineText: line),
           dialect,
         );
 
         if (runnable is DialectBlock) {
+          // ignore: parameter_assignments
           dialect = runnable.getDialect(languageService);
         }
 

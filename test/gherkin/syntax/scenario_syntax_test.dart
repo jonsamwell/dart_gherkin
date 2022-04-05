@@ -10,43 +10,47 @@ void main() {
     test('matches correctly', () {
       final syntax = ScenarioSyntax();
       expect(
-          syntax.isMatch(
-            'Scenario: something',
-            EnDialectMock(),
-          ),
-          true);
+        syntax.isMatch(
+          'Scenario: something',
+          EnDialectMock(),
+        ),
+        true,
+      );
       expect(
-          syntax.isMatch(
-            ' Scenario:   something',
-            EnDialectMock(),
-          ),
-          true);
+        syntax.isMatch(
+          ' Scenario:   something',
+          EnDialectMock(),
+        ),
+        true,
+      );
     });
 
     test('does not match', () {
       final syntax = ScenarioSyntax();
       expect(
-          syntax.isMatch(
-            'Scenario something',
-            EnDialectMock(),
-          ),
-          false);
+        syntax.isMatch(
+          'Scenario something',
+          EnDialectMock(),
+        ),
+        false,
+      );
       expect(
-          syntax.isMatch(
-            '#Scenario: something',
-            EnDialectMock(),
-          ),
-          false);
+        syntax.isMatch(
+          '#Scenario: something',
+          EnDialectMock(),
+        ),
+        false,
+      );
     });
   });
 
   group('toRunnable', () {
     test('creates FeatureRunnable', () {
       final keyword = ScenarioSyntax();
-      var keyword2 = keyword;
+      final keyword2 = keyword;
       final runnable = keyword2.toRunnable(
         'Scenario: A scenario 123',
-        RunnableDebugInformation.EMPTY(),
+        RunnableDebugInformation.empty(),
         EnDialectMock(),
       );
       expect(runnable, isNotNull);

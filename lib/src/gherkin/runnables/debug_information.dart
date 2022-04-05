@@ -3,15 +3,24 @@ class RunnableDebugInformation {
   final int lineNumber;
   final String lineText;
 
-  int get nonZeroAdjustedLineNumber => lineNumber + 1;
-
   RunnableDebugInformation(this.filePath, this.lineNumber, this.lineText);
 
-  RunnableDebugInformation copyWith(int lineNumber, String line) {
-    return RunnableDebugInformation(filePath, lineNumber, line);
-  }
+  RunnableDebugInformation.empty()
+      : filePath = '',
+        lineNumber = 0,
+        lineText = '';
 
-  static RunnableDebugInformation EMPTY() {
-    return RunnableDebugInformation('', 0, '');
+  int get nonZeroAdjustedLineNumber => lineNumber + 1;
+
+  RunnableDebugInformation copyWith({
+    String? filePath,
+    int? lineNumber,
+    String? lineText,
+  }) {
+    return RunnableDebugInformation(
+      filePath ?? this.filePath,
+      lineNumber ?? this.lineNumber,
+      lineText ?? this.lineText,
+    );
   }
 }

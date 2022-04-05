@@ -1,42 +1,53 @@
-import './stdout_reporter.dart';
-import '../gherkin/steps/step_run_result.dart';
-import './message_level.dart';
-import './messages.dart';
+import '../../gherkin.dart';
 
-class TestRunSummaryReporter extends StdoutReporter {
+class TestRunSummaryReporter extends StdoutReporter
+    implements ScenarioReporter, StepReporter, TestReporter, DisposableRepoter {
   final _timer = Stopwatch();
-  final List<StepFinishedMessage> _ranSteps = <StepFinishedMessage>[];
-  final List<ScenarioFinishedMessage> _ranScenarios =
-      <ScenarioFinishedMessage>[];
+  final List<StepMessage> _ranSteps = [];
+  final List<ScenarioMessage> _ranScenarios = [];
 
   @override
-  Future<void> onScenarioFinished(ScenarioFinishedMessage message) async {
-    _ranScenarios.add(message);
-  }
+  ReportActionHandler<TestMessage> get test => ReportActionHandler(
+        onStarted: ([message]) async => _timer.start(),
+        onFinished: ([message]) async {
+          _timer.stop();
+          printMessageLine(
+            "${_ranScenarios.length} scenario${_ranScenarios.length > 1 ? "s" : ""} "
+            "(${_collectScenarioSummary(_ranScenarios)})",
+          );
+          printMessageLine(
+            "${_ranSteps.length} step${_ranSteps.length > 1 ? "s" : ""} "
+            "(${_collectStepSummary(_ranSteps)})",
+          );
+          printMessageLine(
+            '${Duration(milliseconds: _timer.elapsedMilliseconds)}',
+          );
+        },
+      );
 
   @override
-  Future<void> onStepFinished(StepFinishedMessage message) async {
-    _ranSteps.add(message);
-  }
+  ReportActionHandler<ScenarioMessage> get scenario => ReportActionHandler(
+        onFinished: ([message]) async {
+          if (message == null) {
+            return;
+          }
+          _ranScenarios.add(message);
+        },
+      );
+
+  @override
+  ReportActionHandler<StepMessage> get step => ReportActionHandler(
+        onFinished: ([message]) async {
+          if (message == null) {
+            return;
+          }
+          _ranSteps.add(message);
+        },
+      );
 
   @override
   Future<void> message(String message, MessageLevel level) async {
     // ignore messages
-  }
-
-  @override
-  Future<void> onTestRunStarted() async {
-    _timer.start();
-  }
-
-  @override
-  Future<void> onTestRunFinished() async {
-    _timer.stop();
-    printMessageLine(
-        "${_ranScenarios.length} scenario${_ranScenarios.length > 1 ? "s" : ""} (${_collectScenarioSummary(_ranScenarios)})");
-    printMessageLine(
-        "${_ranSteps.length} step${_ranSteps.length > 1 ? "s" : ""} (${_collectStepSummary(_ranSteps)})");
-    printMessageLine('${Duration(milliseconds: _timer.elapsedMilliseconds)}');
   }
 
   @override
@@ -46,44 +57,58 @@ class TestRunSummaryReporter extends StdoutReporter {
     }
   }
 
-  String _collectScenarioSummary(Iterable<ScenarioFinishedMessage> scenarios) {
+  String _collectScenarioSummary(Iterable<ScenarioMessage> scenarios) {
     final summaries = <String>[];
-    if (scenarios.any((s) => s.passed)) {
+    final passedScenarios = scenarios.where((s) => s.isPassed);
+    final failedScenarios = scenarios.where((s) => !s.isPassed);
+    if (passedScenarios.isNotEmpty) {
       summaries.add(
-          '${StdoutReporter.PASS_COLOR}${scenarios.where((s) => s.passed).length} passed${StdoutReporter.RESET_COLOR}');
+        '${StdoutReporter.kPassColor}${passedScenarios.length} passed'
+        '${StdoutReporter.kResetColor}',
+      );
     }
 
-    if (scenarios.any((s) => !s.passed)) {
+    if (failedScenarios.isNotEmpty) {
       summaries.add(
-          '${StdoutReporter.FAIL_COLOR}${scenarios.where((s) => !s.passed).length} failed${StdoutReporter.RESET_COLOR}');
+        '${StdoutReporter.kFailColor}${failedScenarios.length} failed'
+        '${StdoutReporter.kResetColor}',
+      );
     }
 
     return summaries.join(', ');
   }
 
-  String _collectStepSummary(Iterable<StepFinishedMessage> steps) {
+  String _collectStepSummary(Iterable<StepMessage> steps) {
     final summaries = <String>[];
     final passed =
-        steps.where((s) => s.result.result == StepExecutionResult.pass);
+        steps.where((s) => s.result!.result == StepExecutionResult.passed);
     final skipped =
-        steps.where((s) => s.result.result == StepExecutionResult.skipped);
-    final failed = steps.where((s) =>
-        s.result.result == StepExecutionResult.error ||
-        s.result.result == StepExecutionResult.fail ||
-        s.result.result == StepExecutionResult.timeout);
+        steps.where((s) => s.result!.result == StepExecutionResult.skipped);
+    final failed = steps.where(
+      (s) =>
+          s.result!.result == StepExecutionResult.error ||
+          s.result!.result == StepExecutionResult.fail ||
+          s.result!.result == StepExecutionResult.timeout,
+    );
     if (passed.isNotEmpty) {
       summaries.add(
-          '${StdoutReporter.PASS_COLOR}${passed.length} passed${StdoutReporter.RESET_COLOR}');
+        '${StdoutReporter.kPassColor}${passed.length} passed'
+        '${StdoutReporter.kResetColor}',
+      );
     }
 
     if (skipped.isNotEmpty) {
       summaries.add(
-          '${StdoutReporter.WARN_COLOR}${skipped.length} skipped${StdoutReporter.RESET_COLOR}');
+        '${StdoutReporter.kWarnColor}${skipped.length} skipped'
+        '${StdoutReporter.kResetColor}',
+      );
     }
 
     if (failed.isNotEmpty) {
       summaries.add(
-          '${StdoutReporter.FAIL_COLOR}${failed.length} failed${StdoutReporter.RESET_COLOR}');
+        '${StdoutReporter.kFailColor}${failed.length} failed'
+        '${StdoutReporter.kResetColor}',
+      );
     }
 
     return summaries.join(', ');

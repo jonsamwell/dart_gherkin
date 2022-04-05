@@ -1,18 +1,18 @@
-import 'package:gherkin/src/expect/expect_mimic.dart';
-
-import '../../utils/perf.dart';
-import './step_run_result.dart';
-import '../../reporters/reporter.dart';
-import './step_configuration.dart';
-import './world.dart';
-import '../exceptions/parameter_count_mismatch_error.dart';
 import 'dart:async';
+
+import '../../expect/expect_mimic.dart';
+import '../../reporters/reporter.dart';
+import '../../utils/perf.dart';
+import '../exceptions/parameter_count_mismatch_error.dart';
+import 'step_configuration.dart';
+import 'step_run_result.dart';
+import 'world.dart';
 
 abstract class StepDefinitionGeneric<TWorld extends World> {
   final StepDefinitionConfiguration? config;
   final int _expectParameterCount;
-  TWorld? _world;
-  Reporter? _reporter;
+  late TWorld _world;
+  late Reporter _reporter;
   Duration? _timeout;
   Pattern get pattern;
 
@@ -20,9 +20,9 @@ abstract class StepDefinitionGeneric<TWorld extends World> {
     _timeout = config?.timeout;
   }
 
-  TWorld get world => _world!;
+  TWorld get world => _world;
   Duration? get timeout => _timeout;
-  Reporter get reporter => _reporter!;
+  Reporter get reporter => _reporter;
 
   Future<StepResult> run(
     TWorld world,
@@ -60,11 +60,11 @@ abstract class StepDefinitionGeneric<TWorld extends World> {
         te,
         st,
       );
-    } on Error catch (e, st) {
+    } on Exception catch (e, st) {
       return ErroredStepResult(
         elapsedMilliseconds,
         StepExecutionResult.error,
-        Exception(e.toString()),
+        e,
         st,
       );
     } catch (e, st) {
@@ -76,7 +76,7 @@ abstract class StepDefinitionGeneric<TWorld extends World> {
       );
     }
 
-    return StepResult(elapsedMilliseconds, StepExecutionResult.pass);
+    return StepResult(elapsedMilliseconds, StepExecutionResult.passed);
   }
 
   Future<void> onRun(Iterable<dynamic> parameters);

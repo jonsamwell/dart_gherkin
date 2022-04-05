@@ -1,4 +1,4 @@
-enum StepExecutionResult { pass, fail, skipped, timeout, error }
+enum StepExecutionResult { passed, fail, skipped, timeout, error }
 
 class StepResult {
   /// The duration in milliseconds the step took to run

@@ -1,35 +1,59 @@
+import '../../gherkin/steps/step_run_result.dart';
+import '../messages/messages.dart';
 import 'json_embedding.dart';
 import 'json_row.dart';
-import '../messages.dart';
-import '../../gherkin/steps/step_run_result.dart';
 
 class JsonStep {
-  late final String name;
-  late final int line;
-  List<JsonRow>? rows;
+  final String name;
+  final int line;
+  final List<JsonRow>? rows;
+  final String? docString;
+  final String? file;
+  final String? keyword;
+
   List<JsonEmbedding>? embeddings;
+
+  /// Error and stacktrace in string
   String? error;
-  String? docString;
-  String? file;
-  String? keyword;
-  int duration = 0;
-  String status = 'failed';
 
-  static JsonStep from(StepStartedMessage message) {
-    final step = JsonStep();
+  /// Duration in nano-seconds
+  int duration;
 
+  /// [StepExecutionResult] to string named
+  String status;
+
+  JsonStep({
+    required this.name,
+    required this.line,
+    this.rows,
+    this.embeddings,
+    this.error,
+    this.docString,
+    this.file,
+    this.keyword,
+    this.duration = 0,
+    this.status = 'failed',
+  });
+
+  static JsonStep get empty => JsonStep(
+        name: 'Unnamed',
+        line: 0,
+      );
+
+  static JsonStep from(StepMessage message) {
     final index = message.name.indexOf(' ');
     final keyword = message.name.substring(0, index + 1);
     final name = message.name.substring(index + 1, message.name.length);
-
-    step.keyword = keyword;
-    step.name = name;
-    step.line = message.context.nonZeroAdjustedLineNumber;
-    step.file = message.context.filePath;
-    step.docString = message.multilineString;
+    var step = JsonStep(
+      keyword: keyword,
+      name: name,
+      line: message.context.nonZeroAdjustedLineNumber,
+      file: message.context.filePath,
+      docString: message.multilineString,
+    );
 
     if (message.table?.rows != null && message.table!.rows.isNotEmpty) {
-      step.rows = message.table!.rows
+      final tableRows = message.table!.rows
           .map(
             (r) => JsonRow(
               r.columns.toList(
@@ -39,42 +63,50 @@ class JsonStep {
           )
           .toList();
 
-      step.rows!.insert(
-        0,
-        JsonRow(
-          message.table!.header!.columns.toList(
-            growable: false,
-          ),
+      final header = JsonRow(
+        message.table!.header!.columns.toList(
+          growable: false,
         ),
+      );
+      step = step.copyWith(
+        rows: [
+          header,
+          ...tableRows,
+        ],
       );
     }
 
     return step;
   }
 
-  void onFinish(StepFinishedMessage message) {
-    duration = message.result.elapsedMilliseconds * 1000000; // nano seconds.
-
-    switch (message.result.result) {
-      case StepExecutionResult.pass:
-        status = 'passed';
-        break;
+  String? _statusMapper(StepExecutionResult result) {
+    switch (result) {
+      case StepExecutionResult.passed:
       case StepExecutionResult.skipped:
-        status = 'skipped';
-        break;
+        return result.name;
       default:
-        break;
+        return null;
+    }
+  }
+
+  void onFinish(StepMessage message) {
+    duration = message.result!.elapsedMilliseconds * 1000000;
+    final newStatus = _statusMapper(message.result!.result);
+    if (newStatus != null) {
+      status = newStatus;
     }
 
-    if (message.attachments.isNotEmpty) {
-      embeddings = message.attachments
-          .map((attachment) => JsonEmbedding()
-            ..data = attachment.data
-            ..mimeType = attachment.mimeType)
+    if (message.attachments != null && message.attachments!.isNotEmpty) {
+      embeddings = message.attachments!
+          .map(
+            (attachment) => JsonEmbedding()
+              ..data = attachment.data
+              ..mimeType = attachment.mimeType,
+          )
           .toList();
     }
 
-    _trackError(message.result.resultReason);
+    _trackError(message.result!.resultReason);
   }
 
   void onException(
@@ -124,7 +156,8 @@ class JsonStep {
     }
 
     if (error != null && error!.isNotEmpty) {
-      (result['result'] as dynamic)['error_message'] = error;
+      final resultMap = result['result']! as Map<String, dynamic>;
+      resultMap['error_message'] = error;
     }
 
     if (rows != null && rows!.isNotEmpty) {
@@ -132,5 +165,31 @@ class JsonStep {
     }
 
     return result;
+  }
+
+  JsonStep copyWith({
+    String? name,
+    int? line,
+    List<JsonRow>? rows,
+    List<JsonEmbedding>? embeddings,
+    String? error,
+    String? docString,
+    String? file,
+    String? keyword,
+    int? duration,
+    String? status,
+  }) {
+    return JsonStep(
+      name: name ?? this.name,
+      line: line ?? this.line,
+      rows: rows ?? this.rows,
+      embeddings: embeddings ?? this.embeddings,
+      error: error ?? this.error,
+      docString: docString ?? this.docString,
+      file: file ?? this.file,
+      keyword: keyword ?? this.keyword,
+      duration: duration ?? this.duration,
+      status: status ?? this.status,
+    );
   }
 }

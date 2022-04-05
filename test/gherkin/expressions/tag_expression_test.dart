@@ -36,15 +36,21 @@ void main() {
 
       expect(evaluator.evaluate('@a or (@b and @c)', tags), true);
       expect(evaluator.evaluate('@a and (@d or @e)', tags), false);
-      expect(evaluator.evaluate('@a and ((@b or not @e) or (@b and @c))', tags),
-          true);
       expect(
-          evaluator.evaluate(
-              '@a and ((@b and not @e) and (@b and @c))', ['a', 'b', 'c', 'e']),
-          false);
+        evaluator.evaluate('@a and ((@b or not @e) or (@b and @c))', tags),
+        true,
+      );
       expect(
-          evaluator.evaluate('@a and ((@b or not @e) and (@b and @c))', tags),
-          true);
+        evaluator.evaluate(
+          '@a and ((@b and not @e) and (@b and @c))',
+          ['a', 'b', 'c', 'e'],
+        ),
+        false,
+      );
+      expect(
+        evaluator.evaluate('@a and ((@b or not @e) and (@b and @c))', tags),
+        true,
+      );
     });
 
     test('evaluate single negated tag expression correctly', () async {

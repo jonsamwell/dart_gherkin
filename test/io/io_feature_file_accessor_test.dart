@@ -6,19 +6,19 @@ import 'package:test/test.dart';
 
 void main() {
   group('Matcher', () {
-    final indexer = IoFeatureFileAccessor();
+    const indexer = IoFeatureFileAccessor();
 
     group('with RegExp', () {
       test('does not list directories', () async {
         expect(
-          await indexer.listFiles(RegExp(r'test_resources')),
+          await indexer.listFiles(RegExp('test_resources')),
           [],
         );
       });
 
       test('does not throw error for weird paths', () async {
         expect(
-          await indexer.listFiles(RegExp(r'nonexistentpath')),
+          await indexer.listFiles(RegExp('nonexistentpath')),
           [],
         );
       });
@@ -59,7 +59,7 @@ void main() {
 
   group('Reader', () {
     test('file contents are read', () async {
-      final indexer = IoFeatureFileAccessor();
+      const indexer = IoFeatureFileAccessor();
 
       expect(
         await indexer.read('test/test_resources/a.feature'),
@@ -68,11 +68,11 @@ void main() {
     });
 
     test('file system exception is thrown when file does not exist', () async {
-      final indexer = IoFeatureFileAccessor();
+      const indexer = IoFeatureFileAccessor();
 
       expect(
-        () async => await indexer.read('nonexistentpath'),
-        throwsA(TypeMatcher<FileSystemException>()),
+        () => indexer.read('nonexistentpath'),
+        throwsA(const TypeMatcher<FileSystemException>()),
       );
     });
   });
