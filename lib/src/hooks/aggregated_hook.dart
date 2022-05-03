@@ -58,12 +58,14 @@ class AggregatedHook extends Hook {
     TestConfiguration config,
     String scenario,
     Iterable<Tag> tags,
+    bool passed,
   ) async =>
       await _invokeHooks(
         (h) => h.onAfterScenario(
           config,
           scenario,
           tags,
+          passed,
         ),
       );
 

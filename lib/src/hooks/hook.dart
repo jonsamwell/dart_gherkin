@@ -38,6 +38,7 @@ abstract class Hook {
     TestConfiguration config,
     String scenario,
     Iterable<Tag> tags,
+    bool passed,
   ) =>
       Future.value(null);
 
