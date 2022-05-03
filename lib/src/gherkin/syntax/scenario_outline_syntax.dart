@@ -1,11 +1,10 @@
-import 'package:gherkin/src/gherkin/languages/dialect.dart';
-import 'package:gherkin/src/gherkin/syntax/tag_syntax.dart';
-
-import '../runnables/scenario_outline.dart';
+import '../languages/dialect.dart';
 import '../runnables/debug_information.dart';
-import './regex_matched_syntax.dart';
-import './scenario_syntax.dart';
-import './syntax_matcher.dart';
+import '../runnables/scenario_outline.dart';
+import 'regex_matched_syntax.dart';
+import 'scenario_syntax.dart';
+import 'syntax_matcher.dart';
+import 'tag_syntax.dart';
 
 class ScenarioOutlineSyntax
     extends RegExMatchedGherkinSyntax<ScenarioOutlineRunnable> {
@@ -13,7 +12,8 @@ class ScenarioOutlineSyntax
   RegExp pattern(GherkinDialect dialect) {
     final dialectPattern =
         RegExMatchedGherkinSyntax.getMultiDialectRegexPattern(
-            dialect.scenarioOutline);
+      dialect.scenarioOutline,
+    );
     return RegExp(
       '^\\s*(?:$dialectPattern):(?:\\s*(.+)\\s*)?\$',
       multiLine: false,

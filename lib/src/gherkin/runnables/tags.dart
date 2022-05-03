@@ -1,5 +1,5 @@
-import './debug_information.dart';
-import './runnable.dart';
+import 'debug_information.dart';
+import 'runnable.dart';
 
 class TagsRunnable extends Runnable {
   late Iterable<String> tags;

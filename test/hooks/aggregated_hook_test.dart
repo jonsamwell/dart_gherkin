@@ -7,29 +7,37 @@ void main() {
     test('executes hooks in correct order', () async {
       final executionOrder = <int>[];
       final hookOne = HookMock(
-          providedPriority: 0, onBeforeRunCode: () => executionOrder.add(3));
+        providedPriority: 0,
+        onBeforeRunCode: () => executionOrder.add(3),
+      );
       final hookTwo = HookMock(
-          providedPriority: 10, onBeforeRunCode: () => executionOrder.add(2));
+        providedPriority: 10,
+        onBeforeRunCode: () => executionOrder.add(2),
+      );
       final hookThree = HookMock(
-          providedPriority: 20, onBeforeRunCode: () => executionOrder.add(1));
+        providedPriority: 20,
+        onBeforeRunCode: () => executionOrder.add(1),
+      );
       final hookFour = HookMock(
-          providedPriority: -1, onBeforeRunCode: () => executionOrder.add(4));
+        providedPriority: -1,
+        onBeforeRunCode: () => executionOrder.add(4),
+      );
 
       final aggregatedHook = AggregatedHook();
       aggregatedHook.addHooks([hookOne, hookTwo, hookThree, hookFour]);
-      await aggregatedHook.onBeforeRun(TestConfiguration.DEFAULT([]));
+      await aggregatedHook.onBeforeRun(TestConfiguration.standard([]));
       expect(executionOrder, [1, 2, 3, 4]);
       expect(hookOne.onBeforeRunInvocationCount, 1);
       expect(hookTwo.onBeforeRunInvocationCount, 1);
       expect(hookThree.onBeforeRunInvocationCount, 1);
       expect(hookFour.onBeforeRunInvocationCount, 1);
-      await aggregatedHook.onAfterRun(TestConfiguration.DEFAULT([]));
+      await aggregatedHook.onAfterRun(TestConfiguration.standard([]));
       expect(hookOne.onAfterRunInvocationCount, 1);
       expect(hookTwo.onAfterRunInvocationCount, 1);
       expect(hookThree.onAfterRunInvocationCount, 1);
       expect(hookFour.onAfterRunInvocationCount, 1);
       await aggregatedHook.onBeforeScenario(
-        TestConfiguration.DEFAULT([]),
+        TestConfiguration.standard([]),
         '',
         const Iterable.empty(),
       );

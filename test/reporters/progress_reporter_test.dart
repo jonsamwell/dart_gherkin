@@ -1,5 +1,4 @@
 import 'package:gherkin/gherkin.dart';
-import 'package:gherkin/src/gherkin/runnables/debug_information.dart';
 import 'package:test/test.dart';
 
 class TestableProgressReporter extends ProgressReporter {
@@ -18,37 +17,40 @@ void main() {
     test('provides correct step finished output', () async {
       final reporter = TestableProgressReporter();
 
-      await reporter.onStepFinished(
-        StepFinishedMessage(
-          'Step 1',
-          RunnableDebugInformation('filePath', 1, 'line 1'),
-          StepResult(0, StepExecutionResult.pass),
-          [Attachment('A string', 'text/plain')],
+      await reporter.step.onFinished.maybeCall(
+        StepMessage(
+          name: 'Step 1',
+          context: RunnableDebugInformation('filePath', 1, 'line 1'),
+          result: StepResult(0, StepExecutionResult.passed),
+          attachments: [Attachment('A string', 'text/plain')],
         ),
       );
-      await reporter.onStepFinished(
-        StepFinishedMessage(
-          'Step 2',
-          RunnableDebugInformation('filePath', 2, 'line 2'),
-          StepResult(0, StepExecutionResult.fail, 'Failed Reason'),
+      await reporter.step.onFinished.maybeCall(
+        StepMessage(
+          name: 'Step 2',
+          context: RunnableDebugInformation('filePath', 2, 'line 2'),
+          result: StepResult(0, StepExecutionResult.fail, 'Failed Reason'),
         ),
       );
-      await reporter.onStepFinished(
-        StepFinishedMessage(
-          'Step 3',
-          RunnableDebugInformation('filePath', 3, 'line 3'),
-          StepResult(0, StepExecutionResult.skipped),
+      await reporter.step.onFinished.maybeCall(
+        StepMessage(
+          name: 'Step 3',
+          context: RunnableDebugInformation('filePath', 3, 'line 3'),
+          result: StepResult(0, StepExecutionResult.skipped),
         ),
       );
-      await reporter.onStepFinished(StepFinishedMessage(
-          'Step 4',
-          RunnableDebugInformation('filePath', 4, 'line 4'),
-          StepResult(0, StepExecutionResult.error)));
-      await reporter.onStepFinished(
-        StepFinishedMessage(
-          'Step 5',
-          RunnableDebugInformation('filePath', 5, 'line 5'),
-          StepResult(1, StepExecutionResult.timeout),
+      await reporter.step.onFinished.maybeCall(
+        StepMessage(
+          name: 'Step 4',
+          context: RunnableDebugInformation('filePath', 4, 'line 4'),
+          result: StepResult(0, StepExecutionResult.error),
+        ),
+      );
+      await reporter.step.onFinished.maybeCall(
+        StepMessage(
+          name: 'Step 5',
+          context: RunnableDebugInformation('filePath', 5, 'line 5'),
+          result: StepResult(1, StepExecutionResult.timeout),
         ),
       );
 
@@ -65,12 +67,12 @@ void main() {
     test('provides correct scenario started output', () async {
       final reporter = TestableProgressReporter();
 
-      await reporter.onScenarioStarted(StartedMessage(
-        Target.scenario,
-        'Scenario 1',
-        RunnableDebugInformation('filePath', 1, 'line 1'),
-        Iterable.empty(),
-      ));
+      await reporter.scenario.onStarted.maybeCall(
+        ScenarioMessage(
+          name: 'Scenario 1',
+          context: RunnableDebugInformation('filePath', 1, 'line 1'),
+        ),
+      );
 
       expect(reporter.output, ['Running scenario: Scenario 1 # filePath:1']);
     });

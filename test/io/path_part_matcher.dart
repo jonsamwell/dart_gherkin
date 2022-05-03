@@ -15,10 +15,10 @@ class PathPartMatcher extends Matcher {
   bool matches(dynamic absolutePaths, Map matchState) {
     var match = true;
 
-    for (var absPath in (absolutePaths as Iterable<String>)) {
+    for (final absPath in absolutePaths as Iterable<String>) {
       var internalMatch = false;
 
-      for (var relativePath in relativePaths) {
+      for (final relativePath in relativePaths) {
         if (absPath.contains(relativePath)) {
           internalMatch = true;
           break;

@@ -1,5 +1,4 @@
 import 'package:gherkin/gherkin.dart';
-import 'package:gherkin/src/reporters/aggregated_reporter.dart';
 import 'package:test/test.dart';
 
 import '../mocks/reporter_mock.dart';
@@ -22,53 +21,48 @@ void main() {
       expect(reporter1.onExceptionInvocationCount, 1);
       expect(reporter2.onExceptionInvocationCount, 1);
 
-      await aggregatedReporter.onFeatureStarted(
-        StartedMessage(
-          Target.feature,
-          '',
-          RunnableDebugInformation.EMPTY(),
-          const Iterable.empty(),
+      await aggregatedReporter.feature.onStarted.maybeCall(
+        FeatureMessage(
+          name: '',
+          context: RunnableDebugInformation.empty(),
         ),
       );
       expect(reporter1.onFeatureStartedInvocationCount, 1);
       expect(reporter2.onFeatureStartedInvocationCount, 1);
 
-      await aggregatedReporter.onFeatureFinished(
-        FinishedMessage(
-          Target.feature,
-          '',
-          RunnableDebugInformation.EMPTY(),
+      await aggregatedReporter.feature.onFinished.maybeCall(
+        FeatureMessage(
+          name: '',
+          context: RunnableDebugInformation.empty(),
         ),
       );
       expect(reporter1.onFeatureFinishedInvocationCount, 1);
       expect(reporter2.onFeatureFinishedInvocationCount, 1);
 
-      await aggregatedReporter.onScenarioFinished(
-        ScenarioFinishedMessage(
-          '',
-          RunnableDebugInformation.EMPTY(),
-          true,
+      await aggregatedReporter.scenario.onFinished.maybeCall(
+        ScenarioMessage(
+          name: '',
+          context: RunnableDebugInformation.empty(),
+          isPassed: true,
         ),
       );
       expect(reporter1.onScenarioFinishedInvocationCount, 1);
       expect(reporter2.onScenarioFinishedInvocationCount, 1);
 
-      await aggregatedReporter.onScenarioStarted(
-        StartedMessage(
-          Target.feature,
-          '',
-          RunnableDebugInformation.EMPTY(),
-          const Iterable.empty(),
+      await aggregatedReporter.scenario.onStarted.maybeCall(
+        ScenarioMessage(
+          name: '',
+          context: RunnableDebugInformation.empty(),
         ),
       );
       expect(reporter1.onScenarioStartedInvocationCount, 1);
       expect(reporter2.onScenarioStartedInvocationCount, 1);
 
-      await aggregatedReporter.onStepFinished(
-        StepFinishedMessage(
-          '',
-          RunnableDebugInformation.EMPTY(),
-          StepResult(
+      await aggregatedReporter.step.onFinished.maybeCall(
+        StepMessage(
+          name: '',
+          context: RunnableDebugInformation.empty(),
+          result: StepResult(
             0,
             StepExecutionResult.skipped,
           ),
@@ -77,21 +71,21 @@ void main() {
       expect(reporter1.onStepFinishedInvocationCount, 1);
       expect(reporter2.onStepFinishedInvocationCount, 1);
 
-      await aggregatedReporter.onStepStarted(
-        StepStartedMessage(
-          '',
-          RunnableDebugInformation.EMPTY(),
+      await aggregatedReporter.step.onStarted.maybeCall(
+        StepMessage(
+          name: '',
+          context: RunnableDebugInformation.empty(),
         ),
       );
       expect(reporter1.onStepStartedInvocationCount, 1);
       expect(reporter2.onStepStartedInvocationCount, 1);
 
-      await aggregatedReporter.onTestRunFinished();
+      await aggregatedReporter.test.onFinished.maybeCall();
       expect(reporter1.onTestRunFinishedInvocationCount, 1);
       expect(reporter2.onTestRunFinishedInvocationCount, 1);
 
-      await aggregatedReporter.onTestRunStarted();
-      await aggregatedReporter.onTestRunStarted();
+      await aggregatedReporter.test.onStarted.maybeCall();
+      await aggregatedReporter.test.onStarted.maybeCall();
       expect(reporter1.onTestRunStartedInvocationCount, 2);
       expect(reporter2.onTestRunStartedInvocationCount, 2);
 
@@ -108,7 +102,7 @@ void main() {
       aggregatedReporter.addReporter(reporter1);
       aggregatedReporter.addReporter(reporter2);
 
-      expect(aggregatedReporter.toJson(), '[]');
+      expect(aggregatedReporter.serialize(), '[]');
     });
 
     test('toJson with two serializable reports returns correct json', () async {
@@ -121,8 +115,10 @@ void main() {
       aggregatedReporter.addReporter(reporter2);
       aggregatedReporter.addReporter(reporter3);
 
-      expect(aggregatedReporter.toJson(),
-          '[{"a", "b", "c": 1},{"e", "f", "g": 2}]');
+      expect(
+        aggregatedReporter.serialize(),
+        '[{"a", "b", "c": 1},{"e", "f", "g": 2}]',
+      );
     });
   });
 }

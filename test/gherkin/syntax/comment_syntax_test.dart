@@ -8,40 +8,45 @@ void main() {
     test('matches correctly', () {
       final keyword = CommentSyntax();
       expect(
-          keyword.isMatch(
-            '# I am a comment',
-            EnDialectMock(),
-          ),
-          true);
+        keyword.isMatch(
+          '# I am a comment',
+          EnDialectMock(),
+        ),
+        true,
+      );
       expect(
-          keyword.isMatch(
-            '#I am also a comment',
-            EnDialectMock(),
-          ),
-          true);
+        keyword.isMatch(
+          '#I am also a comment',
+          EnDialectMock(),
+        ),
+        true,
+      );
       expect(
-          keyword.isMatch(
-            '## I am also a comment',
-            EnDialectMock(),
-          ),
-          true);
+        keyword.isMatch(
+          '## I am also a comment',
+          EnDialectMock(),
+        ),
+        true,
+      );
       expect(
-          keyword.isMatch(
-            '# Language something',
-            EnDialectMock(),
-          ),
-          true);
+        keyword.isMatch(
+          '# Language something',
+          EnDialectMock(),
+        ),
+        true,
+      );
     });
 
     test('does not match', () {
       final keyword = CommentSyntax();
       // expect(keyword.isMatch('# language: en'), false);
       expect(
-          keyword.isMatch(
-            'I am not a comment',
-            EnDialectMock(),
-          ),
-          false);
+        keyword.isMatch(
+          'I am not a comment',
+          EnDialectMock(),
+        ),
+        false,
+      );
     });
   });
 }

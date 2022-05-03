@@ -15,32 +15,38 @@ void main() {
 
     test('{String} pattern matches correctly', () {
       final parameter = StringParameterCamel();
-      expect(parameter.pattern.hasMatch('\'Jon\''), equals(true));
+      expect(parameter.pattern.hasMatch("'Jon'"), equals(true));
     });
 
     test('{String} pattern matches correctly with multiple words', () {
       final parameter = StringParameterCamel();
-      expect(parameter.pattern.hasMatch('\'Jon Samwell is a devloper\''),
-          equals(true));
+      expect(
+        parameter.pattern.hasMatch("'Jon Samwell is a devloper'"),
+        equals(true),
+      );
     });
 
     test('{String} pattern matches correctly with new line within string', () {
       final parameter = StringParameterCamel();
-      expect(parameter.pattern.hasMatch('\'Jon Samwell is a \n devloper\''),
-          equals(true));
+      expect(
+        parameter.pattern.hasMatch("'Jon Samwell is a \n devloper'"),
+        equals(true),
+      );
     });
 
     test('{String} pattern matches correctly with non alpha characters', () {
       final parameter = StringParameterCamel();
       expect(
-          parameter.pattern.hasMatch(
-              "\'Jon Samwell is a devloper 123 \'!@%^&*()_=+#:';{}\'"),
-          equals(true));
+        parameter.pattern.hasMatch(
+          "'Jon Samwell is a devloper 123 '!@%^&*()_=+#:';{}'",
+        ),
+        equals(true),
+      );
     });
 
     test('{String} parsed correctly with newline character in it', () {
       final parameter = StringParameterCamel();
-      expect(parameter.pattern.hasMatch('\'Jon \n Sam   well\''), equals(true));
+      expect(parameter.pattern.hasMatch("'Jon \n Sam   well'"), equals(true));
     });
   });
 }

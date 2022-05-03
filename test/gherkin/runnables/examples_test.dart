@@ -5,7 +5,7 @@ import 'package:gherkin/src/gherkin/runnables/table.dart';
 import 'package:test/test.dart';
 
 void main() {
-  final debugInfo = RunnableDebugInformation.EMPTY();
+  final debugInfo = RunnableDebugInformation.empty();
 
   group('addChild', () {
     test('can add TableRunnable', () {
@@ -19,11 +19,14 @@ void main() {
       expect(runnable.table, isNotNull);
 
       expect(
-          () => runnable.addChild(TableRunnable(debugInfo)),
-          throwsA((e) =>
+        () => runnable.addChild(TableRunnable(debugInfo)),
+        throwsA(
+          (e) =>
               e is GherkinSyntaxException &&
               e.message ==
-                  "Only a single table can be added to the example 'Example one'"));
+                  "Only a single table can be added to the example 'Example one'",
+        ),
+      );
     });
   });
 }

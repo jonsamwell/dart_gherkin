@@ -10,51 +10,58 @@ void main() {
     test('matches correctly', () {
       final keyword = LanguageSyntax();
       expect(
-          keyword.isMatch(
-            '# language: en',
-            EnDialectMock(),
-          ),
-          true);
+        keyword.isMatch(
+          '# language: en',
+          EnDialectMock(),
+        ),
+        true,
+      );
       expect(
-          keyword.isMatch(
-            '#language: fr',
-            EnDialectMock(),
-          ),
-          true);
+        keyword.isMatch(
+          '#language: fr',
+          EnDialectMock(),
+        ),
+        true,
+      );
       expect(
-          keyword.isMatch(
-            '#language:de',
-            EnDialectMock(),
-          ),
-          true);
+        keyword.isMatch(
+          '#language:de',
+          EnDialectMock(),
+        ),
+        true,
+      );
       expect(
-          keyword.isMatch(
-            '#language:en-au',
-            EnDialectMock(),
-          ),
-          true);
+        keyword.isMatch(
+          '#language:en-au',
+          EnDialectMock(),
+        ),
+        true,
+      );
       expect(
-          keyword.isMatch(
-            '#language:en-Scouse',
-            EnDialectMock(),
-          ),
-          true);
+        keyword.isMatch(
+          '#language:en-Scouse',
+          EnDialectMock(),
+        ),
+        true,
+      );
     });
 
     test('does not match', () {
       final keyword = LanguageSyntax();
       expect(
-          keyword.isMatch(
-            '#language no',
-            EnDialectMock(),
-          ),
-          false);
+        keyword.isMatch(
+          '#language no',
+          EnDialectMock(),
+        ),
+        false,
+      );
       expect(
-          keyword.isMatch(
-            '# language comment',
-            EnDialectMock(),
-          ),
-          false);
+        keyword.isMatch(
+          '# language comment',
+          EnDialectMock(),
+        ),
+        false,
+      );
     });
   });
 
@@ -63,7 +70,7 @@ void main() {
       final keyword = LanguageSyntax();
       final runnable = keyword.toRunnable(
         '# language: de',
-        RunnableDebugInformation.EMPTY(),
+        RunnableDebugInformation.empty(),
         EnDialectMock(),
       );
       expect(runnable, isNotNull);

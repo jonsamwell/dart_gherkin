@@ -8,16 +8,16 @@ import 'path_part_matcher.dart';
 
 void main() {
   group('Matcher', () {
-    final indexer = IoFeatureFileAccessor();
+    const indexer = IoFeatureFileAccessor();
 
     group('with RegExp', () {
       test('lists all matching files', () async {
         expect(
-          await indexer.listFiles(RegExp(r'test/test_resources/(.*).feature')),
+          await indexer.listFiles(RegExp('test/test_resources/(.*).feature')),
           PathPartMatcher([
-            r'test/test_resources/a.feature',
-            r'test/test_resources/subdir/b.feature',
-            r'test/test_resources/subdir/c.feature',
+            'test/test_resources/a.feature',
+            'test/test_resources/subdir/b.feature',
+            'test/test_resources/subdir/c.feature',
           ]),
         );
       });
@@ -27,8 +27,8 @@ void main() {
           await indexer
               .listFiles(RegExp(r'test/test_resources/subdir/.*\.feature')),
           PathPartMatcher([
-            r'test/test_resources/subdir/b.feature',
-            r'test/test_resources/subdir/c.feature',
+            'test/test_resources/subdir/b.feature',
+            'test/test_resources/subdir/c.feature',
           ]),
         );
       });
@@ -39,9 +39,9 @@ void main() {
         expect(
           await indexer.listFiles(Glob('test/test_resources/**.feature')),
           PathPartMatcher([
-            r'test/test_resources/a.feature',
-            r'test/test_resources/subdir/b.feature',
-            r'test/test_resources/subdir/c.feature',
+            'test/test_resources/a.feature',
+            'test/test_resources/subdir/b.feature',
+            'test/test_resources/subdir/c.feature',
           ]),
         );
       });
@@ -50,7 +50,7 @@ void main() {
         expect(
           await indexer.listFiles(Glob('test/test_resources/*.feature')),
           PathPartMatcher([
-            r'test/test_resources/a.feature',
+            'test/test_resources/a.feature',
           ]),
         );
       });
@@ -59,9 +59,9 @@ void main() {
     group('String', () {
       test('lists one specified file', () async {
         expect(
-          await indexer.listFiles(r'test/test_resources/a.feature'),
+          await indexer.listFiles('test/test_resources/a.feature'),
           PathPartMatcher([
-            r'test/test_resources/a.feature',
+            'test/test_resources/a.feature',
           ]),
         );
       });
@@ -70,7 +70,7 @@ void main() {
 
   group('Reader', () {
     test('file contents are read', () async {
-      final indexer = IoFeatureFileAccessor();
+      const indexer = IoFeatureFileAccessor();
 
       expect(
         await indexer.read('test/test_resources/a.feature'),

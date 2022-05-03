@@ -6,14 +6,16 @@ import 'package:gherkin/src/gherkin/runnables/table.dart';
 import 'package:test/test.dart';
 
 void main() {
-  final debugInfo = RunnableDebugInformation.EMPTY();
+  final debugInfo = RunnableDebugInformation.empty();
   group('addChild', () {
     test('can add MultilineStringRunnable', () {
       final runnable = StepRunnable('', debugInfo);
       runnable.addChild(
-          MultilineStringRunnable(debugInfo)..lines = ['1', '2', '3'].toList());
+        MultilineStringRunnable(debugInfo)..lines = ['1', '2', '3'].toList(),
+      );
       runnable.addChild(
-          MultilineStringRunnable(debugInfo)..lines = ['3', '4', '5'].toList());
+        MultilineStringRunnable(debugInfo)..lines = ['3', '4', '5'].toList(),
+      );
       expect(runnable.multilineStrings.length, 2);
       expect(runnable.multilineStrings.elementAt(0), '1\n2\n3');
       expect(runnable.multilineStrings.elementAt(1), '3\n4\n5');
@@ -21,10 +23,12 @@ void main() {
 
     test('can add TableRunnable', () {
       final runnable = StepRunnable('', debugInfo);
-      runnable.addChild(TableRunnable(debugInfo)
-        ..addChild(TableRunnable(debugInfo)..rows.add('|Col A|Col B|'))
-        ..addChild(TableRunnable(debugInfo)..rows.add('|1|2|'))
-        ..addChild(TableRunnable(debugInfo)..rows.add('|3|4|')));
+      runnable.addChild(
+        TableRunnable(debugInfo)
+          ..addChild(TableRunnable(debugInfo)..rows.add('|Col A|Col B|'))
+          ..addChild(TableRunnable(debugInfo)..rows.add('|1|2|'))
+          ..addChild(TableRunnable(debugInfo)..rows.add('|3|4|')),
+      );
 
       expect(runnable.table, isNotNull);
       expect(runnable.table!.header, isNotNull);
@@ -34,20 +38,27 @@ void main() {
 
     test('can only add single TableRunnable', () {
       final runnable = StepRunnable('Step A', debugInfo);
-      runnable.addChild(TableRunnable(debugInfo)
-        ..addChild(TableRunnable(debugInfo)..rows.add('|Col A|Col B|'))
-        ..addChild(TableRunnable(debugInfo)..rows.add('|1|2|'))
-        ..addChild(TableRunnable(debugInfo)..rows.add('|3|4|')));
+      runnable.addChild(
+        TableRunnable(debugInfo)
+          ..addChild(TableRunnable(debugInfo)..rows.add('|Col A|Col B|'))
+          ..addChild(TableRunnable(debugInfo)..rows.add('|1|2|'))
+          ..addChild(TableRunnable(debugInfo)..rows.add('|3|4|')),
+      );
 
       expect(
-          () => runnable.addChild(TableRunnable(debugInfo)
+        () => runnable.addChild(
+          TableRunnable(debugInfo)
             ..addChild(TableRunnable(debugInfo)..rows.add('|Col A|Col B|'))
             ..addChild(TableRunnable(debugInfo)..rows.add('|1|2|'))
-            ..addChild(TableRunnable(debugInfo)..rows.add('|3|4|'))),
-          throwsA((e) =>
+            ..addChild(TableRunnable(debugInfo)..rows.add('|3|4|')),
+        ),
+        throwsA(
+          (e) =>
               e is GherkinSyntaxException &&
               e.message ==
-                  "Only a single table can be added to the step 'Step A'"));
+                  "Only a single table can be added to the step 'Step A'",
+        ),
+      );
     });
   });
 }

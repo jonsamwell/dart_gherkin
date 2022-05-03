@@ -8,7 +8,7 @@ import 'path_part_matcher.dart';
 
 void main() {
   group('Matcher', () {
-    final indexer = IoFeatureFileAccessor();
+    const indexer = IoFeatureFileAccessor();
 
     group('with RegExp', () {
       test('lists all matching files', () async {
@@ -71,7 +71,7 @@ void main() {
 
   group('Reader', () {
     test('file contents are read', () async {
-      final indexer = IoFeatureFileAccessor();
+      const indexer = IoFeatureFileAccessor();
 
       expect(
         await indexer.read('test/test_resources/a.feature'),

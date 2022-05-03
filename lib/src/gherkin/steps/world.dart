@@ -1,4 +1,4 @@
-import 'package:gherkin/src/gherkin/attachments/attachment_manager.dart';
+import '../attachments/attachment_manager.dart';
 
 class World {
   late AttachmentManager _attachmentManager;
