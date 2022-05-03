@@ -10,6 +10,7 @@ class JsonScenario {
   late final int line;
   late final List<JsonStep> steps;
   late final Iterable<JsonTag> tags;
+  bool passed = true;
   JsonFeature? feature;
 
   static JsonScenario from(StartedMessage message) {
@@ -30,6 +31,11 @@ class JsonScenario {
 
   void add(JsonStep step) {
     steps.add(step);
+    if (steps.last.status == 'failed' ||
+        steps.last.status == 'error' ||
+        steps.last.status == 'timeout') {
+      passed = false;
+    }
   }
 
   JsonStep currentStep() {
@@ -53,6 +59,7 @@ class JsonScenario {
       'name': name,
       'description': description,
       'line': line,
+      'passed': passed,
     };
 
     if (tags.isNotEmpty) {

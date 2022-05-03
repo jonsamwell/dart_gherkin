@@ -71,6 +71,8 @@ class TestConfiguration {
   /// the program will stop after any test failed
   bool stopAfterTestFailed = false;
 
+  int stepMaxRetries = 3;
+
   /// used to allow for custom configuration to ensure framework specific configuration is in place
   void prepare() {}
 
