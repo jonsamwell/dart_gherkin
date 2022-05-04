@@ -1,4 +1,5 @@
 import 'dart:collection';
+
 import '../exceptions/syntax_error.dart';
 
 /// Evaluates tag expression lexicon such as
@@ -26,11 +27,9 @@ class TagExpressionEvaluator {
     String tagExpression,
     List<String> tags,
   ) {
-    var match = true;
     final rpn = _convertInfixToPostfixExpression(tagExpression);
-    match = _evaluateRpn(rpn, tags);
 
-    return match;
+    return _evaluateRpn(rpn, tags);
   }
 
   bool _evaluateRpn(
@@ -38,7 +37,7 @@ class TagExpressionEvaluator {
     List<String> tags,
   ) {
     final stack = Queue<bool>();
-    for (var token in rpn) {
+    for (final token in rpn) {
       if (_isTag(token)) {
         stack.addFirst(tags.contains(token));
       } else {
@@ -72,7 +71,7 @@ class TagExpressionEvaluator {
 
   Queue<String> _convertInfixToPostfixExpression(String infixExpression) {
     final rpn = Queue<String>();
-    final operatorQueue = ListQueue();
+    final operatorQueue = ListQueue<String>();
     final expressionParts = RegExp(
       r'(\()|(or)|(and)|(not)|(@{1}\w{1}[^\s&\)]*)|(\))',
       caseSensitive: false,
@@ -84,7 +83,7 @@ class TagExpressionEvaluator {
           (m) => m.group(0)!,
         );
 
-    for (var part in expressionParts) {
+    for (final part in expressionParts) {
       if (_isTag(part)) {
         rpn.add(part);
       } else if (part == openingBracket) {
@@ -105,7 +104,10 @@ class TagExpressionEvaluator {
         operatorQueue.addLast(part);
       } else {
         throw GherkinSyntaxException(
-            "Tag expression '$infixExpression' is not valid.  Unknown token '$part'. Known tokens are '@tag', 'and', 'or', 'not' '(' and ')'");
+          "Tag expression '$infixExpression' is not valid.  "
+          "Unknown token '$part'. "
+          "Known tokens are '@tag', 'and', 'or', 'not' '(' and ')'",
+        );
       }
     }
 

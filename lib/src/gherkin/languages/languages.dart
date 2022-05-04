@@ -1,7 +1,7 @@
 ///
 /// Language file take from https://github.com/cucumber/cucumber/blob/master/gherkin/gherkin-languages.json
 ///
-final Map<String, dynamic> LANGUAGES_JSON = {
+final Map<String, dynamic> kLanguagesJson = {
   'af': {
     'and': ['* ', 'En '],
     'background': ['Agtergrond'],

@@ -10,51 +10,58 @@ void main() {
     test('matches correctly', () {
       final syntax = ExampleSyntax();
       expect(
-          syntax.isMatch(
-            'Examples:',
-            EnDialectMock(),
-          ),
-          true);
+        syntax.isMatch(
+          'Examples:',
+          EnDialectMock(),
+        ),
+        true,
+      );
       expect(
-          syntax.isMatch(
-            'Examples: ',
-            EnDialectMock(),
-          ),
-          true);
+        syntax.isMatch(
+          'Examples: ',
+          EnDialectMock(),
+        ),
+        true,
+      );
       expect(
-          syntax.isMatch(
-            'Examples: something',
-            EnDialectMock(),
-          ),
-          true);
+        syntax.isMatch(
+          'Examples: something',
+          EnDialectMock(),
+        ),
+        true,
+      );
       expect(
-          syntax.isMatch(
-            ' Examples:   something',
-            EnDialectMock(),
-          ),
-          true);
+        syntax.isMatch(
+          ' Examples:   something',
+          EnDialectMock(),
+        ),
+        true,
+      );
     });
 
     test('does not match', () {
       final syntax = ExampleSyntax();
       expect(
-          syntax.isMatch(
-            'Examples',
-            EnDialectMock(),
-          ),
-          false);
+        syntax.isMatch(
+          'Examples',
+          EnDialectMock(),
+        ),
+        false,
+      );
       expect(
-          syntax.isMatch(
-            'Example something',
-            EnDialectMock(),
-          ),
-          false);
+        syntax.isMatch(
+          'Example something',
+          EnDialectMock(),
+        ),
+        false,
+      );
       expect(
-          syntax.isMatch(
-            '#Examples: something',
-            EnDialectMock(),
-          ),
-          false);
+        syntax.isMatch(
+          '#Examples: something',
+          EnDialectMock(),
+        ),
+        false,
+      );
     });
   });
 
@@ -63,7 +70,7 @@ void main() {
       final syntax = ExampleSyntax();
       final runnable = syntax.toRunnable(
         'Examples: An example 123',
-        RunnableDebugInformation.EMPTY(),
+        RunnableDebugInformation.empty(),
         EnDialectMock(),
       );
       expect(runnable, isNotNull);
@@ -75,7 +82,7 @@ void main() {
       final syntax = ExampleSyntax();
       final runnable = syntax.toRunnable(
         'Examples:   ',
-        RunnableDebugInformation.EMPTY(),
+        RunnableDebugInformation.empty(),
         EnDialectMock(),
       );
       expect(runnable, isNotNull);
@@ -87,7 +94,7 @@ void main() {
       final syntax = ExampleSyntax();
       final runnable = syntax.toRunnable(
         'Examples:',
-        RunnableDebugInformation.EMPTY(),
+        RunnableDebugInformation.empty(),
         EnDialectMock(),
       );
       expect(runnable, isNotNull);

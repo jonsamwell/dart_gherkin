@@ -1,13 +1,13 @@
-import 'package:gherkin/src/gherkin/languages/dialect.dart';
+import '../languages/dialect.dart';
 
 import '../runnables/background.dart';
 import '../runnables/debug_information.dart';
 import '../runnables/runnable.dart';
-import './empty_line_syntax.dart';
-import './regex_matched_syntax.dart';
-import './scenario_syntax.dart';
-import './syntax_matcher.dart';
-import './tag_syntax.dart';
+import 'empty_line_syntax.dart';
+import 'regex_matched_syntax.dart';
+import 'scenario_syntax.dart';
+import 'syntax_matcher.dart';
+import 'tag_syntax.dart';
 
 class BackgroundSyntax extends RegExMatchedGherkinSyntax {
   @override

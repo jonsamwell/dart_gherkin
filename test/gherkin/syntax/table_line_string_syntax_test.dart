@@ -13,70 +13,79 @@ void main() {
     test('matches correctly', () {
       final syntax = TableLineSyntax();
       expect(
-          syntax.isMatch(
-            '||',
-            EnDialectMock(),
-          ),
-          true);
+        syntax.isMatch(
+          '||',
+          EnDialectMock(),
+        ),
+        true,
+      );
       expect(
-          syntax.isMatch(
-            ' | | ',
-            EnDialectMock(),
-          ),
-          true);
+        syntax.isMatch(
+          ' | | ',
+          EnDialectMock(),
+        ),
+        true,
+      );
       expect(
-          syntax.isMatch(
-            '  |a|b|c| ',
-            EnDialectMock(),
-          ),
-          true);
+        syntax.isMatch(
+          '  |a|b|c| ',
+          EnDialectMock(),
+        ),
+        true,
+      );
     });
 
     test('allows trailing comment', () {
       final syntax = TableLineSyntax();
 
       expect(
-          syntax.isMatch(
-            '  |a|b|c| #comment',
-            EnDialectMock(),
-          ),
-          true);
+        syntax.isMatch(
+          '  |a|b|c| #comment',
+          EnDialectMock(),
+        ),
+        true,
+      );
 
       expect(
-          syntax.isMatch(
-            '  |a|b|c|#comment with spaces',
-            EnDialectMock(),
-          ),
-          true);
+        syntax.isMatch(
+          '  |a|b|c|#comment with spaces',
+          EnDialectMock(),
+        ),
+        true,
+      );
 
       expect(
-          syntax.isMatch(
-            '  |a|b|c| # comment with spaces',
-            EnDialectMock(),
-          ),
-          true);
+        syntax.isMatch(
+          '  |a|b|c| # comment with spaces',
+          EnDialectMock(),
+        ),
+        true,
+      );
     });
 
     test('does not match', () {
       final syntax = TableLineSyntax();
       expect(
-          syntax.isMatch(
-            '#||',
-            EnDialectMock(),
-          ),
-          false);
+        syntax.isMatch(
+          '#||',
+          EnDialectMock(),
+        ),
+        false,
+      );
       expect(
-          syntax.isMatch(
-            ' |  ',
-            EnDialectMock(),
-          ),
-          false);
+        syntax.isMatch(
+          ' |  ',
+          EnDialectMock(),
+        ),
+        false,
+      );
       expect(
-          syntax.isMatch(
-            '  |a|b|c ',
-            EnDialectMock(),
-          ),
-          false);
+        syntax.isMatch(
+          '  |a|b|c ',
+          EnDialectMock(),
+        ),
+        false,
+      );
     });
   });
 
@@ -134,7 +143,7 @@ void main() {
       final syntax = TableLineSyntax();
       final runnable = syntax.toRunnable(
         ' | Column One | Column Two | ',
-        RunnableDebugInformation.EMPTY(),
+        RunnableDebugInformation.empty(),
         EnDialectMock(),
       );
       expect(runnable, isNotNull);
@@ -147,13 +156,15 @@ void main() {
       final syntax = TableLineSyntax();
       final runnable = syntax.toRunnable(
         ' | Column One | Column Two | Column Three | # comment with spaces',
-        RunnableDebugInformation.EMPTY(),
+        RunnableDebugInformation.empty(),
         EnDialectMock(),
       );
       expect(runnable, isNotNull);
       expect(runnable, predicate((x) => x is TableRunnable));
-      expect(runnable.rows.elementAt(0),
-          '| Column One | Column Two | Column Three |');
+      expect(
+        runnable.rows.elementAt(0),
+        '| Column One | Column Two | Column Three |',
+      );
       expect(runnable.rows.length, 1);
     });
   });

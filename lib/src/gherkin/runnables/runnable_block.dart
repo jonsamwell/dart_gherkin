@@ -1,5 +1,5 @@
-import './debug_information.dart';
-import './runnable.dart';
+import 'debug_information.dart';
+import 'runnable.dart';
 
 abstract class RunnableBlock extends Runnable {
   RunnableBlock(RunnableDebugInformation debug) : super(debug);

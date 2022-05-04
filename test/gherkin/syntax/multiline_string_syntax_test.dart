@@ -12,63 +12,72 @@ void main() {
     test('matches correctly', () {
       final syntax = MultilineStringSyntax();
       expect(
-          syntax.isMatch(
-            '"""',
-            EnDialectMock(),
-          ),
-          true);
+        syntax.isMatch(
+          '"""',
+          EnDialectMock(),
+        ),
+        true,
+      );
       expect(
-          syntax.isMatch(
-            '```',
-            EnDialectMock(),
-          ),
-          true);
+        syntax.isMatch(
+          '```',
+          EnDialectMock(),
+        ),
+        true,
+      );
       expect(
-          syntax.isMatch(
-            "'''",
-            EnDialectMock(),
-          ),
-          true);
+        syntax.isMatch(
+          "'''",
+          EnDialectMock(),
+        ),
+        true,
+      );
     });
 
     test('does not match', () {
       final syntax = MultilineStringSyntax();
       expect(
-          syntax.isMatch(
-            '#"""',
-            EnDialectMock(),
-          ),
-          false);
+        syntax.isMatch(
+          '#"""',
+          EnDialectMock(),
+        ),
+        false,
+      );
       expect(
-          syntax.isMatch(
-            '#```',
-            EnDialectMock(),
-          ),
-          false);
+        syntax.isMatch(
+          '#```',
+          EnDialectMock(),
+        ),
+        false,
+      );
       expect(
-          syntax.isMatch(
-            "#'''",
-            EnDialectMock(),
-          ),
-          false);
+        syntax.isMatch(
+          "#'''",
+          EnDialectMock(),
+        ),
+        false,
+      );
       expect(
-          syntax.isMatch(
-            '"',
-            EnDialectMock(),
-          ),
-          false);
+        syntax.isMatch(
+          '"',
+          EnDialectMock(),
+        ),
+        false,
+      );
       expect(
-          syntax.isMatch(
-            '`',
-            EnDialectMock(),
-          ),
-          false);
+        syntax.isMatch(
+          '`',
+          EnDialectMock(),
+        ),
+        false,
+      );
       expect(
-          syntax.isMatch(
-            "'",
-            EnDialectMock(),
-          ),
-          false);
+        syntax.isMatch(
+          "'",
+          EnDialectMock(),
+        ),
+        false,
+      );
     });
   });
 
@@ -99,7 +108,7 @@ void main() {
       final syntax = MultilineStringSyntax();
       final runnable = syntax.toRunnable(
         "'''",
-        RunnableDebugInformation.EMPTY(),
+        RunnableDebugInformation.empty(),
         EnDialectMock(),
       );
       expect(runnable, isNotNull);

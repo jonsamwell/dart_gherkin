@@ -10,33 +10,37 @@ void main() {
     test('matches correctly', () {
       final keyword = FeatureSyntax();
       expect(
-          keyword.isMatch(
-            'Feature: one',
-            EnDialectMock(),
-          ),
-          true);
+        keyword.isMatch(
+          'Feature: one',
+          EnDialectMock(),
+        ),
+        true,
+      );
       expect(
-          keyword.isMatch(
-            'Feature:one',
-            EnDialectMock(),
-          ),
-          true);
+        keyword.isMatch(
+          'Feature:one',
+          EnDialectMock(),
+        ),
+        true,
+      );
     });
 
     test('does not match', () {
       final keyword = FeatureSyntax();
       expect(
-          keyword.isMatch(
-            '#Feature: no',
-            EnDialectMock(),
-          ),
-          false);
+        keyword.isMatch(
+          '#Feature: no',
+          EnDialectMock(),
+        ),
+        false,
+      );
       expect(
-          keyword.isMatch(
-            '# Feature no',
-            EnDialectMock(),
-          ),
-          false);
+        keyword.isMatch(
+          '# Feature no',
+          EnDialectMock(),
+        ),
+        false,
+      );
     });
   });
 
@@ -45,7 +49,7 @@ void main() {
       final keyword = FeatureSyntax();
       final runnable = keyword.toRunnable(
         'Feature: A feature 123',
-        RunnableDebugInformation.EMPTY(),
+        RunnableDebugInformation.empty(),
         EnDialectMock(),
       );
       expect(runnable, isNotNull);

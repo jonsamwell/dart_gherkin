@@ -1,5 +1,5 @@
-import './debug_information.dart';
-import './runnable.dart';
+import 'debug_information.dart';
+import 'runnable.dart';
 
 class TextLineRunnable extends Runnable {
   /// The trimmed version of the line

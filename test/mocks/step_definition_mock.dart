@@ -1,5 +1,4 @@
 import 'package:gherkin/gherkin.dart';
-import 'package:gherkin/src/gherkin/steps/step_definition_implementations.dart';
 
 typedef OnRunCode = Future<void> Function(Iterable parameters);
 
