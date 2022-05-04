@@ -71,7 +71,13 @@ class TestConfiguration {
   /// the program will stop after any test failed
   bool stopAfterTestFailed = false;
 
-  int stepMaxRetries = 3;
+  /// When a step fails, it will retry this number of times.
+  /// When it still fails after these tries the step will fail.
+  int stepMaxRetries = 0;
+
+  /// When a step fails, it will wait this long before retrying.
+  /// For instance, you know that when it fails, it can take a bit longer (async).
+  Duration retryDelay = const Duration(seconds: 2);
 
   /// used to allow for custom configuration to ensure framework specific configuration is in place
   void prepare() {}
