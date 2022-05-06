@@ -60,12 +60,13 @@ abstract class StepDefinitionGeneric<TWorld extends World> {
         te,
         st,
       );
-    } on Exception catch (e, st) {
+    } on Error catch (e, st) {
       return ErroredStepResult(
         elapsedMilliseconds,
         StepExecutionResult.error,
-        e,
+        Exception(e.toString()),
         st,
+        (e as StateError).message,
       );
     } catch (e, st) {
       return ErroredStepResult(

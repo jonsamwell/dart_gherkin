@@ -4,6 +4,8 @@ import 'json_step.dart';
 import 'json_tag.dart';
 
 class JsonScenario {
+  bool passed = true;
+  
   /// Target type
   final Target target;
 
@@ -15,6 +17,14 @@ class JsonScenario {
 
   final int line;
 
+  void add(JsonStep step) {
+    steps.add(step);
+    if (steps.last.status == 'failed' ||
+        steps.last.status == 'error' ||
+        steps.last.status == 'timeout') {
+      passed = false;
+    }
+  }
   /// Filtering tags above the scenario
   final Iterable<JsonTag> tags;
 
@@ -61,9 +71,6 @@ class JsonScenario {
         ],
       );
 
-  /// Add [step] in [steps]
-  void add(JsonStep step) => steps.add(step);
-
   /// Returns the [steps.last] if [steps.isEmpty]
   /// otherwise adds the [JsonStep.empty] value to the [steps]
   JsonStep get currentStep {
@@ -83,6 +90,7 @@ class JsonScenario {
       'name': name,
       'description': description,
       'line': line,
+      'passed': passed,
     };
 
     if (tags.isNotEmpty) {

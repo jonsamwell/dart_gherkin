@@ -313,6 +313,7 @@ class FeatureFileRunner {
         _config,
         scenario.name,
         tags,
+        scenarioPassed,
       );
 
       try {
