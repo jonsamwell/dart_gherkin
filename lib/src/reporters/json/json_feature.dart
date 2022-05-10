@@ -1,60 +1,70 @@
-import '../messages.dart';
+import '../messages/messages.dart';
 import 'json_scenario.dart';
-import 'json_step.dart';
 import 'json_tag.dart';
 
 class JsonFeature {
-  late final String uri;
-  late final String name;
-  late final String description;
-  late final int line;
-  String? id;
-  Iterable<JsonTag>? tags;
-  List<JsonScenario>? scenarios;
+  final String uri;
+  final String name;
+  final String description;
+  final int line;
+  final String? id;
+  final Iterable<JsonTag> tags;
+  List<JsonScenario> scenarios;
 
-  static JsonFeature from(StartedMessage message) {
-    final feature = JsonFeature();
-    feature.uri = message.context.filePath;
-    feature.id = message.name.toLowerCase();
-    feature.name = message.name;
-    feature.description = '';
-    feature.line = message.context.nonZeroAdjustedLineNumber;
-    feature.tags =
-        message.tags.map((t) => JsonTag(t.name, t.nonZeroAdjustedLineNumber));
+  // TODO(shigomany): Maybe immutable?
+  JsonFeature({
+    required this.uri,
+    required this.name,
+    required this.line,
+    this.description = '',
+    this.id,
+    List<JsonScenario>? scenarios,
+    Iterable<JsonTag>? tags,
+  })  : scenarios = scenarios ?? [],
+        tags = tags ?? [];
+
+  /// Convert [StartedMessage] to [JsonFeature]
+  factory JsonFeature.from(FeatureMessage message) {
+    final feature = JsonFeature(
+      uri: message.context.filePath,
+      id: message.name.toLowerCase(),
+      name: message.name,
+      line: message.context.nonZeroAdjustedLineNumber,
+      tags: message.tags.map((t) => JsonTag.fromMessageTag(t)),
+    );
 
     return feature;
   }
 
-  void add(
-    JsonScenario scenario,
-  ) {
+  /// Create [JsonFeature] with empty fields and
+  /// has one [JsonScenario.empty] in [scenarios]
+  static JsonFeature get empty => JsonFeature(
+        name: 'Unnamed feature',
+        description: 'An unnamed feature is possible '
+            'if something is logged before any feature has started to execute',
+        scenarios: [JsonScenario.empty],
+        line: 0,
+        uri: 'unknown',
+      );
+
+  /// Add scenario in [scenarios] and
+  /// sets the reference [scenario.feature] on this.
+  void add(JsonScenario scenario) {
     scenario.feature = this;
-    scenarios ??= <JsonScenario>[];
-    scenarios?.add(scenario);
+    scenarios.add(scenario);
   }
 
-  JsonScenario currentScenario() {
-    if (scenarios == null || scenarios!.isEmpty) {
-      final scenario = JsonScenario()
-        ..target = Target.scenario
-        ..name = 'Unnamed'
-        ..description =
-            'An unnamed scenario is possible if something is logged before any scenario steps have started to execute'
-        ..line = 0
-        ..tags = <JsonTag>[]
-        ..steps = <JsonStep>[
-          JsonStep()
-            ..name = 'Unnamed'
-            ..line = 0
-        ];
-
-      scenarios = (scenarios ?? [])..add(scenario);
+  /// Returns the [scenarios.last] if [scenarios.isEmpty]
+  /// otherwise adds the [JsonScenario.empty] value to the [scenarios]
+  JsonScenario get currentScenario {
+    if (scenarios.isEmpty) {
+      scenarios.add(JsonScenario.empty);
     }
 
-    return scenarios!.last;
+    return scenarios.last;
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, Object?> toJson() {
     final result = {
       'description': description,
       'id': id,
@@ -64,12 +74,12 @@ class JsonFeature {
       'uri': uri,
     };
 
-    if (tags != null && tags!.isNotEmpty) {
-      result['tags'] = tags!.toList();
+    if (tags.isNotEmpty) {
+      result['tags'] = tags.toList();
     }
 
-    if (scenarios != null && scenarios!.isNotEmpty) {
-      result['elements'] = scenarios!.toList();
+    if (scenarios.isNotEmpty) {
+      result['elements'] = scenarios.toList();
     }
 
     return result;

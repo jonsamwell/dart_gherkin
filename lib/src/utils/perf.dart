@@ -1,6 +1,6 @@
 import 'dart:async';
 
-class Perf {
+abstract class Perf {
   static Future<T> measure<T>(
     Future<T> Function() action,
     void Function(int elapsedMilliseconds) logFn,

@@ -24,9 +24,7 @@ class HookMock extends Hook {
   @override
   Future<void> onBeforeRun(TestConfiguration config) async {
     onBeforeRunInvocationCount += 1;
-    if (onBeforeRunCode != null) {
-      onBeforeRunCode!();
-    }
+    onBeforeRunCode?.call();
   }
 
   @override

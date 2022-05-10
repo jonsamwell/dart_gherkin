@@ -1,9 +1,8 @@
-import 'package:gherkin/src/expect/expect_mimic.dart';
-
+import '../../expect/expect_mimic.dart';
 import '../../reporters/reporter.dart';
-import './step_configuration.dart';
-import './step_definition.dart';
-import './world.dart';
+import 'step_configuration.dart';
+import 'step_definition.dart';
+import 'world.dart';
 
 abstract class StepDefinitionBase<TWorld extends World>
     extends StepDefinitionGeneric<TWorld> {
@@ -13,8 +12,8 @@ abstract class StepDefinitionBase<TWorld extends World>
   ) : super(config, expectParameterCount);
 
   void expect(
-    actual,
-    matcher, {
+    dynamic actual,
+    dynamic matcher, {
     String? reason,
   }) =>
       ExpectMimic().expect(
@@ -24,8 +23,8 @@ abstract class StepDefinitionBase<TWorld extends World>
       );
 
   void expectA(
-    actual,
-    matcher, {
+    dynamic actual,
+    dynamic matcher, {
     String? reason,
   }) =>
       expect(
@@ -35,8 +34,8 @@ abstract class StepDefinitionBase<TWorld extends World>
       );
 
   void expectMatch(
-    actual,
-    matcher, {
+    dynamic actual,
+    dynamic matcher, {
     String? reason,
   }) =>
       expect(
@@ -52,7 +51,7 @@ abstract class StepDefinition<TWorld extends World>
       : super(configuration, 0);
 
   @override
-  Future<void> onRun(Iterable<dynamic> parameters) async => await executeStep();
+  Future<void> onRun(Iterable<dynamic> parameters) => executeStep();
 
   Future<void> executeStep();
 }
@@ -63,8 +62,8 @@ abstract class StepDefinition1<TWorld extends World, TInput1>
       : super(configuration, 1);
 
   @override
-  Future<void> onRun(Iterable<dynamic> parameters) async =>
-      await executeStep(parameters.elementAt(0));
+  Future<void> onRun(Iterable<dynamic> parameters) =>
+      executeStep(parameters.elementAt(0) as TInput1);
 
   Future<void> executeStep(TInput1 input1);
 }
@@ -75,9 +74,9 @@ abstract class StepDefinition2<TWorld extends World, TInput1, TInput2>
       : super(configuration, 2);
 
   @override
-  Future<void> onRun(Iterable<dynamic> parameters) async => await executeStep(
-        parameters.elementAt(0),
-        parameters.elementAt(1),
+  Future<void> onRun(Iterable<dynamic> parameters) => executeStep(
+        parameters.elementAt(0) as TInput1,
+        parameters.elementAt(1) as TInput2,
       );
 
   Future<void> executeStep(
@@ -92,10 +91,10 @@ abstract class StepDefinition3<TWorld extends World, TInput1, TInput2, TInput3>
       : super(configuration, 3);
 
   @override
-  Future<void> onRun(Iterable<dynamic> parameters) async => await executeStep(
-        parameters.elementAt(0),
-        parameters.elementAt(1),
-        parameters.elementAt(2),
+  Future<void> onRun(Iterable<dynamic> parameters) => executeStep(
+        parameters.elementAt(0) as TInput1,
+        parameters.elementAt(1) as TInput2,
+        parameters.elementAt(2) as TInput3,
       );
 
   Future<void> executeStep(
@@ -111,11 +110,11 @@ abstract class StepDefinition4<TWorld extends World, TInput1, TInput2, TInput3,
       : super(configuration, 4);
 
   @override
-  Future<void> onRun(Iterable<dynamic> parameters) async => await executeStep(
-        parameters.elementAt(0),
-        parameters.elementAt(1),
-        parameters.elementAt(2),
-        parameters.elementAt(3),
+  Future<void> onRun(Iterable<dynamic> parameters) => executeStep(
+        parameters.elementAt(0) as TInput1,
+        parameters.elementAt(1) as TInput2,
+        parameters.elementAt(2) as TInput3,
+        parameters.elementAt(3) as TInput4,
       );
 
   Future<void> executeStep(
@@ -132,12 +131,12 @@ abstract class StepDefinition5<TWorld extends World, TInput1, TInput2, TInput3,
       : super(configuration, 5);
 
   @override
-  Future<void> onRun(Iterable<dynamic> parameters) async => await executeStep(
-        parameters.elementAt(0),
-        parameters.elementAt(1),
-        parameters.elementAt(2),
-        parameters.elementAt(3),
-        parameters.elementAt(4),
+  Future<void> onRun(Iterable<dynamic> parameters) => executeStep(
+        parameters.elementAt(0) as TInput1,
+        parameters.elementAt(1) as TInput2,
+        parameters.elementAt(2) as TInput3,
+        parameters.elementAt(3) as TInput4,
+        parameters.elementAt(4) as TInput5,
       );
 
   Future<void> executeStep(
@@ -164,8 +163,8 @@ class StepContext<TWorld extends World> {
 
   /// Assert that [actual] matches [matcher], [reason] is optional.
   void expect(
-    actual,
-    matcher, {
+    dynamic actual,
+    dynamic matcher, {
     String? reason,
   }) =>
       ExpectMimic().expect(
@@ -176,8 +175,8 @@ class StepContext<TWorld extends World> {
 
   /// Assert that [actual] matches [matcher], [reason] is optional.
   void expectA(
-    actual,
-    matcher, {
+    dynamic actual,
+    dynamic matcher, {
     String? reason,
   }) =>
       expect(
@@ -188,8 +187,8 @@ class StepContext<TWorld extends World> {
 
   /// Assert that [actual] matches [matcher], [reason] is optional.
   void expectMatch(
-    actual,
-    matcher, {
+    dynamic actual,
+    dynamic matcher, {
     String? reason,
   }) =>
       expect(
@@ -232,8 +231,7 @@ class GenericFunctionStepDefinition<TWorld extends World>
         setupConfig,
       ),
     ];
-
-    return Function.apply(_onInvoke, methodParams);
+    return Function.apply(_onInvoke, methodParams) as Future<void>;
   }
 
   @override

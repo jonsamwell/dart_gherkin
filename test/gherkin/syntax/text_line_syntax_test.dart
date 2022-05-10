@@ -10,81 +10,93 @@ void main() {
     test('matches correctly', () {
       final syntax = TextLineSyntax();
       expect(
-          syntax.isMatch(
-            'Hello Jon',
-            EnDialectMock(),
-          ),
-          true);
+        syntax.isMatch(
+          'Hello Jon',
+          EnDialectMock(),
+        ),
+        true,
+      );
       expect(
-          syntax.isMatch(
-            "Hello 'Jon'!",
-            EnDialectMock(),
-          ),
-          true);
+        syntax.isMatch(
+          "Hello 'Jon'!",
+          EnDialectMock(),
+        ),
+        true,
+      );
       expect(
-          syntax.isMatch(
-            ' Hello Jon',
-            EnDialectMock(),
-          ),
-          true);
+        syntax.isMatch(
+          ' Hello Jon',
+          EnDialectMock(),
+        ),
+        true,
+      );
       expect(
-          syntax.isMatch(
-            '  Hello Jon',
-            EnDialectMock(),
-          ),
-          true);
+        syntax.isMatch(
+          '  Hello Jon',
+          EnDialectMock(),
+        ),
+        true,
+      );
       expect(
-          syntax.isMatch(
-            '   h ',
-            EnDialectMock(),
-          ),
-          true);
+        syntax.isMatch(
+          '   h ',
+          EnDialectMock(),
+        ),
+        true,
+      );
       expect(
-          syntax.isMatch(
-            '*',
-            EnDialectMock(),
-          ),
-          true);
+        syntax.isMatch(
+          '*',
+          EnDialectMock(),
+        ),
+        true,
+      );
       expect(
-          syntax.isMatch(
-            ' +  ',
-            EnDialectMock(),
-          ),
-          true);
+        syntax.isMatch(
+          ' +  ',
+          EnDialectMock(),
+        ),
+        true,
+      );
     });
 
     test('does not match', () {
       final syntax = TextLineSyntax();
       expect(
-          syntax.isMatch(
-            '#Hello Jon',
-            EnDialectMock(),
-          ),
-          false);
+        syntax.isMatch(
+          '#Hello Jon',
+          EnDialectMock(),
+        ),
+        false,
+      );
       expect(
-          syntax.isMatch(
-            '# Hello Jon',
-            EnDialectMock(),
-          ),
-          false);
+        syntax.isMatch(
+          '# Hello Jon',
+          EnDialectMock(),
+        ),
+        false,
+      );
       expect(
-          syntax.isMatch(
-            '#  Hello Jon',
-            EnDialectMock(),
-          ),
-          false);
+        syntax.isMatch(
+          '#  Hello Jon',
+          EnDialectMock(),
+        ),
+        false,
+      );
       expect(
-          syntax.isMatch(
-            '      ',
-            EnDialectMock(),
-          ),
-          false);
+        syntax.isMatch(
+          '      ',
+          EnDialectMock(),
+        ),
+        false,
+      );
       expect(
-          syntax.isMatch(
-            ' #   h ',
-            EnDialectMock(),
-          ),
-          false);
+        syntax.isMatch(
+          ' #   h ',
+          EnDialectMock(),
+        ),
+        false,
+      );
     });
   });
 
@@ -93,7 +105,7 @@ void main() {
       final syntax = TextLineSyntax();
       final runnable = syntax.toRunnable(
         '  Some text ',
-        RunnableDebugInformation.EMPTY(),
+        RunnableDebugInformation.empty(),
         EnDialectMock(),
       );
       expect(runnable, isNotNull);

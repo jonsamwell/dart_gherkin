@@ -1,10 +1,10 @@
 import '../exceptions/syntax_error.dart';
 import '../models/table.dart';
-import './debug_information.dart';
-import './runnable.dart';
-import './table.dart';
-import './tags.dart';
+import 'debug_information.dart';
+import 'runnable.dart';
+import 'table.dart';
 import 'taggable_runnable_block.dart';
+import 'tags.dart';
 
 class ExampleRunnable extends TaggableRunnableBlock {
   final String _name;

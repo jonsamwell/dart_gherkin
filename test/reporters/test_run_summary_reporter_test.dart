@@ -1,5 +1,4 @@
 import 'package:gherkin/gherkin.dart';
-import 'package:gherkin/src/gherkin/steps/step_run_result.dart';
 import 'package:test/test.dart';
 
 class TestableTestRunSummaryReporter extends TestRunSummaryReporter {
@@ -18,85 +17,93 @@ void main() {
     test('provides correct output', () async {
       final reporter = TestableTestRunSummaryReporter();
 
-      await reporter.onStepFinished(
-        StepFinishedMessage(
-          '',
-          RunnableDebugInformation.EMPTY(),
-          StepResult(0, StepExecutionResult.pass),
+      await reporter.step.onFinished.maybeCall(
+        StepMessage(
+          name: '',
+          context: RunnableDebugInformation.empty(),
+          result: StepResult(0, StepExecutionResult.passed),
         ),
       );
-      await reporter.onStepFinished(
-        StepFinishedMessage(
-          '',
-          RunnableDebugInformation.EMPTY(),
-          StepResult(0, StepExecutionResult.fail),
+      await reporter.step.onFinished.maybeCall(
+        StepMessage(
+          name: '',
+          context: RunnableDebugInformation.empty(),
+          result: StepResult(0, StepExecutionResult.fail),
         ),
       );
-      await reporter.onStepFinished(
-        StepFinishedMessage(
-          '',
-          RunnableDebugInformation.EMPTY(),
-          StepResult(0, StepExecutionResult.skipped),
+      await reporter.step.onFinished.maybeCall(
+        StepMessage(
+          name: '',
+          context: RunnableDebugInformation.empty(),
+          result: StepResult(0, StepExecutionResult.skipped),
         ),
       );
-      await reporter.onStepFinished(
-        StepFinishedMessage(
-          '',
-          RunnableDebugInformation.EMPTY(),
-          StepResult(0, StepExecutionResult.skipped),
+      await reporter.step.onFinished.maybeCall(
+        StepMessage(
+          name: '',
+          context: RunnableDebugInformation.empty(),
+          result: StepResult(0, StepExecutionResult.skipped),
         ),
       );
-      await reporter.onStepFinished(
-        StepFinishedMessage(
-          '',
-          RunnableDebugInformation.EMPTY(),
-          StepResult(0, StepExecutionResult.pass),
+      await reporter.step.onFinished.maybeCall(
+        StepMessage(
+          name: '',
+          context: RunnableDebugInformation.empty(),
+          result: StepResult(0, StepExecutionResult.passed),
         ),
       );
-      await reporter.onStepFinished(
-        StepFinishedMessage(
-          '',
-          RunnableDebugInformation.EMPTY(),
-          StepResult(0, StepExecutionResult.error),
+      await reporter.step.onFinished.maybeCall(
+        StepMessage(
+          name: '',
+          context: RunnableDebugInformation.empty(),
+          result: StepResult(0, StepExecutionResult.error),
         ),
       );
-      await reporter.onStepFinished(
-        StepFinishedMessage(
-          '',
-          RunnableDebugInformation.EMPTY(),
-          StepResult(0, StepExecutionResult.pass),
+      await reporter.step.onFinished.maybeCall(
+        StepMessage(
+          name: '',
+          context: RunnableDebugInformation.empty(),
+          result: StepResult(0, StepExecutionResult.passed),
         ),
       );
-      await reporter.onStepFinished(
-        StepFinishedMessage(
-          '',
-          RunnableDebugInformation.EMPTY(),
-          StepResult(0, StepExecutionResult.timeout),
+      await reporter.step.onFinished.maybeCall(
+        StepMessage(
+          name: '',
+          context: RunnableDebugInformation.empty(),
+          result: StepResult(0, StepExecutionResult.timeout),
         ),
       );
 
-      await reporter.onScenarioFinished(ScenarioFinishedMessage(
-        '',
-        RunnableDebugInformation.EMPTY(),
-        true,
-      ));
-      await reporter.onScenarioFinished(ScenarioFinishedMessage(
-        '',
-        RunnableDebugInformation.EMPTY(),
-        false,
-      ));
-      await reporter.onScenarioFinished(ScenarioFinishedMessage(
-        '',
-        RunnableDebugInformation.EMPTY(),
-        false,
-      ));
-      await reporter.onScenarioFinished(ScenarioFinishedMessage(
-        '',
-        RunnableDebugInformation.EMPTY(),
-        true,
-      ));
+      await reporter.scenario.onFinished.maybeCall(
+        ScenarioMessage(
+          name: '',
+          context: RunnableDebugInformation.empty(),
+          isPassed: true,
+        ),
+      );
+      await reporter.scenario.onFinished.maybeCall(
+        ScenarioMessage(
+          name: '',
+          context: RunnableDebugInformation.empty(),
+          isPassed: false,
+        ),
+      );
+      await reporter.scenario.onFinished.maybeCall(
+        ScenarioMessage(
+          name: '',
+          context: RunnableDebugInformation.empty(),
+          isPassed: false,
+        ),
+      );
+      await reporter.scenario.onFinished.maybeCall(
+        ScenarioMessage(
+          name: '',
+          context: RunnableDebugInformation.empty(),
+          isPassed: true,
+        ),
+      );
 
-      await reporter.onTestRunFinished();
+      await reporter.test.onFinished.maybeCall();
       expect(reporter.output, [
         '4 scenarios (\x1B[33;32m2 passed\x1B[33;0m, \x1B[33;31m2 failed\x1B[33;0m)',
         '8 steps (\x1B[33;32m3 passed\x1B[33;0m, \x1B[33;10m2 skipped\x1B[33;0m, \x1B[33;31m3 failed\x1B[33;0m)',

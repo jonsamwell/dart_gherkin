@@ -1,7 +1,6 @@
-import 'package:gherkin/src/gherkin/runnables/runnable_block.dart';
-import 'package:gherkin/src/gherkin/runnables/tags.dart';
-
-import './debug_information.dart';
+import 'debug_information.dart';
+import 'runnable_block.dart';
+import 'tags.dart';
 
 abstract class TaggableRunnableBlock extends RunnableBlock {
   final List<TagsRunnable> _tags = <TagsRunnable>[];

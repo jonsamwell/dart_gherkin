@@ -1,55 +1,64 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:gherkin/src/reporters/json/json_tag.dart';
 
-import '../messages.dart';
-import '../reporter.dart';
-import '../serializable_reporter.dart';
+import '../../../gherkin.dart';
 import 'json_feature.dart';
 import 'json_scenario.dart';
 import 'json_step.dart';
 
-class JsonReporter extends Reporter implements SerializableReporter {
-  final List<JsonFeature> _features = [];
+class JsonReporter
+    implements
+        JsonSerializableReporter,
+        TestReporter,
+        FeatureReporter,
+        ScenarioReporter,
+        StepReporter,
+        ExceptionReporter {
+  final List<JsonFeature> _features;
   final String path;
-  final Future<void> Function(String jsonReport, String path)? writeReport;
+  final WriteReportCallback? writeReport;
 
   JsonReporter({
     this.path = './report.json',
     this.writeReport,
-  });
+  }) : _features = [];
 
-  @override
-  Future<void> onFeatureStarted(StartedMessage message) async {
-    _features.add(JsonFeature.from(message));
+  JsonFeature get _currentFeature {
+    if (_features.isEmpty) {
+      _features.add(JsonFeature.empty);
+    }
+
+    return _features.last;
   }
 
   @override
-  Future<void> onScenarioStarted(StartedMessage message) async {
-    _getCurrentFeature().add(JsonScenario.from(message));
-  }
+  ReportActionHandler<TestMessage> get test =>
+      ReportActionHandler(onFinished: ([message]) => _generateReport(path));
 
   @override
-  Future<void> onStepStarted(StepStartedMessage message) async {
-    _getCurrentFeature().currentScenario().add(JsonStep.from(message));
-  }
+  ReportActionHandler<FeatureMessage> get feature => ReportActionHandler(
+        onStarted: ([message]) async =>
+            _features.add(JsonFeature.from(message!)),
+      );
 
   @override
-  Future<void> onStepFinished(StepFinishedMessage message) async {
-    _getCurrentFeature().currentScenario().currentStep().onFinish(message);
-  }
+  ReportActionHandler<ScenarioMessage> get scenario => ReportActionHandler(
+        onStarted: ([message]) async =>
+            _currentFeature.add(JsonScenario.from(message!)),
+      );
+
+  @override
+  ReportActionHandler<StepMessage> get step => ReportActionHandler(
+        onStarted: ([message]) async =>
+            _currentFeature.currentScenario.add(JsonStep.from(message!)),
+        onFinished: ([message]) async =>
+            _currentFeature.currentScenario.currentStep.onFinish(message!),
+      );
 
   @override
   Future<void> onException(Object exception, StackTrace stackTrace) async {
-    _getCurrentFeature()
-        .currentScenario()
-        .currentStep()
+    _currentFeature.currentScenario.currentStep
         .onException(exception, stackTrace);
-  }
-
-  @override
-  Future<void> onTestRunFinished() async {
-    await _generateReport(path);
   }
 
   Future<void> onSaveReport(String jsonReport, String path) async {
@@ -59,7 +68,7 @@ class JsonReporter extends Reporter implements SerializableReporter {
 
   Future<void> _generateReport(String path) async {
     try {
-      final report = toJson();
+      final report = serialize();
       if (writeReport != null) {
         await writeReport!(report, path);
       } else {
@@ -70,38 +79,8 @@ class JsonReporter extends Reporter implements SerializableReporter {
     }
   }
 
-  JsonFeature _getCurrentFeature() {
-    if (_features.isEmpty) {
-      final feature = JsonFeature()
-        ..name = 'Unnamed feature'
-        ..description =
-            'An unnamed feature is possible if something is logged before any feature has started to execute'
-        ..scenarios = <JsonScenario>[
-          JsonScenario()
-            ..target = Target.scenario
-            ..name = 'Unnamed'
-            ..description =
-                'An unnamed scenario is possible if something is logged before any feature has started to execute'
-            ..line = 0
-            ..tags = <JsonTag>[]
-            ..steps = <JsonStep>[
-              JsonStep()
-                ..name = 'Unnamed'
-                ..line = 0
-            ]
-        ]
-        ..line = 0
-        ..tags = <JsonTag>[]
-        ..uri = 'unknown';
-
-      _features.add(feature);
-    }
-
-    return _features.last;
-  }
-
   @override
-  String toJson() {
+  String serialize() {
     return json.encode(_features);
   }
 }

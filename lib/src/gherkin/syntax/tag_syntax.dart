@@ -1,8 +1,8 @@
-import 'package:gherkin/src/gherkin/languages/dialect.dart';
+import '../languages/dialect.dart';
 
 import '../runnables/debug_information.dart';
 import '../runnables/tags.dart';
-import './regex_matched_syntax.dart';
+import 'regex_matched_syntax.dart';
 
 enum AnnotatingBlock { examples, feature, scenarioOutline, scenario }
 

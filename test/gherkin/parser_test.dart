@@ -5,8 +5,8 @@ import '../mocks/language_service_mock.dart';
 import '../mocks/reporter_mock.dart';
 
 Iterable<String> tagsToList(Iterable<TagsRunnable> tags) sync* {
-  for (var tgs in tags) {
-    for (var tag in tgs.tags) {
+  for (final tgs in tags) {
+    for (final tag in tgs.tags) {
       yield tag;
     }
   }
@@ -16,7 +16,7 @@ void main() {
   group('parse', () {
     test('parses simple, single scenario correctly', () async {
       final parser = GherkinParser();
-      final featureContents = """
+      const featureContents = """
       # language: en
       @primary_tag_one
       @primary_tag_two
@@ -54,10 +54,14 @@ void main() {
 
       final feature = featureFile.features.elementAt(0);
       expect(feature.name, 'The name of the feature');
-      expect(feature.description,
-          'A multiline line description\nLine two\nLine three');
-      expect(tagsToList(feature.tags),
-          <String>['@primary_tag_one', '@primary_tag_two']);
+      expect(
+        feature.description,
+        'A multiline line description\nLine two\nLine three',
+      );
+      expect(
+        tagsToList(feature.tags),
+        <String>['@primary_tag_one', '@primary_tag_two'],
+      );
       expect(feature.scenarios.length, 1);
 
       final background = featureFile.features.elementAt(0).background;
@@ -92,7 +96,7 @@ void main() {
     test('parses feature description with non-alpha numeric characters',
         () async {
       final parser = GherkinParser();
-      final featureContents = """
+      const featureContents = """
       Feature: Conway's Game of Life
 
         Rules of Conway's Game of Life
@@ -123,9 +127,11 @@ void main() {
       expect(featureFile.features.length, 1);
 
       final feature = featureFile.features.elementAt(0);
-      expect(feature.name, 'Conway\'s Game of Life');
-      expect(feature.description,
-          'Rules of Conway\'s Game of Life\n> The universe of the _Game of Life_ is an infinite, two-dimensional orthogonal grid of square cells.');
+      expect(feature.name, "Conway's Game of Life");
+      expect(
+        feature.description,
+        "Rules of Conway's Game of Life\n> The universe of the _Game of Life_ is an infinite, two-dimensional orthogonal grid of square cells.",
+      );
       expect(feature.scenarios.length, 1);
 
       final scenario = featureFile.features.elementAt(0).scenarios.elementAt(0);
@@ -141,7 +147,7 @@ void main() {
 
     test('parses single scenario with no names', () async {
       final parser = GherkinParser();
-      final featureContents = """
+      const featureContents = """
       # language: en
       Feature: The name of the feature
         A multiine line description
@@ -176,8 +182,10 @@ void main() {
 
       final feature = featureFile.features.elementAt(0);
       expect(feature.name, 'The name of the feature');
-      expect(feature.description,
-          'A multiine line description\nLine two\nLine three');
+      expect(
+        feature.description,
+        'A multiine line description\nLine two\nLine three',
+      );
       expect(feature.scenarios.length, 1);
 
       final background = featureFile.features.elementAt(0).background;
@@ -206,7 +214,7 @@ void main() {
 
     test('parses single scenario outline with multiple examples', () async {
       final parser = GherkinParser();
-      final featureContents = '''
+      const featureContents = '''
       Feature: The name of the feature
         Background: Setup
           Given I setup 1
@@ -271,24 +279,30 @@ void main() {
       expect(scenario.steps.elementAt(0).name, 'Given there are 12 cucumbers');
       expect(scenario.steps.elementAt(1).name, 'When I eat 5 cucumbers');
       expect(
-          scenario.steps.elementAt(2).name, 'Then I should have 7 cucumbers');
+        scenario.steps.elementAt(2).name,
+        'Then I should have 7 cucumbers',
+      );
 
       expect(scenario2.steps.elementAt(0).name, 'Given there are 20 cucumbers');
       expect(scenario2.steps.elementAt(1).name, 'When I eat 9 cucumbers');
       expect(
-          scenario2.steps.elementAt(2).name, 'Then I should have 11 cucumbers');
+        scenario2.steps.elementAt(2).name,
+        'Then I should have 11 cucumbers',
+      );
 
       expect(scenario3.steps.elementAt(0).name, 'Given there are 12 cucumbers');
       expect(scenario3.steps.elementAt(1).name, 'When I eat 5 cucumbers');
       expect(
-          scenario3.steps.elementAt(2).name, 'Then I should have 7 cucumbers');
+        scenario3.steps.elementAt(2).name,
+        'Then I should have 7 cucumbers',
+      );
     });
 
     test(
         'parses scenario outline and another scenario in the same feature file',
         () async {
       final parser = GherkinParser();
-      final featureContents = '''
+      const featureContents = '''
       Feature: The name of the feature
         Background: Setup
           Given I setup 1
@@ -345,12 +359,16 @@ void main() {
       expect(scenario.steps.elementAt(0).name, 'Given there are 12 cucumbers');
       expect(scenario.steps.elementAt(1).name, 'When I eat 5 cucumbers');
       expect(
-          scenario.steps.elementAt(2).name, 'Then I should have 7 cucumbers');
+        scenario.steps.elementAt(2).name,
+        'Then I should have 7 cucumbers',
+      );
 
       expect(scenario2.steps.elementAt(0).name, 'Given there are 20 cucumbers');
       expect(scenario2.steps.elementAt(1).name, 'When I eat 9 cucumbers');
       expect(
-          scenario2.steps.elementAt(2).name, 'Then I should have 11 cucumbers');
+        scenario2.steps.elementAt(2).name,
+        'Then I should have 11 cucumbers',
+      );
 
       final scenario3 =
           featureFile.features.elementAt(0).scenarios.elementAt(2);
@@ -358,12 +376,14 @@ void main() {
       expect(scenario3.steps.elementAt(0).name, 'Given there are 2 cucumbers');
       expect(scenario3.steps.elementAt(1).name, 'When I eat 2 cucumbers');
       expect(
-          scenario3.steps.elementAt(2).name, 'Then I should have 0 cucumbers');
+        scenario3.steps.elementAt(2).name,
+        'Then I should have 0 cucumbers',
+      );
     });
 
     test('parses complex multi-scenario correctly', () async {
       final parser = GherkinParser();
-      final featureContents = """
+      const featureContents = """
       # language: en
       Feature: The name of the feature
         A multiine line description
@@ -405,8 +425,10 @@ void main() {
 
       final feature = featureFile.features.elementAt(0);
       expect(feature.name, 'The name of the feature');
-      expect(feature.description,
-          'A multiine line description\nLine two\nLine three');
+      expect(
+        feature.description,
+        'A multiine line description\nLine two\nLine three',
+      );
       expect(feature.scenarios.length, 1);
 
       final background = featureFile.features.elementAt(0).background;
@@ -431,14 +453,22 @@ void main() {
 
       expect(steps.elementAt(3).table, isNotNull);
       expect(steps.elementAt(3).table!.header, isNotNull);
-      expect(steps.elementAt(3).table!.header!.columns,
-          ['Firstname', 'Surname', 'Age', 'Gender']);
-      expect(steps.elementAt(3).table!.rows.elementAt(0).columns.toList(),
-          ['Woody', 'Johnson', '28', 'Male']);
-      expect(steps.elementAt(3).table!.rows.elementAt(1).columns.toList(),
-          ['Edith', 'Summers', '23', 'Female']);
-      expect(steps.elementAt(3).table!.rows.elementAt(2).columns.toList(),
-          ['Megan', 'Hill', '83', 'Female']);
+      expect(
+        steps.elementAt(3).table!.header!.columns,
+        ['Firstname', 'Surname', 'Age', 'Gender'],
+      );
+      expect(
+        steps.elementAt(3).table!.rows.elementAt(0).columns.toList(),
+        ['Woody', 'Johnson', '28', 'Male'],
+      );
+      expect(
+        steps.elementAt(3).table!.rows.elementAt(1).columns.toList(),
+        ['Edith', 'Summers', '23', 'Female'],
+      );
+      expect(
+        steps.elementAt(3).table!.rows.elementAt(2).columns.toList(),
+        ['Megan', 'Hill', '83', 'Female'],
+      );
 
       final commentStep = steps.elementAt(2);
       expect(commentStep.multilineStrings.length, 1);
@@ -449,7 +479,7 @@ void main() {
         'parses scenario outline and another scenario with tags in the same feature file',
         () async {
       final parser = GherkinParser();
-      final featureContents = '''
+      const featureContents = '''
       Feature: Bug example
         This is the minimal example to reproduce the bug
 

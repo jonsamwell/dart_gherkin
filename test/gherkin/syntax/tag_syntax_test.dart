@@ -10,39 +10,44 @@ void main() {
     test('matches correctly', () {
       final syntax = TagSyntax();
       expect(
-          syntax.isMatch(
-            '@tagone @tagtow @tag_three',
-            EnDialectMock(),
-          ),
-          true);
+        syntax.isMatch(
+          '@tagone @tagtow @tag_three',
+          EnDialectMock(),
+        ),
+        true,
+      );
       expect(
-          syntax.isMatch(
-            '@tag',
-            EnDialectMock(),
-          ),
-          true);
+        syntax.isMatch(
+          '@tag',
+          EnDialectMock(),
+        ),
+        true,
+      );
       expect(
-          syntax.isMatch(
-            '@tag one',
-            EnDialectMock(),
-          ),
-          true);
+        syntax.isMatch(
+          '@tag one',
+          EnDialectMock(),
+        ),
+        true,
+      );
     });
 
     test('does not match', () {
       final syntax = TagSyntax();
       expect(
-          syntax.isMatch(
-            'not a tag',
-            EnDialectMock(),
-          ),
-          false);
+        syntax.isMatch(
+          'not a tag',
+          EnDialectMock(),
+        ),
+        false,
+      );
       expect(
-          syntax.isMatch(
-            '#@tag @tag2',
-            EnDialectMock(),
-          ),
-          false);
+        syntax.isMatch(
+          '#@tag @tag2',
+          EnDialectMock(),
+        ),
+        false,
+      );
     });
   });
 
@@ -51,7 +56,7 @@ void main() {
       final syntax = TagSyntax();
       final runnable = syntax.toRunnable(
         '@tag1 @tag2   @tag3@tag_4',
-        RunnableDebugInformation.EMPTY(),
+        RunnableDebugInformation.empty(),
         EnDialectMock(),
       );
       expect(runnable, isNotNull);

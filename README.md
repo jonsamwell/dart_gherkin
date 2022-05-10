@@ -4,8 +4,7 @@ A fully featured Gherkin parser and test runner.  Works with Flutter and Dart 2.
 
 This implementation of the Gherkin tries to follow as closely as possible other implementations of Gherkin and specifically [Cucumber](https://docs.cucumber.io/cucumber/) in it's various forms.
 
-Available as a Dart package https://pub.dartlang.org/packages/gherkin
-Available as a Flutter specific package https://pub.dartlang.org/packages/flutter_gherkin which contains specific implementations to help instrument an application to test.
+Available as both a [Dart package](https://pub.dev/packages/gherkin) (this very package) and as a [Flutter specific package](https://pub.dev/packages/flutter_gherkin) which contains specific implementations to help instrument an application to test.
 
 ``` dart
   # Comment
@@ -27,37 +26,40 @@ Available as a Flutter specific package https://pub.dartlang.org/packages/flutte
 
 <!-- TOC -->
 
-* [Getting Started](#getting-started)
-  + [Configuration](#configuration)
-    - [features](#features)
-    - [tagExpression](#tagexpression)
-    - [order](#order)
-    - [featureDefaultLanguage](#defaultLanguage)
-    - [stepDefinitions](#stepdefinitions)
-    - [customStepParameterDefinitions](#customstepparameterdefinitions)
-    - [hooks](#hooks)
-    - [attachments](#attachments)
-    - [reporters](#reporters)
-    - [createWorld](#createworld)
-    - [stopAfterTestFailed](#stopAfterTestFailed)
-* [Features Files](#features-files)
-  + [Steps Definitions](#steps-definitions)
-    - [Given](#given)
-    - [Then](#then)
-    - [Expects Assertions](#expects-assertions)
-    - [Step Timeout](#step-timeout)
-    - [Multiline Strings](#multiline-strings)
-    - [Data tables](#data-tables)
-    - [Well known step parameters](#well-known-step-parameters)
-    - [Pluralization](#pluralization)
-    - [Custom Parameters](#custom-parameters)
-    - [World Context (per test scenario shared state)](#world-context-per-test-scenario-shared-state)
-    - [Assertions](#assertions)
-  + [Tags](#tags)
-  + [Languages](#languages)
-* [Hooks](#hooks)
-* [Attachments](#attachments)
-* [Reporting](#reporting)
+- [dart_gherkin](#dart_gherkin)
+  - [Table of Contents](#table-of-contents)
+  - [Getting Started](#getting-started)
+    - [Configuration](#configuration)
+      - [features](#features)
+      - [tagExpression](#tagexpression)
+      - [order](#order)
+      - [defaultLanguage](#defaultlanguage)
+      - [stepDefinitions](#stepdefinitions)
+      - [customStepParameterDefinitions](#customstepparameterdefinitions)
+      - [hooks](#hooks)
+      - [attachments](#attachments)
+      - [reporters](#reporters)
+      - [createWorld](#createworld)
+      - [featureFileMatcher](#featurefilematcher)
+      - [featureFileReader](#featurefilereader)
+      - [stopAfterTestFailed](#stopaftertestfailed)
+  - [Features Files](#features-files)
+    - [Steps Definitions](#steps-definitions)
+      - [Given](#given)
+      - [Then](#then)
+      - [Expects Assertions](#expects-assertions)
+      - [Step Timeout](#step-timeout)
+      - [Multiline Strings](#multiline-strings)
+      - [Data tables](#data-tables)
+      - [Well known step parameters](#well-known-step-parameters)
+      - [Pluralization](#pluralization)
+      - [Custom Parameters](#custom-parameters)
+      - [World Context (per test scenario shared state)](#world-context-per-test-scenario-shared-state)
+      - [Assertions](#assertions)
+    - [Tags](#tags)
+    - [Languages](#languages)
+  - [Hooks](#hooks-1)
+  - [Reporting](#reporting)
 
 <!-- /TOC -->
 
@@ -139,15 +141,16 @@ import 'supporting_files/worlds/custom_world.world.dart';
 
 Future<void> main() {
   final steps = [
-      GivenTheNumbers(),
-      WhenTheStoredNumbersAreAdded(),
-      ThenExpectNumericResult()
+      givenTheNumbers(),
+      whenTheStoredNumbersAreAdded(),
+      thenExpectNumericResult()
   ];
-  final config = TestConfiguration.DEFAULT(steps)
-    ..hooks = [HookExample()]
-    ..customStepParameterDefinitions = [PowerOfTwoParameter()]
-    ..createWorld =
-        (TestConfiguration config) => Future.value(CalculatorWorld());
+  final config = TestConfiguration.standard(
+    steps,
+    hooks: [HookExample()],
+    customStepParameterDefinitions: [PowerOfTwoParameter()],
+    createWorld: (config) => Future.value(CalculatorWorld()),
+  );
 
   return GherkinRunner().execute(config);
 }
@@ -206,19 +209,21 @@ import 'supporting_files/steps/when_numbers_are_added.step.dart';
 import 'supporting_files/worlds/custom_world.world.dart';
 
 Future<void> main() {
-  final config = TestConfiguration()
-    ..features = [RegExp(r"features/.*\.feature")]
-    ..reporters = [StdoutReporter(MessageLevel.error), ProgressReporter(), TestRunSummaryReporter()]
-    ..createWorld = (TestConfiguration config) {
-      return Future.value(CalculatorWorld());
-    }
-    ..stepDefinitions = [
-      GivenTheNumbers(),
-      WhenTheStoredNumbersAreAdded(),
-      ThenExpectNumericResult()
-    ]
-    ..exitAfterTestRun = true
-    ..exitAfterTestFailed = false;
+  final config = TestConfiguration(
+    features: [RegExp(r"features/.*\.feature")],
+    reporters: [
+      StdoutReporter(MessageLevel.error),
+      ProgressReporter(),
+      TestRunSummaryReporter(),
+    ],
+    createWorld: (config) => Future.value(CalculatorWorld()),
+    stepDefinitions: [
+      givenTheNumbers(),
+      whenTheStoredNumbersAreAdded(),
+      thenExpectNumericResult()
+    ],
+    stopAfterTestFailed: true,
+  );
 
   return GherkinRunner().execute(config);
 ```
@@ -241,15 +246,15 @@ import 'supporting_files/worlds/custom_world.world.dart';
 
 Future<void> main() {
   final steps = [
-      GivenTheNumbers(),
-      WhenTheStoredNumbersAreAdded(),
-      ThenExpectNumericResult()
+      givenTheNumbers(),
+      whenTheStoredNumbersAreAdded(),
+      thenExpectNumericResult()
   ];
-  final config = TestConfiguration.DEFAULT(steps)
-    ..customStepParameterDefinitions = [PowerOfTwoParameter()]
-    ..createWorld = (TestConfiguration config) {
-      return Future.value(CalculatorWorld());
-    };
+  final config = TestConfiguration.standard(
+    steps,
+    customStepParameterDefinitions: [PowerOfTwoParameter()],
+    createWorld: (config) => Future.value(CalculatorWorld()),
+  );
 
   return GherkinRunner().execute(config);
 }
@@ -265,7 +270,7 @@ Attachment are pieces of data you can attach to a running scenario.  This could 
 
 Attachments would typically be attached via a `Hook` for example `onAfterStep` .
 
-```
+```dart
 import 'package:gherkin/gherkin.dart';
 
 class AttachScreenshotOnFailedStepHook extends Hook {
@@ -294,7 +299,7 @@ Reporters are classes that are able to report on the status of the test run.  Th
 * `TestRunSummaryReporter` - prints the results and duration of the test run once the run has completed - colours the output.
 * `JsonReporter` - create a json file with the test run results.
 
-By default all the above reporters are included in the `DEFAULT` configuration object but you can override this to specify the specific ones you want.
+Previously, it was possible to redefine specific functions, now this happens through the redefinition of classes.
 
 *Note*: Feel free to PR new reporters!
 
@@ -310,12 +315,11 @@ import 'supporting_files/worlds/custom_world.world.dart';
 
 Future<void> main() {
   final steps = [
-      GivenTheNumbers(),
-      WhenTheStoredNumbersAreAdded(),
-      ThenExpectNumericResult()
+      givenTheNumbers(),
+      whenTheStoredNumbersAreAdded(),
+      thenExpectNumericResult()
   ];
-  final config = TestConfiguration.DEFAULT(steps)
-    ..reporters = [StdoutReporter(MessageLevel.error), TestRunSummaryReporter()];
+  final config = TestConfiguration.standard(steps); // Provide default reporters for this constructor
 
   return GherkinRunner().execute(config);
 }
@@ -330,14 +334,14 @@ While it is not recommended so share state between steps within the same scenari
 ``` dart
 Future<void> main() {
   final steps = [
-      GivenTheNumbers(),
-      WhenTheStoredNumbersAreAdded(),
-      ThenExpectNumericResult()
+      givenTheNumbers(),
+      whenTheStoredNumbersAreAdded(),
+      thenExpectNumericResult()
   ];
-  final config = TestConfiguration.DEFAULT(steps)
-    ..createWorld = (TestConfiguration config) {
-      return Future.value(CalculatorWorld());
-    };
+  final config = TestConfiguration.standard(
+    steps,
+    createWorld: (config) => Future.value(CalculatorWorld()),
+  );
 
   return GherkinRunner().execute(config);
 }
@@ -360,12 +364,17 @@ import dart:convert;
 
 Future<void> main() {
   final steps = [
-      GivenTheNumbers(),
-      WhenTheStoredNumbersAreAdded(),
-      ThenExpectNumericResult()
+      givenTheNumbers(),
+      whenTheStoredNumbersAreAdded(),
+      thenExpectNumericResult()
   ];
-  final config = TestConfiguration.DEFAULT(steps)
-    ..featureFileReader = IoFeatureFileReader(encoding: latin1);
+
+  final config = TestConfiguration.standard(
+    steps,
+    featureFileReader: IoFeatureFileAccessor(
+      encoding: Encoding.getByName('latin1')!,
+    ),
+  );
 
   return GherkinRunner().execute(config);
 }
@@ -374,7 +383,7 @@ Future<void> main() {
 #### stopAfterTestFailed
 
 Defaults to `false`
-True to stop the test run when a test fails.  You may want to set this to true during debugging.
+True to stop the test run when a test fails. You may want to set this to true during debugging.
 
 ## Features Files
 
@@ -777,21 +786,24 @@ import 'supporting_files/steps/when_numbers_are_added.step.dart';
 import 'supporting_files/worlds/custom_world.world.dart';
 
 Future<void> main() {
-  final config = TestConfiguration()
-    ..features = [RegExp(r"features/.*\.feature")]
-    ..reporters = [StdoutReporter(MessageLevel.error), ProgressReporter(), TestRunSummaryReporter()]
-    ..hooks = [HookExample()]
-    ..customStepParameterDefinitions = [PowerOfTwoParameter()]
-    ..createWorld = (TestConfiguration config) {
-      return Future.value(CalculatorWorld());
-    }
-    ..stepDefinitions = [
-      GivenTheNumbers(),
-      GivenThePowersOfTwo(),
-      WhenTheStoredNumbersAreAdded(),
-      ThenExpectNumericResult()
-    ]
-    ..exitAfterTestRun = true;
+  final config = TestConfiguration(
+    features: [RegExp(r"features/.*\.feature")],
+    reporters: [
+      StdoutReporter(MessageLevel.error),
+      ProgressReporter(),
+      TestRunSummaryReporter(),
+    ],
+    hooks: [HookExample()],
+    customStepParameterDefinitions: [PowerOfTwoParameter()],
+    createWorld: (config) => Future.value(CalculatorWorld()),
+    stepDefinitions: [
+      givenTheNumbers(),
+      givenThePowersOfTwo(),
+      whenTheStoredNumbersAreAdded(),
+      thenExpectNumericResult(),
+    ],
+    stopAfterTestFailed: true,
+  );
 
   return GherkinRunner().execute(config);
 }
@@ -808,17 +820,21 @@ A reporter is a class that is able to report on the progress of the test run. In
 
 You can create your own custom reporter by inheriting from the base `Reporter` class and overriding the one or many of the methods to direct the output message.  The `Reporter` defines the following methods that can be overridden.  All methods must return a `Future<void>` and can be async.
 
-* `onTestRunStarted`
-* `onTestRunFinished`
-* `onFeatureStarted`
-* `onFeatureFinished`
-* `onScenarioStarted`
-* `onScenarioFinished`
-* `onStepStarted`
-* `onStepFinished`
+* `test` - where test started or finished
+* `feature` - where feature started or finished
+* `scenario` - where scenario started or finished
+* `step` - where test started or finished
 * `onException`
 * `message`
 * `dispose`
+
+For all field who's stared `on` (example, `step`) has to methods for class `ReportActionHandler`:
+
+* `onStared`
+* `onFinished`
+
+All methods nullable. If reporter has non-nullable value he will call them.
+
 Once you have created your custom reporter don't forget to add it to the `reporters` configuration file property.
 
 *Note*: PR's of new reporters are *always* welcome.

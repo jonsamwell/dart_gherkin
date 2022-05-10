@@ -1,10 +1,10 @@
-import 'package:gherkin/src/gherkin/runnables/comment_line.dart';
+import 'comment_line.dart';
 
-import './debug_information.dart';
-import './empty_line.dart';
-import './runnable.dart';
-import './runnable_block.dart';
-import './text_line.dart';
+import 'debug_information.dart';
+import 'empty_line.dart';
+import 'runnable.dart';
+import 'runnable_block.dart';
+import 'text_line.dart';
 
 class MultilineStringRunnable extends RunnableBlock {
   int? leadingWhitespace;

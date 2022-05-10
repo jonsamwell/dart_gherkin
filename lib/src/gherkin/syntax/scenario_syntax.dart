@@ -1,11 +1,10 @@
-import 'package:gherkin/src/gherkin/languages/dialect.dart';
-
+import '../languages/dialect.dart';
 import '../runnables/debug_information.dart';
 import '../runnables/scenario.dart';
-import './regex_matched_syntax.dart';
-import './syntax_matcher.dart';
-import './tag_syntax.dart';
+import 'regex_matched_syntax.dart';
 import 'scenario_outline_syntax.dart';
+import 'syntax_matcher.dart';
+import 'tag_syntax.dart';
 
 class ScenarioSyntax extends RegExMatchedGherkinSyntax<ScenarioRunnable> {
   @override

@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:gherkin/gherkin.dart';
-import 'package:gherkin/src/gherkin/runnables/debug_information.dart';
 import 'package:test/test.dart';
 
 class TestableJsonReporter extends JsonReporter {
@@ -24,95 +23,112 @@ void main() {
   group('report', () {
     test('correct report with one passing step', () async {
       final reporter = TestableJsonReporter();
-      await reporter.onFeatureStarted(StartedMessage(
-        Target.feature,
-        'Feature 1',
-        RunnableDebugInformation('filepath', 2, 'linetext2'),
-        [Tag('tag1', 1, false)],
-      ));
+      await reporter.feature.onStarted.maybeCall(
+        FeatureMessage(
+          name: 'Feature 1',
+          context: RunnableDebugInformation('filepath', 2, 'linetext2'),
+          tags: [Tag('tag1', 1)],
+        ),
+      );
 
-      await reporter.onScenarioStarted(StartedMessage(
-        Target.scenario,
-        'Scenario 1',
-        RunnableDebugInformation('filepath', 4, 'linetext4'),
-        [Tag('tag1', 1, true), Tag('tag2', 3, false)],
-      ));
+      await reporter.scenario.onStarted.maybeCall(
+        ScenarioMessage(
+          name: 'Scenario 1',
+          context: RunnableDebugInformation('filepath', 4, 'linetext4'),
+          tags: [Tag('tag1', 1, isInherited: true), Tag('tag2', 3)],
+        ),
+      );
 
-      await reporter.onStepStarted(StepStartedMessage(
-        'Step 1',
-        RunnableDebugInformation('filepath', 5, 'linetext5'),
-      ));
+      await reporter.step.onStarted.maybeCall(
+        StepMessage(
+          name: 'Step 1',
+          context: RunnableDebugInformation('filepath', 5, 'linetext5'),
+        ),
+      );
 
-      await reporter.onStepFinished(StepFinishedMessage(
-        'Step 1',
-        RunnableDebugInformation('filepath', 5, 'linetext5'),
-        StepResult(100, StepExecutionResult.pass),
-      ));
+      await reporter.step.onFinished.maybeCall(
+        StepMessage(
+          name: 'Step 1',
+          context: RunnableDebugInformation('filepath', 5, 'linetext5'),
+          result: StepResult(100, StepExecutionResult.passed),
+        ),
+      );
 
-      await reporter.onScenarioFinished(ScenarioFinishedMessage(
-        'Scenario 1',
-        RunnableDebugInformation('filepath', 4, 'linetext4'),
-        true,
-      ));
+      await reporter.scenario.onFinished.maybeCall(
+        ScenarioMessage(
+          name: 'Scenario 1',
+          context: RunnableDebugInformation('filepath', 4, 'linetext4'),
+          isPassed: true,
+        ),
+      );
 
-      await reporter.onFeatureFinished(FinishedMessage(
-        Target.feature,
-        'Feature 1',
-        RunnableDebugInformation('filepath', 2, 'linetext2'),
-      ));
+      await reporter.feature.onFinished.maybeCall(
+        FeatureMessage(
+          name: 'Feature 1',
+          context: RunnableDebugInformation('filepath', 2, 'linetext2'),
+        ),
+      );
 
-      await reporter.onTestRunFinished();
-
+      await reporter.test.onFinished.maybeCall();
+      final expectedJson =
+          File.fromUri(Uri.file('./test/reporters/json_reports/report_1.json'))
+              .readAsStringSync();
       expect(
         reporter.report,
-        minimizeJson(
-          File.fromUri(Uri.file('./test/reporters/json_reports/report_1.json'))
-              .readAsStringSync(),
-        ),
+        minimizeJson(expectedJson),
       );
     });
 
     test('correct report with one passing step with doc string', () async {
       final reporter = TestableJsonReporter();
-      await reporter.onFeatureStarted(StartedMessage(
-        Target.feature,
-        'Feature 1',
-        RunnableDebugInformation('filepath', 2, 'linetext2'),
-        [Tag('tag1', 1, false)],
-      ));
+      await reporter.feature.onStarted.maybeCall(
+        FeatureMessage(
+          name: 'Feature 1',
+          context: RunnableDebugInformation('filepath', 2, 'linetext2'),
+          tags: [Tag('tag1', 1)],
+        ),
+      );
 
-      await reporter.onScenarioStarted(StartedMessage(
-        Target.scenario,
-        'Scenario 1',
-        RunnableDebugInformation('filepath', 4, 'linetext4'),
-        [Tag('tag1', 1, true), Tag('tag2', 3, false)],
-      ));
+      await reporter.scenario.onStarted.maybeCall(
+        ScenarioMessage(
+          name: 'Scenario 1',
+          context: RunnableDebugInformation('filepath', 4, 'linetext4'),
+          tags: [Tag('tag1', 1, isInherited: true), Tag('tag2', 3)],
+        ),
+      );
 
-      await reporter.onStepStarted(StepStartedMessage(
-        'Step 1',
-        RunnableDebugInformation('filepath', 5, 'linetext5'),
-        multilineString: 'a\nb\nc',
-      ));
+      await reporter.step.onStarted.maybeCall(
+        StepMessage(
+          name: 'Step 1',
+          context: RunnableDebugInformation('filepath', 5, 'linetext5'),
+          multilineString: 'a\nb\nc',
+        ),
+      );
 
-      await reporter.onStepFinished(StepFinishedMessage(
-        'Step 1',
-        RunnableDebugInformation('filepath', 5, 'linetext5'),
-        StepResult(100, StepExecutionResult.pass),
-      ));
+      await reporter.step.onFinished.maybeCall(
+        StepMessage(
+          name: 'Step 1',
+          context: RunnableDebugInformation('filepath', 5, 'linetext5'),
+          result: StepResult(100, StepExecutionResult.passed),
+        ),
+      );
 
-      await reporter.onScenarioFinished(ScenarioFinishedMessage(
-        'Scenario 1',
-        RunnableDebugInformation('filepath', 4, 'linetext4'),
-        true,
-      ));
+      await reporter.scenario.onFinished.maybeCall(
+        ScenarioMessage(
+          name: 'Scenario 1',
+          context: RunnableDebugInformation('filepath', 4, 'linetext4'),
+          isPassed: true,
+        ),
+      );
 
-      await reporter.onFeatureFinished(FinishedMessage(
-        Target.feature,
-        'Feature 1',
-        RunnableDebugInformation('filepath', 2, 'linetext2'),
-      ));
+      await reporter.feature.onFinished.maybeCall(
+        FeatureMessage(
+          name: 'Feature 1',
+          context: RunnableDebugInformation('filepath', 2, 'linetext2'),
+        ),
+      );
 
-      await reporter.onTestRunFinished();
+      await reporter.test.onFinished.maybeCall();
 
       expect(
         reporter.report,
@@ -125,55 +141,71 @@ void main() {
 
     test('correct report with one passing and one failing step', () async {
       final reporter = TestableJsonReporter();
-      await reporter.onFeatureStarted(StartedMessage(
-        Target.feature,
-        'Feature 1',
-        RunnableDebugInformation('filepath', 2, 'linetext2'),
-        [Tag('tag1', 1, false)],
-      ));
+      await reporter.feature.onStarted.maybeCall(
+        FeatureMessage(
+          name: 'Feature 1',
+          context: RunnableDebugInformation('filepath', 2, 'linetext2'),
+          tags: [Tag('tag1', 1)],
+        ),
+      );
 
-      await reporter.onScenarioStarted(StartedMessage(
-        Target.scenario,
-        'Scenario 1',
-        RunnableDebugInformation('filepath', 4, 'linetext4'),
-        [Tag('tag1', 1, true), Tag('tag2', 3, false)],
-      ));
+      await reporter.scenario.onStarted.maybeCall(
+        ScenarioMessage(
+          name: 'Scenario 1',
+          context: RunnableDebugInformation('filepath', 4, 'linetext4'),
+          tags: [
+            Tag('tag1', 1, isInherited: true),
+            Tag('tag2', 3, isInherited: false)
+          ],
+        ),
+      );
 
-      await reporter.onStepStarted(StepStartedMessage(
-        'Step 1',
-        RunnableDebugInformation('filepath', 5, 'linetext5'),
-      ));
+      await reporter.step.onStarted.maybeCall(
+        StepMessage(
+          name: 'Step 1',
+          context: RunnableDebugInformation('filepath', 5, 'linetext5'),
+        ),
+      );
 
-      await reporter.onStepFinished(StepFinishedMessage(
-        'Step 1',
-        RunnableDebugInformation('filepath', 5, 'linetext5'),
-        StepResult(100, StepExecutionResult.pass),
-      ));
+      await reporter.step.onFinished.maybeCall(
+        StepMessage(
+          name: 'Step 1',
+          context: RunnableDebugInformation('filepath', 5, 'linetext5'),
+          result: StepResult(100, StepExecutionResult.passed),
+        ),
+      );
 
-      await reporter.onStepStarted(StepStartedMessage(
-        'Step 2',
-        RunnableDebugInformation('filepath', 6, 'linetext6'),
-      ));
+      await reporter.step.onStarted.maybeCall(
+        StepMessage(
+          name: 'Step 2',
+          context: RunnableDebugInformation('filepath', 6, 'linetext6'),
+        ),
+      );
 
-      await reporter.onStepFinished(StepFinishedMessage(
-        'Step 2',
-        RunnableDebugInformation('filepath', 6, 'linetext6'),
-        StepResult(100, StepExecutionResult.fail, 'error message'),
-      ));
+      await reporter.step.onFinished.maybeCall(
+        StepMessage(
+          name: 'Step 2',
+          context: RunnableDebugInformation('filepath', 6, 'linetext6'),
+          result: StepResult(100, StepExecutionResult.fail, 'error message'),
+        ),
+      );
 
-      await reporter.onScenarioFinished(ScenarioFinishedMessage(
-        'Scenario 1',
-        RunnableDebugInformation('filepath', 4, 'linetext4'),
-        true,
-      ));
+      await reporter.scenario.onFinished.maybeCall(
+        ScenarioMessage(
+          name: 'Scenario 1',
+          context: RunnableDebugInformation('filepath', 4, 'linetext4'),
+          isPassed: true,
+        ),
+      );
 
-      await reporter.onFeatureFinished(FinishedMessage(
-        Target.feature,
-        'Feature 1',
-        RunnableDebugInformation('filepath', 2, 'linetext2'),
-      ));
+      await reporter.feature.onFinished.maybeCall(
+        FeatureMessage(
+          name: 'Feature 1',
+          context: RunnableDebugInformation('filepath', 2, 'linetext2'),
+        ),
+      );
 
-      await reporter.onTestRunFinished();
+      await reporter.test.onFinished.maybeCall();
 
       expect(
         reporter.report,
@@ -187,66 +219,86 @@ void main() {
     test('correct report with one passing, one failing and one skipped step',
         () async {
       final reporter = TestableJsonReporter();
-      await reporter.onFeatureStarted(StartedMessage(
-        Target.feature,
-        'Feature 1',
-        RunnableDebugInformation('filepath', 2, 'linetext2'),
-        [Tag('tag1', 1, false)],
-      ));
+      await reporter.feature.onStarted.maybeCall(
+        FeatureMessage(
+          name: 'Feature 1',
+          context: RunnableDebugInformation('filepath', 2, 'linetext2'),
+          tags: [Tag('tag1', 1, isInherited: false)],
+        ),
+      );
 
-      await reporter.onScenarioStarted(StartedMessage(
-        Target.scenario,
-        'Scenario 1',
-        RunnableDebugInformation('filepath', 4, 'linetext4'),
-        [Tag('tag1', 1, true), Tag('tag2', 3, false)],
-      ));
+      await reporter.scenario.onStarted.maybeCall(
+        ScenarioMessage(
+          name: 'Scenario 1',
+          context: RunnableDebugInformation('filepath', 4, 'linetext4'),
+          tags: [
+            Tag('tag1', 1, isInherited: true),
+            Tag('tag2', 3, isInherited: false)
+          ],
+        ),
+      );
 
-      await reporter.onStepStarted(StepStartedMessage(
-        'Step 1',
-        RunnableDebugInformation('filepath', 5, 'linetext5'),
-      ));
+      await reporter.step.onStarted.maybeCall(
+        StepMessage(
+          name: 'Step 1',
+          context: RunnableDebugInformation('filepath', 5, 'linetext5'),
+        ),
+      );
 
-      await reporter.onStepFinished(StepFinishedMessage(
-        'Step 1',
-        RunnableDebugInformation('filepath', 5, 'linetext5'),
-        StepResult(100, StepExecutionResult.pass),
-      ));
+      await reporter.step.onFinished.maybeCall(
+        StepMessage(
+          name: 'Step 1',
+          context: RunnableDebugInformation('filepath', 5, 'linetext5'),
+          result: StepResult(100, StepExecutionResult.passed),
+        ),
+      );
 
-      await reporter.onStepStarted(StepStartedMessage(
-        'Step 2',
-        RunnableDebugInformation('filepath', 6, 'linetext6'),
-      ));
+      await reporter.step.onStarted.maybeCall(
+        StepMessage(
+          name: 'Step 2',
+          context: RunnableDebugInformation('filepath', 6, 'linetext6'),
+        ),
+      );
 
-      await reporter.onStepFinished(StepFinishedMessage(
-        'Step 2',
-        RunnableDebugInformation('filepath', 6, 'linetext6'),
-        StepResult(100, StepExecutionResult.fail, 'error message'),
-      ));
+      await reporter.step.onFinished.maybeCall(
+        StepMessage(
+          name: 'Step 2',
+          context: RunnableDebugInformation('filepath', 6, 'linetext6'),
+          result: StepResult(100, StepExecutionResult.fail, 'error message'),
+        ),
+      );
 
-      await reporter.onStepStarted(StepStartedMessage(
-        'Step 3',
-        RunnableDebugInformation('filepath', 7, 'linetext7'),
-      ));
+      await reporter.step.onStarted.maybeCall(
+        StepMessage(
+          name: 'Step 3',
+          context: RunnableDebugInformation('filepath', 7, 'linetext7'),
+        ),
+      );
 
-      await reporter.onStepFinished(StepFinishedMessage(
-        'Step 3',
-        RunnableDebugInformation('filepath', 7, 'linetext7'),
-        StepResult(100, StepExecutionResult.skipped),
-      ));
+      await reporter.step.onFinished.maybeCall(
+        StepMessage(
+          name: 'Step 3',
+          context: RunnableDebugInformation('filepath', 7, 'linetext7'),
+          result: StepResult(100, StepExecutionResult.skipped),
+        ),
+      );
 
-      await reporter.onScenarioFinished(ScenarioFinishedMessage(
-        'Scenario 1',
-        RunnableDebugInformation('filepath', 4, 'linetext4'),
-        true,
-      ));
+      await reporter.scenario.onFinished.maybeCall(
+        ScenarioMessage(
+          name: 'Scenario 1',
+          context: RunnableDebugInformation('filepath', 4, 'linetext4'),
+          isPassed: true,
+        ),
+      );
 
-      await reporter.onFeatureFinished(FinishedMessage(
-        Target.feature,
-        'Feature 1',
-        RunnableDebugInformation('filepath', 2, 'linetext2'),
-      ));
+      await reporter.feature.onFinished.maybeCall(
+        FeatureMessage(
+          name: 'Feature 1',
+          context: RunnableDebugInformation('filepath', 2, 'linetext2'),
+        ),
+      );
 
-      await reporter.onTestRunFinished();
+      await reporter.test.onFinished.maybeCall();
 
       expect(
         reporter.report,
@@ -260,56 +312,72 @@ void main() {
     test('correct report with one passing and one failing step with attachment',
         () async {
       final reporter = TestableJsonReporter();
-      await reporter.onFeatureStarted(StartedMessage(
-        Target.feature,
-        'Feature 1',
-        RunnableDebugInformation('filepath', 2, 'linetext2'),
-        [Tag('tag1', 1, false)],
-      ));
+      await reporter.feature.onStarted.maybeCall(
+        FeatureMessage(
+          name: 'Feature 1',
+          context: RunnableDebugInformation('filepath', 2, 'linetext2'),
+          tags: [Tag('tag1', 1, isInherited: false)],
+        ),
+      );
 
-      await reporter.onScenarioStarted(StartedMessage(
-        Target.scenario,
-        'Scenario 1',
-        RunnableDebugInformation('filepath', 4, 'linetext4'),
-        [Tag('tag1', 1, true), Tag('tag2', 3, false)],
-      ));
+      await reporter.scenario.onStarted.maybeCall(
+        ScenarioMessage(
+          name: 'Scenario 1',
+          context: RunnableDebugInformation('filepath', 4, 'linetext4'),
+          tags: [
+            Tag('tag1', 1, isInherited: true),
+            Tag('tag2', 3, isInherited: false)
+          ],
+        ),
+      );
 
-      await reporter.onStepStarted(StepStartedMessage(
-        'Step 1',
-        RunnableDebugInformation('filepath', 5, 'linetext5'),
-      ));
+      await reporter.step.onStarted.maybeCall(
+        StepMessage(
+          name: 'Step 1',
+          context: RunnableDebugInformation('filepath', 5, 'linetext5'),
+        ),
+      );
 
-      await reporter.onStepFinished(StepFinishedMessage(
-        'Step 1',
-        RunnableDebugInformation('filepath', 5, 'linetext5'),
-        StepResult(100, StepExecutionResult.pass),
-      ));
+      await reporter.step.onFinished.maybeCall(
+        StepMessage(
+          name: 'Step 1',
+          context: RunnableDebugInformation('filepath', 5, 'linetext5'),
+          result: StepResult(100, StepExecutionResult.passed),
+        ),
+      );
 
-      await reporter.onStepStarted(StepStartedMessage(
-        'Step 2',
-        RunnableDebugInformation('filepath', 6, 'linetext6'),
-      ));
+      await reporter.step.onStarted.maybeCall(
+        StepMessage(
+          name: 'Step 2',
+          context: RunnableDebugInformation('filepath', 6, 'linetext6'),
+        ),
+      );
 
-      await reporter.onStepFinished(StepFinishedMessage(
-        'Step 2',
-        RunnableDebugInformation('filepath', 6, 'linetext6'),
-        StepResult(100, StepExecutionResult.fail, 'error message'),
-        [Attachment('data', 'mimetype')],
-      ));
+      await reporter.step.onFinished.maybeCall(
+        StepMessage(
+          name: 'Step 2',
+          context: RunnableDebugInformation('filepath', 6, 'linetext6'),
+          result: StepResult(100, StepExecutionResult.fail, 'error message'),
+          attachments: [Attachment('data', 'mimetype')],
+        ),
+      );
 
-      await reporter.onScenarioFinished(ScenarioFinishedMessage(
-        'Scenario 1',
-        RunnableDebugInformation('filepath', 4, 'linetext4'),
-        true,
-      ));
+      await reporter.scenario.onFinished.maybeCall(
+        ScenarioMessage(
+          name: 'Scenario 1',
+          context: RunnableDebugInformation('filepath', 4, 'linetext4'),
+          isPassed: true,
+        ),
+      );
 
-      await reporter.onFeatureFinished(FinishedMessage(
-        Target.feature,
-        'Feature 1',
-        RunnableDebugInformation('filepath', 2, 'linetext2'),
-      ));
+      await reporter.feature.onFinished.maybeCall(
+        FeatureMessage(
+          name: 'Feature 1',
+          context: RunnableDebugInformation('filepath', 2, 'linetext2'),
+        ),
+      );
 
-      await reporter.onTestRunFinished();
+      await reporter.test.onFinished.maybeCall();
 
       expect(
         reporter.report,
@@ -322,56 +390,73 @@ void main() {
 
     test('correct report with scenario outlines', () async {
       final reporter = TestableJsonReporter();
-      await reporter.onFeatureStarted(StartedMessage(
-        Target.feature,
-        'Feature 1',
-        RunnableDebugInformation('filepath', 2, 'linetext2'),
-        [Tag('tag1', 1, false)],
-      ));
+      await reporter.feature.onStarted.maybeCall(
+        FeatureMessage(
+          name: 'Feature 1',
+          context: RunnableDebugInformation('filepath', 2, 'linetext2'),
+          tags: [Tag('tag1', 1, isInherited: false)],
+        ),
+      );
 
-      await reporter.onScenarioStarted(StartedMessage(
-        Target.scenario_outline,
-        'Scenario Outline 1',
-        RunnableDebugInformation('filepath', 4, 'linetext4'),
-        [Tag('tag1', 1, true), Tag('tag2', 3, false)],
-      ));
+      await reporter.scenario.onStarted.maybeCall(
+        ScenarioMessage(
+          target: Target.scenarioOutline,
+          name: 'Scenario Outline 1',
+          context: RunnableDebugInformation('filepath', 4, 'linetext4'),
+          tags: [
+            Tag('tag1', 1, isInherited: true),
+            Tag('tag2', 3, isInherited: false)
+          ],
+        ),
+      );
 
-      await reporter.onStepStarted(StepStartedMessage(
-        'Step 1',
-        RunnableDebugInformation('filepath', 5, 'linetext5'),
-      ));
+      await reporter.step.onStarted.maybeCall(
+        StepMessage(
+          name: 'Step 1',
+          context: RunnableDebugInformation('filepath', 5, 'linetext5'),
+        ),
+      );
 
-      await reporter.onStepFinished(StepFinishedMessage(
-        'Step 1',
-        RunnableDebugInformation('filepath', 5, 'linetext5'),
-        StepResult(100, StepExecutionResult.pass),
-      ));
+      await reporter.step.onFinished.maybeCall(
+        StepMessage(
+          name: 'Step 1',
+          context: RunnableDebugInformation('filepath', 5, 'linetext5'),
+          result: StepResult(100, StepExecutionResult.passed),
+        ),
+      );
 
-      await reporter.onStepStarted(StepStartedMessage(
-        'Step 2',
-        RunnableDebugInformation('filepath', 6, 'linetext6'),
-      ));
+      await reporter.step.onStarted.maybeCall(
+        StepMessage(
+          name: 'Step 2',
+          context: RunnableDebugInformation('filepath', 6, 'linetext6'),
+        ),
+      );
 
-      await reporter.onStepFinished(StepFinishedMessage(
-        'Step 2',
-        RunnableDebugInformation('filepath', 6, 'linetext6'),
-        StepResult(100, StepExecutionResult.pass),
-        [Attachment('data', 'mimetype')],
-      ));
+      await reporter.step.onFinished.maybeCall(
+        StepMessage(
+          name: 'Step 2',
+          context: RunnableDebugInformation('filepath', 6, 'linetext6'),
+          result: StepResult(100, StepExecutionResult.passed),
+          attachments: [Attachment('data', 'mimetype')],
+        ),
+      );
 
-      await reporter.onScenarioFinished(ScenarioFinishedMessage(
-        'Scenario 1',
-        RunnableDebugInformation('filepath', 4, 'linetext4'),
-        true,
-      ));
+      await reporter.scenario.onFinished.maybeCall(
+        ScenarioMessage(
+          name: 'Scenario 1',
+          context: RunnableDebugInformation('filepath', 4, 'linetext4'),
+          isPassed: true,
+        ),
+      );
 
-      await reporter.onFeatureFinished(FinishedMessage(
-        Target.feature,
-        'Feature 1',
-        RunnableDebugInformation('filepath', 2, 'linetext2'),
-      ));
+      await reporter.feature.onFinished.maybeCall(
+        FeatureMessage(
+          name: 'Feature 1',
+          context: RunnableDebugInformation('filepath', 2, 'linetext2'),
+        ),
+      );
 
-      await reporter.onTestRunFinished();
+      await reporter.test.onFinished.maybeCall();
 
       expect(
         reporter.report,
@@ -385,7 +470,7 @@ void main() {
     test('can add exception before any features has run', () async {
       final reporter = TestableJsonReporter();
       await reporter.onException(Exception('Test exception'), StackTrace.empty);
-      await reporter.onTestRunFinished();
+      await reporter.test.onFinished.maybeCall();
 
       expect(
         reporter.report,
@@ -398,92 +483,120 @@ void main() {
 
     test('correct report with two features', () async {
       final reporter = TestableJsonReporter();
-      await reporter.onFeatureStarted(StartedMessage(
-        Target.feature,
-        'Feature 1',
-        RunnableDebugInformation('filepath', 2, 'linetext2'),
-        [Tag('tag1', 1, false)],
-      ));
+      await reporter.feature.onStarted.maybeCall(
+        FeatureMessage(
+          name: 'Feature 1',
+          context: RunnableDebugInformation('filepath', 2, 'linetext2'),
+          tags: [Tag('tag1', 1, isInherited: false)],
+        ),
+      );
 
-      await reporter.onScenarioStarted(StartedMessage(
-        Target.scenario,
-        'Scenario 1',
-        RunnableDebugInformation('filepath', 4, 'linetext4'),
-        [Tag('tag1', 1, true), Tag('tag2', 3, false)],
-      ));
+      await reporter.scenario.onStarted.maybeCall(
+        ScenarioMessage(
+          name: 'Scenario 1',
+          context: RunnableDebugInformation('filepath', 4, 'linetext4'),
+          tags: [
+            Tag('tag1', 1, isInherited: true),
+            Tag('tag2', 3, isInherited: false)
+          ],
+        ),
+      );
 
-      await reporter.onStepStarted(StepStartedMessage(
-        'Step 1',
-        RunnableDebugInformation('filepath', 5, 'linetext5'),
-      ));
+      await reporter.step.onStarted.maybeCall(
+        StepMessage(
+          name: 'Step 1',
+          context: RunnableDebugInformation('filepath', 5, 'linetext5'),
+        ),
+      );
 
-      await reporter.onStepFinished(StepFinishedMessage(
-        'Step 1',
-        RunnableDebugInformation('filepath', 5, 'linetext5'),
-        StepResult(100, StepExecutionResult.pass),
-      ));
+      await reporter.step.onFinished.maybeCall(
+        StepMessage(
+          name: 'Step 1',
+          context: RunnableDebugInformation('filepath', 5, 'linetext5'),
+          result: StepResult(100, StepExecutionResult.passed),
+        ),
+      );
 
-      await reporter.onStepStarted(StepStartedMessage(
-        'Step 2',
-        RunnableDebugInformation('filepath', 6, 'linetext6'),
-      ));
+      await reporter.step.onStarted.maybeCall(
+        StepMessage(
+          name: 'Step 2',
+          context: RunnableDebugInformation('filepath', 6, 'linetext6'),
+        ),
+      );
 
-      await reporter.onStepFinished(StepFinishedMessage(
-        'Step 2',
-        RunnableDebugInformation('filepath', 6, 'linetext6'),
-        StepResult(100, StepExecutionResult.fail, 'error message'),
-      ));
+      await reporter.step.onFinished.maybeCall(
+        StepMessage(
+          name: 'Step 2',
+          context: RunnableDebugInformation('filepath', 6, 'linetext6'),
+          result: StepResult(100, StepExecutionResult.fail, 'error message'),
+        ),
+      );
 
-      await reporter.onScenarioFinished(ScenarioFinishedMessage(
-        'Scenario 1',
-        RunnableDebugInformation('filepath', 4, 'linetext4'),
-        true,
-      ));
+      await reporter.scenario.onFinished.maybeCall(
+        ScenarioMessage(
+          name: 'Scenario 1',
+          context: RunnableDebugInformation('filepath', 4, 'linetext4'),
+          isPassed: true,
+        ),
+      );
 
-      await reporter.onFeatureFinished(FinishedMessage(
-        Target.feature,
-        'Feature 1',
-        RunnableDebugInformation('filepath', 2, 'linetext2'),
-      ));
+      await reporter.feature.onFinished.maybeCall(
+        FeatureMessage(
+          name: 'Feature 1',
+          context: RunnableDebugInformation('filepath', 2, 'linetext2'),
+        ),
+      );
 
-      await reporter.onFeatureStarted(StartedMessage(
-        Target.feature,
-        'Feature 2',
-        RunnableDebugInformation('filepath', 2, 'linetext2'),
-        [Tag('tag1', 1, false)],
-      ));
+      await reporter.feature.onStarted.maybeCall(
+        FeatureMessage(
+          name: 'Feature 2',
+          context: RunnableDebugInformation('filepath', 2, 'linetext2'),
+          tags: [Tag('tag1', 1, isInherited: false)],
+        ),
+      );
 
-      await reporter.onScenarioStarted(StartedMessage(
-        Target.scenario,
-        'Scenario 2',
-        RunnableDebugInformation('filepath', 4, 'linetext4'),
-        [Tag('tag1', 1, true), Tag('tag2', 3, false)],
-      ));
+      await reporter.scenario.onStarted.maybeCall(
+        ScenarioMessage(
+          name: 'Scenario 2',
+          context: RunnableDebugInformation('filepath', 4, 'linetext4'),
+          tags: [
+            Tag('tag1', 1, isInherited: true),
+            Tag('tag2', 3, isInherited: false)
+          ],
+        ),
+      );
 
-      await reporter.onStepStarted(StepStartedMessage(
-        'Step 1',
-        RunnableDebugInformation('filepath', 5, 'linetext5'),
-      ));
+      await reporter.step.onStarted.maybeCall(
+        StepMessage(
+          name: 'Step 1',
+          context: RunnableDebugInformation('filepath', 5, 'linetext5'),
+        ),
+      );
 
-      await reporter.onStepFinished(StepFinishedMessage(
-        'Step 1',
-        RunnableDebugInformation('filepath', 5, 'linetext5'),
-        StepResult(100, StepExecutionResult.pass),
-      ));
+      await reporter.step.onFinished.maybeCall(
+        StepMessage(
+          name: 'Step 1',
+          context: RunnableDebugInformation('filepath', 5, 'linetext5'),
+          result: StepResult(100, StepExecutionResult.passed),
+        ),
+      );
 
-      await reporter.onScenarioFinished(ScenarioFinishedMessage(
-        'Scenario 2',
-        RunnableDebugInformation('filepath', 4, 'linetext4'),
-        true,
-      ));
+      await reporter.scenario.onFinished.maybeCall(
+        ScenarioMessage(
+          name: 'Scenario 2',
+          context: RunnableDebugInformation('filepath', 4, 'linetext4'),
+          isPassed: true,
+        ),
+      );
 
-      await reporter.onFeatureFinished(FinishedMessage(
-        Target.feature,
-        'Feature 2',
-        RunnableDebugInformation('filepath', 2, 'linetext2'),
-      ));
+      await reporter.feature.onFinished.maybeCall(
+        FeatureMessage(
+          name: 'Feature 2',
+          context: RunnableDebugInformation('filepath', 2, 'linetext2'),
+        ),
+      );
 
-      await reporter.onTestRunFinished();
+      await reporter.test.onFinished.maybeCall();
 
       expect(
         reporter.report,

@@ -13,107 +13,120 @@ void main() {
     test('matches given correctly', () {
       final syntax = StepSyntax();
       expect(
-          syntax.isMatch(
-            'Given a step',
-            EnDialectMock(),
-          ),
-          true);
+        syntax.isMatch(
+          'Given a step',
+          EnDialectMock(),
+        ),
+        true,
+      );
       expect(
-          syntax.isMatch(
-            'given a step',
-            EnDialectMock(),
-          ),
-          true);
+        syntax.isMatch(
+          'given a step',
+          EnDialectMock(),
+        ),
+        true,
+      );
     });
 
     test('matches then correctly', () {
       final syntax = StepSyntax();
       expect(
-          syntax.isMatch(
-            'Then a step',
-            EnDialectMock(),
-          ),
-          true);
+        syntax.isMatch(
+          'Then a step',
+          EnDialectMock(),
+        ),
+        true,
+      );
       expect(
-          syntax.isMatch(
-            'then a step',
-            EnDialectMock(),
-          ),
-          true);
+        syntax.isMatch(
+          'then a step',
+          EnDialectMock(),
+        ),
+        true,
+      );
     });
 
     test('matches when correctly', () {
       final syntax = StepSyntax();
       expect(
-          syntax.isMatch(
-            'When I do something',
-            EnDialectMock(),
-          ),
-          true);
+        syntax.isMatch(
+          'When I do something',
+          EnDialectMock(),
+        ),
+        true,
+      );
       expect(
-          syntax.isMatch(
-            'when I do something',
-            EnDialectMock(),
-          ),
-          true);
+        syntax.isMatch(
+          'when I do something',
+          EnDialectMock(),
+        ),
+        true,
+      );
     });
 
-    test('matches french when & when he (Lorsqu & Lorsqu\'il) correctly', () {
+    test("matches french when & when he (Lorsqu & Lorsqu'il) correctly", () {
       final syntax = StepSyntax();
       expect(
-          syntax.isMatch(
-            'Lorsque il va acheter sa baguette',
-            FrDialectMock(),
-          ),
-          true);
+        syntax.isMatch(
+          'Lorsque il va acheter sa baguette',
+          FrDialectMock(),
+        ),
+        true,
+      );
       expect(
-          syntax.isMatch(
-            "Lorsqu'il va acheter sa baguette",
-            FrDialectMock(),
-          ),
-          true);
+        syntax.isMatch(
+          "Lorsqu'il va acheter sa baguette",
+          FrDialectMock(),
+        ),
+        true,
+      );
     });
 
     test('matches and correctly', () {
       final syntax = StepSyntax();
       expect(
-          syntax.isMatch(
-            'And something',
-            EnDialectMock(),
-          ),
-          true);
+        syntax.isMatch(
+          'And something',
+          EnDialectMock(),
+        ),
+        true,
+      );
       expect(
-          syntax.isMatch(
-            'and something',
-            EnDialectMock(),
-          ),
-          true);
+        syntax.isMatch(
+          'and something',
+          EnDialectMock(),
+        ),
+        true,
+      );
     });
 
     test('matches but correctly', () {
       final syntax = StepSyntax();
       expect(
-          syntax.isMatch(
-            'but something',
-            EnDialectMock(),
-          ),
-          true);
+        syntax.isMatch(
+          'but something',
+          EnDialectMock(),
+        ),
+        true,
+      );
       expect(
-          syntax.isMatch(
-            'but something',
-            EnDialectMock(),
-          ),
-          true);
+        syntax.isMatch(
+          'but something',
+          EnDialectMock(),
+        ),
+        true,
+      );
     });
 
     test('does not match', () {
       final syntax = StepSyntax();
       expect(
-          syntax.isMatch(
-            '#given something',
-            EnDialectMock(),
-          ),
-          false);
+        syntax.isMatch(
+          '#given something',
+          EnDialectMock(),
+        ),
+        false,
+      );
     });
   });
 
@@ -144,7 +157,7 @@ void main() {
       final syntax = StepSyntax();
       final runnable = syntax.toRunnable(
         'Given I do something',
-        RunnableDebugInformation.EMPTY(),
+        RunnableDebugInformation.empty(),
         EnDialectMock(),
       );
       expect(runnable, isNotNull);

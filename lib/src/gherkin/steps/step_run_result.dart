@@ -1,4 +1,4 @@
-enum StepExecutionResult { pass, fail, skipped, timeout, error }
+enum StepExecutionResult { passed, fail, skipped, timeout, error }
 
 class StepResult {
   /// The duration in milliseconds the step took to run
@@ -22,10 +22,11 @@ class ErroredStepResult extends StepResult {
   final Object exception;
   final StackTrace stackTrace;
 
-  ErroredStepResult(
-    int elapsedMilliseconds,
-    StepExecutionResult result,
-    this.exception,
-    this.stackTrace,
-  ) : super(elapsedMilliseconds, result);
+  @override
+  final String? resultReason;
+
+  ErroredStepResult(int elapsedMilliseconds, StepExecutionResult result,
+      this.exception, this.stackTrace,
+      [this.resultReason])
+      : super(elapsedMilliseconds, result);
 }

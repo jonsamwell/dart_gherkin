@@ -8,57 +8,65 @@ void main() {
     test('matches correctly', () {
       final keyword = EmptyLineSyntax();
       expect(
-          keyword.isMatch(
-            '',
-            EnDialectMock(),
-          ),
-          true);
+        keyword.isMatch(
+          '',
+          EnDialectMock(),
+        ),
+        true,
+      );
       expect(
-          keyword.isMatch(
-            ' ',
-            EnDialectMock(),
-          ),
-          true);
+        keyword.isMatch(
+          ' ',
+          EnDialectMock(),
+        ),
+        true,
+      );
       expect(
-          keyword.isMatch(
-            '  ',
-            EnDialectMock(),
-          ),
-          true);
+        keyword.isMatch(
+          '  ',
+          EnDialectMock(),
+        ),
+        true,
+      );
       expect(
-          keyword.isMatch(
-            '    ',
-            EnDialectMock(),
-          ),
-          true);
+        keyword.isMatch(
+          '    ',
+          EnDialectMock(),
+        ),
+        true,
+      );
     });
 
     test('does not match', () {
       final keyword = EmptyLineSyntax();
       expect(
-          keyword.isMatch(
-            'a',
-            EnDialectMock(),
-          ),
-          false);
+        keyword.isMatch(
+          'a',
+          EnDialectMock(),
+        ),
+        false,
+      );
       expect(
-          keyword.isMatch(
-            ' b',
-            EnDialectMock(),
-          ),
-          false);
+        keyword.isMatch(
+          ' b',
+          EnDialectMock(),
+        ),
+        false,
+      );
       expect(
-          keyword.isMatch(
-            '  c',
-            EnDialectMock(),
-          ),
-          false);
+        keyword.isMatch(
+          '  c',
+          EnDialectMock(),
+        ),
+        false,
+      );
       expect(
-          keyword.isMatch(
-            '    ,',
-            EnDialectMock(),
-          ),
-          false);
+        keyword.isMatch(
+          '    ,',
+          EnDialectMock(),
+        ),
+        false,
+      );
     });
   });
 }

@@ -1,7 +1,7 @@
+import '../configuration.dart';
 import '../gherkin/steps/step_run_result.dart';
 import '../gherkin/steps/world.dart';
-import '../reporters/messages.dart';
-import '../configuration.dart';
+import '../reporters/messages/messages.dart';
 
 /// A hook that is run during certain points in the execution cycle
 /// You can override any or none of the methods
@@ -38,6 +38,7 @@ abstract class Hook {
     TestConfiguration config,
     String scenario,
     Iterable<Tag> tags,
+    bool passed,
   ) =>
       Future.value(null);
 

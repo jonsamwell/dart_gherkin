@@ -28,7 +28,7 @@ void main() {
       final syntax = BackgroundSyntax();
       final runnable = syntax.toRunnable(
         'Background: A background 123',
-        RunnableDebugInformation.EMPTY(),
+        RunnableDebugInformation.empty(),
         EnDialectMock(),
       );
       expect(runnable, isNotNull);
@@ -40,7 +40,7 @@ void main() {
       final syntax = BackgroundSyntax();
       final runnable = syntax.toRunnable(
         'Background:   ',
-        RunnableDebugInformation.EMPTY(),
+        RunnableDebugInformation.empty(),
         EnDialectMock(),
       );
       expect(runnable, isNotNull);
@@ -52,7 +52,7 @@ void main() {
       final syntax = BackgroundSyntax();
       final runnable = syntax.toRunnable(
         'Background:',
-        RunnableDebugInformation.EMPTY(),
+        RunnableDebugInformation.empty(),
         EnDialectMock(),
       );
       expect(runnable, isNotNull);
