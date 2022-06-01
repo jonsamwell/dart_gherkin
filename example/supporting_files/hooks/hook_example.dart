@@ -36,6 +36,7 @@ class HookExample extends Hook {
     TestConfiguration config,
     String scenario,
     Iterable<Tag> tags,
+    bool passed,
   ) async {
     print("running hook after scenario '$scenario'");
   }

@@ -1,4 +1,4 @@
-## [3.0.0] - 26/03/2022
+## [3.0.0] - 16/05/2022
 
 * BREAKING CHANGE:
   -  `TestConfiguration` is now not mutable. You can create an instance like this:
@@ -44,7 +44,7 @@
      - `StepReporter`
      - `ExceptionReporter`
      - `MessageReporter`
-     - `DisposableRepoter`
+     - `DisposableReporter`
   
    and interfaces that store sets of interfaces:
    
@@ -68,6 +68,12 @@
   > Author: This architecture and abstraction is due to the fact that you can implement your reporters yourself in your projects just by implementing interfaces. In addition, those who want to contribute to the development of reporters through PR, you will also only need to implement these interfaces.
 
   - Classes of the type `StartedMessage, Finished Message` have now been replaced with classes that relate to the type of test itself - `StepMessage`, `ScenarioMessage`, `FeatureMessage`, `TestMessage`. Here the [SRP](https://en.wikipedia.org/wiki/Single-responsibility_principle) principle comes into force.
+
+* Updated README
+* Steps can be retried.
+* Scenario hook has a passed parameter
+* Typos fixed in steps
+* Path is now added to the report
 
 
 ## [2.0.8] - 24/11/2021

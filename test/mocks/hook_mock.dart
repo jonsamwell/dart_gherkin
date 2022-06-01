@@ -50,6 +50,7 @@ class HookMock extends Hook {
     TestConfiguration config,
     String scenario,
     Iterable<Tag> tags,
+    bool failed,
   ) async {
     onAfterScenarioTags = tags.toList();
     onAfterScenarioInvocationCount += 1;
