@@ -40,6 +40,7 @@ class FeatureFileVisitor {
             _tagsToList(feature.tags),
             childScenario.name,
             _tagsToList(childScenario.tags),
+            path,
             isFirst: !acknowledgedScenarioPosition && isFirst,
             isLast: !acknowledgedScenarioPosition && isLast,
           );
@@ -83,7 +84,8 @@ class FeatureFileVisitor {
     String featureName,
     Iterable<String> featureTags,
     String name,
-    Iterable<String> tags, {
+    Iterable<String> tags,
+    String path, {
     required bool isFirst,
     required bool isLast,
   }) async {}
