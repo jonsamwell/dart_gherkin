@@ -83,11 +83,16 @@ class TestConfiguration {
     this.hooks,
     this.reporters = const [],
     this.createWorld,
+    this.useWaiters = true,
   });
 
   /// When a step fails, it will retry this number of times.
   /// When it still fails after these tries the step will fail.
   int stepMaxRetries = 0;
+
+  /// To use the pumpAndSettle() / waitForAppToSettle() function
+  /// This boolean should be true, otherwise it should be false.
+  bool useWaiters = false;
 
   /// When a step fails, it will wait this long before retrying.
   /// For instance, you know that when it fails, it can take a bit longer (async).
