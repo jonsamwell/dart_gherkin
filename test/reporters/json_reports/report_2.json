@@ -20,6 +20,7 @@
         "name": "Scenario 1",
         "description": "",
         "line": 5,
+        "status": "failed",
         "tags": [
           {
             "line": 4,

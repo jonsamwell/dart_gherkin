@@ -27,7 +27,7 @@ class Calculator {
     return result;
   }
 
-  num evalulateExpression(String expression) => 1;
+  num evaluateExpression(String expression) => 1;
 
   num getNumericResult() => _results.removeLast();
 

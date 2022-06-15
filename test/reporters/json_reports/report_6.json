@@ -20,6 +20,7 @@
         "name": "Scenario Outline 1",
         "description": "",
         "line": 5,
+        "status": "passed",
         "tags": [
           {
             "line": 4,

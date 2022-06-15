@@ -78,28 +78,28 @@ void main() {
         ScenarioMessage(
           name: '',
           context: RunnableDebugInformation.empty(),
-          isPassed: true,
+          hasPassed: true,
         ),
       );
       await reporter.scenario.onFinished.maybeCall(
         ScenarioMessage(
           name: '',
           context: RunnableDebugInformation.empty(),
-          isPassed: false,
+          hasPassed: false,
         ),
       );
       await reporter.scenario.onFinished.maybeCall(
         ScenarioMessage(
           name: '',
           context: RunnableDebugInformation.empty(),
-          isPassed: false,
+          hasPassed: false,
         ),
       );
       await reporter.scenario.onFinished.maybeCall(
         ScenarioMessage(
           name: '',
           context: RunnableDebugInformation.empty(),
-          isPassed: true,
+          hasPassed: true,
         ),
       );
 

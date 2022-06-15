@@ -43,8 +43,8 @@ class IoFeatureFileAccessor implements FeatureFileMatcher, FeatureFileReader {
             from: directory.path,
           );
 
-          final match = pattern.matchAsPrefix(relativePath);
-          if (match?.group(0) == relativePath) {
+          final match = pattern.allMatches(relativePath);
+          if (match.isNotEmpty) {
             result.add(item.path);
           }
         }

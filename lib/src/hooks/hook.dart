@@ -37,9 +37,9 @@ abstract class Hook {
   Future<void> onAfterScenario(
     TestConfiguration config,
     String scenario,
-    Iterable<Tag> tags,
-    bool passed,
-  ) =>
+    Iterable<Tag> tags, {
+    bool passed = true,
+  }) =>
       Future.value(null);
 
   /// Run before a step is executed

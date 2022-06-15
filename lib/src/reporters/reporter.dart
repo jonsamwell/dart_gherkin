@@ -64,56 +64,56 @@ class StateAction<T extends ActionMessage> {
 /// {@endtemplate}
 abstract class Reporter {}
 
-/// {@template reporter.testrepoter}
+/// {@template reporter.testreporter}
 /// An abstract class that allows you to track the status of the start of tests.
 /// {@endtemplate}
 abstract class TestReporter implements Reporter {
   ReportActionHandler<TestMessage> get test;
 }
 
-/// {@template reporter.featurerepoter}
+/// {@template reporter.featurereporter}
 /// An abstract class that allows you to track the status of features.
 /// {@endtemplate}
 abstract class FeatureReporter implements Reporter {
   ReportActionHandler<FeatureMessage> get feature;
 }
 
-/// {@template reporter.scenariorepoter}
+/// {@template reporter.scenarioreporter}
 /// An abstract class that allows you to track the status of scenarios.
 /// {@endtemplate}
 abstract class ScenarioReporter implements Reporter {
   ReportActionHandler<ScenarioMessage> get scenario;
 }
 
-/// {@template reporter.steprepoter}
+/// {@template reporter.stepreporter}
 /// An abstract class that allows you to track the status of steps.
 /// {@endtemplate}
 abstract class StepReporter implements Reporter {
   ReportActionHandler<StepMessage> get step;
 }
 
-/// {@template reporter.exceptionrepoter}
+/// {@template reporter.exceptionreporter}
 /// An abstract class that allows you to track the status of exceptions.
 /// {@endtemplate}
 abstract class ExceptionReporter implements Reporter {
   Future<void> onException(Object exception, StackTrace stackTrace);
 }
 
-/// {@template reporter.messagerepoter}
+/// {@template reporter.messagereporter}
 /// An abstract class that allows you to send messages and intercept them.
 /// {@endtemplate}
 abstract class MessageReporter implements Reporter {
   Future<void> message(String message, MessageLevel level);
 }
 
-/// {@template reporter.messagerepoter}
+/// {@template reporter.messagereporter}
 /// An abstract class that allows you to send messages and intercept them.
 /// {@endtemplate}
-abstract class DisposableRepoter implements Reporter {
+abstract class DisposableReporter implements Reporter {
   Future<void> dispose();
 }
 
-/// {@template reporter.fullrepoter}
+/// {@template reporter.fullreporter}
 /// This is an abstraction for the implementation
 /// of all methods for generating reports
 /// {@endtemplate}
@@ -124,7 +124,7 @@ abstract class FullReporter
         StepReporter,
         InfoReporter,
         ScenarioReporter,
-        DisposableRepoter {}
+        DisposableReporter {}
 
 /// {@template reporter.fullfeature}
 /// This is an abstraction for the implementation
@@ -136,9 +136,9 @@ abstract class FullFeatureReporter
         StepReporter,
         InfoReporter,
         ScenarioReporter,
-        DisposableRepoter {}
+        DisposableReporter {}
 
-/// {@template reporter.fullrepoter}
+/// {@template reporter.fullreporter}
 /// This interface is necessary for tracking errors and displaying
 /// various messages in the reporter
 /// {@endtemplate}
@@ -148,14 +148,14 @@ abstract class InfoReporter implements MessageReporter, ExceptionReporter {}
 /// This mixin allows you to create aggregating reporters.
 /// {@endtemplate}
 mixin AllReporters implements Reporter {
-  /// Get repoters
-  UnmodifiableListView<Reporter> get repoters;
+  /// Get reporters
+  UnmodifiableListView<Reporter> get reporters;
 
   /// A function that allows you to combine a certain function
   /// for all [reporters] and call it as one
   Future<void> invokeReporters<T extends Reporter>(ReportInvoke<T> invoke) {
     final validReportCallbacks =
-        repoters.whereType<T>().map(invoke).whereNotNull();
+        reporters.whereType<T>().map(invoke).whereNotNull();
 
     return Future.wait(validReportCallbacks);
   }

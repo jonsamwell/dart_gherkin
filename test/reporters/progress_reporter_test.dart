@@ -29,7 +29,11 @@ void main() {
         StepMessage(
           name: 'Step 2',
           context: RunnableDebugInformation('filePath', 2, 'line 2'),
-          result: StepResult(0, StepExecutionResult.fail, 'Failed Reason'),
+          result: StepResult(
+            0,
+            StepExecutionResult.fail,
+            resultReason: 'Failed Reason',
+          ),
         ),
       );
       await reporter.step.onFinished.maybeCall(

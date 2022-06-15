@@ -11,10 +11,9 @@
         whenTheCharactersAreCounted(),
         thenExpectNumericResult()
       ];
-      final featuresPath = buildFeaturesPathRegex();
 
       var config = TestConfiguration(
-        features: [RegExp(featuresPath)],
+        features: [RegExp(r'features\\.+\.feature')],
         stepDefinitions: steps,
         tagExpression: 'not @skip',
         hooks: [HookExample()],
@@ -45,9 +44,9 @@
      - `ExceptionReporter`
      - `MessageReporter`
      - `DisposableReporter`
-  
+
    and interfaces that store sets of interfaces:
-   
+
      - `FullReporter`
      - `FullFeatureReporter`
      - `InfoReporter`

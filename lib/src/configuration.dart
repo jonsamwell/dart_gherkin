@@ -109,7 +109,7 @@ class TestConfiguration {
   /// Additional setting on the configuration object can be set on the returned instance.
   TestConfiguration.standard(
     Iterable<StepDefinitionGeneric<World>> steps, {
-    String featurePath = r'features\\.*\.feature',
+    String featurePath = r'features\\.+\.feature',
     this.featureDefaultLanguage = 'en',
     this.order = ExecutionOrder.random,
     this.defaultTimeout = const Duration(seconds: 10),

@@ -5,7 +5,7 @@ part of '../messages.dart';
 /// {@endtemplate}
 class ScenarioMessage extends ActionMessage {
   /// Has the scenario been executed successfully
-  final bool isPassed;
+  final bool hasPassed;
 
   /// Gherkin format tags
   final List<Tag> tags;
@@ -15,7 +15,7 @@ class ScenarioMessage extends ActionMessage {
     required String name,
     required RunnableDebugInformation context,
     Target target = Target.scenario,
-    this.isPassed = false,
+    this.hasPassed = false,
     this.tags = const [],
   }) : super(
           target: target,
@@ -26,7 +26,7 @@ class ScenarioMessage extends ActionMessage {
   ScenarioMessage copyWith({
     String? name,
     RunnableDebugInformation? context,
-    bool? isPassed,
+    bool? hasPassed,
     List<Tag>? tags,
     Target? target,
   }) {
@@ -34,7 +34,7 @@ class ScenarioMessage extends ActionMessage {
       target: target ?? this.target,
       name: name ?? this.name,
       context: context ?? this.context,
-      isPassed: isPassed ?? this.isPassed,
+      hasPassed: hasPassed ?? this.hasPassed,
       tags: tags ?? this.tags,
     );
   }

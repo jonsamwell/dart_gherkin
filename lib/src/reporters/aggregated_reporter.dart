@@ -12,7 +12,7 @@ class AggregatedReporter extends FullReporter
   void addReporter(Reporter reporter) => _reporters.add(reporter);
 
   @override
-  UnmodifiableListView<Reporter> get repoters =>
+  UnmodifiableListView<Reporter> get reporters =>
       UnmodifiableListView(_reporters);
 
   @override
@@ -83,7 +83,7 @@ class AggregatedReporter extends FullReporter
 
   @override
   Future<void> dispose() async {
-    await invokeReporters<DisposableRepoter>((r) => r.dispose());
+    await invokeReporters<DisposableReporter>((r) => r.dispose());
     _reporters.clear();
   }
 }

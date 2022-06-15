@@ -306,14 +306,14 @@ class FeatureFileRunner {
         ScenarioMessage(
           name: scenario.name,
           context: scenario.debug,
-          isPassed: scenarioPassed,
+          hasPassed: scenarioPassed,
         ),
       );
       await _hook.onAfterScenario(
         _config,
         scenario.name,
         tags,
-        scenarioPassed,
+        passed: scenarioPassed,
       );
 
       try {

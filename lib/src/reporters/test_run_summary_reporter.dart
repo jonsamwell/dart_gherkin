@@ -1,7 +1,11 @@
 import '../../gherkin.dart';
 
 class TestRunSummaryReporter extends StdoutReporter
-    implements ScenarioReporter, StepReporter, TestReporter, DisposableRepoter {
+    implements
+        ScenarioReporter,
+        StepReporter,
+        TestReporter,
+        DisposableReporter {
   final _timer = Stopwatch();
   final List<StepMessage> _ranSteps = [];
   final List<ScenarioMessage> _ranScenarios = [];
@@ -59,8 +63,8 @@ class TestRunSummaryReporter extends StdoutReporter
 
   String _collectScenarioSummary(Iterable<ScenarioMessage> scenarios) {
     final summaries = <String>[];
-    final passedScenarios = scenarios.where((s) => s.isPassed);
-    final failedScenarios = scenarios.where((s) => !s.isPassed);
+    final passedScenarios = scenarios.where((s) => s.hasPassed);
+    final failedScenarios = scenarios.where((s) => !s.hasPassed);
     if (passedScenarios.isNotEmpty) {
       summaries.add(
         '${StdoutReporter.kPassColor}${passedScenarios.length} passed'

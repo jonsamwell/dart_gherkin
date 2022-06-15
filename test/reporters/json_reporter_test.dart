@@ -35,6 +35,7 @@ void main() {
         ScenarioMessage(
           name: 'Scenario 1',
           context: RunnableDebugInformation('filepath', 4, 'linetext4'),
+          hasPassed: true,
           tags: [Tag('tag1', 1, isInherited: true), Tag('tag2', 3)],
         ),
       );
@@ -58,7 +59,7 @@ void main() {
         ScenarioMessage(
           name: 'Scenario 1',
           context: RunnableDebugInformation('filepath', 4, 'linetext4'),
-          isPassed: true,
+          hasPassed: true,
         ),
       );
 
@@ -93,6 +94,7 @@ void main() {
         ScenarioMessage(
           name: 'Scenario 1',
           context: RunnableDebugInformation('filepath', 4, 'linetext4'),
+          hasPassed: true,
           tags: [Tag('tag1', 1, isInherited: true), Tag('tag2', 3)],
         ),
       );
@@ -117,7 +119,7 @@ void main() {
         ScenarioMessage(
           name: 'Scenario 1',
           context: RunnableDebugInformation('filepath', 4, 'linetext4'),
-          isPassed: true,
+          hasPassed: true,
         ),
       );
 
@@ -153,6 +155,7 @@ void main() {
         ScenarioMessage(
           name: 'Scenario 1',
           context: RunnableDebugInformation('filepath', 4, 'linetext4'),
+          hasPassed: false,
           tags: [
             Tag('tag1', 1, isInherited: true),
             Tag('tag2', 3, isInherited: false)
@@ -186,7 +189,11 @@ void main() {
         StepMessage(
           name: 'Step 2',
           context: RunnableDebugInformation('filepath', 6, 'linetext6'),
-          result: StepResult(100, StepExecutionResult.fail, 'error message'),
+          result: StepResult(
+            100,
+            StepExecutionResult.fail,
+            resultReason: 'error message',
+          ),
         ),
       );
 
@@ -194,7 +201,7 @@ void main() {
         ScenarioMessage(
           name: 'Scenario 1',
           context: RunnableDebugInformation('filepath', 4, 'linetext4'),
-          isPassed: true,
+          hasPassed: true,
         ),
       );
 
@@ -231,6 +238,7 @@ void main() {
         ScenarioMessage(
           name: 'Scenario 1',
           context: RunnableDebugInformation('filepath', 4, 'linetext4'),
+          hasPassed: false,
           tags: [
             Tag('tag1', 1, isInherited: true),
             Tag('tag2', 3, isInherited: false)
@@ -264,7 +272,11 @@ void main() {
         StepMessage(
           name: 'Step 2',
           context: RunnableDebugInformation('filepath', 6, 'linetext6'),
-          result: StepResult(100, StepExecutionResult.fail, 'error message'),
+          result: StepResult(
+            100,
+            StepExecutionResult.fail,
+            resultReason: 'error message',
+          ),
         ),
       );
 
@@ -287,7 +299,7 @@ void main() {
         ScenarioMessage(
           name: 'Scenario 1',
           context: RunnableDebugInformation('filepath', 4, 'linetext4'),
-          isPassed: true,
+          hasPassed: true,
         ),
       );
 
@@ -324,6 +336,7 @@ void main() {
         ScenarioMessage(
           name: 'Scenario 1',
           context: RunnableDebugInformation('filepath', 4, 'linetext4'),
+          hasPassed: false,
           tags: [
             Tag('tag1', 1, isInherited: true),
             Tag('tag2', 3, isInherited: false)
@@ -357,7 +370,11 @@ void main() {
         StepMessage(
           name: 'Step 2',
           context: RunnableDebugInformation('filepath', 6, 'linetext6'),
-          result: StepResult(100, StepExecutionResult.fail, 'error message'),
+          result: StepResult(
+            100,
+            StepExecutionResult.fail,
+            resultReason: 'error message',
+          ),
           attachments: [Attachment('data', 'mimetype')],
         ),
       );
@@ -366,7 +383,7 @@ void main() {
         ScenarioMessage(
           name: 'Scenario 1',
           context: RunnableDebugInformation('filepath', 4, 'linetext4'),
-          isPassed: true,
+          hasPassed: true,
         ),
       );
 
@@ -403,6 +420,7 @@ void main() {
           target: Target.scenarioOutline,
           name: 'Scenario Outline 1',
           context: RunnableDebugInformation('filepath', 4, 'linetext4'),
+          hasPassed: true,
           tags: [
             Tag('tag1', 1, isInherited: true),
             Tag('tag2', 3, isInherited: false)
@@ -445,7 +463,7 @@ void main() {
         ScenarioMessage(
           name: 'Scenario 1',
           context: RunnableDebugInformation('filepath', 4, 'linetext4'),
-          isPassed: true,
+          hasPassed: true,
         ),
       );
 
@@ -495,6 +513,7 @@ void main() {
         ScenarioMessage(
           name: 'Scenario 1',
           context: RunnableDebugInformation('filepath', 4, 'linetext4'),
+          hasPassed: false,
           tags: [
             Tag('tag1', 1, isInherited: true),
             Tag('tag2', 3, isInherited: false)
@@ -528,7 +547,11 @@ void main() {
         StepMessage(
           name: 'Step 2',
           context: RunnableDebugInformation('filepath', 6, 'linetext6'),
-          result: StepResult(100, StepExecutionResult.fail, 'error message'),
+          result: StepResult(
+            100,
+            StepExecutionResult.fail,
+            resultReason: 'error message',
+          ),
         ),
       );
 
@@ -536,7 +559,7 @@ void main() {
         ScenarioMessage(
           name: 'Scenario 1',
           context: RunnableDebugInformation('filepath', 4, 'linetext4'),
-          isPassed: true,
+          hasPassed: true,
         ),
       );
 
@@ -585,7 +608,7 @@ void main() {
         ScenarioMessage(
           name: 'Scenario 2',
           context: RunnableDebugInformation('filepath', 4, 'linetext4'),
-          isPassed: true,
+          hasPassed: true,
         ),
       );
 

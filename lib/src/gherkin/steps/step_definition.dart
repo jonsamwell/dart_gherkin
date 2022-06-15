@@ -51,7 +51,7 @@ abstract class StepDefinitionGeneric<TWorld extends World> {
       return StepResult(
         elapsedMilliseconds,
         StepExecutionResult.fail,
-        tf.message,
+        resultReason: tf.message,
       );
     } on TimeoutException catch (te, st) {
       return ErroredStepResult(
@@ -60,20 +60,16 @@ abstract class StepDefinitionGeneric<TWorld extends World> {
         te,
         st,
       );
-    } on Error catch (e, st) {
-      return ErroredStepResult(
-        elapsedMilliseconds,
-        StepExecutionResult.error,
-        Exception(e.toString()),
-        st,
-        (e as StateError).message,
-      );
     } catch (e, st) {
+      final err = e is Exception ? e : Exception(e.toString());
+      final reason = e is StateError ? e.message : err.toString();
+
       return ErroredStepResult(
         elapsedMilliseconds,
         StepExecutionResult.error,
-        e,
+        err,
         st,
+        resultReason: reason,
       );
     }
 

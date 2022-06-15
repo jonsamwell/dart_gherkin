@@ -52,7 +52,7 @@ class JsonReporter
         onStarted: ([message]) async =>
             _currentFeature.currentScenario.add(JsonStep.from(message!)),
         onFinished: ([message]) async =>
-            _currentFeature.currentScenario.currentStep.onFinish(message!),
+            _currentFeature.currentScenario.onStepFinish(message!),
       );
 
   @override

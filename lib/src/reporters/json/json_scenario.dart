@@ -1,11 +1,12 @@
+import '../../gherkin/steps/step_run_result.dart';
 import '../messages/messages.dart';
 import 'json_feature.dart';
 import 'json_step.dart';
 import 'json_tag.dart';
 
 class JsonScenario {
-  bool passed = true;
-  
+  bool? passed;
+
   /// Target type
   final Target target;
 
@@ -19,12 +20,24 @@ class JsonScenario {
 
   void add(JsonStep step) {
     steps.add(step);
-    if (steps.last.status == 'failed' ||
-        steps.last.status == 'error' ||
-        steps.last.status == 'timeout') {
-      passed = false;
-    }
   }
+
+  void onStepFinish(StepMessage message) {
+    switch (message.result?.result) {
+      case null:
+      case StepExecutionResult.passed:
+      case StepExecutionResult.skipped:
+        break;
+      case StepExecutionResult.fail:
+      case StepExecutionResult.timeout:
+      case StepExecutionResult.error:
+        passed = false;
+        break;
+    }
+
+    currentStep.onFinish(message);
+  }
+
   /// Filtering tags above the scenario
   final Iterable<JsonTag> tags;
 
@@ -38,6 +51,7 @@ class JsonScenario {
     required this.line,
     this.description = '',
     this.feature,
+    this.passed,
     List<JsonStep>? steps,
     Iterable<JsonTag>? tags,
   })  : steps = steps ?? [],
@@ -53,6 +67,7 @@ class JsonScenario {
         target: message.target,
         name: message.name,
         line: message.context.nonZeroAdjustedLineNumber,
+        passed: message.hasPassed,
         tags: message.tags
             .where((t) => !t.isInherited)
             .map((t) => JsonTag.fromMessageTag(t))
@@ -90,7 +105,7 @@ class JsonScenario {
       'name': name,
       'description': description,
       'line': line,
-      'passed': passed,
+      'status': _calculateStatus()
     };
 
     if (tags.isNotEmpty) {
@@ -102,5 +117,15 @@ class JsonScenario {
     }
 
     return result;
+  }
+
+  String _calculateStatus() {
+    if (steps.isEmpty) {
+      return 'skipped';
+    }
+
+    return steps.where((x) => x.status == 'failed').isNotEmpty
+        ? 'failed'
+        : 'passed';
   }
 }

@@ -43,7 +43,7 @@ void main() {
         ScenarioMessage(
           name: '',
           context: RunnableDebugInformation.empty(),
-          isPassed: true,
+          hasPassed: true,
         ),
       );
       expect(reporter1.onScenarioFinishedInvocationCount, 1);

@@ -16,6 +16,7 @@ import 'mocks/world_mock.dart';
 
 void main() {
   final emptyDebuggable = RunnableDebugInformation('File Path', 0, 'Line text');
+
   group('run', () {
     test('run simple feature file scenario', () async {
       final stepDefinition = MockStepDefinition();

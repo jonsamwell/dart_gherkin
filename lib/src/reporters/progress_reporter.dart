@@ -18,8 +18,8 @@ class ProgressReporter extends StdoutReporter
             return;
           }
           printMessageLine(
-            "${message.isPassed ? 'PASSED' : 'FAILED'}: Scenario ${_getNameAndContext(message.name, message.context)}",
-            message.isPassed
+            "${message.hasPassed ? 'PASSED' : 'FAILED'}: Scenario ${_getNameAndContext(message.name, message.context)}",
+            message.hasPassed
                 ? StdoutReporter.kPassColor
                 : StdoutReporter.kFailColor,
           );

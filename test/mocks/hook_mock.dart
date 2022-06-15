@@ -49,9 +49,9 @@ class HookMock extends Hook {
   Future<void> onAfterScenario(
     TestConfiguration config,
     String scenario,
-    Iterable<Tag> tags,
-    bool failed,
-  ) async {
+    Iterable<Tag> tags, {
+    bool passed = true,
+  }) async {
     onAfterScenarioTags = tags.toList();
     onAfterScenarioInvocationCount += 1;
   }

@@ -79,22 +79,21 @@ class JsonStep {
     return step;
   }
 
-  String? _statusMapper(StepExecutionResult result) {
+  String _mapStatus(StepExecutionResult? result) {
     switch (result) {
       case StepExecutionResult.passed:
       case StepExecutionResult.skipped:
-        return result.name;
+        return result!.name;
+      case StepExecutionResult.fail:
+        return 'failed';
       default:
-        return null;
+        return 'skipped';
     }
   }
 
   void onFinish(StepMessage message) {
     duration = message.result!.elapsedMilliseconds * 1000000;
-    final newStatus = _statusMapper(message.result!.result);
-    if (newStatus != null) {
-      status = newStatus;
-    }
+    status = _mapStatus(message.result?.result);
 
     if (message.attachments != null && message.attachments!.isNotEmpty) {
       embeddings = message.attachments!

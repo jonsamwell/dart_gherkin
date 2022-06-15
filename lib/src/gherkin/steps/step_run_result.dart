@@ -13,20 +13,24 @@ class StepResult {
 
   StepResult(
     this.elapsedMilliseconds,
-    this.result, [
+    this.result, {
     this.resultReason,
-  ]);
+  });
 }
 
 class ErroredStepResult extends StepResult {
   final Object exception;
   final StackTrace stackTrace;
 
-  @override
-  final String? resultReason;
-
-  ErroredStepResult(int elapsedMilliseconds, StepExecutionResult result,
-      this.exception, this.stackTrace,
-      [this.resultReason])
-      : super(elapsedMilliseconds, result);
+  ErroredStepResult(
+    int elapsedMilliseconds,
+    StepExecutionResult result,
+    this.exception,
+    this.stackTrace, {
+    String? resultReason,
+  }) : super(
+          elapsedMilliseconds,
+          result,
+          resultReason: resultReason,
+        );
 }
