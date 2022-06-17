@@ -69,6 +69,14 @@ class TestConfiguration {
   /// the program will stop after any test failed
   final bool stopAfterTestFailed;
 
+  /// When a step fails, it will retry this number of times.
+  /// When it still fails after these tries the step will fail.
+  final int stepMaxRetries;
+
+  /// When a step fails, it will wait this long before retrying.
+  /// For instance, you know that when it fails, it can take a bit longer (async).
+  final Duration retryDelay;
+
   TestConfiguration({
     this.features = const <Pattern>[],
     this.featureDefaultLanguage = 'en',
@@ -83,23 +91,12 @@ class TestConfiguration {
     this.hooks,
     this.reporters = const [],
     this.createWorld,
-    this.useWaiters = true,
+    this.stepMaxRetries = 0,
+    this.retryDelay = const Duration(seconds: 2),
   });
 
-  /// When a step fails, it will retry this number of times.
-  /// When it still fails after these tries the step will fail.
-  int stepMaxRetries = 0;
-
-  /// To use the pumpAndSettle() / waitForAppToSettle() function
-  /// This boolean should be true, otherwise it should be false.
-  bool useWaiters = false;
-
-  /// When a step fails, it will wait this long before retrying.
-  /// For instance, you know that when it fails, it can take a bit longer (async).
-  Duration retryDelay = const Duration(seconds: 2);
-
   /// used to allow for custom configuration to ensure framework specific configuration is in place
-  void prepare() {}
+  TestConfiguration prepare() => this;
 
   /// used to get a new instance of an attachment manager class that is passed to the World context
   CreateAttachmentManager get getAttachmentManager =>
@@ -120,6 +117,8 @@ class TestConfiguration {
     this.customStepParameterDefinitions,
     this.hooks,
     this.createWorld,
+    this.stepMaxRetries = 0,
+    this.retryDelay = const Duration(seconds: 2),
   })  : features = [RegExp(featurePath)],
         reporters = [
           StdoutReporter(MessageLevel.error),

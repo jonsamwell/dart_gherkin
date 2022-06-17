@@ -48,8 +48,7 @@ class TableRunnable extends RunnableBlock {
         .split(RegExp(r'(?<!\\)\|'))
         .map((c) => c.trim().replaceAll(r'\|', '|'))
         .map((c) => c.isEmpty ? null : c)
-        .skip(1)
-        .toList();
+        .skip(1);
 
     return TableRow(
       columns.take(columns.length - 1).toList(

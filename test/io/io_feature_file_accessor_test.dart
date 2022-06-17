@@ -11,7 +11,7 @@ void main() {
     group('with RegExp', () {
       test('does not list directories', () async {
         expect(
-          await indexer.listFiles(RegExp('test_resources')),
+          await indexer.listFiles(RegExp('test/test_resources/')),
           [],
         );
       });

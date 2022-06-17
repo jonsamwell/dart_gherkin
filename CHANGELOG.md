@@ -1,3 +1,7 @@
+## [3.0.0+1] - 16/05/2022
+- Update configuration object constructor to take in additional configuration parameters
+- THe `prepare` method on the configuration object now returns a configuration object to allow for configuration to always be immutable
+
 ## [3.0.0] - 16/05/2022
 
 * BREAKING CHANGE:
