@@ -55,7 +55,7 @@ class FeatureFileRunner {
   Future<bool> _runFeature(FeatureRunnable feature) async {
     var haveAllScenariosPassed = true;
     try {
-      await _reporter.feature.onStarted.maybeCall(
+      await _reporter.feature.onStarted.invoke(
         FeatureMessage(
           name: feature.name,
           context: feature.debug,
@@ -116,7 +116,7 @@ class FeatureFileRunner {
 
       rethrow;
     } finally {
-      await _reporter.feature.onFinished.maybeCall(
+      await _reporter.feature.onFinished.invoke(
         FeatureMessage(
           name: feature.name,
           context: feature.debug,
@@ -230,7 +230,7 @@ class FeatureFileRunner {
 
       await _hook.onBeforeScenario(_config, scenario.name, tags);
 
-      await _reporter.scenario.onStarted.maybeCall(
+      await _reporter.scenario.onStarted.invoke(
         ScenarioMessage(
           target: scenario.scenarioType == ScenarioType.scenarioOutline
               ? Target.scenarioOutline
@@ -302,7 +302,7 @@ class FeatureFileRunner {
       await _reporter.onException(e, st);
       rethrow;
     } finally {
-      await _reporter.scenario.onFinished.maybeCall(
+      await _reporter.scenario.onFinished.invoke(
         ScenarioMessage(
           name: scenario.name,
           context: scenario.debug,
@@ -345,7 +345,7 @@ class FeatureFileRunner {
       MessageLevel.info,
     );
     await _hook.onBeforeStep(world, step.name);
-    await _reporter.step.onStarted.maybeCall(
+    await _reporter.step.onStarted.invoke(
       StepMessage(
         name: step.name,
         context: step.debug,
@@ -373,7 +373,7 @@ class FeatureFileRunner {
     }
 
     await _hook.onAfterStep(world, step.name, result);
-    await _reporter.step.onFinished.maybeCall(
+    await _reporter.step.onFinished.invoke(
       StepMessage(
         name: step.name,
         context: step.debug,

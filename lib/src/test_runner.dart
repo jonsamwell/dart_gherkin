@@ -45,7 +45,7 @@ class GherkinRunner {
     await _hook.onBeforeRun(config);
 
     try {
-      await _reporter.test.onStarted.maybeCall();
+      await _reporter.test.onStarted.invoke();
       for (final featureFile in featureFiles) {
         final runner = FeatureFileRunner(
           config: config,
@@ -60,7 +60,7 @@ class GherkinRunner {
         }
       }
     } finally {
-      await _reporter.test.onFinished.maybeCall();
+      await _reporter.test.onFinished.invoke();
       await _hook.onAfterRun(config);
       await _reporter.dispose();
     }

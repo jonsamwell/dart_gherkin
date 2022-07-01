@@ -52,10 +52,8 @@ class StateAction<T extends ActionMessage> {
 
   /// The function of safely calling an action.
   /// Inside notifies listeners (calls [notifyListeners]).
-  Future<void> maybeCall([T? value]) async {
-    if (_action != null) {
-      await _action!.call(value);
-    }
+  Future<void> invoke([T? value]) async {
+    await _action?.call(value);
   }
 }
 

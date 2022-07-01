@@ -2,6 +2,7 @@ import '../../gherkin/steps/step_run_result.dart';
 import '../messages/messages.dart';
 import 'json_embedding.dart';
 import 'json_row.dart';
+import 'json_statuses.dart';
 
 class JsonStep {
   final String name;
@@ -32,7 +33,7 @@ class JsonStep {
     this.file,
     this.keyword,
     this.duration = 0,
-    this.status = 'failed',
+    this.status = JsonStatus.failed,
   });
 
   static JsonStep get empty => JsonStep(
@@ -82,12 +83,15 @@ class JsonStep {
   String _mapStatus(StepExecutionResult? result) {
     switch (result) {
       case StepExecutionResult.passed:
+        return JsonStatus.passed;
       case StepExecutionResult.skipped:
-        return result!.name;
+        return JsonStatus.skipped;
+      case StepExecutionResult.error:
       case StepExecutionResult.fail:
-        return 'failed';
+      case StepExecutionResult.timeout:
+        return JsonStatus.failed;
       default:
-        return 'skipped';
+        return JsonStatus.ambiguous;
     }
   }
 
@@ -95,17 +99,24 @@ class JsonStep {
     duration = message.result!.elapsedMilliseconds * 1000000;
     status = _mapStatus(message.result?.result);
 
-    if (message.attachments != null && message.attachments!.isNotEmpty) {
+    if (message.attachments?.isNotEmpty ?? false) {
       embeddings = message.attachments!
           .map(
             (attachment) => JsonEmbedding()
               ..data = attachment.data
               ..mimeType = attachment.mimeType,
           )
-          .toList();
+          .toList(growable: false);
     }
 
-    _trackError(message.result!.resultReason);
+    if (message.result is ErroredStepResult) {
+      final errorResult = message.result! as ErroredStepResult;
+
+      onException(errorResult.exception, errorResult.stackTrace);
+    } else if (message.result?.resultReason != null &&
+        status == JsonStatus.failed) {
+      _trackError(message.result!.resultReason);
+    }
   }
 
   void onException(
@@ -123,8 +134,11 @@ class JsonStep {
     String? stacktrace,
   ]) {
     if (error != null && error.isNotEmpty) {
-      this.error =
-          '$error${stacktrace != null ? '\n\n$stacktrace' : ''}'.trim();
+      this.error = error;
+
+      if (stacktrace != null && stacktrace.isNotEmpty) {
+        this.error = '${this.error}\n\n$stacktrace';
+      }
     }
   }
 

@@ -1,6 +1,10 @@
+## [3.1.0] - 01/07/2022
+- Changed reporter `maybeCall` to `invoke`
+- Json reporter: ensure exceptions and statuses are reported correctly
+
 ## [3.0.0+1] - 16/05/2022
 - Update configuration object constructor to take in additional configuration parameters
-- THe `prepare` method on the configuration object now returns a configuration object to allow for configuration to always be immutable
+- The `prepare` method on the configuration object now returns a configuration object to allow for configuration to always be immutable
 
 ## [3.0.0] - 16/05/2022
 

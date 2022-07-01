@@ -18,40 +18,40 @@ class AggregatedReporter extends FullReporter
   @override
   ReportActionHandler<TestMessage> get test => ReportActionHandler(
         onStarted: ([_]) => invokeReporters<TestReporter>(
-          (r) => r.test.onStarted.maybeCall(),
+          (r) => r.test.onStarted.invoke(),
         ),
         onFinished: ([_]) => invokeReporters<TestReporter>(
-          (r) => r.test.onFinished.maybeCall(),
+          (r) => r.test.onFinished.invoke(),
         ),
       );
 
   @override
   ReportActionHandler<FeatureMessage> get feature => ReportActionHandler(
         onStarted: ([value]) => invokeReporters<FeatureReporter>(
-          (r) => r.feature.onStarted.maybeCall(value),
+          (r) => r.feature.onStarted.invoke(value),
         ),
         onFinished: ([message]) => invokeReporters<FeatureReporter>(
-          (report) => report.feature.onFinished.maybeCall(message),
+          (report) => report.feature.onFinished.invoke(message),
         ),
       );
 
   @override
   ReportActionHandler<ScenarioMessage> get scenario => ReportActionHandler(
         onStarted: ([message]) => invokeReporters<ScenarioReporter>(
-          (r) => r.scenario.onStarted.maybeCall(message),
+          (r) => r.scenario.onStarted.invoke(message),
         ),
         onFinished: ([message]) => invokeReporters<ScenarioReporter>(
-          (r) => r.scenario.onFinished.maybeCall(message),
+          (r) => r.scenario.onFinished.invoke(message),
         ),
       );
 
   @override
   ReportActionHandler<StepMessage> get step => ReportActionHandler(
         onStarted: ([message]) => invokeReporters<StepReporter>(
-          (r) => r.step.onStarted.maybeCall(message),
+          (r) => r.step.onStarted.invoke(message),
         ),
         onFinished: ([message]) => invokeReporters<StepReporter>(
-          (r) => r.step.onFinished.maybeCall(message),
+          (r) => r.step.onFinished.invoke(message),
         ),
       );
 

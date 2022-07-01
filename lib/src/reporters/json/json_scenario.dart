@@ -1,6 +1,7 @@
 import '../../gherkin/steps/step_run_result.dart';
 import '../messages/messages.dart';
 import 'json_feature.dart';
+import 'json_statuses.dart';
 import 'json_step.dart';
 import 'json_tag.dart';
 
@@ -121,11 +122,11 @@ class JsonScenario {
 
   String _calculateStatus() {
     if (steps.isEmpty) {
-      return 'skipped';
+      return JsonStatus.skipped;
     }
 
-    return steps.where((x) => x.status == 'failed').isNotEmpty
-        ? 'failed'
-        : 'passed';
+    return steps.where((x) => x.status == JsonStatus.failed).isNotEmpty
+        ? JsonStatus.failed
+        : JsonStatus.passed;
   }
 }

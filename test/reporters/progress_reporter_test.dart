@@ -17,7 +17,7 @@ void main() {
     test('provides correct step finished output', () async {
       final reporter = TestableProgressReporter();
 
-      await reporter.step.onFinished.maybeCall(
+      await reporter.step.onFinished.invoke(
         StepMessage(
           name: 'Step 1',
           context: RunnableDebugInformation('filePath', 1, 'line 1'),
@@ -25,7 +25,7 @@ void main() {
           attachments: [Attachment('A string', 'text/plain')],
         ),
       );
-      await reporter.step.onFinished.maybeCall(
+      await reporter.step.onFinished.invoke(
         StepMessage(
           name: 'Step 2',
           context: RunnableDebugInformation('filePath', 2, 'line 2'),
@@ -36,21 +36,21 @@ void main() {
           ),
         ),
       );
-      await reporter.step.onFinished.maybeCall(
+      await reporter.step.onFinished.invoke(
         StepMessage(
           name: 'Step 3',
           context: RunnableDebugInformation('filePath', 3, 'line 3'),
           result: StepResult(0, StepExecutionResult.skipped),
         ),
       );
-      await reporter.step.onFinished.maybeCall(
+      await reporter.step.onFinished.invoke(
         StepMessage(
           name: 'Step 4',
           context: RunnableDebugInformation('filePath', 4, 'line 4'),
           result: StepResult(0, StepExecutionResult.error),
         ),
       );
-      await reporter.step.onFinished.maybeCall(
+      await reporter.step.onFinished.invoke(
         StepMessage(
           name: 'Step 5',
           context: RunnableDebugInformation('filePath', 5, 'line 5'),
@@ -71,7 +71,7 @@ void main() {
     test('provides correct scenario started output', () async {
       final reporter = TestableProgressReporter();
 
-      await reporter.scenario.onStarted.maybeCall(
+      await reporter.scenario.onStarted.invoke(
         ScenarioMessage(
           name: 'Scenario 1',
           context: RunnableDebugInformation('filePath', 1, 'line 1'),

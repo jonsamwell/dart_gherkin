@@ -23,7 +23,7 @@ void main() {
   group('report', () {
     test('correct report with one passing step', () async {
       final reporter = TestableJsonReporter();
-      await reporter.feature.onStarted.maybeCall(
+      await reporter.feature.onStarted.invoke(
         FeatureMessage(
           name: 'Feature 1',
           context: RunnableDebugInformation('filepath', 2, 'linetext2'),
@@ -31,7 +31,7 @@ void main() {
         ),
       );
 
-      await reporter.scenario.onStarted.maybeCall(
+      await reporter.scenario.onStarted.invoke(
         ScenarioMessage(
           name: 'Scenario 1',
           context: RunnableDebugInformation('filepath', 4, 'linetext4'),
@@ -40,14 +40,14 @@ void main() {
         ),
       );
 
-      await reporter.step.onStarted.maybeCall(
+      await reporter.step.onStarted.invoke(
         StepMessage(
           name: 'Step 1',
           context: RunnableDebugInformation('filepath', 5, 'linetext5'),
         ),
       );
 
-      await reporter.step.onFinished.maybeCall(
+      await reporter.step.onFinished.invoke(
         StepMessage(
           name: 'Step 1',
           context: RunnableDebugInformation('filepath', 5, 'linetext5'),
@@ -55,7 +55,7 @@ void main() {
         ),
       );
 
-      await reporter.scenario.onFinished.maybeCall(
+      await reporter.scenario.onFinished.invoke(
         ScenarioMessage(
           name: 'Scenario 1',
           context: RunnableDebugInformation('filepath', 4, 'linetext4'),
@@ -63,14 +63,14 @@ void main() {
         ),
       );
 
-      await reporter.feature.onFinished.maybeCall(
+      await reporter.feature.onFinished.invoke(
         FeatureMessage(
           name: 'Feature 1',
           context: RunnableDebugInformation('filepath', 2, 'linetext2'),
         ),
       );
 
-      await reporter.test.onFinished.maybeCall();
+      await reporter.test.onFinished.invoke();
       final expectedJson =
           File.fromUri(Uri.file('./test/reporters/json_reports/report_1.json'))
               .readAsStringSync();
@@ -82,7 +82,7 @@ void main() {
 
     test('correct report with one passing step with doc string', () async {
       final reporter = TestableJsonReporter();
-      await reporter.feature.onStarted.maybeCall(
+      await reporter.feature.onStarted.invoke(
         FeatureMessage(
           name: 'Feature 1',
           context: RunnableDebugInformation('filepath', 2, 'linetext2'),
@@ -90,7 +90,7 @@ void main() {
         ),
       );
 
-      await reporter.scenario.onStarted.maybeCall(
+      await reporter.scenario.onStarted.invoke(
         ScenarioMessage(
           name: 'Scenario 1',
           context: RunnableDebugInformation('filepath', 4, 'linetext4'),
@@ -99,7 +99,7 @@ void main() {
         ),
       );
 
-      await reporter.step.onStarted.maybeCall(
+      await reporter.step.onStarted.invoke(
         StepMessage(
           name: 'Step 1',
           context: RunnableDebugInformation('filepath', 5, 'linetext5'),
@@ -107,7 +107,7 @@ void main() {
         ),
       );
 
-      await reporter.step.onFinished.maybeCall(
+      await reporter.step.onFinished.invoke(
         StepMessage(
           name: 'Step 1',
           context: RunnableDebugInformation('filepath', 5, 'linetext5'),
@@ -115,7 +115,7 @@ void main() {
         ),
       );
 
-      await reporter.scenario.onFinished.maybeCall(
+      await reporter.scenario.onFinished.invoke(
         ScenarioMessage(
           name: 'Scenario 1',
           context: RunnableDebugInformation('filepath', 4, 'linetext4'),
@@ -123,14 +123,14 @@ void main() {
         ),
       );
 
-      await reporter.feature.onFinished.maybeCall(
+      await reporter.feature.onFinished.invoke(
         FeatureMessage(
           name: 'Feature 1',
           context: RunnableDebugInformation('filepath', 2, 'linetext2'),
         ),
       );
 
-      await reporter.test.onFinished.maybeCall();
+      await reporter.test.onFinished.invoke();
 
       expect(
         reporter.report,
@@ -143,7 +143,7 @@ void main() {
 
     test('correct report with one passing and one failing step', () async {
       final reporter = TestableJsonReporter();
-      await reporter.feature.onStarted.maybeCall(
+      await reporter.feature.onStarted.invoke(
         FeatureMessage(
           name: 'Feature 1',
           context: RunnableDebugInformation('filepath', 2, 'linetext2'),
@@ -151,7 +151,7 @@ void main() {
         ),
       );
 
-      await reporter.scenario.onStarted.maybeCall(
+      await reporter.scenario.onStarted.invoke(
         ScenarioMessage(
           name: 'Scenario 1',
           context: RunnableDebugInformation('filepath', 4, 'linetext4'),
@@ -163,14 +163,14 @@ void main() {
         ),
       );
 
-      await reporter.step.onStarted.maybeCall(
+      await reporter.step.onStarted.invoke(
         StepMessage(
           name: 'Step 1',
           context: RunnableDebugInformation('filepath', 5, 'linetext5'),
         ),
       );
 
-      await reporter.step.onFinished.maybeCall(
+      await reporter.step.onFinished.invoke(
         StepMessage(
           name: 'Step 1',
           context: RunnableDebugInformation('filepath', 5, 'linetext5'),
@@ -178,14 +178,14 @@ void main() {
         ),
       );
 
-      await reporter.step.onStarted.maybeCall(
+      await reporter.step.onStarted.invoke(
         StepMessage(
           name: 'Step 2',
           context: RunnableDebugInformation('filepath', 6, 'linetext6'),
         ),
       );
 
-      await reporter.step.onFinished.maybeCall(
+      await reporter.step.onFinished.invoke(
         StepMessage(
           name: 'Step 2',
           context: RunnableDebugInformation('filepath', 6, 'linetext6'),
@@ -197,7 +197,7 @@ void main() {
         ),
       );
 
-      await reporter.scenario.onFinished.maybeCall(
+      await reporter.scenario.onFinished.invoke(
         ScenarioMessage(
           name: 'Scenario 1',
           context: RunnableDebugInformation('filepath', 4, 'linetext4'),
@@ -205,14 +205,14 @@ void main() {
         ),
       );
 
-      await reporter.feature.onFinished.maybeCall(
+      await reporter.feature.onFinished.invoke(
         FeatureMessage(
           name: 'Feature 1',
           context: RunnableDebugInformation('filepath', 2, 'linetext2'),
         ),
       );
 
-      await reporter.test.onFinished.maybeCall();
+      await reporter.test.onFinished.invoke();
 
       expect(
         reporter.report,
@@ -226,7 +226,7 @@ void main() {
     test('correct report with one passing, one failing and one skipped step',
         () async {
       final reporter = TestableJsonReporter();
-      await reporter.feature.onStarted.maybeCall(
+      await reporter.feature.onStarted.invoke(
         FeatureMessage(
           name: 'Feature 1',
           context: RunnableDebugInformation('filepath', 2, 'linetext2'),
@@ -234,7 +234,7 @@ void main() {
         ),
       );
 
-      await reporter.scenario.onStarted.maybeCall(
+      await reporter.scenario.onStarted.invoke(
         ScenarioMessage(
           name: 'Scenario 1',
           context: RunnableDebugInformation('filepath', 4, 'linetext4'),
@@ -246,14 +246,14 @@ void main() {
         ),
       );
 
-      await reporter.step.onStarted.maybeCall(
+      await reporter.step.onStarted.invoke(
         StepMessage(
           name: 'Step 1',
           context: RunnableDebugInformation('filepath', 5, 'linetext5'),
         ),
       );
 
-      await reporter.step.onFinished.maybeCall(
+      await reporter.step.onFinished.invoke(
         StepMessage(
           name: 'Step 1',
           context: RunnableDebugInformation('filepath', 5, 'linetext5'),
@@ -261,14 +261,14 @@ void main() {
         ),
       );
 
-      await reporter.step.onStarted.maybeCall(
+      await reporter.step.onStarted.invoke(
         StepMessage(
           name: 'Step 2',
           context: RunnableDebugInformation('filepath', 6, 'linetext6'),
         ),
       );
 
-      await reporter.step.onFinished.maybeCall(
+      await reporter.step.onFinished.invoke(
         StepMessage(
           name: 'Step 2',
           context: RunnableDebugInformation('filepath', 6, 'linetext6'),
@@ -280,14 +280,14 @@ void main() {
         ),
       );
 
-      await reporter.step.onStarted.maybeCall(
+      await reporter.step.onStarted.invoke(
         StepMessage(
           name: 'Step 3',
           context: RunnableDebugInformation('filepath', 7, 'linetext7'),
         ),
       );
 
-      await reporter.step.onFinished.maybeCall(
+      await reporter.step.onFinished.invoke(
         StepMessage(
           name: 'Step 3',
           context: RunnableDebugInformation('filepath', 7, 'linetext7'),
@@ -295,7 +295,7 @@ void main() {
         ),
       );
 
-      await reporter.scenario.onFinished.maybeCall(
+      await reporter.scenario.onFinished.invoke(
         ScenarioMessage(
           name: 'Scenario 1',
           context: RunnableDebugInformation('filepath', 4, 'linetext4'),
@@ -303,14 +303,14 @@ void main() {
         ),
       );
 
-      await reporter.feature.onFinished.maybeCall(
+      await reporter.feature.onFinished.invoke(
         FeatureMessage(
           name: 'Feature 1',
           context: RunnableDebugInformation('filepath', 2, 'linetext2'),
         ),
       );
 
-      await reporter.test.onFinished.maybeCall();
+      await reporter.test.onFinished.invoke();
 
       expect(
         reporter.report,
@@ -324,7 +324,7 @@ void main() {
     test('correct report with one passing and one failing step with attachment',
         () async {
       final reporter = TestableJsonReporter();
-      await reporter.feature.onStarted.maybeCall(
+      await reporter.feature.onStarted.invoke(
         FeatureMessage(
           name: 'Feature 1',
           context: RunnableDebugInformation('filepath', 2, 'linetext2'),
@@ -332,7 +332,7 @@ void main() {
         ),
       );
 
-      await reporter.scenario.onStarted.maybeCall(
+      await reporter.scenario.onStarted.invoke(
         ScenarioMessage(
           name: 'Scenario 1',
           context: RunnableDebugInformation('filepath', 4, 'linetext4'),
@@ -344,14 +344,14 @@ void main() {
         ),
       );
 
-      await reporter.step.onStarted.maybeCall(
+      await reporter.step.onStarted.invoke(
         StepMessage(
           name: 'Step 1',
           context: RunnableDebugInformation('filepath', 5, 'linetext5'),
         ),
       );
 
-      await reporter.step.onFinished.maybeCall(
+      await reporter.step.onFinished.invoke(
         StepMessage(
           name: 'Step 1',
           context: RunnableDebugInformation('filepath', 5, 'linetext5'),
@@ -359,14 +359,14 @@ void main() {
         ),
       );
 
-      await reporter.step.onStarted.maybeCall(
+      await reporter.step.onStarted.invoke(
         StepMessage(
           name: 'Step 2',
           context: RunnableDebugInformation('filepath', 6, 'linetext6'),
         ),
       );
 
-      await reporter.step.onFinished.maybeCall(
+      await reporter.step.onFinished.invoke(
         StepMessage(
           name: 'Step 2',
           context: RunnableDebugInformation('filepath', 6, 'linetext6'),
@@ -379,7 +379,7 @@ void main() {
         ),
       );
 
-      await reporter.scenario.onFinished.maybeCall(
+      await reporter.scenario.onFinished.invoke(
         ScenarioMessage(
           name: 'Scenario 1',
           context: RunnableDebugInformation('filepath', 4, 'linetext4'),
@@ -387,14 +387,14 @@ void main() {
         ),
       );
 
-      await reporter.feature.onFinished.maybeCall(
+      await reporter.feature.onFinished.invoke(
         FeatureMessage(
           name: 'Feature 1',
           context: RunnableDebugInformation('filepath', 2, 'linetext2'),
         ),
       );
 
-      await reporter.test.onFinished.maybeCall();
+      await reporter.test.onFinished.invoke();
 
       expect(
         reporter.report,
@@ -407,7 +407,7 @@ void main() {
 
     test('correct report with scenario outlines', () async {
       final reporter = TestableJsonReporter();
-      await reporter.feature.onStarted.maybeCall(
+      await reporter.feature.onStarted.invoke(
         FeatureMessage(
           name: 'Feature 1',
           context: RunnableDebugInformation('filepath', 2, 'linetext2'),
@@ -415,7 +415,7 @@ void main() {
         ),
       );
 
-      await reporter.scenario.onStarted.maybeCall(
+      await reporter.scenario.onStarted.invoke(
         ScenarioMessage(
           target: Target.scenarioOutline,
           name: 'Scenario Outline 1',
@@ -428,14 +428,14 @@ void main() {
         ),
       );
 
-      await reporter.step.onStarted.maybeCall(
+      await reporter.step.onStarted.invoke(
         StepMessage(
           name: 'Step 1',
           context: RunnableDebugInformation('filepath', 5, 'linetext5'),
         ),
       );
 
-      await reporter.step.onFinished.maybeCall(
+      await reporter.step.onFinished.invoke(
         StepMessage(
           name: 'Step 1',
           context: RunnableDebugInformation('filepath', 5, 'linetext5'),
@@ -443,14 +443,14 @@ void main() {
         ),
       );
 
-      await reporter.step.onStarted.maybeCall(
+      await reporter.step.onStarted.invoke(
         StepMessage(
           name: 'Step 2',
           context: RunnableDebugInformation('filepath', 6, 'linetext6'),
         ),
       );
 
-      await reporter.step.onFinished.maybeCall(
+      await reporter.step.onFinished.invoke(
         StepMessage(
           name: 'Step 2',
           context: RunnableDebugInformation('filepath', 6, 'linetext6'),
@@ -459,7 +459,7 @@ void main() {
         ),
       );
 
-      await reporter.scenario.onFinished.maybeCall(
+      await reporter.scenario.onFinished.invoke(
         ScenarioMessage(
           name: 'Scenario 1',
           context: RunnableDebugInformation('filepath', 4, 'linetext4'),
@@ -467,14 +467,14 @@ void main() {
         ),
       );
 
-      await reporter.feature.onFinished.maybeCall(
+      await reporter.feature.onFinished.invoke(
         FeatureMessage(
           name: 'Feature 1',
           context: RunnableDebugInformation('filepath', 2, 'linetext2'),
         ),
       );
 
-      await reporter.test.onFinished.maybeCall();
+      await reporter.test.onFinished.invoke();
 
       expect(
         reporter.report,
@@ -488,7 +488,7 @@ void main() {
     test('can add exception before any features has run', () async {
       final reporter = TestableJsonReporter();
       await reporter.onException(Exception('Test exception'), StackTrace.empty);
-      await reporter.test.onFinished.maybeCall();
+      await reporter.test.onFinished.invoke();
 
       expect(
         reporter.report,
@@ -501,7 +501,7 @@ void main() {
 
     test('correct report with two features', () async {
       final reporter = TestableJsonReporter();
-      await reporter.feature.onStarted.maybeCall(
+      await reporter.feature.onStarted.invoke(
         FeatureMessage(
           name: 'Feature 1',
           context: RunnableDebugInformation('filepath', 2, 'linetext2'),
@@ -509,7 +509,7 @@ void main() {
         ),
       );
 
-      await reporter.scenario.onStarted.maybeCall(
+      await reporter.scenario.onStarted.invoke(
         ScenarioMessage(
           name: 'Scenario 1',
           context: RunnableDebugInformation('filepath', 4, 'linetext4'),
@@ -521,14 +521,14 @@ void main() {
         ),
       );
 
-      await reporter.step.onStarted.maybeCall(
+      await reporter.step.onStarted.invoke(
         StepMessage(
           name: 'Step 1',
           context: RunnableDebugInformation('filepath', 5, 'linetext5'),
         ),
       );
 
-      await reporter.step.onFinished.maybeCall(
+      await reporter.step.onFinished.invoke(
         StepMessage(
           name: 'Step 1',
           context: RunnableDebugInformation('filepath', 5, 'linetext5'),
@@ -536,14 +536,14 @@ void main() {
         ),
       );
 
-      await reporter.step.onStarted.maybeCall(
+      await reporter.step.onStarted.invoke(
         StepMessage(
           name: 'Step 2',
           context: RunnableDebugInformation('filepath', 6, 'linetext6'),
         ),
       );
 
-      await reporter.step.onFinished.maybeCall(
+      await reporter.step.onFinished.invoke(
         StepMessage(
           name: 'Step 2',
           context: RunnableDebugInformation('filepath', 6, 'linetext6'),
@@ -555,7 +555,7 @@ void main() {
         ),
       );
 
-      await reporter.scenario.onFinished.maybeCall(
+      await reporter.scenario.onFinished.invoke(
         ScenarioMessage(
           name: 'Scenario 1',
           context: RunnableDebugInformation('filepath', 4, 'linetext4'),
@@ -563,14 +563,14 @@ void main() {
         ),
       );
 
-      await reporter.feature.onFinished.maybeCall(
+      await reporter.feature.onFinished.invoke(
         FeatureMessage(
           name: 'Feature 1',
           context: RunnableDebugInformation('filepath', 2, 'linetext2'),
         ),
       );
 
-      await reporter.feature.onStarted.maybeCall(
+      await reporter.feature.onStarted.invoke(
         FeatureMessage(
           name: 'Feature 2',
           context: RunnableDebugInformation('filepath', 2, 'linetext2'),
@@ -578,7 +578,7 @@ void main() {
         ),
       );
 
-      await reporter.scenario.onStarted.maybeCall(
+      await reporter.scenario.onStarted.invoke(
         ScenarioMessage(
           name: 'Scenario 2',
           context: RunnableDebugInformation('filepath', 4, 'linetext4'),
@@ -589,14 +589,14 @@ void main() {
         ),
       );
 
-      await reporter.step.onStarted.maybeCall(
+      await reporter.step.onStarted.invoke(
         StepMessage(
           name: 'Step 1',
           context: RunnableDebugInformation('filepath', 5, 'linetext5'),
         ),
       );
 
-      await reporter.step.onFinished.maybeCall(
+      await reporter.step.onFinished.invoke(
         StepMessage(
           name: 'Step 1',
           context: RunnableDebugInformation('filepath', 5, 'linetext5'),
@@ -604,7 +604,7 @@ void main() {
         ),
       );
 
-      await reporter.scenario.onFinished.maybeCall(
+      await reporter.scenario.onFinished.invoke(
         ScenarioMessage(
           name: 'Scenario 2',
           context: RunnableDebugInformation('filepath', 4, 'linetext4'),
@@ -612,14 +612,14 @@ void main() {
         ),
       );
 
-      await reporter.feature.onFinished.maybeCall(
+      await reporter.feature.onFinished.invoke(
         FeatureMessage(
           name: 'Feature 2',
           context: RunnableDebugInformation('filepath', 2, 'linetext2'),
         ),
       );
 
-      await reporter.test.onFinished.maybeCall();
+      await reporter.test.onFinished.invoke();
 
       expect(
         reporter.report,
