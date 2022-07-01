@@ -35,7 +35,11 @@ class ScenarioSyntax extends RegExMatchedGherkinSyntax<ScenarioRunnable> {
     GherkinDialect dialect,
   ) {
     final name = pattern(dialect).firstMatch(line)!.group(1)!;
-    final runnable = ScenarioRunnable(name, debug);
+    final runnable = ScenarioRunnable(
+      name,
+      null,
+      debug,
+    );
 
     return runnable;
   }

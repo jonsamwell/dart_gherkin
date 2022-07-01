@@ -13,9 +13,14 @@ class ScenarioExpandedFromOutlineExampleRunnable extends ScenarioRunnable {
 
   ScenarioExpandedFromOutlineExampleRunnable(
     String name,
+    String? description,
     RunnableDebugInformation debug,
   )   : _name = name,
-        super(name, debug);
+        super(
+          name,
+          description,
+          debug,
+        );
 
   void setStepParameter(String parameterName, String value) {
     _name = _name.replaceAll('<$parameterName>', value);

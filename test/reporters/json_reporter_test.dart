@@ -26,6 +26,7 @@ void main() {
       await reporter.feature.onStarted.invoke(
         FeatureMessage(
           name: 'Feature 1',
+          description: "Feature 1 description",
           context: RunnableDebugInformation('filepath', 2, 'linetext2'),
           tags: [Tag('tag1', 1)],
         ),
@@ -34,6 +35,7 @@ void main() {
       await reporter.scenario.onStarted.invoke(
         ScenarioMessage(
           name: 'Scenario 1',
+          description: "Scenario 1 description",
           context: RunnableDebugInformation('filepath', 4, 'linetext4'),
           hasPassed: true,
           tags: [Tag('tag1', 1, isInherited: true), Tag('tag2', 3)],
@@ -58,6 +60,7 @@ void main() {
       await reporter.scenario.onFinished.invoke(
         ScenarioMessage(
           name: 'Scenario 1',
+          description: "Scenario 1 description",
           context: RunnableDebugInformation('filepath', 4, 'linetext4'),
           hasPassed: true,
         ),
@@ -66,6 +69,7 @@ void main() {
       await reporter.feature.onFinished.invoke(
         FeatureMessage(
           name: 'Feature 1',
+          description: "Feature 1 description",
           context: RunnableDebugInformation('filepath', 2, 'linetext2'),
         ),
       );

@@ -37,6 +37,10 @@ class ScenarioOutlineSyntax
     GherkinDialect dialect,
   ) {
     final name = pattern(dialect).firstMatch(line)!.group(1)!;
-    return ScenarioOutlineRunnable(name.trim(), debug);
+    return ScenarioOutlineRunnable(
+      name.trim(),
+      null,
+      debug,
+    );
   }
 }

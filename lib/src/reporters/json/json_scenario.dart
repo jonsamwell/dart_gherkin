@@ -14,8 +14,7 @@ class JsonScenario {
   /// Scenario name
   final String name;
 
-  /// Optional description. Default: ''
-  final String description;
+  final String? description;
 
   final int line;
 
@@ -45,12 +44,11 @@ class JsonScenario {
   /// Scenario steps
   List<JsonStep> steps;
 
-  //TODO(Shigomany): Make immutable class (final feature)
   JsonScenario({
     required this.target,
     required this.name,
     required this.line,
-    this.description = '',
+    this.description,
     this.feature,
     this.passed,
     List<JsonStep>? steps,
@@ -67,6 +65,7 @@ class JsonScenario {
   static JsonScenario from(ScenarioMessage message) => JsonScenario(
         target: message.target,
         name: message.name,
+        description: message.description,
         line: message.context.nonZeroAdjustedLineNumber,
         passed: message.hasPassed,
         tags: message.tags
@@ -104,10 +103,13 @@ class JsonScenario {
       'type': 'scenario',
       'id': '${feature?.id};${name.toLowerCase()}',
       'name': name,
-      'description': description,
       'line': line,
       'status': _calculateStatus()
     };
+
+    if (description?.isNotEmpty ?? false) {
+      result['description'] = description!;
+    }
 
     if (tags.isNotEmpty) {
       result['tags'] = tags.toList();

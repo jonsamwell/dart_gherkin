@@ -28,7 +28,7 @@ void main() {
       final runnable = FeatureRunnable('', debugInfo);
       runnable.addChild(TagsRunnable(debugInfo)..tags = ['one', 'two']);
       runnable.addChild(TagsRunnable(debugInfo)..tags = ['three']);
-      final scenario = ScenarioRunnable('', debugInfo);
+      final scenario = ScenarioRunnable('', null, debugInfo);
       runnable.addChild(scenario);
       expect(tagsToList(scenario.tags), ['one', 'two', 'three']);
     });
@@ -42,9 +42,9 @@ void main() {
     });
     test('can add ScenarioRunnable', () {
       final runnable = FeatureRunnable('', debugInfo);
-      runnable.addChild(ScenarioRunnable('1', debugInfo));
-      runnable.addChild(ScenarioRunnable('2', debugInfo));
-      runnable.addChild(ScenarioRunnable('3', debugInfo));
+      runnable.addChild(ScenarioRunnable('1', null, debugInfo));
+      runnable.addChild(ScenarioRunnable('2', null, debugInfo));
+      runnable.addChild(ScenarioRunnable('3', null, debugInfo));
       expect(runnable.scenarios.length, 3);
       expect(runnable.scenarios.elementAt(0).name, '1');
       expect(runnable.scenarios.elementAt(1).name, '2');

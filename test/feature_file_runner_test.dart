@@ -36,7 +36,7 @@ void main() {
         'Step 1',
         RunnableDebugInformation('', 0, 'Given I do a'),
       );
-      final scenario = ScenarioRunnable('Scenario: 1', emptyDebuggable)
+      final scenario = ScenarioRunnable('Scenario: 1', null, emptyDebuggable)
         ..steps.add(step);
       final feature = FeatureRunnable('1', emptyDebuggable)
         ..scenarios.add(scenario);
@@ -69,7 +69,7 @@ void main() {
         'Step 1',
         RunnableDebugInformation('', 0, 'Given I do a'),
       );
-      final scenario = ScenarioRunnable('Scenario: 1', emptyDebuggable)
+      final scenario = ScenarioRunnable('Scenario: 1', null, emptyDebuggable)
         ..steps.add(step);
       final feature = FeatureRunnable('1', emptyDebuggable)
         ..scenarios.add(scenario);
@@ -104,7 +104,7 @@ void main() {
           StepRunnable('Step 1', RunnableDebugInformation('', 0, stepTextOne));
       final stepTwo =
           StepRunnable('Step 2', RunnableDebugInformation('', 0, stepTextTwo));
-      final scenario = ScenarioRunnable('Scenario: 1', emptyDebuggable)
+      final scenario = ScenarioRunnable('Scenario: 1', null, emptyDebuggable)
         ..steps.add(step)
         ..steps.add(stepTwo);
       final feature = FeatureRunnable('1', emptyDebuggable)
@@ -140,9 +140,9 @@ void main() {
           StepRunnable('Step 1', RunnableDebugInformation('', 0, stepTextOne));
       final stepTwo =
           StepRunnable('Step 2', RunnableDebugInformation('', 0, stepTextTwo));
-      final scenarioOne = ScenarioRunnable('Scenario: 1', emptyDebuggable)
+      final scenarioOne = ScenarioRunnable('Scenario: 1', null, emptyDebuggable)
         ..steps.add(stepOne);
-      final scenarioTwo = ScenarioRunnable('Scenario: 2', emptyDebuggable)
+      final scenarioTwo = ScenarioRunnable('Scenario: 2', null, emptyDebuggable)
         ..steps.add(stepTwo);
       final featureOne = FeatureRunnable('1', emptyDebuggable)
         ..scenarios.add(scenarioOne);
@@ -180,9 +180,9 @@ void main() {
           StepRunnable('Step 1', RunnableDebugInformation('', 0, stepTextOne));
       final stepTwo =
           StepRunnable('Step 2', RunnableDebugInformation('', 0, stepTextTwo));
-      final scenarioOne = ScenarioRunnable('Scenario: 1', emptyDebuggable)
+      final scenarioOne = ScenarioRunnable('Scenario: 1', null, emptyDebuggable)
         ..steps.add(stepOne);
-      final scenarioTwo = ScenarioRunnable('Scenario: 2', emptyDebuggable)
+      final scenarioTwo = ScenarioRunnable('Scenario: 2', null, emptyDebuggable)
         ..steps.add(stepTwo);
       final feature = FeatureRunnable('1', emptyDebuggable)
         ..scenarios.addAll([scenarioOne, scenarioTwo]);
@@ -218,7 +218,7 @@ void main() {
           StepRunnable('Step 1', RunnableDebugInformation('', 0, stepTextOne));
       final stepTwo =
           StepRunnable('Step 2', RunnableDebugInformation('', 0, stepTextTwo));
-      final scenario = ScenarioRunnable('Scenario: 1', emptyDebuggable)
+      final scenario = ScenarioRunnable('Scenario: 1', null, emptyDebuggable)
         ..steps.add(step)
         ..steps.add(stepTwo);
       final feature = FeatureRunnable('1', emptyDebuggable)
@@ -262,7 +262,7 @@ void main() {
           StepRunnable('Step 1', RunnableDebugInformation('', 0, stepTextOne));
       final stepTwo =
           StepRunnable('Step 2', RunnableDebugInformation('', 0, stepTextTwo));
-      final scenario = ScenarioRunnable('Scenario: 1', emptyDebuggable)
+      final scenario = ScenarioRunnable('Scenario: 1', null, emptyDebuggable)
         ..steps.add(step)
         ..steps.add(stepTwo);
       final feature = FeatureRunnable('1', emptyDebuggable)
@@ -292,7 +292,7 @@ void main() {
           'Step 1',
           RunnableDebugInformation('File Path', 2, "Given I do 'a'"),
         );
-        final scenario = ScenarioRunnable('Scenario: 1', emptyDebuggable)
+        final scenario = ScenarioRunnable('Scenario: 1', null, emptyDebuggable)
           ..steps.add(step);
         final feature = FeatureRunnable('1', emptyDebuggable)
           ..scenarios.add(scenario);
@@ -364,7 +364,7 @@ void main() {
           RunnableDebugInformation('', 0, 'Given I do a'),
         );
         step.table = GherkinTable(const Iterable<TableRow>.empty(), null);
-        final scenario = ScenarioRunnable('Scenario: 1', emptyDebuggable)
+        final scenario = ScenarioRunnable('Scenario: 1', null, emptyDebuggable)
           ..steps.add(step);
         final feature = FeatureRunnable('1', emptyDebuggable)
           ..scenarios.add(scenario);
@@ -394,9 +394,9 @@ void main() {
           'Step 1',
           RunnableDebugInformation('', 0, 'Given I do a'),
         );
-        final scenario1 = ScenarioRunnable('Scenario: 1', emptyDebuggable)
+        final scenario1 = ScenarioRunnable('Scenario: 1', null, emptyDebuggable)
           ..steps.add(step);
-        final scenario2 = ScenarioRunnable('Scenario: 2', emptyDebuggable)
+        final scenario2 = ScenarioRunnable('Scenario: 2', null, emptyDebuggable)
           ..steps.add(step);
         final feature = FeatureRunnable('1', emptyDebuggable)
           ..scenarios.add(scenario1)
@@ -426,7 +426,7 @@ void main() {
           'Step 1',
           RunnableDebugInformation('', 0, 'Given I do a'),
         );
-        final scenario1 = ScenarioRunnable('Scenario: 1', emptyDebuggable)
+        final scenario1 = ScenarioRunnable('Scenario: 1', null, emptyDebuggable)
           ..steps.add(step)
           ..addTag(tagTwo);
         final feature = FeatureRunnable('1', emptyDebuggable)
@@ -478,9 +478,9 @@ void main() {
           'Step 1',
           RunnableDebugInformation('', 0, 'Given I do a'),
         );
-        final scenario1 = ScenarioRunnable('Scenario: 1', emptyDebuggable)
+        final scenario1 = ScenarioRunnable('Scenario: 1', null, emptyDebuggable)
           ..steps.add(step);
-        final scenario2 = ScenarioRunnable('Scenario: 2', emptyDebuggable)
+        final scenario2 = ScenarioRunnable('Scenario: 2', null, emptyDebuggable)
           ..steps.add(step)
           ..steps.add(step);
         final feature = FeatureRunnable('1', emptyDebuggable)
@@ -517,7 +517,7 @@ void main() {
           'Step 1',
           RunnableDebugInformation('', 0, 'Given I do a'),
         );
-        final scenario1 = ScenarioRunnable('Scenario: 1', emptyDebuggable)
+        final scenario1 = ScenarioRunnable('Scenario: 1', null, emptyDebuggable)
           ..steps.add(step);
         final feature = FeatureRunnable('1', emptyDebuggable)
           ..scenarios.add(scenario1);
@@ -552,7 +552,7 @@ void main() {
           'Step 1',
           RunnableDebugInformation('', 0, 'Given I do a'),
         );
-        final scenario1 = ScenarioRunnable('Scenario: 1', emptyDebuggable)
+        final scenario1 = ScenarioRunnable('Scenario: 1', null, emptyDebuggable)
           ..steps.add(step);
         final feature = FeatureRunnable('1', emptyDebuggable)
           ..scenarios.add(scenario1);
@@ -591,7 +591,7 @@ void main() {
           'Step 1',
           RunnableDebugInformation('', 0, 'Given I do a'),
         );
-        final scenario1 = ScenarioRunnable('Scenario: 1', emptyDebuggable)
+        final scenario1 = ScenarioRunnable('Scenario: 1', null, emptyDebuggable)
           ..steps.add(step);
         final feature = FeatureRunnable('1', emptyDebuggable)
           ..scenarios.add(scenario1);
@@ -651,7 +651,7 @@ void main() {
           'Step 3',
           RunnableDebugInformation('', 0, stepTextThree),
         );
-        final scenario1 = ScenarioRunnable('Scenario: 1', emptyDebuggable)
+        final scenario1 = ScenarioRunnable('Scenario: 1', null, emptyDebuggable)
           ..steps.add(step)
           ..steps.add(stepTwo)
           ..steps.add(stepThree);

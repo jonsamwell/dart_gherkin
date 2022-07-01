@@ -37,8 +37,10 @@ class FeatureFileVisitor {
         for (final childScenario in allScenarios) {
           await visitScenario(
             feature.name,
+            feature.description,
             _tagsToList(feature.tags),
             childScenario.name,
+            childScenario.description,
             _tagsToList(childScenario.tags),
             path,
             isFirst: !acknowledgedScenarioPosition && isFirst,
@@ -82,8 +84,10 @@ class FeatureFileVisitor {
 
   Future<void> visitScenario(
     String featureName,
+    String? featureDescription,
     Iterable<String> featureTags,
     String name,
+    String? description,
     Iterable<String> tags,
     String path, {
     required bool isFirst,

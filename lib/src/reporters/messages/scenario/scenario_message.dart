@@ -10,13 +10,16 @@ class ScenarioMessage extends ActionMessage {
   /// Gherkin format tags
   final List<Tag> tags;
 
+  final String? description;
+
   /// {@macro messages.scenariomessage}
   ScenarioMessage({
     required String name,
     required RunnableDebugInformation context,
-    Target target = Target.scenario,
+    this.description,
     this.hasPassed = false,
     this.tags = const [],
+    Target target = Target.scenario,
   }) : super(
           target: target,
           name: name,
@@ -25,6 +28,7 @@ class ScenarioMessage extends ActionMessage {
 
   ScenarioMessage copyWith({
     String? name,
+    String? description,
     RunnableDebugInformation? context,
     bool? hasPassed,
     List<Tag>? tags,
@@ -33,6 +37,7 @@ class ScenarioMessage extends ActionMessage {
     return ScenarioMessage(
       target: target ?? this.target,
       name: name ?? this.name,
+      description: description ?? this.description,
       context: context ?? this.context,
       hasPassed: hasPassed ?? this.hasPassed,
       tags: tags ?? this.tags,

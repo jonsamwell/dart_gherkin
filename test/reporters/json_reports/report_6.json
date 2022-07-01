@@ -1,6 +1,5 @@
 [
   {
-    "description": "",
     "id": "feature 1",
     "keyword": "Feature",
     "line": 3,
@@ -18,7 +17,6 @@
         "type": "scenario",
         "id": "feature 1;scenario outline 1",
         "name": "Scenario Outline 1",
-        "description": "",
         "line": 5,
         "status": "passed",
         "tags": [

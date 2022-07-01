@@ -1,6 +1,7 @@
 ## [3.1.0] - 01/07/2022
+- Fix #40 scenarios can now contain descriptions
+- Json reporter: ensure exceptions, statuses and scenario descriptions are reported correctly
 - Changed reporter `maybeCall` to `invoke`
-- Json reporter: ensure exceptions and statuses are reported correctly
 
 ## [3.0.0+1] - 16/05/2022
 - Update configuration object constructor to take in additional configuration parameters

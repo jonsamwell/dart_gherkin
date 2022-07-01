@@ -13,8 +13,13 @@ class ScenarioOutlineRunnable extends ScenarioRunnable {
 
   ScenarioOutlineRunnable(
     String name,
+    String? description,
     RunnableDebugInformation debug,
-  ) : super(name, debug);
+  ) : super(
+          name,
+          description,
+          debug,
+        );
 
   @override
   void addChild(Runnable child) {
@@ -65,8 +70,11 @@ class ScenarioOutlineRunnable extends ScenarioRunnable {
 
             final clonedSteps = steps.map((step) => step.clone()).toList();
 
-            final scenarioRunnable =
-                ScenarioExpandedFromOutlineExampleRunnable(exampleName, debug);
+            final scenarioRunnable = ScenarioExpandedFromOutlineExampleRunnable(
+              exampleName,
+              description,
+              debug,
+            );
 
             exampleRow.forEach(
               (parameterName, value) {

@@ -8,11 +8,11 @@ void main() {
   final debugInfo = RunnableDebugInformation.empty();
   group('addChild', () {
     test('can add EmptyLineRunnable', () {
-      final runnable = ScenarioRunnable('', debugInfo);
+      final runnable = ScenarioRunnable('', null, debugInfo);
       runnable.addChild(EmptyLineRunnable(debugInfo));
     });
     test('can add StepRunnable', () {
-      final runnable = ScenarioRunnable('', debugInfo);
+      final runnable = ScenarioRunnable('', null, debugInfo);
       runnable.addChild(StepRunnable('1', debugInfo));
       runnable.addChild(StepRunnable('2', debugInfo));
       runnable.addChild(StepRunnable('3', debugInfo));

@@ -1,6 +1,5 @@
 [
   {
-    "description": "",
     "id": "feature 1",
     "keyword": "Feature",
     "line": 3,
@@ -18,7 +17,6 @@
         "type": "scenario",
         "id": "feature 1;scenario 1",
         "name": "Scenario 1",
-        "description": "",
         "line": 5,
         "status": "failed",
         "tags": [
@@ -58,7 +56,6 @@
     ]
   },
   {
-    "description": "",
     "id": "feature 2",
     "keyword": "Feature",
     "line": 3,
@@ -76,7 +73,6 @@
         "type": "scenario",
         "id": "feature 2;scenario 2",
         "name": "Scenario 2",
-        "description": "",
         "line": 5,
         "status": "passed",
         "tags": [

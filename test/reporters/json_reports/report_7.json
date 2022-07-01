@@ -1,20 +1,20 @@
 [
   {
-    "description": "An unnamed feature is possible if something is logged before any feature has started to execute",
     "id": null,
     "keyword": "Feature",
     "line": 0,
     "name": "Unnamed feature",
     "uri": "unknown",
+    "description": "An unnamed feature is possible if something is logged before any feature has started to execute",
     "elements": [
       {
         "keyword": "Scenario",
         "type": "scenario",
         "id": "null;unnamed",
         "name": "Unnamed",
-        "description": "An unnamed scenario is possible if something is logged before any feature has started to execute",
         "line": 0,
-        "status":"failed",
+        "status": "failed",
+        "description": "An unnamed scenario is possible if something is logged before any feature has started to execute",
         "steps": [
           {
             "keyword": null,

@@ -5,7 +5,7 @@ import 'json_tag.dart';
 class JsonFeature {
   final String uri;
   final String name;
-  final String description;
+  final String? description;
   final int line;
   final String? id;
   final Iterable<JsonTag> tags;
@@ -16,7 +16,7 @@ class JsonFeature {
     required this.uri,
     required this.name,
     required this.line,
-    this.description = '',
+    this.description,
     this.id,
     List<JsonScenario>? scenarios,
     Iterable<JsonTag>? tags,
@@ -29,6 +29,7 @@ class JsonFeature {
       uri: message.context.filePath,
       id: message.name.toLowerCase(),
       name: message.name,
+      description: message.description,
       line: message.context.nonZeroAdjustedLineNumber,
       tags: message.tags.map((t) => JsonTag.fromMessageTag(t)),
     );
@@ -66,13 +67,16 @@ class JsonFeature {
 
   Map<String, Object?> toJson() {
     final result = {
-      'description': description,
       'id': id,
       'keyword': 'Feature',
       'line': line,
       'name': name,
       'uri': uri,
     };
+
+    if (description?.isNotEmpty ?? false) {
+      result['description'] = description;
+    }
 
     if (tags.isNotEmpty) {
       result['tags'] = tags.toList();

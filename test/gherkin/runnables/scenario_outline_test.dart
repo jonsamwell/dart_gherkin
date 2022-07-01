@@ -11,12 +11,12 @@ void main() {
   final debugInfo = RunnableDebugInformation.empty();
   group('addChild', () {
     test('can add EmptyLineRunnable', () {
-      final runnable = ScenarioOutlineRunnable('', debugInfo);
+      final runnable = ScenarioOutlineRunnable('', null, debugInfo);
       runnable.addChild(EmptyLineRunnable(debugInfo));
     });
 
     test('can add StepRunnable', () {
-      final runnable = ScenarioOutlineRunnable('', debugInfo);
+      final runnable = ScenarioOutlineRunnable('', null, debugInfo);
       runnable.addChild(StepRunnable('1', debugInfo));
       runnable.addChild(StepRunnable('2', debugInfo));
       runnable.addChild(StepRunnable('3', debugInfo));
@@ -27,7 +27,7 @@ void main() {
     });
 
     test('can add TagsRunnable which are give to the example', () {
-      final runnable = ScenarioOutlineRunnable('', debugInfo);
+      final runnable = ScenarioOutlineRunnable('', null, debugInfo);
       final example = ExampleRunnable('', debugInfo);
       runnable.addChild(example);
       runnable.addTag(TagsRunnable(debugInfo)..tags = ['one']);
@@ -36,13 +36,13 @@ void main() {
     });
 
     test('can add ExamplesRunnable', () {
-      final runnable = ScenarioOutlineRunnable('', debugInfo);
+      final runnable = ScenarioOutlineRunnable('', null, debugInfo);
       runnable.addChild(ExampleRunnable('', debugInfo));
       expect(runnable.examples, isNotNull);
     });
 
     test('can add multiple ExamplesRunnable', () {
-      final runnable = ScenarioOutlineRunnable('outline one', debugInfo);
+      final runnable = ScenarioOutlineRunnable('outline one', null, debugInfo);
       runnable.addChild(ExampleRunnable('1', debugInfo));
       runnable.addChild(ExampleRunnable('1', debugInfo));
       expect(runnable.examples, isNotNull);
@@ -52,6 +52,7 @@ void main() {
     test('can interpolate variables in the scenario name', () {
       final runnable = ScenarioOutlineRunnable(
         'Scenario outline with parameters: <i>, <k>',
+        null,
         debugInfo,
       );
       final example = ExampleRunnable('', debugInfo);

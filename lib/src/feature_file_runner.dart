@@ -58,6 +58,7 @@ class FeatureFileRunner {
       await _reporter.feature.onStarted.invoke(
         FeatureMessage(
           name: feature.name,
+          description: feature.description,
           context: feature.debug,
           tags: feature.tags.isEmpty
               ? []
@@ -119,6 +120,7 @@ class FeatureFileRunner {
       await _reporter.feature.onFinished.invoke(
         FeatureMessage(
           name: feature.name,
+          description: feature.description,
           context: feature.debug,
         ),
       );
@@ -236,6 +238,7 @@ class FeatureFileRunner {
               ? Target.scenarioOutline
               : Target.scenario,
           name: scenario.name,
+          description: scenario.description,
           context: scenario.debug,
           tags: scenario.tags.isEmpty
               ? []
@@ -252,7 +255,7 @@ class FeatureFileRunner {
                         .toList(),
                   )
                   .reduce((a, b) => a..addAll(b))
-                  .toList(),
+                  .toList(growable: false),
         ),
       );
 
@@ -305,6 +308,7 @@ class FeatureFileRunner {
       await _reporter.scenario.onFinished.invoke(
         ScenarioMessage(
           name: scenario.name,
+          description: scenario.description,
           context: scenario.debug,
           hasPassed: scenarioPassed,
         ),
