@@ -569,7 +569,7 @@ import 'package:gherkin/gherkin.dart';
 StepDefinitionGeneric WhenIAddTheUsers() {
   return when1(
     'I add the users',
-    (Table dataTable, context) async {
+    (GherkinTable dataTable, context) async {
       for (var row in dataTable.rows) {
         // do something with row
         row.columns.forEach((columnValue) => print(columnValue));
