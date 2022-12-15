@@ -56,7 +56,7 @@ class GherkinTable {
         ? TableRow(data.first.keys, 1, isHeaderRow: true)
         : null;
     final rows = data
-        .map((x) => TableRow(x.values.cast<String>(), 1, isHeaderRow: false));
+        .map((x) => TableRow(x.values.cast<String?>(), 1, isHeaderRow: false));
     final table = GherkinTable(rows, headerRow);
 
     return table;
