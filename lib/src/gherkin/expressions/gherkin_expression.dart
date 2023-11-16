@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import '../parameters/custom_parameter.dart';
 import '../parameters/step_defined_parameter.dart';
 
@@ -87,7 +89,7 @@ class GherkinExpression {
     return _expression.hasMatch(input);
   }
 
-  Iterable<dynamic> getParameters(String input) {
+  FutureOr<Iterable<dynamic>> getParameters(String input) async {
     final stringValues = <String>[];
     final values = <dynamic>[];
     _expression.allMatches(input).forEach(
@@ -113,7 +115,7 @@ class GherkinExpression {
       final val = stringValues.elementAt(i);
       final cp = definedParameters.elementAt(i);
       if (cp.parameter.includeInParameterList) {
-        values.add(cp.parameter.transformer(val));
+        values.add(await cp.parameter.transformer(val));
       }
     }
 

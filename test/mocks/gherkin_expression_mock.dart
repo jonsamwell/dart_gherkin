@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:gherkin/src/gherkin/expressions/gherkin_expression.dart';
 
 typedef IsMatchFn = bool Function(String input);
@@ -8,7 +10,7 @@ class MockGherkinExpression implements GherkinExpression {
   MockGherkinExpression(this.isMatchFn);
 
   @override
-  Iterable getParameters(String input) => const Iterable.empty();
+  FutureOr<Iterable> getParameters(String input) async => const Iterable.empty();
 
   @override
   bool isMatch(String input) => isMatchFn(input);

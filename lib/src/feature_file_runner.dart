@@ -364,7 +364,7 @@ class FeatureFileRunner {
       result = StepResult(0, StepExecutionResult.skipped);
     } else {
       final code = _matchStepToExecutableStep(step);
-      final parameters = _getStepParameters(step, code);
+      final parameters = await _getStepParameters(step, code);
       result = await _runWithinTest<StepResult>(
         step.name,
         () async => code.step.run(
@@ -451,8 +451,8 @@ class FeatureFileRunner {
     return executable;
   }
 
-  Iterable<dynamic> _getStepParameters(StepRunnable step, ExecutableStep code) {
-    var parameters = code.expression.getParameters(step.debug.lineText);
+  FutureOr<Iterable<dynamic>> _getStepParameters(StepRunnable step, ExecutableStep code) async {
+    var parameters = await code.expression.getParameters(step.debug.lineText);
     if (step.multilineStrings.isNotEmpty) {
       parameters = parameters.toList()..addAll(step.multilineStrings);
     }

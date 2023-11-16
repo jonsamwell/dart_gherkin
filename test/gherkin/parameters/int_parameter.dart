@@ -3,14 +3,14 @@ import 'package:test/test.dart';
 
 void main() {
   group('IntParameter', () {
-    test('{int} parsed correctly', () {
+    test('{int} parsed correctly', () async {
       final parameter = IntParameterLower();
-      expect(parameter.transformer('12'), equals(12));
+      expect(await parameter.transformer('12'), equals(12));
     });
 
-    test('{Int} parsed correctly', () {
+    test('{Int} parsed correctly', () async {
       final parameter = IntParameterCamel();
-      expect(parameter.transformer('12'), equals(12));
+      expect(await parameter.transformer('12'), equals(12));
     });
   });
 }
