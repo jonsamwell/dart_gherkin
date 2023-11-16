@@ -122,7 +122,7 @@ final Map<String, dynamic> kLanguagesJson = {
       'Kerangka Senario',
       'Kerangka Situasi',
       'Kerangka Keadaan',
-      'Garis Panduan Senario'
+      'Garis Panduan Senario',
     ],
     'then': ['* ', 'Maka ', 'Kemudian '],
     'when': ['* ', 'Apabila '],
@@ -435,7 +435,7 @@ final Map<String, dynamic> kLanguagesJson = {
       'Étant donné ',
       'Étant donnée ',
       'Étant donnés ',
-      'Étant données '
+      'Étant données ',
     ],
     'name': 'French',
     'native': 'français',
@@ -456,7 +456,7 @@ final Map<String, dynamic> kLanguagesJson = {
       'Cuir i gcás go',
       'Cuir i gcás nach',
       'Cuir i gcás gur',
-      'Cuir i gcás nár'
+      'Cuir i gcás nár',
     ],
     'name': 'Irish',
     'native': 'Gaeilge',
@@ -558,7 +558,7 @@ final Map<String, dynamic> kLanguagesJson = {
       'Senaryo deskripsyon',
       'Senaryo Deskripsyon',
       'Dyagram senaryo',
-      'Dyagram Senaryo'
+      'Dyagram Senaryo',
     ],
     'then': ['* ', 'Lè sa a ', 'Le sa a '],
     'when': ['* ', 'Lè ', 'Le '],
@@ -863,7 +863,7 @@ final Map<String, dynamic> kLanguagesJson = {
       'Esquema do Cenário',
       'Esquema do Cenario',
       'Delineação do Cenário',
-      'Delineacao do Cenario'
+      'Delineacao do Cenario',
     ],
     'then': ['* ', 'Então ', 'Entao '],
     'when': ['* ', 'Quando '],
@@ -881,7 +881,7 @@ final Map<String, dynamic> kLanguagesJson = {
       'Dată fiind',
       'Dati fiind ',
       'Dați fiind ',
-      'Daţi fiind '
+      'Daţi fiind ',
     ],
     'name': 'Romanian',
     'native': 'română',
@@ -932,7 +932,7 @@ final Map<String, dynamic> kLanguagesJson = {
       'Možnosti',
       'Moznosti',
       'Lastnost',
-      'Značilnost'
+      'Značilnost',
     ],
     'given': ['Dano ', 'Podano ', 'Zaradi ', 'Privzeto '],
     'name': 'Slovenian',
@@ -944,7 +944,7 @@ final Map<String, dynamic> kLanguagesJson = {
       'Skica',
       'Koncept',
       'Oris scenarija',
-      'Osnutek'
+      'Osnutek',
     ],
     'then': ['Nato ', 'Potem ', 'Takrat '],
     'when': ['Ko ', 'Ce ', 'Če ', 'Kadar '],
@@ -1173,5 +1173,5 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenarioOutline': ['場景大綱', '劇本大綱'],
     'then': ['* ', '那麼'],
     'when': ['* ', '當'],
-  }
+  },
 };
