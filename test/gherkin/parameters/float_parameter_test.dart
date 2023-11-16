@@ -8,7 +8,7 @@ void main() {
       expect(await parameter.transformer('12.243'), equals(12.243));
     });
 
-    test('{Float} parsed correctly', () async  {
+    test('{Float} parsed correctly', () async {
       final parameter = FloatParameterCamel();
       expect(await parameter.transformer('12.243'), equals(12.243));
     });
@@ -20,7 +20,7 @@ void main() {
       expect(await parameter.transformer('-1.321'), equals(-1.321));
     });
 
-    test('{Num} parsed correctly', () async  {
+    test('{Num} parsed correctly', () async {
       final parameter = NumParameterCamel();
       expect(await parameter.transformer('12.243'), equals(12.243));
       expect(await parameter.transformer('3'), equals(3));

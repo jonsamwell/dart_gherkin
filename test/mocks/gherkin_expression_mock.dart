@@ -10,7 +10,8 @@ class MockGherkinExpression implements GherkinExpression {
   MockGherkinExpression(this.isMatchFn);
 
   @override
-  FutureOr<Iterable> getParameters(String input) async => const Iterable.empty();
+  FutureOr<Iterable> getParameters(String input) async =>
+      const Iterable.empty();
 
   @override
   bool isMatch(String input) => isMatchFn(input);

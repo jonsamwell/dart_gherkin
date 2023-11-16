@@ -451,7 +451,10 @@ class FeatureFileRunner {
     return executable;
   }
 
-  FutureOr<Iterable<dynamic>> _getStepParameters(StepRunnable step, ExecutableStep code) async {
+  FutureOr<Iterable<dynamic>> _getStepParameters(
+    StepRunnable step,
+    ExecutableStep code,
+  ) async {
     var parameters = await code.expression.getParameters(step.debug.lineText);
     if (step.multilineStrings.isNotEmpty) {
       parameters = parameters.toList()..addAll(step.multilineStrings);
