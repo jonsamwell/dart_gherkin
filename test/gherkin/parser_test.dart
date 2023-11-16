@@ -76,7 +76,7 @@ void main() {
         '@primary_tag_one',
         '@primary_tag_two',
         '@smoke',
-        '@some_another_tag'
+        '@some_another_tag',
       ]);
       expect(scenario.name, "When the user does some steps they see 'd'");
       expect(scenario.steps.length, 5);

@@ -17,7 +17,7 @@ Future<void> main() {
     givenTheCharacters(),
     whenTheStoredNumbersAreAdded(),
     whenTheCharactersAreCounted(),
-    thenExpectNumericResult()
+    thenExpectNumericResult(),
   ];
 
   final config = TestConfiguration(

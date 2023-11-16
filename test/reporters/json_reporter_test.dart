@@ -162,7 +162,7 @@ void main() {
           hasPassed: false,
           tags: [
             Tag('tag1', 1, isInherited: true),
-            Tag('tag2', 3, isInherited: false)
+            Tag('tag2', 3, isInherited: false),
           ],
         ),
       );
@@ -245,7 +245,7 @@ void main() {
           hasPassed: false,
           tags: [
             Tag('tag1', 1, isInherited: true),
-            Tag('tag2', 3, isInherited: false)
+            Tag('tag2', 3, isInherited: false),
           ],
         ),
       );
@@ -343,7 +343,7 @@ void main() {
           hasPassed: false,
           tags: [
             Tag('tag1', 1, isInherited: true),
-            Tag('tag2', 3, isInherited: false)
+            Tag('tag2', 3, isInherited: false),
           ],
         ),
       );
@@ -427,7 +427,7 @@ void main() {
           hasPassed: true,
           tags: [
             Tag('tag1', 1, isInherited: true),
-            Tag('tag2', 3, isInherited: false)
+            Tag('tag2', 3, isInherited: false),
           ],
         ),
       );
@@ -520,7 +520,7 @@ void main() {
           hasPassed: false,
           tags: [
             Tag('tag1', 1, isInherited: true),
-            Tag('tag2', 3, isInherited: false)
+            Tag('tag2', 3, isInherited: false),
           ],
         ),
       );
@@ -588,7 +588,7 @@ void main() {
           context: RunnableDebugInformation('filepath', 4, 'linetext4'),
           tags: [
             Tag('tag1', 1, isInherited: true),
-            Tag('tag2', 3, isInherited: false)
+            Tag('tag2', 3, isInherited: false),
           ],
         ),
       );

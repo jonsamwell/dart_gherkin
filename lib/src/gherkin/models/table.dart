@@ -43,7 +43,7 @@ class GherkinTable {
 
           return map;
         },
-      )
+      ),
     ];
   }
 

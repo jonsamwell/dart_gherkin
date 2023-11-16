@@ -153,7 +153,7 @@ class JsonStep {
       'result': {
         'status': status,
         'duration': duration,
-      }
+      },
     };
 
     if (docString != null && docString!.isNotEmpty) {

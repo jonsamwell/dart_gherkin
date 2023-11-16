@@ -149,7 +149,7 @@ void main() {
             StringParameterLower(),
             IntParameterLower(),
             FloatParameterLower(),
-            PluralParameter()
+            PluralParameter(),
           ]);
 
       expect(
