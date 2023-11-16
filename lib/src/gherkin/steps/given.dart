@@ -88,8 +88,7 @@ StepDefinitionGeneric<TWorld> given1<TInput1, TWorld extends World>(
   Future<void> Function(
     TInput1 input1,
     StepContext<TWorld> context,
-  )
-      onInvoke, {
+  ) onInvoke, {
   StepDefinitionConfiguration? configuration,
 }) =>
     step<TWorld, TInput1, dynamic, dynamic, dynamic, dynamic>(
@@ -105,8 +104,7 @@ StepDefinitionGeneric<TWorld> given2<TInput1, TInput2, TWorld extends World>(
     TInput1 input1,
     TInput2 input2,
     StepContext<TWorld> context,
-  )
-      onInvoke, {
+  ) onInvoke, {
   StepDefinitionConfiguration? configuration,
 }) =>
     step<TWorld, TInput1, TInput2, dynamic, dynamic, dynamic>(
@@ -124,8 +122,7 @@ StepDefinitionGeneric<TWorld>
     TInput2 input2,
     TInput3 input3,
     StepContext<TWorld> context,
-  )
-      onInvoke, {
+  ) onInvoke, {
   StepDefinitionConfiguration? configuration,
 }) =>
         step<TWorld, TInput1, TInput2, TInput3, dynamic, dynamic>(
@@ -144,8 +141,7 @@ StepDefinitionGeneric<TWorld>
     TInput3 input3,
     TInput4 input4,
     StepContext<TWorld> context,
-  )
-      onInvoke, {
+  ) onInvoke, {
   StepDefinitionConfiguration? configuration,
 }) =>
         step<TWorld, TInput1, TInput2, TInput3, TInput4, dynamic>(
@@ -165,8 +161,7 @@ StepDefinitionGeneric<TWorld>
     TInput4 input4,
     TInput5 input5,
     StepContext<TWorld> context,
-  )
-      onInvoke, {
+  ) onInvoke, {
   StepDefinitionConfiguration? configuration,
 }) =>
         step<TWorld, TInput1, TInput2, TInput3, TInput4, TInput5>(
