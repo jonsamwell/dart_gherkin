@@ -64,7 +64,7 @@ void main() {
         '   × Step 2 # filePath:2 took 0ms \n      Failed Reason',
         '   - Step 3 # filePath:3 took 0ms',
         '   × Step 4 # filePath:4 took 0ms',
-        '   × Step 5 # filePath:5 took 1ms'
+        '   × Step 5 # filePath:5 took 1ms',
       ]);
     });
 

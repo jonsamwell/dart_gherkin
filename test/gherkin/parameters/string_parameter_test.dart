@@ -3,14 +3,14 @@ import 'package:test/test.dart';
 
 void main() {
   group('StringParameter', () {
-    test('{string} parsed correctly', () {
+    test('{string} parsed correctly', () async {
       final parameter = StringParameterLower();
-      expect(parameter.transformer('Jon Samwell'), equals('Jon Samwell'));
+      expect(await parameter.transformer('Jon Samwell'), equals('Jon Samwell'));
     });
 
-    test('{String} parsed correctly', () {
+    test('{String} parsed correctly', () async {
       final parameter = StringParameterCamel();
-      expect(parameter.transformer('Jon Samwell'), equals('Jon Samwell'));
+      expect(await parameter.transformer('Jon Samwell'), equals('Jon Samwell'));
     });
 
     test('{String} pattern matches correctly', () {

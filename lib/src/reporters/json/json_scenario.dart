@@ -104,7 +104,7 @@ class JsonScenario {
       'id': '${feature?.id};${name.toLowerCase()}',
       'name': name,
       'line': line,
-      'status': _calculateStatus()
+      'status': _calculateStatus(),
     };
 
     if (description?.isNotEmpty ?? false) {

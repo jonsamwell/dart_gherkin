@@ -17,7 +17,10 @@ void main() {
       expect(parser.isMatch('I open the drawer'), equals(true));
       expect(parser.isMatch('I close the drawer'), equals(true));
       expect(parser.isMatch('I sausage the drawer'), equals(false));
-      expect(parser.getParameters('I close the drawer'), equals(['close']));
+      expect(
+        await parser.getParameters('I close the drawer'),
+        equals(['close']),
+      );
     });
 
     test('parse complex regex with custom parameters expression correctly',
@@ -48,7 +51,7 @@ void main() {
         equals(false),
       );
       expect(
-        parser.getParameters(
+        await parser.getParameters(
           "I open the drawer 6 times and find 'socks' which is bad",
         ),
         equals(['open', 6, 'socks', 'bad']),
@@ -64,7 +67,7 @@ void main() {
       expect(parser.isMatch("I am 'happy'"), equals(false));
       expect(parser.isMatch("I am 'happy' as 'Larry'"), equals(true));
       expect(
-        parser.getParameters("I am 'happy' as 'Larry'"),
+        await parser.getParameters("I am 'happy' as 'Larry'"),
         equals(['happy', 'Larry']),
       );
     });
@@ -75,7 +78,7 @@ void main() {
 
       expect(parser.isMatch("I am 'happy as Larry'"), equals(true));
       expect(
-        parser.getParameters("I am 'happy as Larry'"),
+        await parser.getParameters("I am 'happy as Larry'"),
         equals(['happy as Larry']),
       );
     });
@@ -88,7 +91,7 @@ void main() {
 
       expect(parser.isMatch('I am 150 years and 19 days old'), equals(true));
       expect(
-        parser.getParameters('I am 150 years and 19 days old'),
+        await parser.getParameters('I am 150 years and 19 days old'),
         equals([150, 19]),
       );
     });
@@ -104,7 +107,7 @@ void main() {
         equals(true),
       );
       expect(
-        parser.getParameters('I am 150.53 years and 19.00942 days old'),
+        await parser.getParameters('I am 150.53 years and 19.00942 days old'),
         equals([150.53, 19.00942]),
       );
     });
@@ -118,11 +121,11 @@ void main() {
       expect(parser.isMatch('I have 1 cucumber in my belly'), equals(true));
       expect(parser.isMatch('I have 42 cucumbers in my belly'), equals(true));
       expect(
-        parser.getParameters('I have 1 cucumber in my belly'),
+        await parser.getParameters('I have 1 cucumber in my belly'),
         equals([1]),
       );
       expect(
-        parser.getParameters('I have 42 cucumbers in my belly'),
+        await parser.getParameters('I have 42 cucumbers in my belly'),
         equals([42]),
       );
     });
@@ -135,8 +138,14 @@ void main() {
 
       expect(parser.isMatch('I have 2 apples in my belly'), equals(true));
       expect(parser.isMatch('I have 42 pears in my belly'), equals(true));
-      expect(parser.getParameters('I have 2 apples in my belly'), equals([2]));
-      expect(parser.getParameters('I have 42 pears in my belly'), equals([42]));
+      expect(
+        await parser.getParameters('I have 2 apples in my belly'),
+        equals([2]),
+      );
+      expect(
+        await parser.getParameters('I have 42 pears in my belly'),
+        equals([42]),
+      );
     });
 
     test('parse complex expression correctly', () async {
@@ -149,7 +158,7 @@ void main() {
             StringParameterLower(),
             IntParameterLower(),
             FloatParameterLower(),
-            PluralParameter()
+            PluralParameter(),
           ]);
 
       expect(
@@ -165,7 +174,7 @@ void main() {
         equals(true),
       );
       expect(
-        parser.getParameters(
+        await parser.getParameters(
           "'word' 22 'a string' 09 laurie 3.14 'hello' 3.333 cucumbers",
         ),
         equals(['word', 22, 'a string', 9, 3.14, 'hello', 3.333]),

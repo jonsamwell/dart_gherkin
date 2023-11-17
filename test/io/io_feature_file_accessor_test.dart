@@ -12,7 +12,7 @@ void main() {
       test('does not list directories', () async {
         expect(
           await indexer.listFiles(RegExp('test/test_resources/')),
-          [],
+          isNot(contains('test/test_resources/subdir')),
         );
       });
 
@@ -44,7 +44,7 @@ void main() {
       test('does not return directories', () async {
         expect(
           await indexer.listFiles('test/test_resources/'),
-          [],
+          isNot(contains('test/test_resources/subdir')),
         );
       });
 

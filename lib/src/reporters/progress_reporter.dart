@@ -39,7 +39,7 @@ class ProgressReporter extends StdoutReporter
               _getNameAndContext(message.name, message.context),
               _getExecutionDuration(message.result!),
               _getReasonMessage(message.result!),
-              _getErrorMessage(message.result!)
+              _getErrorMessage(message.result!),
             ].join(' ').trimRight(),
             _getMessageColour(message.result!.result),
           );
@@ -52,7 +52,7 @@ class ProgressReporter extends StdoutReporter
                   [
                     '    ',
                     'Attachment',
-                    "(${attachment2.mimeType})${attachment.mimeType == 'text/plain' ? ': ${attachment.data}' : ''}"
+                    "(${attachment2.mimeType})${attachment.mimeType == 'text/plain' ? ': ${attachment.data}' : ''}",
                   ].join(' ').trimRight(),
                   StdoutReporter.kResetColor,
                 );

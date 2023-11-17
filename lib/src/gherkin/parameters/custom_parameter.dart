@@ -1,4 +1,6 @@
-typedef Transformer<TValue> = TValue Function(String value);
+import 'dart:async';
+
+typedef Transformer<TValue> = FutureOr<TValue> Function(String value);
 
 /// A class used to define and parse custom parameters in step definitions
 /// see https://docs.cucumber.io/cucumber/cucumber-expressions/#custom-parameter-types

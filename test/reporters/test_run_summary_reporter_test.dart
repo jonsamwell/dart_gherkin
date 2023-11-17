@@ -107,7 +107,7 @@ void main() {
       expect(reporter.output, [
         '4 scenarios (\x1B[33;32m2 passed\x1B[33;0m, \x1B[33;31m2 failed\x1B[33;0m)',
         '8 steps (\x1B[33;32m3 passed\x1B[33;0m, \x1B[33;10m2 skipped\x1B[33;0m, \x1B[33;31m3 failed\x1B[33;0m)',
-        '0:00:00.000000'
+        '0:00:00.000000',
       ]);
     });
   });

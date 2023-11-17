@@ -226,7 +226,7 @@ void main() {
       expect(maps.elementAt(0), {
         '0': 'one | with escaped pipe',
         '1': 'two',
-        '2': 'three with | escaped pipe'
+        '2': 'three with | escaped pipe',
       });
     });
   });

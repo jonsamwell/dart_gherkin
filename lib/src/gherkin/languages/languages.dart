@@ -15,7 +15,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['Voorbeeld', 'Situasie'],
     'scenarioOutline': ['Situasie Uiteensetting'],
     'then': ['* ', 'Dan '],
-    'when': ['* ', 'Wanneer ']
+    'when': ['* ', 'Wanneer '],
   },
   'am': {
     'and': ['* ', 'Եվ '],
@@ -30,7 +30,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['Օրինակ', 'Սցենար'],
     'scenarioOutline': ['Սցենարի կառուցվացքը'],
     'then': ['* ', 'Ապա '],
-    'when': ['* ', 'Եթե ', 'Երբ ']
+    'when': ['* ', 'Եթե ', 'Երբ '],
   },
   'an': {
     'and': ['* ', 'Y ', 'E '],
@@ -45,7 +45,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['Eixemplo', 'Caso'],
     'scenarioOutline': ['Esquema del caso'],
     'then': ['* ', 'Alavez ', 'Allora ', 'Antonces '],
-    'when': ['* ', 'Cuan ']
+    'when': ['* ', 'Cuan '],
   },
   'ar': {
     'and': ['* ', 'و '],
@@ -60,7 +60,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['مثال', 'سيناريو'],
     'scenarioOutline': ['سيناريو مخطط'],
     'then': ['* ', 'اذاً ', 'ثم '],
-    'when': ['* ', 'متى ', 'عندما ']
+    'when': ['* ', 'متى ', 'عندما '],
   },
   'ast': {
     'and': ['* ', 'Y ', 'Ya '],
@@ -75,7 +75,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['Exemplo', 'Casu'],
     'scenarioOutline': ['Esbozu del casu'],
     'then': ['* ', 'Entós '],
-    'when': ['* ', 'Cuando ']
+    'when': ['* ', 'Cuando '],
   },
   'az': {
     'and': ['* ', 'Və ', 'Həm '],
@@ -90,7 +90,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['Nümunə', 'Ssenari'],
     'scenarioOutline': ['Ssenarinin strukturu'],
     'then': ['* ', 'O halda '],
-    'when': ['* ', 'Əgər ', 'Nə vaxt ki ']
+    'when': ['* ', 'Əgər ', 'Nə vaxt ki '],
   },
   'bg': {
     'and': ['* ', 'И '],
@@ -105,7 +105,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['Пример', 'Сценарий'],
     'scenarioOutline': ['Рамка на сценарий'],
     'then': ['* ', 'То '],
-    'when': ['* ', 'Когато ']
+    'when': ['* ', 'Когато '],
   },
   'bm': {
     'and': ['* ', 'Dan '],
@@ -122,10 +122,10 @@ final Map<String, dynamic> kLanguagesJson = {
       'Kerangka Senario',
       'Kerangka Situasi',
       'Kerangka Keadaan',
-      'Garis Panduan Senario'
+      'Garis Panduan Senario',
     ],
     'then': ['* ', 'Maka ', 'Kemudian '],
-    'when': ['* ', 'Apabila ']
+    'when': ['* ', 'Apabila '],
   },
   'bs': {
     'and': ['* ', 'I ', 'A '],
@@ -140,7 +140,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['Primjer', 'Scenariju', 'Scenario'],
     'scenarioOutline': ['Scenariju-obris', 'Scenario-outline'],
     'then': ['* ', 'Zatim '],
-    'when': ['* ', 'Kada ']
+    'when': ['* ', 'Kada '],
   },
   'ca': {
     'and': ['* ', 'I '],
@@ -155,7 +155,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['Exemple', 'Escenari'],
     'scenarioOutline': ["Esquema de l'escenari"],
     'then': ['* ', 'Aleshores ', 'Cal '],
-    'when': ['* ', 'Quan ']
+    'when': ['* ', 'Quan '],
   },
   'cs': {
     'and': ['* ', 'A také ', 'A '],
@@ -170,7 +170,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['Příklad', 'Scénář'],
     'scenarioOutline': ['Náčrt Scénáře', 'Osnova scénáře'],
     'then': ['* ', 'Pak '],
-    'when': ['* ', 'Když ']
+    'when': ['* ', 'Když '],
   },
   'cy-GB': {
     'and': ['* ', 'A '],
@@ -185,7 +185,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['Enghraifft', 'Scenario'],
     'scenarioOutline': ['Scenario Amlinellol'],
     'then': ['* ', 'Yna '],
-    'when': ['* ', 'Pryd ']
+    'when': ['* ', 'Pryd '],
   },
   'da': {
     'and': ['* ', 'Og '],
@@ -200,7 +200,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['Eksempel', 'Scenarie'],
     'scenarioOutline': ['Abstrakt Scenario'],
     'then': ['* ', 'Så '],
-    'when': ['* ', 'Når ']
+    'when': ['* ', 'Når '],
   },
   'de': {
     'and': ['* ', 'Und '],
@@ -215,7 +215,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['Beispiel', 'Szenario'],
     'scenarioOutline': ['Szenariogrundriss'],
     'then': ['* ', 'Dann '],
-    'when': ['* ', 'Wenn ']
+    'when': ['* ', 'Wenn '],
   },
   'el': {
     'and': ['* ', 'Και '],
@@ -230,7 +230,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['Παράδειγμα', 'Σενάριο'],
     'scenarioOutline': ['Περιγραφή Σεναρίου', 'Περίγραμμα Σεναρίου'],
     'then': ['* ', 'Τότε '],
-    'when': ['* ', 'Όταν ']
+    'when': ['* ', 'Όταν '],
   },
   'em': {
     'and': ['* ', '😂'],
@@ -245,7 +245,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['🥒', '📕'],
     'scenarioOutline': ['📖'],
     'then': ['* ', '🙏'],
-    'when': ['* ', '🎬']
+    'when': ['* ', '🎬'],
   },
   'en': {
     'and': ['* ', 'And '],
@@ -260,7 +260,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['Example', 'Scenario'],
     'scenarioOutline': ['Scenario Outline', 'Scenario Template'],
     'then': ['* ', 'Then '],
-    'when': ['* ', 'When ']
+    'when': ['* ', 'When '],
   },
   'en-Scouse': {
     'and': ['* ', 'An '],
@@ -275,7 +275,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['The thing of it is'],
     'scenarioOutline': ['Wharrimean is'],
     'then': ['* ', 'Dun ', 'Den youse gotta '],
-    'when': ['* ', 'Wun ', 'Youse know like when ']
+    'when': ['* ', 'Wun ', 'Youse know like when '],
   },
   'en-au': {
     'and': ['* ', 'Too right '],
@@ -290,7 +290,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['Awww, look mate'],
     'scenarioOutline': ["Reckon it's like"],
     'then': ['* ', 'But at the end of the day I reckon '],
-    'when': ['* ', "It's just unbelievable "]
+    'when': ['* ', "It's just unbelievable "],
   },
   'en-lol': {
     'and': ['* ', 'AN '],
@@ -305,7 +305,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['MISHUN'],
     'scenarioOutline': ['MISHUN SRSLY'],
     'then': ['* ', 'DEN '],
-    'when': ['* ', 'WEN ']
+    'when': ['* ', 'WEN '],
   },
   'en-old': {
     'and': ['* ', 'Ond ', '7 '],
@@ -320,7 +320,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['Swa'],
     'scenarioOutline': ['Swa hwaer swa', 'Swa hwær swa'],
     'then': ['* ', 'Tha ', 'Þa ', 'Ða ', 'Tha the ', 'Þa þe ', 'Ða ðe '],
-    'when': ['* ', 'Tha ', 'Þa ', 'Ða ']
+    'when': ['* ', 'Tha ', 'Þa ', 'Ða '],
   },
   'en-pirate': {
     'and': ['* ', 'Aye '],
@@ -335,7 +335,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['Heave to'],
     'scenarioOutline': ['Shiver me timbers'],
     'then': ['* ', 'Let go and haul '],
-    'when': ['* ', 'Blimey! ']
+    'when': ['* ', 'Blimey! '],
   },
   'eo': {
     'and': ['* ', 'Kaj '],
@@ -350,7 +350,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['Ekzemplo', 'Scenaro', 'Kazo'],
     'scenarioOutline': ['Konturo de la scenaro', 'Skizo', 'Kazo-skizo'],
     'then': ['* ', 'Do '],
-    'when': ['* ', 'Se ']
+    'when': ['* ', 'Se '],
   },
   'es': {
     'and': ['* ', 'Y ', 'E '],
@@ -365,7 +365,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['Ejemplo', 'Escenario'],
     'scenarioOutline': ['Esquema del escenario'],
     'then': ['* ', 'Entonces '],
-    'when': ['* ', 'Cuando ']
+    'when': ['* ', 'Cuando '],
   },
   'et': {
     'and': ['* ', 'Ja '],
@@ -380,7 +380,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['Juhtum', 'Stsenaarium'],
     'scenarioOutline': ['Raamstjuhtum', 'Raamstsenaarium'],
     'then': ['* ', 'Siis '],
-    'when': ['* ', 'Kui ']
+    'when': ['* ', 'Kui '],
   },
   'fa': {
     'and': ['* ', 'و '],
@@ -395,7 +395,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['مثال', 'سناریو'],
     'scenarioOutline': ['الگوی سناریو'],
     'then': ['* ', 'آنگاه '],
-    'when': ['* ', 'هنگامی ']
+    'when': ['* ', 'هنگامی '],
   },
   'fi': {
     'and': ['* ', 'Ja '],
@@ -410,7 +410,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['Tapaus'],
     'scenarioOutline': ['Tapausaihio'],
     'then': ['* ', 'Niin '],
-    'when': ['* ', 'Kun ']
+    'when': ['* ', 'Kun '],
   },
   'fr': {
     'and': ['* ', 'Et que ', "Et qu'", 'Et '],
@@ -435,7 +435,7 @@ final Map<String, dynamic> kLanguagesJson = {
       'Étant donné ',
       'Étant donnée ',
       'Étant donnés ',
-      'Étant données '
+      'Étant données ',
     ],
     'name': 'French',
     'native': 'français',
@@ -443,7 +443,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['Exemple', 'Scénario'],
     'scenarioOutline': ['Plan du scénario', 'Plan du Scénario'],
     'then': ['* ', 'Alors ', 'Donc '],
-    'when': ['* ', 'Quand ', 'Lorsque ', "Lorsqu'"]
+    'when': ['* ', 'Quand ', 'Lorsque ', "Lorsqu'"],
   },
   'ga': {
     'and': ['* ', 'Agus'],
@@ -456,7 +456,7 @@ final Map<String, dynamic> kLanguagesJson = {
       'Cuir i gcás go',
       'Cuir i gcás nach',
       'Cuir i gcás gur',
-      'Cuir i gcás nár'
+      'Cuir i gcás nár',
     ],
     'name': 'Irish',
     'native': 'Gaeilge',
@@ -464,7 +464,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['Sampla', 'Cás'],
     'scenarioOutline': ['Cás Achomair'],
     'then': ['* ', 'Ansin'],
-    'when': ['* ', 'Nuair a', 'Nuair nach', 'Nuair ba', 'Nuair nár']
+    'when': ['* ', 'Nuair a', 'Nuair nach', 'Nuair ba', 'Nuair nár'],
   },
   'gj': {
     'and': ['* ', 'અને '],
@@ -479,7 +479,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['ઉદાહરણ', 'સ્થિતિ'],
     'scenarioOutline': ['પરિદ્દશ્ય રૂપરેખા', 'પરિદ્દશ્ય ઢાંચો'],
     'then': ['* ', 'પછી '],
-    'when': ['* ', 'ક્યારે ']
+    'when': ['* ', 'ક્યારે '],
   },
   'gl': {
     'and': ['* ', 'E '],
@@ -494,7 +494,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['Exemplo', 'Escenario'],
     'scenarioOutline': ['Esbozo do escenario'],
     'then': ['* ', 'Entón ', 'Logo '],
-    'when': ['* ', 'Cando ']
+    'when': ['* ', 'Cando '],
   },
   'he': {
     'and': ['* ', 'וגם '],
@@ -509,7 +509,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['דוגמא', 'תרחיש'],
     'scenarioOutline': ['תבנית תרחיש'],
     'then': ['* ', 'אז ', 'אזי '],
-    'when': ['* ', 'כאשר ']
+    'when': ['* ', 'כאשר '],
   },
   'hi': {
     'and': ['* ', 'और ', 'तथा '],
@@ -524,7 +524,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['परिदृश्य'],
     'scenarioOutline': ['परिदृश्य रूपरेखा'],
     'then': ['* ', 'तब ', 'तदा '],
-    'when': ['* ', 'जब ', 'कदा ']
+    'when': ['* ', 'जब ', 'कदा '],
   },
   'hr': {
     'and': ['* ', 'I '],
@@ -539,7 +539,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['Primjer', 'Scenarij'],
     'scenarioOutline': ['Skica', 'Koncept'],
     'then': ['* ', 'Onda '],
-    'when': ['* ', 'Kada ', 'Kad ']
+    'when': ['* ', 'Kada ', 'Kad '],
   },
   'ht': {
     'and': ['* ', 'Ak ', 'Epi ', 'E '],
@@ -558,10 +558,10 @@ final Map<String, dynamic> kLanguagesJson = {
       'Senaryo deskripsyon',
       'Senaryo Deskripsyon',
       'Dyagram senaryo',
-      'Dyagram Senaryo'
+      'Dyagram Senaryo',
     ],
     'then': ['* ', 'Lè sa a ', 'Le sa a '],
-    'when': ['* ', 'Lè ', 'Le ']
+    'when': ['* ', 'Lè ', 'Le '],
   },
   'hu': {
     'and': ['* ', 'És '],
@@ -576,7 +576,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['Példa', 'Forgatókönyv'],
     'scenarioOutline': ['Forgatókönyv vázlat'],
     'then': ['* ', 'Akkor '],
-    'when': ['* ', 'Majd ', 'Ha ', 'Amikor ']
+    'when': ['* ', 'Majd ', 'Ha ', 'Amikor '],
   },
   'id': {
     'and': ['* ', 'Dan '],
@@ -591,7 +591,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['Skenario'],
     'scenarioOutline': ['Skenario konsep'],
     'then': ['* ', 'Maka '],
-    'when': ['* ', 'Ketika ']
+    'when': ['* ', 'Ketika '],
   },
   'is': {
     'and': ['* ', 'Og '],
@@ -606,7 +606,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['Atburðarás'],
     'scenarioOutline': ['Lýsing Atburðarásar', 'Lýsing Dæma'],
     'then': ['* ', 'Þá '],
-    'when': ['* ', 'Þegar ']
+    'when': ['* ', 'Þegar '],
   },
   'it': {
     'and': ['* ', 'E '],
@@ -621,7 +621,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['Esempio', 'Scenario'],
     'scenarioOutline': ['Schema dello scenario'],
     'then': ['* ', 'Allora '],
-    'when': ['* ', 'Quando ']
+    'when': ['* ', 'Quando '],
   },
   'ja': {
     'and': ['* ', 'かつ'],
@@ -636,7 +636,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['シナリオ'],
     'scenarioOutline': ['シナリオアウトライン', 'シナリオテンプレート', 'テンプレ', 'シナリオテンプレ'],
     'then': ['* ', 'ならば'],
-    'when': ['* ', 'もし']
+    'when': ['* ', 'もし'],
   },
   'jv': {
     'and': ['* ', 'Lan '],
@@ -651,7 +651,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['Skenario'],
     'scenarioOutline': ['Konsep skenario'],
     'then': ['* ', 'Njuk ', 'Banjur '],
-    'when': ['* ', 'Manawa ', 'Menawa ']
+    'when': ['* ', 'Manawa ', 'Menawa '],
   },
   'ka': {
     'and': ['* ', 'და'],
@@ -666,7 +666,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['მაგალითად', 'სცენარის'],
     'scenarioOutline': ['სცენარის ნიმუში'],
     'then': ['* ', 'მაშინ'],
-    'when': ['* ', 'როდესაც']
+    'when': ['* ', 'როდესაც'],
   },
   'kn': {
     'and': ['* ', 'ಮತ್ತು '],
@@ -681,7 +681,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['ಉದಾಹರಣೆ', 'ಕಥಾಸಾರಾಂಶ'],
     'scenarioOutline': ['ವಿವರಣೆ'],
     'then': ['* ', 'ನಂತರ '],
-    'when': ['* ', 'ಸ್ಥಿತಿಯನ್ನು ']
+    'when': ['* ', 'ಸ್ಥಿತಿಯನ್ನು '],
   },
   'ko': {
     'and': ['* ', '그리고'],
@@ -696,7 +696,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['시나리오'],
     'scenarioOutline': ['시나리오 개요'],
     'then': ['* ', '그러면'],
-    'when': ['* ', '만일', '만약']
+    'when': ['* ', '만일', '만약'],
   },
   'lt': {
     'and': ['* ', 'Ir '],
@@ -711,7 +711,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['Pavyzdys', 'Scenarijus'],
     'scenarioOutline': ['Scenarijaus šablonas'],
     'then': ['* ', 'Tada '],
-    'when': ['* ', 'Kai ']
+    'when': ['* ', 'Kai '],
   },
   'lu': {
     'and': ['* ', 'an ', 'a '],
@@ -726,7 +726,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['Beispill', 'Szenario'],
     'scenarioOutline': ['Plang vum Szenario'],
     'then': ['* ', 'dann '],
-    'when': ['* ', 'wann ']
+    'when': ['* ', 'wann '],
   },
   'lv': {
     'and': ['* ', 'Un '],
@@ -741,7 +741,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['Piemērs', 'Scenārijs'],
     'scenarioOutline': ['Scenārijs pēc parauga'],
     'then': ['* ', 'Tad '],
-    'when': ['* ', 'Ja ']
+    'when': ['* ', 'Ja '],
   },
   'mk-Cyrl': {
     'and': ['* ', 'И '],
@@ -756,7 +756,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['Пример', 'Сценарио', 'На пример'],
     'scenarioOutline': ['Преглед на сценарија', 'Скица', 'Концепт'],
     'then': ['* ', 'Тогаш '],
-    'when': ['* ', 'Кога ']
+    'when': ['* ', 'Кога '],
   },
   'mk-Latn': {
     'and': ['* ', 'I '],
@@ -771,7 +771,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['Scenario', 'Na primer'],
     'scenarioOutline': ['Pregled na scenarija', 'Skica', 'Koncept'],
     'then': ['* ', 'Togash '],
-    'when': ['* ', 'Koga ']
+    'when': ['* ', 'Koga '],
   },
   'mn': {
     'and': ['* ', 'Мөн ', 'Тэгээд '],
@@ -786,7 +786,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['Сценар'],
     'scenarioOutline': ['Сценарын төлөвлөгөө'],
     'then': ['* ', 'Тэгэхэд ', 'Үүний дараа '],
-    'when': ['* ', 'Хэрэв ']
+    'when': ['* ', 'Хэрэв '],
   },
   'nl': {
     'and': ['* ', 'En '],
@@ -801,7 +801,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['Voorbeeld', 'Scenario'],
     'scenarioOutline': ['Abstract Scenario'],
     'then': ['* ', 'Dan '],
-    'when': ['* ', 'Als ', 'Wanneer ']
+    'when': ['* ', 'Als ', 'Wanneer '],
   },
   'no': {
     'and': ['* ', 'Og '],
@@ -816,7 +816,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['Eksempel', 'Scenario'],
     'scenarioOutline': ['Scenariomal', 'Abstrakt Scenario'],
     'then': ['* ', 'Så '],
-    'when': ['* ', 'Når ']
+    'when': ['* ', 'Når '],
   },
   'pa': {
     'and': ['* ', 'ਅਤੇ '],
@@ -831,7 +831,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['ਉਦਾਹਰਨ', 'ਪਟਕਥਾ'],
     'scenarioOutline': ['ਪਟਕਥਾ ਢਾਂਚਾ', 'ਪਟਕਥਾ ਰੂਪ ਰੇਖਾ'],
     'then': ['* ', 'ਤਦ '],
-    'when': ['* ', 'ਜਦੋਂ ']
+    'when': ['* ', 'ਜਦੋਂ '],
   },
   'pl': {
     'and': ['* ', 'Oraz ', 'I '],
@@ -846,7 +846,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['Przykład', 'Scenariusz'],
     'scenarioOutline': ['Szablon scenariusza'],
     'then': ['* ', 'Wtedy '],
-    'when': ['* ', 'Jeżeli ', 'Jeśli ', 'Gdy ', 'Kiedy ']
+    'when': ['* ', 'Jeżeli ', 'Jeśli ', 'Gdy ', 'Kiedy '],
   },
   'pt': {
     'and': ['* ', 'E '],
@@ -863,10 +863,10 @@ final Map<String, dynamic> kLanguagesJson = {
       'Esquema do Cenário',
       'Esquema do Cenario',
       'Delineação do Cenário',
-      'Delineacao do Cenario'
+      'Delineacao do Cenario',
     ],
     'then': ['* ', 'Então ', 'Entao '],
-    'when': ['* ', 'Quando ']
+    'when': ['* ', 'Quando '],
   },
   'ro': {
     'and': ['* ', 'Si ', 'Și ', 'Şi '],
@@ -881,7 +881,7 @@ final Map<String, dynamic> kLanguagesJson = {
       'Dată fiind',
       'Dati fiind ',
       'Dați fiind ',
-      'Daţi fiind '
+      'Daţi fiind ',
     ],
     'name': 'Romanian',
     'native': 'română',
@@ -889,7 +889,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['Exemplu', 'Scenariu'],
     'scenarioOutline': ['Structura scenariu', 'Structură scenariu'],
     'then': ['* ', 'Atunci '],
-    'when': ['* ', 'Cand ', 'Când ']
+    'when': ['* ', 'Cand ', 'Când '],
   },
   'ru': {
     'and': ['* ', 'И ', 'К тому же ', 'Также '],
@@ -904,7 +904,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['Пример', 'Сценарий'],
     'scenarioOutline': ['Структура сценария'],
     'then': ['* ', 'То ', 'Затем ', 'Тогда '],
-    'when': ['* ', 'Когда ', 'Если ']
+    'when': ['* ', 'Когда ', 'Если '],
   },
   'sk': {
     'and': ['* ', 'A ', 'A tiež ', 'A taktiež ', 'A zároveň '],
@@ -919,7 +919,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['Príklad', 'Scenár'],
     'scenarioOutline': ['Náčrt Scenáru', 'Náčrt Scenára', 'Osnova Scenára'],
     'then': ['* ', 'Tak ', 'Potom '],
-    'when': ['* ', 'Keď ', 'Ak ']
+    'when': ['* ', 'Keď ', 'Ak '],
   },
   'sl': {
     'and': ['In ', 'Ter '],
@@ -932,7 +932,7 @@ final Map<String, dynamic> kLanguagesJson = {
       'Možnosti',
       'Moznosti',
       'Lastnost',
-      'Značilnost'
+      'Značilnost',
     ],
     'given': ['Dano ', 'Podano ', 'Zaradi ', 'Privzeto '],
     'name': 'Slovenian',
@@ -944,10 +944,10 @@ final Map<String, dynamic> kLanguagesJson = {
       'Skica',
       'Koncept',
       'Oris scenarija',
-      'Osnutek'
+      'Osnutek',
     ],
     'then': ['Nato ', 'Potem ', 'Takrat '],
-    'when': ['Ko ', 'Ce ', 'Če ', 'Kadar ']
+    'when': ['Ko ', 'Ce ', 'Če ', 'Kadar '],
   },
   'sr-Cyrl': {
     'and': ['* ', 'И '],
@@ -962,7 +962,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['Пример', 'Сценарио', 'Пример'],
     'scenarioOutline': ['Структура сценарија', 'Скица', 'Концепт'],
     'then': ['* ', 'Онда '],
-    'when': ['* ', 'Када ', 'Кад ']
+    'when': ['* ', 'Када ', 'Кад '],
   },
   'sr-Latn': {
     'and': ['* ', 'I '],
@@ -977,7 +977,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['Scenario', 'Primer'],
     'scenarioOutline': ['Struktura scenarija', 'Skica', 'Koncept'],
     'then': ['* ', 'Onda '],
-    'when': ['* ', 'Kada ', 'Kad ']
+    'when': ['* ', 'Kada ', 'Kad '],
   },
   'sv': {
     'and': ['* ', 'Och '],
@@ -992,7 +992,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['Scenario'],
     'scenarioOutline': ['Abstrakt Scenario', 'Scenariomall'],
     'then': ['* ', 'Så '],
-    'when': ['* ', 'När ']
+    'when': ['* ', 'När '],
   },
   'ta': {
     'and': ['* ', 'மேலும்  ', 'மற்றும் '],
@@ -1007,7 +1007,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['உதாரணமாக', 'காட்சி'],
     'scenarioOutline': ['காட்சி சுருக்கம்', 'காட்சி வார்ப்புரு'],
     'then': ['* ', 'அப்பொழுது '],
-    'when': ['* ', 'எப்போது ']
+    'when': ['* ', 'எப்போது '],
   },
   'th': {
     'and': ['* ', 'และ '],
@@ -1022,7 +1022,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['เหตุการณ์'],
     'scenarioOutline': ['สรุปเหตุการณ์', 'โครงสร้างของเหตุการณ์'],
     'then': ['* ', 'ดังนั้น '],
-    'when': ['* ', 'เมื่อ ']
+    'when': ['* ', 'เมื่อ '],
   },
   'tl': {
     'and': ['* ', 'మరియు '],
@@ -1037,7 +1037,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['ఉదాహరణ', 'సన్నివేశం'],
     'scenarioOutline': ['కథనం'],
     'then': ['* ', 'అప్పుడు '],
-    'when': ['* ', 'ఈ పరిస్థితిలో ']
+    'when': ['* ', 'ఈ పరిస్థితిలో '],
   },
   'tlh': {
     'and': ['* ', "'ej ", 'latlh '],
@@ -1052,7 +1052,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['lut'],
     'scenarioOutline': ['lut chovnatlh'],
     'then': ['* ', 'vaj '],
-    'when': ['* ', "qaSDI' "]
+    'when': ['* ', "qaSDI' "],
   },
   'tr': {
     'and': ['* ', 'Ve '],
@@ -1067,7 +1067,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['Örnek', 'Senaryo'],
     'scenarioOutline': ['Senaryo taslağı'],
     'then': ['* ', 'O zaman '],
-    'when': ['* ', 'Eğer ki ']
+    'when': ['* ', 'Eğer ki '],
   },
   'tt': {
     'and': ['* ', 'Һәм ', 'Вә '],
@@ -1082,7 +1082,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['Сценарий'],
     'scenarioOutline': ['Сценарийның төзелеше'],
     'then': ['* ', 'Нәтиҗәдә '],
-    'when': ['* ', 'Әгәр ']
+    'when': ['* ', 'Әгәр '],
   },
   'uk': {
     'and': ['* ', 'І ', 'А також ', 'Та '],
@@ -1097,7 +1097,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['Приклад', 'Сценарій'],
     'scenarioOutline': ['Структура сценарію'],
     'then': ['* ', 'То ', 'Тоді '],
-    'when': ['* ', 'Якщо ', 'Коли ']
+    'when': ['* ', 'Якщо ', 'Коли '],
   },
   'ur': {
     'and': ['* ', 'اور '],
@@ -1112,7 +1112,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['منظرنامہ'],
     'scenarioOutline': ['منظر نامے کا خاکہ'],
     'then': ['* ', 'پھر ', 'تب '],
-    'when': ['* ', 'جب ']
+    'when': ['* ', 'جب '],
   },
   'uz': {
     'and': ['* ', 'Ва '],
@@ -1127,7 +1127,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['Сценарий'],
     'scenarioOutline': ['Сценарий структураси'],
     'then': ['* ', 'Унда '],
-    'when': ['* ', 'Агар ']
+    'when': ['* ', 'Агар '],
   },
   'vi': {
     'and': ['* ', 'Và '],
@@ -1142,7 +1142,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['Tình huống', 'Kịch bản'],
     'scenarioOutline': ['Khung tình huống', 'Khung kịch bản'],
     'then': ['* ', 'Thì '],
-    'when': ['* ', 'Khi ']
+    'when': ['* ', 'Khi '],
   },
   'zh-CN': {
     'and': ['* ', '而且', '并且', '同时'],
@@ -1157,7 +1157,7 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['场景', '剧本'],
     'scenarioOutline': ['场景大纲', '剧本大纲'],
     'then': ['* ', '那么'],
-    'when': ['* ', '当']
+    'when': ['* ', '当'],
   },
   'zh-TW': {
     'and': ['* ', '而且', '並且', '同時'],
@@ -1172,6 +1172,6 @@ final Map<String, dynamic> kLanguagesJson = {
     'scenario': ['場景', '劇本'],
     'scenarioOutline': ['場景大綱', '劇本大綱'],
     'then': ['* ', '那麼'],
-    'when': ['* ', '當']
-  }
+    'when': ['* ', '當'],
+  },
 };
